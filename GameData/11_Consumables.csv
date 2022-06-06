@@ -1,0 +1,8 @@
+KEY,NAME,USEEFFECT,TARGET,DURATIONTIME,VALUE
+11000,Portion_1,Cure,Hp,0.0 ,100
+11001,Portion_2,Cure,Hp,0.0 ,150
+11002,Portion_3,Cure,Hp,0.0 ,200
+11003,Portion_4,Cure,Mp,0.0 ,250
+11004,Portion_5,Cure,Mp,0.0 ,300
+11005,Portion_6,Cure,Hp,5.0 ,350
+11006,Portion_7,Cure,Hp,5.0 ,400

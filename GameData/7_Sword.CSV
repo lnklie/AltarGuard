@@ -1,0 +1,26 @@
+KEY,NAME,ATTACKTYPE,WEAPONTYPE,PYSICALDAMAGE,MAGICALDAMAGE,ATKRANGE,ATKDISTANCE
+7000,AXE_1,Melee,Axe,10,0,1.0 ,0.5 
+7001,AXE_2,Melee,Axe,15,0,1.0 ,0.5 
+7002,AXE_3,Melee,Axe,20,0,1.0 ,0.5 
+7003,AXE_4,Melee,Axe,25,0,1.0 ,0.5 
+7004,AXE_5,Melee,Axe,30,0,1.0 ,0.5 
+7005,AXE_6,Melee,Axe,35,0,1.0 ,0.5 
+7006,AXE_7,Melee,Axe,40,0,1.0 ,0.5 
+7007,Spear_1,Melee,Spear,15,0,0.5 ,1.0 
+7008,Spear_2,Melee,Spear,20,0,0.5 ,1.0 
+7009,Spear_3,Melee,Spear,25,0,0.5 ,1.0 
+7010,Spear_4,Melee,Spear,30,0,0.5 ,1.0 
+7011,Spear_5,Melee,Spear,35,0,0.5 ,1.0 
+7012,Sword_1,Melee,Sword,6,0,0.5 ,0.5 
+7013,Sword_2,Melee,Sword,12,0,0.5 ,0.5 
+7014,Sword_3,Melee,Sword,18,0,0.5 ,0.5 
+7015,Sword_4,Melee,Sword,24,0,0.5 ,0.5 
+7016,Sword_5,Melee,Sword,30,0,0.5 ,0.5 
+7017,Sword_6,Melee,Sword,35,0,0.5 ,0.5 
+7018,Sword_7,Melee,Sword,40,0,0.5 ,0.5 
+7019,Sword_8,Melee,Sword,45,0,0.5 ,0.5 
+7020,Sword_9,Melee,Sword,50,0,0.5 ,0.5 
+7021,Sword_10,Melee,Sword,55,0,0.5 ,0.5 
+7022,Sword_11,Melee,Sword,60,0,0.5 ,0.5 
+7023,Sword_12,Melee,Sword,65,0,0.5 ,0.5 
+7024,Sword_13,Melee,Sword,70,0,0.5 ,0.5 

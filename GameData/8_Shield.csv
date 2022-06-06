@@ -1,0 +1,11 @@
+KEY,NAME,ATTACKTYPE,WEAPONTYPE,PYSICALDAMAGE,MAGICALDAMAGE,ATKRANGE,ATKDISTANCE,DEFENSIVEPOWER
+8000,Shield_1,Melee,Shield,1,1,0.5,0.5,1
+8001,Shield_2,Melee,Shield,1,1,0.5,0.5,2
+8002,Shield_3,Melee,Shield,1,1,0.5,0.5,3
+8003,Shield_4,Melee,Shield,1,1,0.5,0.5,4
+8004,Shield_5,Melee,Shield,1,1,0.5,0.5,5
+8005,Shield_6,Melee,Shield,1,1,0.5,0.5,6
+8006,Shield_7,Melee,Shield,1,1,0.5,0.5,7
+8007,Shield_8,Melee,Shield,1,1,0.5,0.5,8
+8008,Shield_9,Melee,Shield,1,1,0.5,0.5,9
+8009,Shield_10,Melee,Shield,1,1,0.5,0.5,10
