@@ -8,23 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-07
  * 작성자 : Inklie
  * 파일명 : UIManager.cs
 ==============================
 */
 public class UIManager : SingletonManager<UIManager>
 {
-    private bool isItemSelect = false;
-    private int selectNum = 0;
-
-    private Item selectItem = null;
-    private EquipmentController selectCharacterEqipment = null;
-    private CharacterStatus selectCharStatus = null;
-    private List<EquipmentController> characterList = new List<EquipmentController>();
-    private InventorySlot[] inventorySlots = null;
-    private EquipmentSlot[] equipmentSlots = null;
-    private CharacterStatus[] mercenary = null;
 
 
     [Header("EnemySpawner")]
@@ -99,6 +89,17 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private Text equipmentNameText = null;
 
+    private bool isItemSelect = false;
+    private int selectNum = 0;
+    private int selectInventoryIndex = 0;
+    private Item selectItem = null;
+    private EquipmentController selectCharacterEqipment = null;
+    private CharacterStatus selectCharStatus = null;
+    private List<EquipmentController> characterList = new List<EquipmentController>();
+    private InventorySlot[] inventorySlots = null;
+    private EquipmentSlot[] equipmentSlots = null;
+    private CharacterStatus[] mercenary = null;
+
     private void Awake()
     {
         inventorySlots = UIImages[0].GetComponentsInChildren<InventorySlot>();
@@ -128,8 +129,8 @@ public class UIManager : SingletonManager<UIManager>
         {
             BossUpdate();
         }
-        PlayerUpdate();
-        MercenaryUpdate();
+        UpdatePlayerProfile();
+        UpdateMercenaryProfile();
 
         if (isItemSelect)
             UpdateItemInfo();
@@ -150,30 +151,31 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region "프로필 업데이트"
-    private void PlayerUpdate()
+    private void UpdatePlayerProfile()
     {
-        string[] infoText = {
+        string[] infoText = new string[]
+            {
             player.CurHp.ToString() + " / " + player.MaxHp.ToString(),
             player.CurMp.ToString() + " / " + player.MaxMp.ToString(),
             player.CurExp.ToString() + " / " + player.MaxExp.ToString(),
             "Lv. " + player.CurLevel.ToString(),
-            player.ObjectName.ToString()
+            player.ObjectName
         };
-        float[] infoImage = {
+        float[] infoImage ={
             player.CurHp / player.MaxHp ,
             player.CurMp / player.MaxMp,
             (float)player.CurExp / player.MaxExp
         };
-        for(int i = 0; i < playerTexts.Length; i++)
+        for(int i = 0; i < 5; i++)
         {
             playerTexts[i].text = infoText[i];
         }
-        for (int i = 0; i < playerStateImages.Length; i++)
+        for (int i = 0; i < 3; i++)
         {
             playerStateImages[i].fillAmount = infoImage[i];
         }
     }
-    public void MercenaryUpdate()
+    public void UpdateMercenaryProfile()
     {
         for (int i = 0; i < mercenary.Length; i++)
         {
@@ -442,10 +444,12 @@ public class UIManager : SingletonManager<UIManager>
         // 인벤토리 슬롯 바꾸기 
         InventoryReset();
         itemInfo.SetActive(false);
+
         if (_index == 0)
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
             {
+                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyWeaponItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
                 inventorySlots[i].IsItemStateChange = true;
                 inventorySlots[i].SlotSetting();
@@ -456,7 +460,7 @@ public class UIManager : SingletonManager<UIManager>
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
             {
-                
+                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyEquipmentItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
                 inventorySlots[i].IsItemStateChange = true;
                 inventorySlots[i].SlotSetting();
@@ -467,7 +471,7 @@ public class UIManager : SingletonManager<UIManager>
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyConsumableItems.Count; i++)
             {
-                
+                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyConsumableItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyConsumableItems[i];
                 inventorySlots[i].IsItemStateChange = true;
                 inventorySlots[i].SlotSetting();
@@ -477,7 +481,7 @@ public class UIManager : SingletonManager<UIManager>
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyMiscellaneousItems.Count; i++)
             {
-                
+                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyMiscellaneousItems[i];
                 inventorySlots[i].IsItemStateChange = true;
                 inventorySlots[i].SlotSetting();
@@ -488,13 +492,14 @@ public class UIManager : SingletonManager<UIManager>
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyDecorationItems.Count; i++)
             {
-                
+                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyDecorationItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
                 inventorySlots[i].IsItemStateChange = true;
                 inventorySlots[i].SlotSetting();
                 inventorySlots[i].EnableItemCount(false);
             }
         }
+        selectInventoryIndex = _index;
     }
     public void Equip(int _character)
     {
@@ -513,6 +518,7 @@ public class UIManager : SingletonManager<UIManager>
         ChangeEquipmentImage();
     }
 
+
     public void SetActiveEquipCharacterBox(bool _bool)
     {
         // 장착 캐릭터 선택하기 버튼 활성화
@@ -528,10 +534,11 @@ public class UIManager : SingletonManager<UIManager>
         else
             return false;
     }
-    public void SelectItemTakeOff()
+    public void TakeOffSelectItem()
     {
         // 선택한 아이템 해제
         TakeOff(selectItem.equipCharNum, selectItem);
+        SetActiveItemInfo(false);
         ChangeEquipmentImage();
     }
     public void TakeOff(int _character,Item _item)
@@ -540,7 +547,6 @@ public class UIManager : SingletonManager<UIManager>
         if (_item.isEquip)
         {
             GetInventorySlot(_item).IsItemStateChange = true;
-            SetActiveItemInfo(false);
             //마찬가지로 무기/ 방패 다시
             characterList[_character].TakeOffEquipment(_item);
             _item.isEquip = false;
@@ -554,7 +560,23 @@ public class UIManager : SingletonManager<UIManager>
         else
             Debug.Log("착용중이 아님");
     }
-    public void SlotSelectItem(Item _item) 
+    public void UseSelectItem()
+    {
+        InventoryManager.Instance.UseItem(player, selectItem);
+        SetActiveItemInfo(false);
+        if (GetInventorySlot(selectItem).CurItem.count > 0)
+            GetInventorySlot(selectItem).UpdateItemCount();
+        else
+        {
+            InventorySlotChange(2);
+        }
+    }
+    public void DiscardSelectItem()
+    {
+        InventoryManager.Instance.DiscardItem(selectItem);
+        InventorySlotChange(selectInventoryIndex);
+    }
+    public void SelectSlotItem(Item _item) 
     {
         // 슬롯에 선택한 아이템 
         selectItem = _item;
@@ -603,23 +625,37 @@ public class UIManager : SingletonManager<UIManager>
         equipmentSlots[_index].ItemImages[1].sprite = UIMask;
         equipmentSlots[_index].InitImageSize();
     }
+    public void InventoryButtonReset()
+    {
+        for(int i = 0; i < inventoryButtons.Length;i++)
+        {
+            inventoryButtons[i].gameObject.SetActive(false);
+        }
+    }
     public void UpdateItemInfo()
     {
         // 아이템 정보창 업데이트
         isItemSelect = false;
+        InventoryButtonReset();
         SetActiveItemInfo(true);
-        if (selectItem.equipCharNum != -1)
+        inventoryButtons[3].gameObject.SetActive(true)  ;
+        if (selectItem.itemType == (int)ItemType.Consumables)
         {
-            inventoryButtons[0].gameObject.SetActive(false);
-            inventoryButtons[1].gameObject.SetActive(true);
+            inventoryButtons[2].gameObject.SetActive(true);
         }
         else
         {
-            inventoryButtons[1].gameObject.SetActive(false);
-            inventoryButtons[0].gameObject.SetActive(true);
-        }
-        iteminfoText[0].text = selectItem.itemName;
-        iteminfoText[1].text = KeyToItemType(selectItem.itemKey);
+            if (selectItem.equipCharNum != -1)
+            {
+                inventoryButtons[1].gameObject.SetActive(true);
+            }
+            else
+            {
+                inventoryButtons[0].gameObject.SetActive(true);
+            }
+        }    
+            iteminfoText[0].text = selectItem.itemName;
+            iteminfoText[1].text = KeyToItemType(selectItem.itemKey);
         switch (selectItem.itemKey / 1000)
         {
             case 0:
@@ -669,6 +705,18 @@ public class UIManager : SingletonManager<UIManager>
                     "WeaponType : " + ((Weapon)selectItem).weaponType;
                 break;
             case 10:
+                iteminfoText[2].text =
+                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
+                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
+                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
+                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "WeaponType : " + ((Weapon)selectItem).weaponType;
+                break;
+            case 11:
+                iteminfoText[2].text =
+                    "Value : " + selectItem.value + "\n";
+                break;
+            case 12:
                 iteminfoText[2].text =
                     "PysicalDamage : " + selectItem.physicalDamage + "\n" +
                     "magicalDamage : " + selectItem.magicalDamage + "\n" +

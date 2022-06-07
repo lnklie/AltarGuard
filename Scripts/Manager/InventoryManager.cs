@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-07
  * 작성자 : Inklie
  * 파일명 : InventoryManager.cs
 ==============================
@@ -45,6 +45,16 @@ public class InventoryManager : SingletonManager<InventoryManager>
         get { return inventroyDecorationItems; }
     }
 
+    private void Start()
+    {
+        AcquireItem(DatabaseManager.Instance.SelectItem(7001), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(7002), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(7003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11000), 3);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11001),3);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11002), 3);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11003), 3);
+    }
     public void AddItem(List<Item> _itemList, Item _item)
     {
         // 리스트에 아이템 추가 
@@ -194,28 +204,112 @@ public class InventoryManager : SingletonManager<InventoryManager>
             Debug.Log("버프");
         }
     }
-    public void DiscardItem(List<Item> _inventory,Item _item)
+    public void DiscardItem(Item _item)
     {
-        // 아이템 버리기
-        Debug.Log("버리기 " + IndexOfItem(_inventory, _item) + "버릴려는 키는 " + _item);
-        if (IndexOfItem(_inventory, _item) != -1)
+        if (
+            _item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
-            if (_inventory[IndexOfItem(_inventory, _item)].isEquip != true)
+
+            // 아이템 버리기
+            if (IndexOfItem(inventroyWeaponItems, _item) != -1)
             {
-                _inventory[IndexOfItem(_inventory, _item)].count--;
-                Debug.Log("아이템 버리기");
-                if (_inventory[IndexOfItem(_inventory, _item)].count <= 0)
+                if (inventroyWeaponItems[IndexOfItem(inventroyWeaponItems, _item)].isEquip != true)
                 {
-                    _inventory.Remove(_inventory[IndexOfItem(_inventory, _item)]);
+                    inventroyWeaponItems[IndexOfItem(inventroyWeaponItems, _item)].count--;
+                    Debug.Log("아이템 버리기");
+                    if (inventroyWeaponItems[IndexOfItem(inventroyWeaponItems, _item)].count <= 0)
+                    {
+                        inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(inventroyWeaponItems, _item)]);
+                        Debug.Log("아이템 비워짐");
+                    }
+                }
+                else
+                    Debug.Log("장착 중인 아이템 입니다.");
+            }
+            else
+            {
+                Debug.Log("그런 아이템 없음");
+            }
+        }
+        else if (_item.itemType == (int)ItemType.Armor ||
+            _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
+            _item.itemType == (int)ItemType.Cloth)
+        {
+            // 아이템 버리기
+            if (IndexOfItem(inventroyEquipmentItems, _item) != -1)
+            {
+                if (inventroyEquipmentItems[IndexOfItem(inventroyEquipmentItems, _item)].isEquip != true)
+                {
+                    inventroyEquipmentItems[IndexOfItem(inventroyEquipmentItems, _item)].count--;
+                    Debug.Log("아이템 버리기");
+                    if (inventroyEquipmentItems[IndexOfItem(inventroyEquipmentItems, _item)].count <= 0)
+                    {
+                        inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(inventroyEquipmentItems, _item)]);
+                        Debug.Log("아이템 비워짐");
+                    }
+                }
+                else
+                    Debug.Log("장착 중인 아이템 입니다.");
+            }
+            else
+            {
+                Debug.Log("그런 아이템 없음");
+            }
+        }
+        else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
+        {
+            // 아이템 버리기
+            if (IndexOfItem(inventroyDecorationItems, _item) != -1)
+            {
+                if (inventroyDecorationItems[IndexOfItem(inventroyDecorationItems, _item)].isEquip != true)
+                {
+                    inventroyDecorationItems[IndexOfItem(inventroyDecorationItems, _item)].count--;
+                    Debug.Log("아이템 버리기");
+                    if (inventroyWeaponItems[IndexOfItem(inventroyDecorationItems, _item)].count <= 0)
+                    {
+                        inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(inventroyDecorationItems, _item)]);
+                        Debug.Log("아이템 비워짐");
+                    }
+                }
+                else
+                    Debug.Log("장착 중인 아이템 입니다.");
+            }
+            else
+            {
+                Debug.Log("그런 아이템 없음");
+            }
+        }
+        else if(_item.itemType == (int)ItemType.Consumables)
+        {
+            if (IndexOfItem(inventroyConsumableItems, _item) != -1)
+            {
+                SelectItem(inventroyConsumableItems, _item).count--;
+                if (SelectItem(inventroyConsumableItems, _item).count == 0)
+                {
+                    inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _item));
                     Debug.Log("아이템 비워짐");
                 }
             }
             else
-                Debug.Log("장착 중인 아이템 입니다.");
+            {
+                Debug.Log("아이템 없음");
+            }
         }
         else
         {
-            Debug.Log("그런 아이템 없음");
+            if (IndexOfItem(inventroyMiscellaneousItems, _item) != -1)
+            {
+                SelectItem(inventroyMiscellaneousItems, _item).count--;
+                if (SelectItem(inventroyMiscellaneousItems, _item).count == 0)
+                {
+                    inventroyMiscellaneousItems.Remove(SelectItem(inventroyMiscellaneousItems, _item));
+                    Debug.Log("아이템 비워짐");
+                }
+            }
+            else
+            {
+                Debug.Log("아이템 없음");
+            }
         }
     }
 

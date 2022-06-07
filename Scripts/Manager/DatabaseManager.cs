@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-07
  * 작성자 : Inklie
  * 파일명 : DatabaseManager.cs
 ==============================
@@ -11,6 +11,7 @@ using UnityEngine;
 
 public class DatabaseManager : SingletonManager<DatabaseManager>
 {
+    private string path = null;
     [Header("Items")]
     public List<Hair> hairList = new List<Hair>();
     public List<FaceHair> faceHairList = new List<FaceHair>();
@@ -28,8 +29,11 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     [Header("Exp")]
     public List<Exp> exp = new List<Exp>();
 
+    [Header("Enemy")]
+    public List<Enemy> enemyList = new List<Enemy>();
     private void Awake()
     {
+        //ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
         List<Dictionary<string, object>> data_Hair = CSVReader.Read("0_Hair");
         List<Dictionary<string, object>> data_FaceHair = CSVReader.Read("1_FaceHair");
         List<Dictionary<string, object>> data_Cloth = CSVReader.Read("2_Cloth");
@@ -43,8 +47,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         List<Dictionary<string, object>> data_Wand = CSVReader.Read("10_Wand");
         List<Dictionary<string, object>> data_Consumables = CSVReader.Read("11_Consumables");
         List<Dictionary<string, object>> data_Miscellaneous = CSVReader.Read("12_Miscellaneous");
+        List<Dictionary<string, object>> data_Emeny = CSVReader.Read("13_Enemy");
         List<Dictionary<string, object>> data_Exp = CSVReader.Read("Exp");
-
         for (var i = 0; i < data_Hair.Count; i++)
         {
             hairList.Add(new Hair((int)data_Hair[i]["KEY"], (string)data_Hair[i]["NAME"]));
@@ -97,11 +101,39 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         {
             miscellaneousList.Add(new Miscellaneous((int)data_Miscellaneous[i]["KEY"], (string)data_Miscellaneous[i]["NAME"], (string)data_Miscellaneous[i]["PURPOSE"]));
         }
-        for(var i = 0; i < data_Exp.Count; i++)
+        for (var i = 0; i < data_Emeny.Count; i++)
+        {
+            enemyList.Add(new Enemy((string)data_Emeny[i]["NAME"], (int)data_Emeny[i]["HP"], (int)data_Emeny[i]["DAMAGE"], (float)data_Emeny[i]["SEERANGE"], (float)data_Emeny[i]["ATKRANGE"], (float)data_Emeny[i]["SPEED"], (float)data_Emeny[i]["ATKSPEED"], (int)data_Emeny[i]["DEFEATEXP"],
+                (int)data_Emeny[i]["ITEMDROPKEY1"], (int)data_Emeny[i]["ITEMDROPKEY2"], (int)data_Emeny[i]["ITEMDROPKEY3"], (int)data_Emeny[i]["ITEMDROPKEY4"], (int)data_Emeny[i]["ITEMDROPKEY5"],
+                (float)data_Emeny[i]["ITEMDROPPROB1"], (float)data_Emeny[i]["ITEMDROPPROB2"], (float)data_Emeny[i]["ITEMDROPPROB3"], (float)data_Emeny[i]["ITEMDROPPROB4"], (float)data_Emeny[i]["ITEMDROPPROB5"]));
+        }
+        for (var i = 0; i < data_Exp.Count; i++)
         {
             exp.Add(new Exp(data_Exp[i]["LV"], data_Exp[i]["EXP"]));
         }
     }
+    //private void Start()
+    //{ 
+    //    path = Path.Combine(Application.persistentDataPath+"/JsonFiles", "Weapon.json");
+    //    JsonLoad();
+    //}
+    //public void JsonLoad()
+    //{
+    //    // 데이터 로드
+    //    Weapon itemData;
+    //    if (!File.Exists(path))
+    //    {
+    //        Debug.Log("경로에 아이템 데이터 베이스가 존재하지 않습니다.");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log(" 있는 로드");
+    //        string loadJson = File.ReadAllText(path);
+    //        itemData = JsonUtility.FromJson<Weapon>(loadJson);
+    //        Debug.Log("아이템 데이터" + itemData.itemName);
+
+    //    }
+    //}
     public Item SelectItem(int _key)
     {
         Item _item = new Item(_key, null);

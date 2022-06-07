@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-07
  * 작성자 : Inklie
  * 파일명 : InventorySlot.cs
 ==============================
@@ -21,6 +21,7 @@ public class InventorySlot : MonoBehaviour
         get { return itemImages; }
         set { itemImages = value; }
     }
+    [SerializeField]
     private Item curItem = null;
     public Item CurItem
     { 
@@ -102,8 +103,12 @@ public class InventorySlot : MonoBehaviour
         else
         {
             EnableItemCount(true);
-            itemCount.text = curItem.count.ToString();
+            UpdateItemCount();
         }
+    }
+    public void UpdateItemCount()
+    {
+        itemCount.text = curItem.count.ToString();
     }
     public void TargetingSprites(int _equipCharNum)
     {
@@ -121,6 +126,7 @@ public class InventorySlot : MonoBehaviour
     }
     public void SelectItem()
     {
-        UIManager.Instance.SlotSelectItem(curItem);
+        Debug.Log("선택");
+        UIManager.Instance.SelectSlotItem(curItem);
     }
 }

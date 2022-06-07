@@ -23,7 +23,7 @@ public class CharacterStatus: Status
         get { return money; } 
         set { money = value; }
     }
-
+     
     protected int curMp = 100;
     public int CurMp
     {

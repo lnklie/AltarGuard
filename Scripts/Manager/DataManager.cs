@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
     private PlayerStatus playerStatus = null ;
     private void Start()
     {
-        path = Path.Combine(Application.dataPath, "database.json");
+        path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
     }
     private void Update()
     {

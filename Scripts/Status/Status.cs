@@ -31,7 +31,7 @@ public class Status : MonoBehaviour
         set { atkRange = value; }
     }
 
-    protected string objectName = null;
+    protected string objectName = "";
     public string ObjectName
     {
         get { return objectName; }
