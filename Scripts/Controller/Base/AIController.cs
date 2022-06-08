@@ -10,6 +10,10 @@ using UnityEngine;
 */
 public abstract class AIController : BaseController
 {
+    [Header("Attack Delay")]
+    [SerializeField]
+    protected float delayTime = 0f;
+
     protected Animator ani = null;
     protected Rigidbody2D rig = null;
     protected TextMesh txtMesh = null;
@@ -21,9 +25,6 @@ public abstract class AIController : BaseController
     protected RaycastHit2D[] allyRay = default;
     protected RaycastHit2D[] enemyHit = default;
 
-    [Header("Attack Delay")]
-    [SerializeField]
-    protected float delayTime = 0f;
 
 
     public virtual void Awake()

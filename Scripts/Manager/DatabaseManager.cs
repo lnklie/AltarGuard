@@ -33,7 +33,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Enemy> enemyList = new List<Enemy>();
     private void Awake()
     {
-        //ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
         List<Dictionary<string, object>> data_Hair = CSVReader.Read("0_Hair");
         List<Dictionary<string, object>> data_FaceHair = CSVReader.Read("1_FaceHair");
         List<Dictionary<string, object>> data_Cloth = CSVReader.Read("2_Cloth");
@@ -112,28 +112,28 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             exp.Add(new Exp(data_Exp[i]["LV"], data_Exp[i]["EXP"]));
         }
     }
-    //private void Start()
-    //{ 
-    //    path = Path.Combine(Application.persistentDataPath+"/JsonFiles", "Weapon.json");
-    //    JsonLoad();
-    //}
-    //public void JsonLoad()
-    //{
-    //    // 데이터 로드
-    //    Weapon itemData;
-    //    if (!File.Exists(path))
-    //    {
-    //        Debug.Log("경로에 아이템 데이터 베이스가 존재하지 않습니다.");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log(" 있는 로드");
-    //        string loadJson = File.ReadAllText(path);
-    //        itemData = JsonUtility.FromJson<Weapon>(loadJson);
-    //        Debug.Log("아이템 데이터" + itemData.itemName);
+    private void Start()
+    {
+        path = Path.Combine(Application.persistentDataPath + "/JsonFiles", "Weapon.json");
+        JsonLoad();
+    }
+    public void JsonLoad()
+    {
+        // 데이터 로드
+        Item itemData;
+        if (!File.Exists(path))
+        {
+            Debug.Log("경로에 아이템 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            Debug.Log(" 있는 로드");
+            string loadJson = File.ReadAllText(path);
+            itemData = JsonUtility.FromJson<Item>(loadJson);
+            Debug.Log("아이템 데이터" + itemData.itemName);
 
-    //    }
-    //}
+        }
+    }
     public Item SelectItem(int _key)
     {
         Item _item = new Item(_key, null);
