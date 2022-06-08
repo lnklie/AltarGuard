@@ -191,7 +191,6 @@ public class CharacterStatus: Status
 
         if (equipmentController.IsChangeItem == true)
         {
-            Debug.Log("아이템 변경");
             UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
             equipmentController.IsChangeItem = false;
@@ -253,7 +252,7 @@ public class CharacterStatus: Status
     public void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp += 100 + str * 10;
+        maxHp = 100 + str * 10;
         maxMp = 100 + wiz * 10;
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;

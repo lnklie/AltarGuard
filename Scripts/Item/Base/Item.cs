@@ -15,7 +15,6 @@ public class Item
     public Texture2D texture2D = null;
     public Sprite singleSprite = null;
     public Sprite[] spList = new Sprite[3];
-    public ItemEquipedCharacter itemEquipedCharacter = ItemEquipedCharacter.NULL;
 
     public int itemKey;
     public int count = 0;
