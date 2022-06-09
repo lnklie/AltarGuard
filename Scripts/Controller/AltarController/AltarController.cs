@@ -188,7 +188,6 @@ public class AltarController : BaseController
         // µ¿¸Í Ã£±â
         var hits = Physics2D.CircleCastAll(this.transform.position, 100f, Vector2.zero, 3f, LayerMask.GetMask("Ally"));
         ExceptThisObjectLayer(hits); 
-        Debug.Log("µ¿¸ÍÀÇ ¼ö´Â " + characters.Count);
     }
     public void ExceptThisObjectLayer(RaycastHit2D[] _raycastHit2Ds)
     {

@@ -3,65 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-09
  * 작성자 : Inklie
  * 파일명 : Enemy.cs
 ==============================
 */
+[System.Serializable]
 public class Enemy : Elements
 {
-    private int damage = 0;
-    public int Damage
+    public int hp = 0;
+    public int damage = 0;
+    public float seeRange;
+    public float atkRange;
+    public float speed = 0f;
+    public float atkSpeed = 0f;
+    public int defeatExp = 0;
+    public int itemDropKey1 = -1;
+    public int itemDropKey2 = -1;
+    public int itemDropKey3 = -1;
+    public int itemDropKey4 = -1;
+    public int itemDropKey5 = -1;
+    public float itemDropProb1 = 20f;
+    public float itemDropProb2 = 20f;
+    public float itemDropProb3 = 20f;
+    public float itemDropProb4 = 20f;
+    public float itemDropProb5 = 20f;
+    public Sprite singleSprite = null;
+    public Enemy(string _name, int _hp, int _damage, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
+        int _itemDropKey1, int _itemDropKey2, int _itemDropKey3, int _itemDropKey4, int _itemDropKey5,
+        float _itemDropProb1, float _itemDropProb2, float _itemDropProb3, float _itemDropProb4, float _itemDropProb5)
     {
-        get { return damage; }
-        set { damage = value; }
-    }
-    
-    private float seeRange;
-    public float SeeRange
-    {
-        get { return seeRange; }
-        set { seeRange = value; }
-    }
-
-    private float atkRange;
-    public float AtkRange
-    {
-        get { return atkRange; }
-        set { atkRange = value; }
-    }
-
-    private float speed = 0f;
-    public float Speed
-    {
-        get { return speed; }
-    }
-
-    private float atkSpeed = 0f;
-    public float AtkSpeed
-    {
-        get { return atkSpeed; }
-        set { atkSpeed = value; }
-    }
-
-    private int defeatExp = 0;
-    public int DefeatExp
-    { 
-        get { return defeatExp; }
-        set { defeatExp = value; }
-    }
-
-    private int[] itemDropKey = { 1, 2, 3, 4, 5 };
-    public int[] ItemDropKey
-    {
-        get { return itemDropKey; }
-        set { itemDropKey = value; }    
-    }
-
-    private float[] itemDropProb = { 20, 20, 20, 20, 20 };
-    public float[] ItemDropProb
-    {
-        get { return itemDropProb; }
-        set { itemDropProb = value; }
+        objectName = _name;
+        hp = _hp;
+        damage = _damage;
+        seeRange = _seeRange;
+        atkRange = _atkRange;
+        speed = _speed;
+        atkSpeed = _atkSpeed;
+        defeatExp = _defeatExp;
+        itemDropKey1 = _itemDropKey1;
+        itemDropKey2 = _itemDropKey2;
+        itemDropKey3 = _itemDropKey3;
+        itemDropKey4 = _itemDropKey4;
+        itemDropKey5 = _itemDropKey5;
+        itemDropProb1 = _itemDropProb1;
+        itemDropProb2 = _itemDropProb2;
+        itemDropProb3 = _itemDropProb3;
+        itemDropProb4 = _itemDropProb4;
+        itemDropProb5 = _itemDropProb5;
+        singleSprite = Resources.Load("Sprites/13_Consumable/" + objectName, typeof(Sprite)) as Sprite;
     }
 }

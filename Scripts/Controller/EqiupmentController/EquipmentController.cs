@@ -170,27 +170,30 @@ public class EquipmentController : MonoBehaviour
         switch (_item.itemType)
         {
             case 0:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyDecorationItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[0].isEquip = false;
+                    equipItems[0].equipCharNum = -1;
                     equipItems[0] = null;
                     checkEquipItems[0] = false;
                     hairSpace.ChangeItemSprite(null);
                 }
                 break;
             case 1:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyDecorationItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem( _item) != -1)
                 {
                     equipItems[1].isEquip = false;
+                    equipItems[1].equipCharNum = -1;
                     equipItems[1] = null;
                     checkEquipItems[1] = false;
                     faceHairSpace.ChangeItemSprite(null);
                 }
                 break;
             case 2:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyEquipmentItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[2].isEquip = false;
+                    equipItems[2].equipCharNum = -1;
                     equipItems[2] = null;
                     checkEquipItems[2] = false;
                     for (int i = 0; i < clothSpaces.Length; i++)
@@ -200,9 +203,10 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 3:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyEquipmentItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[3].isEquip = false;
+                    equipItems[3].equipCharNum = -1;
                     equipItems[3] = null;
                     checkEquipItems[3] = false;
                     for (int i = 0; i < pantSpaces.Length; i++)
@@ -212,18 +216,20 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 4:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyEquipmentItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[4].isEquip = false;
+                    equipItems[4].equipCharNum = -1;
                     equipItems[4] = null;
                     checkEquipItems[4] = false;
                     helmetSpace.ChangeItemSprite(null);
                 }
                 break;
             case 5:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyEquipmentItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[5].isEquip = false;
+                    equipItems[5].equipCharNum = -1;
                     equipItems[5] = null;
                     checkEquipItems[5] = false;
                     for (int i = 0; i < armorSpaces.Length; i++)
@@ -233,19 +239,21 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 6:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyEquipmentItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[6].isEquip = false;
+                    equipItems[6].equipCharNum = -1;
                     equipItems[6] = null;
                     checkEquipItems[6] = false;
                     backSpace.ChangeItemSprite(null);
                 }
                 break;
             case 7:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyWeaponItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
 
                     equipItems[7].isEquip = false;
+                    equipItems[7].equipCharNum = -1;
                     equipItems[7] = null;
                     checkEquipItems[7] = false;
                     weaponSpace.ChangeItemSprite(null);
@@ -253,9 +261,10 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 8:
-                if (InventoryManager.Instance.IndexOfItem(InventoryManager.Instance.InventroyWeaponItems, _item) != -1)
+                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
                 {
                     equipItems[8].isEquip = false;
+                    equipItems[8].equipCharNum = -1;
                     equipItems[8] = null;
                     checkEquipItems[8] = false;
                     subWeaponSpace.ChangeItemSprite(null);

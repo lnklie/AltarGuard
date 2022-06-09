@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-09
  * 작성자 : Inklie
  * 파일명 : Exp.cs
 ==============================
@@ -13,9 +13,9 @@ public class Exp
 {
     public int lv;
     public int exp;
-    public Exp(object _lv, object _exp)
+    public Exp(int _lv, int _exp)
     {
-        lv = (int)_lv;
-        exp = (int)_exp;
+        lv = _lv;
+        exp = _exp;
     }
 }

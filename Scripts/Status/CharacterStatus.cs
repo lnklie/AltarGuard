@@ -23,7 +23,7 @@ public class CharacterStatus: Status
         get { return money; } 
         set { money = value; }
     }
-
+     
     protected int curMp = 100;
     public int CurMp
     {
@@ -183,6 +183,7 @@ public class CharacterStatus: Status
         UpdateAbility();
         LvToExp();
         curHp = maxHp;
+        statusPoint = 5;
     }
     private void Update()
     {
@@ -191,7 +192,6 @@ public class CharacterStatus: Status
 
         if (equipmentController.IsChangeItem == true)
         {
-            Debug.Log("아이템 변경");
             UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
             equipmentController.IsChangeItem = false;
@@ -200,10 +200,10 @@ public class CharacterStatus: Status
     private void LvToExp()
     {
         // 레벨별 경험치 전환
-        for (int i = 0; i < DatabaseManager.Instance.exp.Count; i++)
+        for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
-            if (curLevel == DatabaseManager.Instance.exp[i].lv)
-                maxExp = DatabaseManager.Instance.exp[i].exp;
+            if (curLevel == DatabaseManager.Instance.expList[i].lv)
+                maxExp = DatabaseManager.Instance.expList[i].exp;
         }
     }
 
@@ -253,12 +253,12 @@ public class CharacterStatus: Status
     public void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp += 100 + str * 10;
+        maxHp = 100 + str * 10;
         maxMp = 100 + wiz * 10;
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
         speed = 2 + dex * 0.1f + buffSpeed;
-        atkSpeed = 1 - dex * 0.1f;
+        atkSpeed = 2 - dex * 0.1f;
         dropProbability = luck * 0.001f;
         itemRarity = luck * 0.001f;
         defensivePower = str * 3  + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;

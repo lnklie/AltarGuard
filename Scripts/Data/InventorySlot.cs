@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-07
  * 작성자 : Inklie
  * 파일명 : InventorySlot.cs
 ==============================
@@ -15,12 +15,14 @@ public class InventorySlot : MonoBehaviour
     private Text itemCount = null;
     private ItemType itemType;
 
+    [SerializeField]
     private Image[] itemImages = null;
     public Image[] ItemImages
     {
         get { return itemImages; }
         set { itemImages = value; }
     }
+    [SerializeField]
     private Item curItem = null;
     public Item CurItem
     { 
@@ -28,7 +30,7 @@ public class InventorySlot : MonoBehaviour
         set { curItem = value; }
     }
     private bool isItemChange = false;
-    public bool IsItemStateChange
+    public bool IsItemChange
     {
         get { return isItemChange; }
         set { isItemChange = value; }
@@ -46,7 +48,9 @@ public class InventorySlot : MonoBehaviour
     private void Update()
     {
         if (curItem != null && isItemChange)
-            TargetingSprites(curItem.equipCharNum);
+        {
+            TargetingSprites();
+        }
     }
     public void SlotReset()
     {
@@ -102,16 +106,32 @@ public class InventorySlot : MonoBehaviour
         else
         {
             EnableItemCount(true);
-            itemCount.text = curItem.count.ToString();
+            UpdateItemCount();
         }
     }
-    public void TargetingSprites(int _equipCharNum)
+    public bool isEmpty()
+    {
+        if (curItem == null || curItem.count == 0)
+            return true;
+        else
+            return false;
+    }
+    public void UpdateItemCount()
+    {
+        itemCount.text = curItem.count.ToString();
+    }
+    public void TargetingSprites()
     {
         // 해당 아이템의 장착중인 캐릭터 별로 다른 색의 타겟팅 이미지가 표시
-        if (_equipCharNum != -1)
+
+        if (curItem.isEquip)
+        {
             itemImages[2].sprite = itemTargetingSprites[curItem.equipCharNum];
+        }
         else
+        {
             itemImages[2].sprite = uiMask;
+        }
 
         isItemChange = false;
     }
@@ -121,6 +141,6 @@ public class InventorySlot : MonoBehaviour
     }
     public void SelectItem()
     {
-        UIManager.Instance.SlotSelectItem(curItem);
+        UIManager.Instance.SelectSlotItem(curItem);
     }
 }
