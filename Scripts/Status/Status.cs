@@ -31,6 +31,7 @@ public class Status : MonoBehaviour
         set { atkRange = value; }
     }
 
+    [SerializeField]
     protected string objectName = "";
     public string ObjectName
     {

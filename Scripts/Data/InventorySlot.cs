@@ -15,6 +15,7 @@ public class InventorySlot : MonoBehaviour
     private Text itemCount = null;
     private ItemType itemType;
 
+    [SerializeField]
     private Image[] itemImages = null;
     public Image[] ItemImages
     {
@@ -29,7 +30,7 @@ public class InventorySlot : MonoBehaviour
         set { curItem = value; }
     }
     private bool isItemChange = false;
-    public bool IsItemStateChange
+    public bool IsItemChange
     {
         get { return isItemChange; }
         set { isItemChange = value; }
@@ -47,7 +48,9 @@ public class InventorySlot : MonoBehaviour
     private void Update()
     {
         if (curItem != null && isItemChange)
-            TargetingSprites(curItem.equipCharNum);
+        {
+            TargetingSprites();
+        }
     }
     public void SlotReset()
     {
@@ -106,17 +109,29 @@ public class InventorySlot : MonoBehaviour
             UpdateItemCount();
         }
     }
+    public bool isEmpty()
+    {
+        if (curItem == null || curItem.count == 0)
+            return true;
+        else
+            return false;
+    }
     public void UpdateItemCount()
     {
         itemCount.text = curItem.count.ToString();
     }
-    public void TargetingSprites(int _equipCharNum)
+    public void TargetingSprites()
     {
         // 해당 아이템의 장착중인 캐릭터 별로 다른 색의 타겟팅 이미지가 표시
-        if (_equipCharNum != -1)
+
+        if (curItem.isEquip)
+        {
             itemImages[2].sprite = itemTargetingSprites[curItem.equipCharNum];
+        }
         else
+        {
             itemImages[2].sprite = uiMask;
+        }
 
         isItemChange = false;
     }
@@ -126,7 +141,6 @@ public class InventorySlot : MonoBehaviour
     }
     public void SelectItem()
     {
-        Debug.Log("선택");
         UIManager.Instance.SelectSlotItem(curItem);
     }
 }

@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-07
+ * 최종수정일 : 2022-06-09
  * 작성자 : Inklie
  * 파일명 : DatabaseManager.cs
 ==============================
@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class DatabaseManager : SingletonManager<DatabaseManager>
 {
-    private string path = null;
+    private string[] path = {"1","2"};
     [Header("Items")]
     public List<Hair> hairList = new List<Hair>();
     public List<FaceHair> faceHairList = new List<FaceHair>();
@@ -27,113 +27,240 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Consumables> consumablesList = new List<Consumables>();
     public List<Miscellaneous> miscellaneousList = new List<Miscellaneous>();
     [Header("Exp")]
-    public List<Exp> exp = new List<Exp>();
+    public List<Exp> expList = new List<Exp>();
 
     [Header("Enemy")]
     public List<Enemy> enemyList = new List<Enemy>();
     private void Awake()
     {
-        //ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
-        List<Dictionary<string, object>> data_Hair = CSVReader.Read("0_Hair");
-        List<Dictionary<string, object>> data_FaceHair = CSVReader.Read("1_FaceHair");
-        List<Dictionary<string, object>> data_Cloth = CSVReader.Read("2_Cloth");
-        List<Dictionary<string, object>> data_Pant = CSVReader.Read("3_Pant");
-        List<Dictionary<string, object>> data_Helmet = CSVReader.Read("4_Helmet");
-        List<Dictionary<string, object>> data_Armor = CSVReader.Read("5_Armor");
-        List<Dictionary<string, object>> data_Back = CSVReader.Read("6_Back");
-        List<Dictionary<string, object>> data_Sword = CSVReader.Read("7_Sword");
-        List<Dictionary<string, object>> data_Shield = CSVReader.Read("8_Shield");
-        List<Dictionary<string, object>> data_Bow = CSVReader.Read("9_Bow");
-        List<Dictionary<string, object>> data_Wand = CSVReader.Read("10_Wand");
-        List<Dictionary<string, object>> data_Consumables = CSVReader.Read("11_Consumables");
-        List<Dictionary<string, object>> data_Miscellaneous = CSVReader.Read("12_Miscellaneous");
-        List<Dictionary<string, object>> data_Emeny = CSVReader.Read("13_Enemy");
-        List<Dictionary<string, object>> data_Exp = CSVReader.Read("Exp");
-        for (var i = 0; i < data_Hair.Count; i++)
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
+        JsonLoad();
+    }
+    string fixJson(string value)
+    {
+        value = "{\"Items\":" + value + "}";
+        return value;
+    }
+    private string CombinePath(string _folderName)
+    {
+        return Application.persistentDataPath + "/JsonFiles/"+_folderName +".json";
+    }
+
+    public void JsonLoad()
+    {
+        if (!File.Exists(CombinePath("0_Hair")))
         {
-            hairList.Add(new Hair((int)data_Hair[i]["KEY"], (string)data_Hair[i]["NAME"]));
+            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_FaceHair.Count; i++)
+        else
         {
-            faceHairList.Add(new FaceHair((int)data_FaceHair[i]["KEY"], (string)data_FaceHair[i]["NAME"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("0_Hair")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                hairList.Add(new Hair(items[i].itemKey, items[i].itemName));
+            }
+
         }
-        for (var i = 0; i < data_Cloth.Count; i++)
+        if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            clothList.Add(new Cloth((int)data_Cloth[i]["KEY"], (string)data_Cloth[i]["NAME"], (int)data_Cloth[i]["DEFENSIVEPOWER"]));
+            Debug.Log("경로에 얼굴 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Pant.Count; i++)
+        else
         {
-            pantList.Add(new Pant((int)data_Pant[i]["KEY"], (string)data_Pant[i]["NAME"], (int)data_Pant[i]["DEFENSIVEPOWER"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("1_FaceHair")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                faceHairList.Add(new FaceHair(items[i].itemKey, items[i].itemName));
+            }
+
         }
-        for (var i = 0; i < data_Helmet.Count; i++)
+        if (!File.Exists(CombinePath("2_Cloth")))
         {
-            helmetList.Add(new Helmet((int)data_Helmet[i]["KEY"], (string)data_Helmet[i]["NAME"], (int)data_Helmet[i]["DEFENSIVEPOWER"]));
+            Debug.Log("경로에 옷 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Armor.Count; i++)
+        else
         {
-            armorList.Add(new Armor((int)data_Armor[i]["KEY"], (string)data_Armor[i]["NAME"], (int)data_Armor[i]["DEFENSIVEPOWER"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("2_Cloth")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+            }
+
         }
-        for (var i = 0; i < data_Back.Count; i++)
+        if (!File.Exists(CombinePath("3_Pant")))
         {
-            backList.Add(new Back((int)data_Back[i]["KEY"], (string)data_Back[i]["NAME"], (int)data_Back[i]["DEFENSIVEPOWER"]));
+            Debug.Log("경로에 바지 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Sword.Count; i++)
+        else
         {
-            swordList.Add(new Sword((int)data_Sword[i]["KEY"], (string)data_Sword[i]["NAME"], (string)data_Sword[i]["ATTACKTYPE"], (string)data_Sword[i]["WEAPONTYPE"], (int)data_Sword[i]["PYSICALDAMAGE"], (int)data_Sword[i]["MAGICALDAMAGE"], (float)data_Sword[i]["ATKRANGE"], (float)data_Sword[i]["ATKDISTANCE"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("3_Pant")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                pantList.Add(new Pant(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+            }
+
         }
-        for (var i = 0; i < data_Shield.Count; i++)
+        if (!File.Exists(CombinePath("4_Helmet")))
         {
-            shieldList.Add(new Shield((int)data_Shield[i]["KEY"], (string)data_Shield[i]["NAME"], (string)data_Shield[i]["ATTACKTYPE"], (string)data_Shield[i]["WEAPONTYPE"], (int)data_Sword[i]["PYSICALDAMAGE"], (int)data_Sword[i]["MAGICALDAMAGE"], (float)data_Shield[i]["ATKRANGE"], (float)data_Shield[i]["ATKDISTANCE"], (int)data_Shield[i]["DEFENSIVEPOWER"]));
+            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Bow.Count; i++)
+        else
         {
-            bowList.Add(new Bow((int)data_Bow[i]["KEY"], (string)data_Bow[i]["NAME"], (string)data_Bow[i]["ATTACKTYPE"], (string)data_Bow[i]["WEAPONTYPE"], (int)data_Sword[i]["PYSICALDAMAGE"], (int)data_Sword[i]["MAGICALDAMAGE"], (float)data_Bow[i]["ATKRANGE"], (float)data_Bow[i]["ATKDISTANCE"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("4_Helmet")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+            }
+
         }
-        for (var i = 0; i < data_Wand.Count; i++)
+        if (!File.Exists(CombinePath("5_Armor")))
         {
-            wandList.Add(new Wand((int)data_Wand[i]["KEY"], (string)data_Wand[i]["NAME"], (string)data_Wand[i]["ATTACKTYPE"], (string)data_Wand[i]["WEAPONTYPE"], (int)data_Sword[i]["PYSICALDAMAGE"], (int)data_Sword[i]["MAGICALDAMAGE"], (float)data_Wand[i]["ATKRANGE"], (float)data_Wand[i]["ATKDISTANCE"]));
+            Debug.Log("경로에 갑옷 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Consumables.Count; i++)
+        else
         {
-            consumablesList.Add(new Consumables((int)data_Consumables[i]["KEY"], (string)data_Consumables[i]["NAME"], (string)data_Consumables[i]["USEEFFECT"], (string)data_Consumables[i]["TARGET"], (float)data_Consumables[i]["DURATIONTIME"],(int)data_Consumables[i]["VALUE"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("5_Armor")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                armorList.Add(new Armor(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+            }
+
         }
-        for (var i = 0; i < data_Miscellaneous.Count; i++)
+        if (!File.Exists(CombinePath("6_Back")))
         {
-            miscellaneousList.Add(new Miscellaneous((int)data_Miscellaneous[i]["KEY"], (string)data_Miscellaneous[i]["NAME"], (string)data_Miscellaneous[i]["PURPOSE"]));
+            Debug.Log("경로에 망토 데이터 베이스가 존재하지 않습니다.");
         }
-        for (var i = 0; i < data_Emeny.Count; i++)
+        else
         {
-            enemyList.Add(new Enemy((string)data_Emeny[i]["NAME"], (int)data_Emeny[i]["HP"], (int)data_Emeny[i]["DAMAGE"], (float)data_Emeny[i]["SEERANGE"], (float)data_Emeny[i]["ATKRANGE"], (float)data_Emeny[i]["SPEED"], (float)data_Emeny[i]["ATKSPEED"], (int)data_Emeny[i]["DEFEATEXP"],
-                (int)data_Emeny[i]["ITEMDROPKEY1"], (int)data_Emeny[i]["ITEMDROPKEY2"], (int)data_Emeny[i]["ITEMDROPKEY3"], (int)data_Emeny[i]["ITEMDROPKEY4"], (int)data_Emeny[i]["ITEMDROPKEY5"],
-                (float)data_Emeny[i]["ITEMDROPPROB1"], (float)data_Emeny[i]["ITEMDROPPROB2"], (float)data_Emeny[i]["ITEMDROPPROB3"], (float)data_Emeny[i]["ITEMDROPPROB4"], (float)data_Emeny[i]["ITEMDROPPROB5"]));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("6_Back")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                backList.Add(new Back(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+            }
+
         }
-        for (var i = 0; i < data_Exp.Count; i++)
+        if (!File.Exists(CombinePath("7_Sword")))
         {
-            exp.Add(new Exp(data_Exp[i]["LV"], data_Exp[i]["EXP"]));
+            Debug.Log("경로에 검 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("7_Sword")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                swordList.Add(new Sword(items[i].itemKey, items[i].itemName,items[i].attackType,items[i].weaponType, items[i].physicalDamage,items[i].magicalDamage,items[i].atkRange,items[i].atkDistance));
+            }
+
+        }
+        if (!File.Exists(CombinePath("8_Shield")))
+        {
+            Debug.Log("경로에 방패 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("8_Shield")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower));
+            }
+
+        }
+        if (!File.Exists(CombinePath("9_Bow")))
+        {
+            Debug.Log("경로에 활 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("9_Bow")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance));
+            }
+
+        }
+        if (!File.Exists(CombinePath("10_Wand")))
+        {
+            Debug.Log("경로에 지팡이 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("10_Wand")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance));
+            }
+
+        }
+        if (!File.Exists(CombinePath("11_Consumables")))
+        {
+            Debug.Log("경로에 소비품 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("11_Consumables")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName,items[i].useEffect,items[i].target,items[i].durationTime,items[i].value));
+            }
+
+        }
+        if (!File.Exists(CombinePath("12_Miscellaneous")))
+        {
+            Debug.Log("경로에 기타템 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("12_Miscellaneous")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                miscellaneousList.Add(new Miscellaneous(items[i].itemKey, items[i].itemName,items[i].purpose));
+            }
+
+        }
+        if (!File.Exists(CombinePath("13_Enemy")))
+        {
+            Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("13_Enemy")));
+            Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
+            for (var i = 0; i < enemies.Length; i++)
+            {
+                enemyList.Add(new Enemy(enemies[i].objectName, enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
+                    enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
+                 enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
+                 enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));
+            }
+
+        }
+        if (!File.Exists(CombinePath("Exp")))
+        {
+            Debug.Log("경로에 경험치 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Exp")));
+            Exp[] exp = JsonHelper.FromJson<Exp>(loadJson);
+            for (var i = 0; i < exp.Length; i++)
+            {
+                expList.Add(new Exp(exp[i].lv, exp[i].exp));
+            }
         }
     }
-    //private void Start()
-    //{ 
-    //    path = Path.Combine(Application.persistentDataPath+"/JsonFiles", "Weapon.json");
-    //    JsonLoad();
-    //}
-    //public void JsonLoad()
-    //{
-    //    // 데이터 로드
-    //    Weapon itemData;
-    //    if (!File.Exists(path))
-    //    {
-    //        Debug.Log("경로에 아이템 데이터 베이스가 존재하지 않습니다.");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log(" 있는 로드");
-    //        string loadJson = File.ReadAllText(path);
-    //        itemData = JsonUtility.FromJson<Weapon>(loadJson);
-    //        Debug.Log("아이템 데이터" + itemData.itemName);
-
-    //    }
-    //}
     public Item SelectItem(int _key)
     {
         Item _item = new Item(_key, null);
