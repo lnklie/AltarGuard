@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : AltarStatus.cs
 ==============================
 */
-public class AltarStatus : Status
+public class AltarStatus : MonoBehaviour
 {
+    [SerializeField]
     private AltarState altarState = AltarState.Idle;
     public AltarState AltarState
     {
@@ -17,45 +18,109 @@ public class AltarStatus : Status
         set { altarState = value; }
     }
 
-    private int level = 1;
-    public int Level
+    [SerializeField]
+    protected int curHp = 0;
+    public int CurHp
     {
-        get { return level; }
-        set { level = value; }
+        get { return curHp; }
+        set { curHp = value; }
     }
 
-    private float buffRange = 1f;
-    public float BuffRange
+    [SerializeField]
+    protected int maxHp = 0;
+    public int MaxHp
     {
-        get { return buffRange; }
-        set { buffRange = value; }
+        get { return maxHp; }
+        set { maxHp = value; }
     }
 
-    private int buff_Damage = 10;
-    public int Buff_Damage
+    [SerializeField]
+    protected int hpLevel = 1;
+    public int HpLevel
     {
-        get { return buff_Damage; }
-        set { buff_Damage = value; }
+        get { return hpLevel; }
+        set { hpLevel = value; }
     }
 
-    private int buff_DefensivePower = 10;
-    public int Buff_DefensivePower
+    [SerializeField]
+    private int defensivePowerLevel = 1;
+    public int DefensivePowerLevel
     {
-        get { return buff_DefensivePower; }
-        set { buff_DefensivePower = value; }
+        get { return defensivePowerLevel; }
+        set { defensivePowerLevel = value; }
     }
 
-    private int buff_Speed = 1;
-    public int Buff_Speed
+    [SerializeField]
+    private int buffRangeLevel = 1;
+    public int BuffRangeLevel
     {
-        get { return buff_Speed; }
-        set { buff_Speed = value; }
+        get { return buffRangeLevel; }
+        set { buffRangeLevel = value; }
+    }
+    [SerializeField]
+    private int buffDamageLevel = 1;
+    public int BuffDamageLevel
+    {
+        get { return buffDamageLevel; }
+        set { buffDamageLevel = value; }
     }
 
-    private int buff_Healing = 10;
-    public int Buff_Healing
+    [SerializeField]
+    private int buffDefensivePowerLevel = 1;
+    public int BuffDefensivePowerLevel
     {
-        get { return buff_Healing; }
-        set { buff_Healing = value; }
+        get { return buffDefensivePowerLevel; }
+        set { buffDefensivePowerLevel = value; }
+    }
+
+    [SerializeField]
+    private int buffSpeedLevel = 1;
+    public int BuffSpeedLevel
+    {
+        get { return buffSpeedLevel; }
+        set { buffSpeedLevel = value; }
+    }
+
+    [SerializeField]
+    private int buffHealingLevel = 1;
+    public int BuffHealingLevel
+    {
+        get { return buffHealingLevel; }
+        set { buffHealingLevel = value; }
+    }
+
+    private bool isAltarStatusChange = false;
+    public bool IsAltarStatusChange
+    {
+        get { return isAltarStatusChange; }
+        set { isAltarStatusChange = value; }
+    }
+    public void UpgradeAltar(AltarAbility _altarAbility)
+    {
+        // 제단 업그레이드
+        switch (_altarAbility)
+        {
+            case AltarAbility.Hp:
+                hpLevel++;
+                break;
+            case AltarAbility.DefensivePower:
+                defensivePowerLevel++;
+                break;
+            case AltarAbility.BuffRange:
+                buffRangeLevel++;
+                break;
+            case AltarAbility.Buff_Damage:
+                buffDamageLevel++;
+                break;
+            case AltarAbility.Buff_DefensivePower:
+                buffDefensivePowerLevel++;
+                break;
+            case AltarAbility.Buff_Speed:
+                buffSpeedLevel++;
+                break;
+            case AltarAbility.Buff_Healing:
+                buffHealingLevel++;
+                break;
+        }
     }
 }

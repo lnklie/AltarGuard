@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : Player.cs
 ==============================
@@ -14,6 +14,7 @@ public class Player : Character
     public int money = 0;
     public int stage = 0;
     public int mercenaryCount = 0;
+    public Altar altar = new Altar();
     public Character[] mercenaries = null;
     public List<Item> decoItems = new List<Item>();
     public List<Item> weaponItems = new List<Item>();

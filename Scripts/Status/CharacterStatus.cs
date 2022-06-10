@@ -70,14 +70,14 @@ public class CharacterStatus: Status
     {
         get { return magicalDamage; }
     }
-
+    [SerializeField]
     private int buffPhysicalDamage = 0;
     public int BuffPhysicalDamage
     {
         get { return buffPhysicalDamage; }
         set { buffPhysicalDamage = value; }
     }
-
+    [SerializeField]
     private int buffMagicalDamage = 0;
     public int BuffMagicalDamage
     {
@@ -85,8 +85,8 @@ public class CharacterStatus: Status
         set { buffMagicalDamage = value; }
     }
 
-    private float buffDefensivePower = 0;
-    public float BuffDefensivePower
+    private int buffDefensivePower = 0;
+    public int BuffDefensivePower
     {
         get { return buffDefensivePower; }
         set { buffDefensivePower = value; }
@@ -189,6 +189,11 @@ public class CharacterStatus: Status
     {
         if (CheckMaxExp())
             UpLevel();
+        if (!isAlterBuff)
+        {
+            RemoveBuff();
+            UpdateAbility();
+        }
 
         if (equipmentController.IsChangeItem == true)
         {
@@ -262,5 +267,12 @@ public class CharacterStatus: Status
         dropProbability = luck * 0.001f;
         itemRarity = luck * 0.001f;
         defensivePower = str * 3  + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
+    }
+    public void RemoveBuff()
+    {
+        buffPhysicalDamage = 0;
+        buffMagicalDamage = 0;
+        buffSpeed = 0;
+        buffDefensivePower = 0;
     }
 }
