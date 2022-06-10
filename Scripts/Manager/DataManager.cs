@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 using System.IO;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : DataManager.cs
 ==============================
@@ -19,6 +19,8 @@ public class DataManager : MonoBehaviour
 
     [SerializeField]
     private PlayerStatus playerStatus = null ;
+    [SerializeField]
+    private AltarStatus altarState = null ;
     private void Start()
     {
         path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
@@ -47,7 +49,6 @@ public class DataManager : MonoBehaviour
             playerStatus.CurLevel = 1;
             playerStatus.Money = 0;
             playerStatus.Stage = 1;
-            
             JsonSave();
         }
         else
@@ -110,6 +111,15 @@ public class DataManager : MonoBehaviour
                     else
                         playerStatus.EquipmentController.RemoveEquipment(i);
                 }
+
+                altarState.HpLevel = playerData.altar.hpLevel;
+                altarState.DefensivePowerLevel = playerData.altar.defensivePowerLevel;
+                altarState.BuffRangeLevel = playerData.altar.buffRangeLevel;
+                altarState.BuffDamageLevel = playerData.altar.buffDamageLevel;
+                altarState.BuffDefensivePowerLevel = playerData.altar.buffDefensivePowerLevel;
+                altarState.BuffSpeedLevel = playerData.altar.buffSpeedLevel;
+                altarState.BuffHealingLevel = playerData.altar.buffHealingLevel;
+
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
                     playerStatus.Mercenarys[j].ObjectName = playerData.mercenaries[j].objectName;
@@ -169,6 +179,15 @@ public class DataManager : MonoBehaviour
                 playerData.equipedItems[i] = playerStatus.EquipmentController.EquipItems[i];
         
         }
+        Debug.Log("1 " + altarState.HpLevel + " "+playerData.altar.hpLevel);
+        Debug.Log("2" + altarState.DefensivePowerLevel);
+        playerData.altar.hpLevel = altarState.HpLevel;
+        playerData.altar.defensivePowerLevel = altarState.DefensivePowerLevel;
+        playerData.altar.buffRangeLevel = altarState.BuffRangeLevel;
+        playerData.altar.buffDamageLevel = altarState.BuffDamageLevel;
+        playerData.altar.buffDefensivePowerLevel = altarState.BuffDefensivePowerLevel;
+        playerData.altar.buffSpeedLevel = altarState.BuffSpeedLevel;
+        playerData.altar.buffHealingLevel = altarState.BuffHealingLevel;
         playerData.mercenaries = new Character[playerStatus.Mercenarys.Length];
         for (int i = 0; i < playerStatus.Mercenarys.Length; i++)
         {

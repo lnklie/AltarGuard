@@ -92,13 +92,12 @@ public class StatusPanelController : MonoBehaviour
     public void ActiveStatus()
     {
         // UI 활성화 
-        UIImages.SetActive(true);
-
+        this.gameObject.SetActive(true);
     }
 
     public void DeactiveStatus()
     {
         // UI 비활성화
-        UIImages.SetActive(false);
+        this.gameObject.SetActive(false);
     }
 }

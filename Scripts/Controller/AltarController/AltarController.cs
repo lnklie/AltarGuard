@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : AltarController.cs
 ==============================
@@ -12,9 +12,10 @@ public class AltarController : BaseController
 {
     private AltarStatus altar = null;
     private TextMesh[] txtMesh = null;
+    [SerializeField]
     private SpriteRenderer[] spriteRenderers = null;
+    [SerializeField]
     private List<CharacterStatus> characters = new List<CharacterStatus>();
-
     void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
@@ -23,16 +24,28 @@ public class AltarController : BaseController
     }
     private void Start()
     {
-        FindAlly();
+        UpdateHp();
         UpdateBuffRange();
     }
     void Update()
     {
+        FindInBuffRangeAlly();
         ChangeState();
         State();
-        BuffCharacters();
+        if (altar.IsAltarStatusChange)
+        {
+            BuffUpdate();
+            altar.IsAltarStatusChange = false;
+        }
     }
-
+    public void UpdateHp()
+    {
+        if (altar != null)
+        {
+            altar.MaxHp = altar.HpLevel * 100;
+            altar.CurHp = altar.MaxHp;
+        }
+    }
     public void ChangeState()
     {
         // 조건에 맞게 상태변경
@@ -107,61 +120,20 @@ public class AltarController : BaseController
     {
         isStateChange = false;
     }
-    public void UpgradeAltar(AltarAbility _altarAbility)
+
+    public void BuffUpdate()
     {
-        // 제단 업그레이드
-        switch(_altarAbility)
-        {
-            case AltarAbility.Hp:
-                altar.MaxHp += 10;
-                break;
-            case AltarAbility.DefensivePower:
-                altar.DefensivePower += 5;
-                break;
-            case AltarAbility.Buff_Damage:
-                altar.Buff_Damage++;
-                break;
-            case AltarAbility.Buff_DefensivePower:
-                altar.Buff_DefensivePower++;
-                break;
-            case AltarAbility.Buff_Speed:
-                altar.Buff_Speed++;
-                break;
-            case AltarAbility.Buff_Healing:
-                altar.Buff_Healing++;
-                break;
-        }
-    }
-    public void BuffCharacters()
-    {
-        // 캐릭터한테 버프 부여
         for (int i = 0; i < characters.Count; i++)
         {
-            if (GetDistance(this.transform.position, characters[i].transform.position) <= altar.BuffRange)
-            {
-                if (characters[i].IsAlterBuff == false)
-                {
-                    characters[i].IsAlterBuff = true;
-                    characters[i].BuffPhysicalDamage += altar.Buff_Damage;
-                    characters[i].BuffMagicalDamage += altar.Buff_Damage;
-                    characters[i].BuffDefensivePower += altar.Buff_DefensivePower;
-                    characters[i].BuffSpeed += 1 * altar.Buff_Speed;
-                    Debug.Log(characters[i].name + " 이 캐릭터 석상 버프 받는 중");
-                }
-            }
-            else
-            {
-                if (characters[i].IsAlterBuff == true)
-                {
-                    characters[i].IsAlterBuff = false;
-                    characters[i].BuffPhysicalDamage -= altar.Buff_Damage;
-                    characters[i].BuffMagicalDamage -= altar.Buff_Damage;
-                    characters[i].BuffDefensivePower -= altar.Buff_DefensivePower;
-                    characters[i].BuffSpeed -= altar.Buff_Speed;
-                    Debug.Log(characters[i].name + " 이 캐릭터 석상 버프 해제 ");
-                }
-            }
+            characters[i].IsAlterBuff = true;
+            characters[i].BuffPhysicalDamage = altar.BuffDamageLevel * 10;
+            characters[i].BuffMagicalDamage = altar.BuffDamageLevel * 10;
+            characters[i].BuffDefensivePower = altar.BuffDefensivePowerLevel * 10;
+            characters[i].BuffSpeed = altar.BuffSpeedLevel * 0.1f;
+            characters[i].UpdateAbility();
+            UpdateBuffRange();
         }
+
     }
     private float GetDistance(Vector2 _start, Vector2 _end)
     {
@@ -181,22 +153,37 @@ public class AltarController : BaseController
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
-        spriteRenderers[2].transform.localScale = new Vector2(altar.BuffRange / 10, altar.BuffRange / 10);
+        spriteRenderers[2].transform.localScale = new Vector2(altar.BuffRangeLevel * 1f / 10, altar.BuffRangeLevel * 1f / 10);
     }
-    public void FindAlly()
+    public void FindInBuffRangeAlly()
     {
         // 동맹 찾기
-        var hits = Physics2D.CircleCastAll(this.transform.position, 100f, Vector2.zero, 3f, LayerMask.GetMask("Ally"));
-        ExceptThisObjectLayer(hits); 
+        var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRangeLevel * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
+        if(hits != null)
+            AddBuffCharacterList(hits);
+        RemoveBuffCharacterList(hits);
     }
-    public void ExceptThisObjectLayer(RaycastHit2D[] _raycastHit2Ds)
+    public void AddBuffCharacterList(RaycastHit2D[] _raycastHit2Ds)
     {
         // 닿은 캐릭터들을 리스트에 넣는 것
         for (int i = 0; i < _raycastHit2Ds.Length; i++)
         {
-            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject)
+            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().IsAlterBuff)
             {
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>());
+                Debug.Log("버프안에 들어옴 " + _raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().ObjectName);
+                BuffUpdate();
+            }
+        }
+    }
+    public void RemoveBuffCharacterList(RaycastHit2D[] _raycastHit2Ds)
+    {
+        for (int i = 0; i < characters.Count; i++)
+        {
+            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRangeLevel * 1f)
+            {
+                characters[i].IsAlterBuff = false;
+                characters.Remove(characters[i]);
             }
         }
     }

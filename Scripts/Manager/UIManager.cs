@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 /*
 ==============================
- * 최종수정일 : 2022-06-08
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : UIManager.cs
 ==============================
@@ -31,6 +31,9 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private EnemyStatus bossEnemy = null;
 
+    [Header("Altar")]
+    [SerializeField]
+    private AltarStatus altar = null;
 
     private CharacterStatus[] mercenary = null;
     [SerializeField]
@@ -42,6 +45,8 @@ public class UIManager : SingletonManager<UIManager>
     private ProfilePanelController profilePanelController = null;
     [SerializeField]
     private StatusPanelController statusPanelController = null;
+    [SerializeField]
+    private AltarInfoPanelController altarInfoPanelController = null;
 
     private void Awake()
     {
@@ -154,6 +159,14 @@ public class UIManager : SingletonManager<UIManager>
     {
         statusPanelController.UpdateStatusText();
     }
+    public void UpdateAltarInfo()
+    {
+        altarInfoPanelController.UpdateAltarInfo();
+    }
+    public void UpgradeAltar(int _index)
+    {
+        altarInfoPanelController.UpgradeAltarStatus(_index);
+    }
     public void StatusUp(int _index)
     {
         // 스텟 업
@@ -173,6 +186,11 @@ public class UIManager : SingletonManager<UIManager>
             statusPanelController.SetPlayer(player);
             statusPanelController.ActiveStatus();
         }
+        else if(_index == 2)
+        {
+            altarInfoPanelController.SetAltar(altar);
+            altarInfoPanelController.ActiveAltarInfo();
+        }
     }
 
     public void DeactiveUIBtn(int _index)
@@ -185,6 +203,10 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 1)
         {
             statusPanelController.DeactiveStatus();
+        }
+        else if (_index == 2)
+        {
+            altarInfoPanelController.DeactiveAltarInfo();
         }
     }
 }

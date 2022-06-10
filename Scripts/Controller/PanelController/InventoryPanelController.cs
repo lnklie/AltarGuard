@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * 최종수정일 : 2022-06-08
+ * 최종수정일 : 2022-06-09
  * 작성자 : Inklie
  * 파일명 : InventoryPanelController.cs
 ==============================
@@ -70,7 +70,7 @@ public class InventoryPanelController : MonoBehaviour
     public void SetPlayer(PlayerStatus _player)
     {
         selectCharacterEqipment = _player.GetComponent<EquipmentController>();
-        selectCharStatus = _player.GetComponent<CharacterStatus>();
+        selectCharStatus = _player;
     }
     public void InventoryReset()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-10
  * 작성자 : Inklie
  * 파일명 : PlayerStatus.cs
 ==============================
@@ -18,7 +18,14 @@ public class PlayerStatus : CharacterStatus
         set { mercenarys = value; }
     }
 
-    private int stage = 0;
+    [SerializeField]
+    private AltarStatus altarStatus = null;
+    public AltarStatus AltarStatus
+    {
+        get { return altarStatus; }
+        set { altarStatus = value; }
+    }
+    private int stage = 1;
     public int Stage
     {
         get { return stage; }

@@ -10,6 +10,7 @@ using UnityEngine;
 */
 public class EnemyStatus : Status
 {
+    [SerializeField]
     private int defeatExp = 0;
     public int DefeatExp
     {
