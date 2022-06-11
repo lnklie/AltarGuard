@@ -51,7 +51,7 @@ public class SlimeKingAIController : BossEnemyAIController
                 Debug.Log("점프 어택");
                 ani.SetFloat("AttackPattern", 0);
                 maxPatternDelay = 7f;
-                TargetDash(dir, 2f);
+                TargetDash(enemy.Dir, 2f);
 
                 if (!isPatterning())
                 {
@@ -77,9 +77,9 @@ public class SlimeKingAIController : BossEnemyAIController
                 Debug.Log("대시 어택");
                 ani.SetFloat("AttackPattern", 0.5f);
                 SetMaxPatternDelay(3f);
-                TargetDash(dir, 5f);
-                patternHit = Physics2D.BoxCastAll(this.transform.position, new Vector2(3f, 3f), 90f, dir , 2f, LayerMask.GetMask("Ally", "Altar"));
-                Debug.DrawRay(this.transform.position, dir * 3f, Color.red);
+                TargetDash(enemy.Dir, 5f);
+                patternHit = Physics2D.BoxCastAll(this.transform.position, new Vector2(3f, 3f), 90f, enemy.Dir , 2f, LayerMask.GetMask("Ally", "Altar"));
+                Debug.DrawRay(this.transform.position, enemy.Dir * 3f, Color.red);
                 if (!isPatterning())
                 {
                     SetDelayTime(0f);

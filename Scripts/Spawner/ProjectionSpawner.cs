@@ -29,6 +29,17 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
             arrow.SetActive(false);
         }
     }
+    public void ShotArrow(Status _gameObject,int _damage)
+    {
+        GameObject shotArrow = Arrows.Dequeue();
+        shotArrow.transform.position = _gameObject.gameObject.transform.position;
+        Arrow arrow = shotArrow.GetComponent<Arrow>();
+        arrow.Archer = _gameObject.gameObject;
+        arrow.Dir = _gameObject.Dir;
+        arrow.Spd = _gameObject.ArrowSpd;
+        arrow.Dmg = _damage;
+        arrow.gameObject.SetActive(true);
+    }
     public int ArrowCount()
     {
         // 화살 수 반환
@@ -38,6 +49,8 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
     {
         // 화살 돌아오기
         _arrow.SetActive(false);
+        _arrow.GetComponent<Arrow>().InitArrow();
         arrows.Enqueue(_arrow);
+        Debug.Log("화살 돌아오기 " + ArrowCount());
     }
 }

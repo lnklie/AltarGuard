@@ -17,11 +17,11 @@ public class AltarInfoPanelController : MonoBehaviour
         int[] altarStatusLevel = { 
             altar.HpLevel, altar.DefensivePowerLevel,altar.BuffRangeLevel,
             altar.BuffDamageLevel, altar.BuffDefensivePowerLevel,
-            altar.BuffSpeedLevel, altar.BuffHealingLevel };
+            altar.BuffSpeedLevel, altar.BuffHpRegenLevel };
         float[] altarStatusValue = {
             altar.HpLevel * 100, altar.DefensivePowerLevel * 10,altar.BuffRangeLevel * 1,
             altar.BuffDamageLevel * 10, altar.BuffDefensivePowerLevel * 10,
-            altar.BuffSpeedLevel * 0.01f, altar.BuffHealingLevel * 10};
+            altar.BuffSpeedLevel * 0.01f, altar.BuffHpRegenLevel * 10};
         for (int i =0; i < altarInfoSlots.Length; i++)
         {
             if(altarInfoSlots[i] != null)

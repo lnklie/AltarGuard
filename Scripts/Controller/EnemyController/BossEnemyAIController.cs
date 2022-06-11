@@ -55,7 +55,7 @@ public class BossEnemyAIController : EnemyAIController
     public override void ChangeState()
     {
         distance = enemy.Target.transform.position - this.transform.position;
-        dir = distance.normalized;
+        enemy.Dir = distance.normalized;
         if (enemy.CurHp < 0f)
         {
             bossState = BossState.Died;
@@ -92,7 +92,7 @@ public class BossEnemyAIController : EnemyAIController
     public override void Chase()
     {
         ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = enemy.Speed * dir;
+        rig.velocity = enemy.Speed * enemy.Dir;
     }
 
     public virtual void Wait()
@@ -128,7 +128,7 @@ public class BossEnemyAIController : EnemyAIController
     public override void AnimationDirection()
     {
         // 애니메이션 방향
-        if (dir.x > 0) this.transform.localScale = new Vector3(-6, 6, 1);
-        else if (dir.x < 0) transform.transform.localScale = new Vector3(6, 6, 1);
+        if (enemy.Dir.x > 0) this.transform.localScale = new Vector3(-6, 6, 1);
+        else if (enemy.Dir.x < 0) transform.transform.localScale = new Vector3(6, 6, 1);
     } 
 }

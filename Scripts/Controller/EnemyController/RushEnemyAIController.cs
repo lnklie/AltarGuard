@@ -39,7 +39,7 @@ public class RushEnemyAIController : EnemyAIController
     public override void ChangeState()
     {
         distance = enemy.Target.transform.position - enemy.transform.position;
-        dir = distance.normalized;
+        enemy.Dir = distance.normalized;
         if (enemy.CurHp < 0f)
         {
             enemy.EnemyState = EnemyState.Died;
@@ -83,8 +83,8 @@ public class RushEnemyAIController : EnemyAIController
 
     public override void Perception()
     {
-        enemyHit = Physics2D.RaycastAll(this.transform.position, dir, 0.5f, LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(this.transform.position, dir, Color.blue);
+        enemyHit = Physics2D.RaycastAll(this.transform.position, enemy.Dir, 0.5f, LayerMask.GetMask("Enemy"));
+        Debug.DrawRay(this.transform.position, enemy.Dir, Color.blue);
 
         base.Perception();
     }

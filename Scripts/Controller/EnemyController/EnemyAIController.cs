@@ -39,7 +39,7 @@ public class EnemyAIController : AIController
     {
         isStateChange = false;
         ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = enemy.Speed * dir;
+        rig.velocity = enemy.Speed * enemy.Dir;
     }
 
     public override void Damaged()
@@ -95,7 +95,7 @@ public class EnemyAIController : AIController
         // 레이를 이용한 인식
         AnimationDirection();
         sight = Physics2D.CircleCast(this.transform.position, enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        atkRange = Physics2D.CircleCast(this.transform.position, enemy.AtkRange, dir, 0, LayerMask.GetMask("Ally"));
+        atkRange = Physics2D.CircleCast(this.transform.position, enemy.AtkRange, enemy.Dir, 0, LayerMask.GetMask("Ally"));
         allyRay = Physics2D.CircleCastAll(this.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
         GameObject altar = null;
         for(int i =0; i < allyRay.Length; i++)
@@ -116,7 +116,7 @@ public class EnemyAIController : AIController
     }
     public void UpdateEnemyHp()
     {
-        images[1].fillAmount = enemy.CurHp / enemy.MaxHp;
+        images[1].fillAmount = enemy.CurHp / (float)enemy.MaxHp;
     }
     public override bool IsDied()
     {
@@ -138,7 +138,7 @@ public class EnemyAIController : AIController
     public virtual void AnimationDirection()
     {
         // 애니메이션 방향
-        if (dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-        else if (dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
+        if (enemy.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+        else if (enemy.Dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
     }
 }

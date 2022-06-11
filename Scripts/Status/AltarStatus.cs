@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 /*
 ==============================
  * 최종수정일 : 2022-06-10
@@ -8,7 +9,7 @@ using UnityEngine;
  * 파일명 : AltarStatus.cs
 ==============================
 */
-public class AltarStatus : MonoBehaviour
+public class AltarStatus : Status
 {
     [SerializeField]
     private AltarState altarState = AltarState.Idle;
@@ -16,22 +17,6 @@ public class AltarStatus : MonoBehaviour
     {
         get { return altarState; }
         set { altarState = value; }
-    }
-
-    [SerializeField]
-    protected int curHp = 0;
-    public int CurHp
-    {
-        get { return curHp; }
-        set { curHp = value; }
-    }
-
-    [SerializeField]
-    protected int maxHp = 0;
-    public int MaxHp
-    {
-        get { return maxHp; }
-        set { maxHp = value; }
     }
 
     [SerializeField]
@@ -82,11 +67,11 @@ public class AltarStatus : MonoBehaviour
     }
 
     [SerializeField]
-    private int buffHealingLevel = 1;
-    public int BuffHealingLevel
+    private int buffHpRegenLevel = 1;
+    public int BuffHpRegenLevel
     {
-        get { return buffHealingLevel; }
-        set { buffHealingLevel = value; }
+        get { return buffHpRegenLevel; }
+        set { buffHpRegenLevel = value; }
     }
 
     private bool isAltarStatusChange = false;
@@ -95,6 +80,12 @@ public class AltarStatus : MonoBehaviour
         get { return isAltarStatusChange; }
         set { isAltarStatusChange = value; }
     }
+
+
+
+
+
+
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
         // 제단 업그레이드
@@ -119,7 +110,7 @@ public class AltarStatus : MonoBehaviour
                 buffSpeedLevel++;
                 break;
             case AltarAbility.Buff_Healing:
-                buffHealingLevel++;
+                buffHpRegenLevel++;
                 break;
         }
     }

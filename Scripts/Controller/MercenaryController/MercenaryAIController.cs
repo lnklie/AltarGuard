@@ -9,7 +9,7 @@ using UnityEngine;
 */
 public class MercenaryAIController : AIController
 {
-    protected CharacterStatus status = null;
+    protected CharacterStatus character = null;
     protected BoxCollider2D col = null;
     protected bool isAtk = false;
 
@@ -39,7 +39,7 @@ public class MercenaryAIController : AIController
     public override void Awake()
     {
         base.Awake();
-        status = this.GetComponent<CharacterStatus>();
+        character = this.GetComponent<CharacterStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
         col = this.GetComponent<BoxCollider2D>();
     }
@@ -68,9 +68,9 @@ public class MercenaryAIController : AIController
     public override void ChangeState()  
     {
         if (sight)
-            distance = status.Target.transform.position - this.transform.position;
-        dir = distance.normalized;
-        if (status.CurHp < 0f)
+            distance = character.Target.transform.position - this.transform.position;
+        character.Dir = distance.normalized;
+        if (character.CurHp < 0f)
         {
             characterState = CharacterState.Died;
         }
@@ -82,7 +82,7 @@ public class MercenaryAIController : AIController
             }
             else
             {
-                if (status.Target == null)
+                if (character.Target == null)
                 {
                     characterState = CharacterState.Idle;
                 }
@@ -107,7 +107,7 @@ public class MercenaryAIController : AIController
     public override void Chase()
     {
         ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = status.Speed * dir;
+        rig.velocity = character.Speed * character.Dir;
     }
 
     public override IEnumerator Died()
@@ -123,7 +123,7 @@ public class MercenaryAIController : AIController
     {
         rig.isKinematic = false;
         col.enabled = true;
-        status.CurHp = status.MaxHp;
+        character.CurHp = character.MaxHp;
         characterState = CharacterState.Idle;
     }
     public override void Idle()
@@ -142,14 +142,14 @@ public class MercenaryAIController : AIController
     public override void Perception()
     {
         AnimationDirection();
-        sight = Physics2D.CircleCast(this.transform.position, status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        allyRay = Physics2D.CircleCastAll(this.transform.position, status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        atkRange = Physics2D.CircleCast(this.transform.position, status.AtkRange, dir, 0, LayerMask.GetMask("Enemy"));
+        sight = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        allyRay = Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        atkRange = Physics2D.CircleCast(this.transform.position, character.AtkRange, character.Dir, 0, LayerMask.GetMask("Enemy"));
         if (!sight)
-            status.Target = null;
+            character.Target = null;
         else
         {
-            status.Target = sight.collider.gameObject;
+            character.Target = sight.collider.gameObject;
         }
     }
     public BossState CheckBossState()
@@ -159,9 +159,9 @@ public class MercenaryAIController : AIController
     public int AttackTypeDamage()
     {
         if (attackType < 1f)
-            return status.PhysicalDamage;
+            return character.PhysicalDamage;
         else
-            return status.MagicalDamage;
+            return character.MagicalDamage;
     }
     public override void Attack()
     {
@@ -173,9 +173,9 @@ public class MercenaryAIController : AIController
 
     public override bool IsDelay()
     {
-        if (delayTime >= status.AtkSpeed)
+        if (delayTime >= character.AtkSpeed)
         {
-            delayTime = status.AtkSpeed;
+            delayTime = character.AtkSpeed;
             return false;
         }
         else
@@ -186,7 +186,7 @@ public class MercenaryAIController : AIController
 
     public override bool IsDied()
     {
-        if (status.CurHp <= 0)
+        if (character.CurHp <= 0)
             return true;
         else
             return false;
@@ -205,8 +205,8 @@ public class MercenaryAIController : AIController
     }
     public void AnimationDirection()
     {
-        if (dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-        else if (dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
+        if (character.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+        else if (character.Dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
     }
     public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
     {

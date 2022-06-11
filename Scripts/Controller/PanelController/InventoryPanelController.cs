@@ -37,10 +37,15 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField]
     private Text equipmentNameText = null;
 
+    [Header("MoenyText")]
+    [SerializeField]
+    private Text moenyText;
+
     [Header("Default")]
     [SerializeField]
     private Sprite UIMask;
 
+    private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
     [SerializeField]
     private int selectNum = 0;
@@ -69,8 +74,9 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetPlayer(PlayerStatus _player)
     {
+        playerStatus = _player;
         selectCharacterEqipment = _player.GetComponent<EquipmentController>();
-        selectCharStatus = _player;
+        selectCharStatus = playerStatus;
     }
     public void InventoryReset()
     {
@@ -80,13 +86,16 @@ public class InventoryPanelController : MonoBehaviour
             inventorySlots[i].SlotReset();
         }
     }
-
+    public void MoneyUpdate()
+    {
+        moenyText.text = playerStatus.Money.ToString("N0"); 
+    }
     public void InventorySlotChange(int _index)
     {
         // 인벤토리 슬롯 바꾸기 
         InventoryReset();
         SetActiveItemInfo(false);
-
+        MoneyUpdate();
         if (_index == 0)
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)

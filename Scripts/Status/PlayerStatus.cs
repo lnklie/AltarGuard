@@ -31,4 +31,10 @@ public class PlayerStatus : CharacterStatus
         get { return stage; }
         set { stage = value; }
     }
+    private int money = 100000;
+    public int Money
+    {
+        get { return money; }
+        set { money = value; }
+    }
 }
