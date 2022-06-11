@@ -15,14 +15,7 @@ public class MercenaryArcherAIController : MercenaryAIController
         // 활쏘기
         if (ProjectionSpawner.Instance.Arrows.Count > 0)
         {
-            GameObject shotArrow = ProjectionSpawner.Instance.Arrows.Dequeue();
-            shotArrow.transform.position = this.transform.position;
-            Arrow arrow = shotArrow.GetComponent<Arrow>();
-            arrow.Archer = this.gameObject;
-            arrow.Dir = dir;
-            arrow.Spd = status.ArrowSpd;
-            arrow.Dmg = AttackTypeDamage();
-            arrow.gameObject.SetActive(true);
+            ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
         }
         else
             Debug.Log("화살 없음");

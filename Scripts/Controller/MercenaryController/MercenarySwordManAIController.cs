@@ -33,15 +33,15 @@ public class MercenarySwordManAIController : MercenaryAIController
             if (IsLastHit(enemy))
             {
                 Debug.Log("막타 경험치 확득");
-                status.CurExp += enemy.DefeatExp;
+                character.CurExp += enemy.DefeatExp;
             }
         }
     }
 
     public RaycastHit2D[] AttackRange()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, dir, 1f, LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(this.transform.position, dir, Color.red, 1f);
+        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, character.Dir, 1f, LayerMask.GetMask("Enemy"));
+        Debug.DrawRay(this.transform.position, character.Dir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)

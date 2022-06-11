@@ -13,28 +13,28 @@ public class Arrow : MonoBehaviour
     private Rigidbody2D rig = null;
     private float maxDurationTime = 5f;
     private float durationTime = 0f;
-
+    [SerializeField]
     private Vector2 dir = Vector2.zero;
     public Vector2 Dir
     {
         get { return dir; }
         set { dir = value; }
     }
-
+    [SerializeField]
     private float spd = 0;
     public float Spd
     {
         get { return spd; }
         set { spd = value; }
     }
-
+    [SerializeField]
     private int dmg =0;
     public int Dmg
     {
         get { return dmg; }
         set { dmg = value; }
     }
-
+    [SerializeField]
     private GameObject archer = null;
     public GameObject Archer
     {
@@ -49,6 +49,13 @@ public class Arrow : MonoBehaviour
     void Update()
     {
         Shot();
+    }
+    public void InitArrow()
+    {
+        dir = Vector2.zero;
+        spd = 0f;
+        dmg = 0;
+        archer = null;
     }
     private void Shot()
     {

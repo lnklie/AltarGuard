@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 /*
 ==============================
  * 최종수정일 : 2022-06-10
@@ -16,11 +17,13 @@ public class AltarController : BaseController
     private SpriteRenderer[] spriteRenderers = null;
     [SerializeField]
     private List<CharacterStatus> characters = new List<CharacterStatus>();
+    private Image[] images = null;
     void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
         txtMesh = this.GetComponentsInChildren<TextMesh>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
+        images = this.GetComponentsInChildren<Image>();
     }
     private void Start()
     {
@@ -58,7 +61,7 @@ public class AltarController : BaseController
             if (isDamaged)
             {
                 SetState(AltarState.Damaged);
-                txtMesh[1].text = altar.CurHp.ToString();
+                UpdateEnemyHp();
             }
             else
             {
@@ -66,6 +69,10 @@ public class AltarController : BaseController
             }
         }
 
+    }
+    public void UpdateEnemyHp()
+    {
+        images[1].fillAmount = altar.CurHp / (float)altar.MaxHp;
     }
     public bool IsDestroyed()
     {
@@ -130,6 +137,7 @@ public class AltarController : BaseController
             characters[i].BuffMagicalDamage = altar.BuffDamageLevel * 10;
             characters[i].BuffDefensivePower = altar.BuffDefensivePowerLevel * 10;
             characters[i].BuffSpeed = altar.BuffSpeedLevel * 0.1f;
+            characters[i].BuffHpRegenValue = altar.BuffHpRegenLevel * 5;
             characters[i].UpdateAbility();
             UpdateBuffRange();
         }

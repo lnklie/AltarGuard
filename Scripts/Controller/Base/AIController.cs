@@ -18,7 +18,6 @@ public abstract class AIController : BaseController
     protected Rigidbody2D rig = null;
     protected TextMesh txtMesh = null;
 
-    protected Vector2 dir = new Vector2(0, 0);
     protected Vector2 distance = new Vector2(0, 0);
     protected RaycastHit2D atkRange = default;
     protected RaycastHit2D sight = default;

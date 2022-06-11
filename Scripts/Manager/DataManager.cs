@@ -118,7 +118,7 @@ public class DataManager : MonoBehaviour
                 altarState.BuffDamageLevel = playerData.altar.buffDamageLevel;
                 altarState.BuffDefensivePowerLevel = playerData.altar.buffDefensivePowerLevel;
                 altarState.BuffSpeedLevel = playerData.altar.buffSpeedLevel;
-                altarState.BuffHealingLevel = playerData.altar.buffHealingLevel;
+                altarState.BuffHpRegenLevel = playerData.altar.buffHealingLevel;
 
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
@@ -187,7 +187,7 @@ public class DataManager : MonoBehaviour
         playerData.altar.buffDamageLevel = altarState.BuffDamageLevel;
         playerData.altar.buffDefensivePowerLevel = altarState.BuffDefensivePowerLevel;
         playerData.altar.buffSpeedLevel = altarState.BuffSpeedLevel;
-        playerData.altar.buffHealingLevel = altarState.BuffHealingLevel;
+        playerData.altar.buffHealingLevel = altarState.BuffHpRegenLevel;
         playerData.mercenaries = new Character[playerStatus.Mercenarys.Length];
         for (int i = 0; i < playerStatus.Mercenarys.Length; i++)
         {

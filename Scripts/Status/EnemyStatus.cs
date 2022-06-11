@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-11
  * 작성자 : Inklie
  * 파일명 : EnemyStatus.cs
 ==============================
@@ -72,6 +72,7 @@ public class EnemyStatus : Status
         set { itemDropProb = value; }
     }
 
+    [SerializeField]
     private int damage = 0;
     public int Damage
     {
@@ -79,10 +80,5 @@ public class EnemyStatus : Status
         set { damage = value; }
     }
 
-    protected float arrowSpd = 1f;
-    public float ArrowSpd
-    {
-        get { return arrowSpd; }
-        set { arrowSpd = value; }
-    }
+
 }

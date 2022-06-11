@@ -83,9 +83,9 @@ public class ProfilePanelController : MonoBehaviour
             _player.ObjectName
         };
         float[] infoImage ={
-            _player.CurHp / _player.MaxHp ,
-            _player.CurMp / _player.MaxMp,
-            (float)_player.CurExp / _player.MaxExp
+            _player.CurHp / (float)_player.MaxHp ,
+            _player.CurMp / (float)_player.MaxMp,
+            _player.CurExp / (float)_player.MaxExp
         };
         for (int i = 0; i < 5; i++)
         {
@@ -106,9 +106,9 @@ public class ProfilePanelController : MonoBehaviour
             _mercenary[i].CurExp.ToString() + " / " + _mercenary[i].MaxExp.ToString(),
             "Lv. " + _mercenary[i].CurLevel.ToString()};
             float[] infoImage = {
-            _mercenary[i].CurHp / _mercenary[i].MaxHp ,
-            _mercenary[i].CurMp / _mercenary[i].MaxMp,
-            (float)_mercenary[i].CurExp / _mercenary[i].MaxExp
+            _mercenary[i].CurHp / (float)_mercenary[i].MaxHp ,
+            _mercenary[i].CurMp / (float)_mercenary[i].MaxMp,
+            _mercenary[i].CurExp / (float)_mercenary[i].MaxExp
         };
 
             for (int j = 0; j < 4; j++)

@@ -17,12 +17,7 @@ public class CharacterStatus: Status
         set { equipmentController = value; }
     }
 
-    protected int money = 0;
-    public int Money
-    { 
-        get { return money; } 
-        set { money = value; }
-    }
+
      
     protected int curMp = 100;
     public int CurMp
@@ -99,6 +94,13 @@ public class CharacterStatus: Status
         set { buffSpeed = value; }
     }
 
+    private int buffHpRegenValue = 0;
+    public int BuffHpRegenValue
+    {
+        get { return buffHpRegenValue; }
+        set { buffHpRegenValue = value; }
+    }
+
     private float dropProbability = 0;
     public float DropProbability
     {
@@ -153,13 +155,6 @@ public class CharacterStatus: Status
         set { isAlterBuff = value; }
     }
 
-    protected float arrowSpd = 1f;
-    public float ArrowSpd
-    {
-        get { return arrowSpd; }
-        set { arrowSpd = value; }
-    }
-
     private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     public bool[] CheckEquipItems
     {
@@ -173,7 +168,14 @@ public class CharacterStatus: Status
         get { return itemEquipedCharacter; }
         set { itemEquipedCharacter = value; }
     }
+    private int hpRegenValue = 0;
+    public int HPRegenValue
+    {
+        get { return hpRegenValue; }
+        set { hpRegenValue = value; }
+    }
 
+    private bool isHPRegen = false;   
     private void Awake()
     {
         equipmentController = this.GetComponent<EquipmentController>();
@@ -194,7 +196,8 @@ public class CharacterStatus: Status
             RemoveBuff();
             UpdateAbility();
         }
-
+        if(!isHPRegen)
+            StartCoroutine(HpRegenarate());
         if (equipmentController.IsChangeItem == true)
         {
             UpdateAbility();
@@ -254,7 +257,25 @@ public class CharacterStatus: Status
             Debug.Log("스테이터스 포인트가 없습니다.");
         UpdateAbility();
     }
+    private IEnumerator HpRegenarate()
+    {
+        isHPRegen = true;
+        while(true)
+        {
+            yield return new WaitForSeconds(1f);
+            if (curHp + hpRegenValue >= maxHp)
+            {
 
+                curHp = maxHp;
+                yield return null;
+            }
+            else
+            {
+                curHp += hpRegenValue;
+                Debug.Log("체력회복중 현재 체력은 "+ curHp + " 체력 리젠률은 " + hpRegenValue);
+            }
+        }
+    }
     public void UpdateAbility()
     {
         // 능력 업데이트
@@ -266,7 +287,8 @@ public class CharacterStatus: Status
         atkSpeed = 2 - dex * 0.1f;
         dropProbability = luck * 0.001f;
         itemRarity = luck * 0.001f;
-        defensivePower = str * 3  + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
+        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
+        hpRegenValue = str * 1 + buffHpRegenValue;
     }
     public void RemoveBuff()
     {
@@ -274,5 +296,6 @@ public class CharacterStatus: Status
         buffMagicalDamage = 0;
         buffSpeed = 0;
         buffDefensivePower = 0;
+        buffHpRegenValue = 0;
     }
 }
