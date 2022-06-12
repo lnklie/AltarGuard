@@ -47,8 +47,8 @@ public class StageManager : MonoBehaviour
                 enemySpawner.EnemySpawn(EnemyType.Slime,enemySpawner.EnemyEastPos,15);
                 enemySpawner.EnemySpawn(EnemyType.GoblinArcher, enemySpawner.EnemyEastPos,10);
                 enemySpawner.EnemySpawn(EnemyType.Slime, enemySpawner.EnemyWestPos, 15);
-                enemySpawner.EnemySpawn(EnemyType.GoblinArcher, enemySpawner.EnemyWestPos,10);
-                enemySpawner.EnemySpawn(EnemyType.Slime, enemySpawner.EnemySouthPos,15);
+                enemySpawner.EnemySpawn(EnemyType.GoblinArcher, enemySpawner.EnemyWestPos, 10);
+                enemySpawner.EnemySpawn(EnemyType.Slime, enemySpawner.EnemySouthPos, 15);
                 enemySpawner.EnemySpawn(EnemyType.GoblinArcher, enemySpawner.EnemySouthPos, 10);
                 enemySpawner.EnemySpawn(EnemyType.Slime, enemySpawner.EnemyNorthPos, 15);
                 enemySpawner.EnemySpawn(EnemyType.GoblinArcher, enemySpawner.EnemyNorthPos, 10);

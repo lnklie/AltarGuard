@@ -16,6 +16,7 @@ public class GoblinArcherAIController : RushEnemyAIController
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(enemy,enemy.Damage);
+            Debug.Log("현재 화살 수는 " + ProjectionSpawner.Instance.ArrowCount());
         }
         else
             Debug.Log("화살 없음");
@@ -29,6 +30,11 @@ public class GoblinArcherAIController : RushEnemyAIController
         if (!IsDelay())
         {
             delayTime = 0f;
+            if (ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
+            {
+                Debug.Log("쐈다");
+                ShotArrow();
+            }
         }
     }
 }

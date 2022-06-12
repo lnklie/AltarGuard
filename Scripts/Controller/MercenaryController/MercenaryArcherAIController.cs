@@ -13,9 +13,10 @@ public class MercenaryArcherAIController : MercenaryAIController
     private void ShotArrow()
     {
         // 활쏘기
-        if (ProjectionSpawner.Instance.Arrows.Count > 0)
+        if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
+
         }
         else
             Debug.Log("화살 없음");
