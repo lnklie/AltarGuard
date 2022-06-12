@@ -48,10 +48,12 @@ public class Arrow : MonoBehaviour
     }
     void Update()
     {
-        Shot();
+        if(archer!= null)
+            Shot();
     }
     public void InitArrow()
     {
+        this.gameObject.SetActive(false);
         dir = Vector2.zero;
         spd = 0f;
         dmg = 0;
@@ -89,11 +91,14 @@ public class Arrow : MonoBehaviour
                     enemy.IsDamaged = true;
                 }
                 durationTime = 0f;
-                ProjectionSpawner.Instance.ReturnArrow(this.gameObject);
+                ProjectionSpawner.Instance.ReturnArrow(this);
             }
         }
         if (durationTime >= maxDurationTime)
-            ProjectionSpawner.Instance.ReturnArrow(this.gameObject);
+        {
+            ProjectionSpawner.Instance.ReturnArrow(this);
+            durationTime = 0f;
+        }
     }
     private bool IsEnemy(GameObject _archer, GameObject _hitObject)
     {

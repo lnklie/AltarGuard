@@ -240,7 +240,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
             for (var i = 0; i < enemies.Length; i++)
             {
-                enemyList.Add(new Enemy(enemies[i].objectName, enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
+                enemyList.Add(new EnemySlime(enemies[i].objectName, enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
                     enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
                  enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
                  enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));

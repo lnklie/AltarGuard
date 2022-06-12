@@ -18,14 +18,14 @@ public class Status : MonoBehaviour
         set { target = value; }
     }
     [SerializeField]
-    private float seeRange = 2f;
+    protected float seeRange = 0f;
     public float SeeRange
     {
         get { return seeRange; }
         set { seeRange = value; }
     }
     [SerializeField]
-    private float atkRange = 2f;
+    protected float atkRange = 0f;
     public float AtkRange
     {
         get { return atkRange; }
