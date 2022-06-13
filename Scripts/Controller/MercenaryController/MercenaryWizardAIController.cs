@@ -10,16 +10,5 @@ using UnityEngine;
 */
 public class MercenaryWizardAIController : MercenaryAIController
 {
-    public override void Attack()
-    {
-        base.Attack();
-        if (!IsDelay())
-        {
-            ani.SetTrigger("AtkTrigger");
-            SetDelayTime(0f);
-            isAtk = true;
-        }
-        else
-            isAtk = false;
-    }
+
 }

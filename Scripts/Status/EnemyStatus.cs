@@ -1,22 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 /*
 ==============================
- * 최종수정일 : 2022-06-11
+ * 최종수정일 : 2022-06-13
  * 작성자 : Inklie
  * 파일명 : EnemyStatus.cs
 ==============================
 */
 public class EnemyStatus : Status
 {
-    [SerializeField]
-    private Enemy enemy = null;
+    protected float delayTime = 0f;
+    public float DelayTime
+    {
+        get { return delayTime; }
+        set { delayTime = value; }
+    }
+    protected Animator ani = null;
+    public Animator Ani
+    {
+        get { return ani; }
+        set { ani = value; }
+    }
+    protected Rigidbody2D rig = null;
+    public Rigidbody2D Rig
+    {
+        get { return rig; }
+        set { rig = value; }
+    }
+    protected CircleCollider2D col = null;
+    public CircleCollider2D Col
+    {
+        get { return col; }
+        set { col = value; }
+    }
+    protected RaycastHit2D atkRangeRay = default;
+    public RaycastHit2D AtkRangeRay
+    {
+        get { return atkRangeRay; }
+        set { atkRangeRay = value; }
+    }
+    protected RaycastHit2D sightRay = default;
+    public RaycastHit2D SightRay
+    {
+        get { return sightRay; }
+        set { sightRay = value; }
+    }
+    protected RaycastHit2D[] allyRay = default;
+    public RaycastHit2D[] AllyRay
+    {
+        get { return allyRay; }
+        set { allyRay = value; }
+    }
+    protected RaycastHit2D[] enemyHitRay = default;
+    public RaycastHit2D[] EnemyHitRay
+    {
+        get { return enemyHitRay; }
+        set { enemyHitRay = value; }
+    }
 
-    [SerializeField]
-    private AIController aiController = null;
-
-    [SerializeField]
     private int defeatExp = 0;
     public int DefeatExp
     {
@@ -49,7 +92,7 @@ public class EnemyStatus : Status
     {
         get { return enemyType; }
     }
-
+    [SerializeField]
     private EnemyState enemyState;
     public EnemyState EnemyState
     {
@@ -78,13 +121,13 @@ public class EnemyStatus : Status
         set { itemDropProb = value; }
     }
 
-    [SerializeField]
     private int damage = 0;
     public int Damage
     {
         get { return damage; }
         set { damage = value; }
     }
+
     private bool isEnemyChange;
     public bool IsEnemyChange
     {
@@ -92,18 +135,49 @@ public class EnemyStatus : Status
         set { isEnemyChange = value; }
     }
 
+    private bool isActive = false;
+    public bool IsActive
+    {
+        get { return isActive; }
+        set { isActive = value; }
+    }
+
+    private Image[] images = null;
+    private SpriteRenderer spriteRenderer = null;
+
+    [SerializeField]
+    private Enemy enemy = null;
+
+    [SerializeField]
+    private EnemyAIController enemyAIController = null;
+
+    private void Awake()
+    {
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
+        images = this.GetComponentsInChildren<Image>();
+        ani = this.GetComponent<Animator>();
+        rig = this.GetComponent<Rigidbody2D>();
+        col = this.GetComponent<CircleCollider2D>();
+    }
     private void Update()
     {
         if (isEnemyChange && enemy != null)
         {
             CustomEnemy();
         }
-
-        if (aiController != null)
+        if (isActive)
         {
-            aiController.Update();
+            enemyAIController.Perception(this);
+            enemyAIController.ChangeState(this);
+            enemyAIController.State(this);
+            distance = target.transform.position - this.transform.position;
+            dir = distance.normalized;
+            Debug.Log("현재 상태는 " + enemyState);
         }
+        if (isDamaged)
+            UpdateEnemyHp();
     }
+
     public void CustomEnemy()
     {
         isEnemyChange = false;
@@ -118,7 +192,8 @@ public class EnemyStatus : Status
         arrowSpd = enemy.arrowSpd;
         defeatExp = enemy.defeatExp;
         enemyType = enemy.enemyType;
-        
+        spriteRenderer.sprite = enemy.singleSprite;
+
         itemDropKey.Add(enemy.itemDropKey1);
         itemDropKey.Add(enemy.itemDropKey2);
         itemDropKey.Add(enemy.itemDropKey3);
@@ -130,13 +205,17 @@ public class EnemyStatus : Status
         itemDropProb.Add(enemy.itemDropProb4);
         itemDropProb.Add(enemy.itemDropProb5);
     }
+    public void UpdateEnemyHp()
+    {
+        images[1].fillAmount = curHp / (float)maxHp;
+    }
     public AIController GetAIController()
     {
-        return aiController;
+        return enemyAIController;
     }
-    public void SetAIController(AIController _aiController)
+    public void SetAIController(EnemyAIController _enemyAIController)
     {
-        aiController = _aiController;
+        enemyAIController = _enemyAIController;
     }
 
     public Enemy GetEnemyStatus()
@@ -147,5 +226,22 @@ public class EnemyStatus : Status
     public void SetEnemyStatus(Enemy _enemy)
     {
         enemy = _enemy;
+
+        IsEnemyChange = true;
+    }
+    public void SetAnimator(RuntimeAnimatorController _ani)
+    {
+        ani.runtimeAnimatorController = _ani;
+    }
+    public bool IsDelay()
+    {
+        if (delayTime >= atkSpeed)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

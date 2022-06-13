@@ -31,10 +31,7 @@ public class Enemy : Elements
     public float itemDropProb4 = 20f;
     public float itemDropProb5 = 20f;
     public Sprite singleSprite = null;
-    public AIController controller = null;
     public EnemyType enemyType = EnemyType.Slime;
-    public Animator animator = null;
-    protected string path = "Assets/Scripts/Controller/EnemyController";
     public Enemy(string _name, int _hp, int _damage, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
         int _itemDropKey1, int _itemDropKey2, int _itemDropKey3, int _itemDropKey4, int _itemDropKey5,
         float _itemDropProb1, float _itemDropProb2, float _itemDropProb3, float _itemDropProb4, float _itemDropProb5)

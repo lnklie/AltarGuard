@@ -10,32 +10,5 @@ using UnityEngine;
 */
 public class MercenaryArcherAIController : MercenaryAIController
 {
-    private void ShotArrow()
-    {
-        // 활쏘기
-        if (ProjectionSpawner.Instance.ArrowCount() > 0)
-        {
-            ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
 
-        }
-        else
-            Debug.Log("화살 없음");
-    }
-    public override void Attack()
-    {
-        base.Attack();
-        if (!IsDelay())
-        {
-            ani.SetTrigger("AtkTrigger");
-            Debug.Log("공격");
-            SetDelayTime(0f);
-            if (ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
-            {
-                Debug.Log("쐈다");
-                ShotArrow();
-            }
-        }
-        else
-            isAtk = false;
-    }
 }

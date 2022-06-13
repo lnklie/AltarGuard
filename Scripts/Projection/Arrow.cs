@@ -76,7 +76,7 @@ public class Arrow : MonoBehaviour
                     EnemyStatus hitObject = ray.collider.GetComponent<EnemyStatus>();
                     MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
                     hitObject.CurHp -= dmg;
-                    mercenary.IsDamaged = true;
+                    hitObject.IsDamaged = true;
                     mercenary.IsAtk = true;
                     if (archer.GetComponent<MercenaryAIController>().IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
                     {
@@ -86,9 +86,8 @@ public class Arrow : MonoBehaviour
                 else
                 {
                     Status hitObject = ray.collider.GetComponent<Status>();
-                    EnemyAIController enemy = archer.GetComponent<EnemyAIController>();
                     hitObject.CurHp -= dmg;
-                    enemy.IsDamaged = true;
+                    hitObject.IsDamaged = true;
                 }
                 durationTime = 0f;
                 ProjectionSpawner.Instance.ReturnArrow(this);

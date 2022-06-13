@@ -13,11 +13,12 @@ public class AltarController : BaseController
 {
     private AltarStatus altar = null;
     private TextMesh[] txtMesh = null;
+    private Image[] images = null;
+
     [SerializeField]
     private SpriteRenderer[] spriteRenderers = null;
     [SerializeField]
     private List<CharacterStatus> characters = new List<CharacterStatus>();
-    private Image[] images = null;
     void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
@@ -58,7 +59,7 @@ public class AltarController : BaseController
         }
         else
         {
-            if (isDamaged)
+            if (altar.IsDamaged)
             {
                 SetState(AltarState.Damaged);
                 UpdateEnemyHp();
@@ -85,13 +86,13 @@ public class AltarController : BaseController
     public void SetState(AltarState _alterState)
     {
         // 상태 할당
-        isStateChange = true;
+        altar.IsStateChange = true;
         altar.AltarState = _alterState;
     }
     public void State()
     {
         // 상태별 행동 나타냄
-        if(isStateChange)
+        if(altar.IsStateChange)
             CheckState();
         switch (altar.AltarState)
         {
@@ -116,16 +117,16 @@ public class AltarController : BaseController
     }
     private void Idle()
     {
-        isStateChange = false;
+        altar.IsStateChange = false;
     }
     private void Damaged()
     {
-        isStateChange = false;
-        IsDamaged = false;
+        altar.IsStateChange = false;
+        altar.IsDamaged = false;
     }
     private void Destroyed()
     {
-        isStateChange = false;
+        altar.IsStateChange = false;
     }
 
     public void BuffUpdate()

@@ -10,16 +10,15 @@ using UnityEngine;
 */
 public class SlimeAIController : RushEnemyAIController
 {
-    public override void Attack()
+    public override void Attack(EnemyStatus _enemy)
     {
-        base.Attack();
-        BaseController targetPlayer = atkRange.collider.GetComponent<BaseController>();
-        Status targetStatus = atkRange.collider.GetComponent<Status>();
-        if (!IsDelay())
+        base.Attack(_enemy);
+        Status targetStatus = _enemy.AtkRangeRay.collider.GetComponent<Status>();
+        if (!_enemy.IsDelay())
         {
-            SetDelayTime(0f);
-            targetStatus.CurHp -= enemy.Damage;
-            targetPlayer.IsDamaged = true;
+            _enemy.DelayTime = 0f;
+            targetStatus.CurHp -= _enemy.Damage;
+            targetStatus.IsDamaged = true;
         }
     }
 }
