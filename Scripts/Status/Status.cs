@@ -10,8 +10,9 @@ using UnityEngine;
 */
 public class Status : MonoBehaviour
 {
+
     [SerializeField]
-    private GameObject target = null;
+    protected GameObject target = null;
     public GameObject Target
     {
         get { return target; }
@@ -74,7 +75,7 @@ public class Status : MonoBehaviour
         set { atkSpeed = value; }
     }
     [SerializeField]
-    private Vector2 dir = Vector2.zero;
+    protected Vector2 dir = Vector2.zero;
     public Vector2 Dir
     {
         get { return dir; }
@@ -85,5 +86,24 @@ public class Status : MonoBehaviour
     {
         get { return arrowSpd; }
         set { arrowSpd = value; }
+    }
+    protected bool isDamaged = false;
+    public bool IsDamaged
+    {
+        get { return isDamaged; }
+        set { isDamaged = value; }
+    }
+    protected bool isStateChange = false;
+    public bool IsStateChange
+    {
+        get { return isStateChange; }
+        set { isStateChange = value; }
+    }
+    [SerializeField]
+    protected Vector2 distance = new Vector2(0, 0);
+    public Vector2 Distance
+    {
+        get { return distance; }
+        set { distance = value; }
     }
 }

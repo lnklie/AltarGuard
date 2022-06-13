@@ -11,20 +11,24 @@ using UnityEngine;
 
 public class EnemySpawner : SingletonManager<EnemySpawner>
 {
-    private Queue<GameObject> enemy_Slimes = new Queue<GameObject>();
-    private Queue<GameObject> enemy_GoblinArcher = new Queue<GameObject>();
+
+    [SerializeField]
+    private EnemyAIController slimeAIController = null;
+    [SerializeField]
+    private EnemyAIController slimeKingAIController = null;
+    [SerializeField]
+    private EnemyAIController goblineArcherAIController = null;
+    private Queue<GameObject> enemies = new Queue<GameObject>();
+    private Queue<EnemyStatus> enemyStatus = new Queue<EnemyStatus>();
+
+    [SerializeField]
+    private GameObject enemyPrefab = null;
+
+
 
     [Header("Option")]
     [SerializeField]
     private int enemyNum = 0;
-
-    [Header("Enemies")]
-    [SerializeField]
-    private EnemyStatus Slime = null;
-    [SerializeField]
-    private EnemyStatus SlimeKing = null;
-    [SerializeField]
-    private EnemyStatus GoblinArcher = null;
 
     [Header("Default Target")]
     [SerializeField]
@@ -79,20 +83,12 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             return enemyNum;
         }
     }
-    public Queue<GameObject> Enemies
-    {
-        get
-        {
-            return enemy_Slimes;
-        }
-    }
+
     #endregion
     private void Awake()
     {
         InitEnemyPos();
-        InitEnemy(Slime,EnemyType.Slime);
-        InitEnemy(GoblinArcher, EnemyType.GoblinArcher);
-        InitEnemy(SlimeKing, EnemyType.SlimeKing);
+        InitEnemy(enemyPrefab);
 
     }
 
@@ -110,33 +106,14 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             }
         }
     }
-    private void InitEnemy(EnemyStatus _enemy, EnemyType _enemyType)
+    private void InitEnemy(GameObject _enemy)
     {
         // 적 오브젝트풀 생성 
-        if (_enemyType == EnemyType.Slime)
+        for (int i = 0; i < 100; i++)
         {
-            for (int i = 0; i < 100; i++)
-            {
-                GameObject obj = Instantiate(_enemy.gameObject);
-                enemy_Slimes.Enqueue(obj);
-                obj.SetActive(false);
-                obj.transform.SetParent(this.transform);
-            }
-        }
-        else if (_enemyType == EnemyType.GoblinArcher)
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                GameObject obj = Instantiate(_enemy.gameObject);
-                enemy_GoblinArcher.Enqueue(obj);
-                obj.SetActive(false);
-                obj.transform.SetParent(this.transform);
-            }
-        }
-        else if(_enemyType == EnemyType.SlimeKing)
-        {
-            GameObject obj = Instantiate(_enemy.gameObject);
-            enemy_SlimeKing = obj;
+            GameObject obj = Instantiate(_enemy);
+            enemies.Enqueue(obj);
+            enemyStatus.Enqueue(obj.GetComponent<EnemyStatus>());
             obj.SetActive(false);
             obj.transform.SetParent(this.transform);
         }
@@ -144,43 +121,48 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     public void EnemySpawn(EnemyType _enemyType, Queue<Vector2> _Dirqueue = null, int _enemyNum = 0)
     {
         // 적 스폰
-        GameObject obj = null;
+        GameObject _obj = null;
+        EnemyStatus _enemyStatus = null;
         if (_enemyType == EnemyType.Slime)
         {
             for(int i = 0; i < _enemyNum; i++)
             {
-                obj = enemy_Slimes.Dequeue();
-                obj.transform.position = _Dirqueue.Dequeue();
-                _Dirqueue.Enqueue(obj.transform.position);
+                _obj = enemies.Dequeue();
+                _enemyStatus = enemyStatus.Dequeue();
+                _obj.transform.position = _Dirqueue.Dequeue();
+                _enemyStatus.SetEnemyStatus(DatabaseManager.Instance.enemyList[(int)EnemyType.Slime]);
+                _enemyStatus.SetAIController(slimeAIController);
+                _enemyStatus.SetAnimator(slimeAIController.GetComponent<Animator>().runtimeAnimatorController);
+                _enemyStatus.CurHp = _enemyStatus.MaxHp;
+                _enemyStatus.IsActive = true;
+                _Dirqueue.Enqueue(_obj.transform.position);
             }
         }
         else if(_enemyType == EnemyType.SlimeKing)
         {
-            obj = enemy_SlimeKing;
-            obj.transform.position = new Vector2(0f, 18f);
-            curBoss = obj;
+            _obj = enemy_SlimeKing;
+            _obj.transform.position = new Vector2(0f, 18f);
+            curBoss = _obj;
         }
         else if(_enemyType == EnemyType.GoblinArcher)
         {
             for (int i = 0; i < _enemyNum; i++)
             {
-                obj = enemy_GoblinArcher.Dequeue();
-                obj.transform.position = _Dirqueue.Dequeue();
-                _Dirqueue.Enqueue(obj.transform.position);
+
             }
         }
-        obj.SetActive(true);
-        obj.GetComponent<EnemyStatus>().Target = building;
+        _obj.SetActive(true);
+        _obj.GetComponent<EnemyStatus>().Target = building;
     }
     public void ReturnEnemy(GameObject _enemy, EnemyType _enemyType)
     {
         // 적 다시 돌아오기
-        if (_enemyType == EnemyType.Slime)
-            enemy_Slimes.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.GoblinArcher)
-            enemy_GoblinArcher.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.SlimeKing)
-            enemy_SlimeKing = _enemy;
-        _enemy.SetActive(false);
+        //if (_enemyType == EnemyType.Slime)
+        //    enemy_Slimes.Enqueue(_enemy);
+        //else if (_enemyType == EnemyType.GoblinArcher)
+        //    enemy_GoblinArcher.Enqueue(_enemy);
+        //else if (_enemyType == EnemyType.SlimeKing)
+        //    enemy_SlimeKing = _enemy;
+        //_enemy.SetActive(false);
     }
 }

@@ -4,141 +4,126 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-13
  * 작성자 : Inklie
  * 파일명 : EnemyAIController.cs
 ==============================
 */
 public class EnemyAIController : AIController
 {
-    protected EnemyStatus enemy = null;
-    protected DropManager dropController = null;
-    protected CircleCollider2D col = null;
-
-    private Image[] images = null;
-    public override void Awake()
-    {
-        base.Awake();
-        enemy = GetComponent<EnemyStatus>();
-        dropController = GetComponent<DropManager>();
-        col = GetComponent<CircleCollider2D>();
-        images = this.GetComponentsInChildren<Image>();
-    }
-    public override void Update()
-    {
-        base.Update();
-        if (isDamaged)
-            UpdateEnemyHp();
-    }
-    public override void ChangeState()
+    public override void ChangeState(EnemyStatus _status)
     {}
 
-    public override void State() 
-    {}
-    public override void Chase()
+    public override void State(EnemyStatus _status)
     {
-        isStateChange = false;
-        ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = enemy.Speed * enemy.Dir;
+        switch (_status.EnemyState)
+        {
+            case EnemyState.Idle:
+                Idle(_status);
+                break;
+            case EnemyState.Chase:
+                Chase(_status);
+                break;
+            case EnemyState.Damaged:
+                Damaged(_status);
+                break;
+            case EnemyState.Attack:
+                Attack(_status);
+                break;
+            case EnemyState.Died:
+                StartCoroutine(Died(_status));
+                break;
+        }
+    }
+    public override void Chase(EnemyStatus _status)
+    {
+        _status.IsStateChange = false;
+        ActiveLayer(_status.Ani, LayerName.WalkLayer);
+        _status.Rig.velocity = _status.Speed * _status.Dir;
     }
 
-    public override void Damaged()
+    public override void Damaged(EnemyStatus _status)
     {
-        isStateChange = false;
-        enemy.DmgCombo++;
-        enemy.StiffenTime = 0f;
-        isDamaged = true;
+        _status.IsStateChange = false;
+        _status.DmgCombo++;
+        _status.StiffenTime = 0f;
+        _status.IsDamaged = true;
     }
 
-    public override IEnumerator Died()
+    public override IEnumerator Died(EnemyStatus _status)
     {
-        isStateChange = false;
-        SetEnabled(false);
-        rig.velocity = Vector2.zero;
+        _status.IsStateChange = false;
+        SetEnabled(_status, false);
+        _status.Rig.velocity = Vector2.zero;
         yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, enemy.ItemDropKey, enemy.ItemDropProb);
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject,enemy.EnemyType);
-        SetEnabled(true);
-        enemy.EnemyState = EnemyState.Idle;
-        enemy.CurHp = enemy.MaxHp;
+        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        EnemySpawner.Instance.ReturnEnemy(this.gameObject, _status.EnemyType);
     }
 
-    public override void Idle()
+    public override void Idle(EnemyStatus _status)
     {
-        isStateChange = false;
-        ActiveLayer(LayerName.IdleLayer);
-        rig.velocity = Vector2.zero;
+        _status.IsStateChange = false;
+        ActiveLayer(_status.Ani, LayerName.IdleLayer);
+        _status.Rig.velocity = Vector2.zero;
     }
 
-    public override bool IsDelay()
+
+    public virtual void Stiffen(EnemyStatus _status)
     {
-        if (delayTime >= enemy.AtkSpeed)
+        _status.StiffenTime += Time.deltaTime;
+        if (_status.StiffenTime >= _status.MaxStiffenTime)
         {
-            return false;
-        }
-        else
-        {
-            return true;
+            _status.DmgCombo = 0;
+            _status.IsDamaged = false;
         }
     }
-    public virtual void Stiffen()
-    {
-        enemy.StiffenTime += Time.deltaTime;
-        if (enemy.StiffenTime >= enemy.MaxStiffenTime)
-        {
-            enemy.DmgCombo = 0;
-            isDamaged = false;
-        }
-    }
-    public override void Perception()
+    public override void Perception(EnemyStatus _enemy)
     {
         // 레이를 이용한 인식
-        AnimationDirection();
-        sight = Physics2D.CircleCast(this.transform.position, enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        atkRange = Physics2D.CircleCast(this.transform.position, enemy.AtkRange, enemy.Dir, 0, LayerMask.GetMask("Ally"));
-        allyRay = Physics2D.CircleCastAll(this.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        Debug.Log("레이쏘는중");
+        AnimationDirection(_enemy);
+        _enemy.SightRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        _enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
+        _enemy.AllyRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
         GameObject altar = null;
-        for(int i =0; i < allyRay.Length; i++)
+        for(int i =0; i < _enemy.AllyRay.Length; i++)
         {
-            if (allyRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = allyRay[i].collider.gameObject;
+            if (_enemy.AllyRay[i].collider.gameObject.CompareTag("Altar"))
+                altar = _enemy.AllyRay[i].collider.gameObject;
         }
 
         if (!altar)
-            enemy.Target = null;
+            _enemy.Target = null;
         else
         {
-            if (sight)
-                enemy.Target = sight.collider.gameObject;
+            if (_enemy.SightRay)
+                _enemy.Target = _enemy.SightRay.collider.gameObject;
             else
-                enemy.Target = altar;
+                _enemy.Target = altar;
         }
     }
-    public void UpdateEnemyHp()
+
+    public override bool IsDied(EnemyStatus _status)
     {
-        images[1].fillAmount = enemy.CurHp / (float)enemy.MaxHp;
-    }
-    public override bool IsDied()
-    {
-        if (enemy.CurHp <= 0)
+        if (_status.CurHp <= 0)
             return true;
         else
             return false;
     }
-    public override void Attack()
+    public override void Attack(EnemyStatus _status)
     {
-        ActiveLayer(LayerName.AttackLayer);
-        rig.velocity = Vector2.zero;
-        delayTime += Time.deltaTime;
+        ActiveLayer(_status.Ani, LayerName.AttackLayer);
+        _status.Rig.velocity = Vector2.zero;
+        _status.DelayTime += Time.deltaTime;
     }
-    public void SetEnabled(bool _boolean)
+    public void SetEnabled(EnemyStatus _status, bool _bool)
     {
-        col.enabled = _boolean;
+        _status.Col.enabled = _bool;
     }
-    public virtual void AnimationDirection()
+    public virtual void AnimationDirection(EnemyStatus _status)
     {
         // 애니메이션 방향
-        if (enemy.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-        else if (enemy.Dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
+        if (_status.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+        else if (_status.Dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
     }
 }
