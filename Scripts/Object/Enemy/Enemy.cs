@@ -11,6 +11,7 @@ using UnityEngine;
 [System.Serializable]
 public class Enemy : Elements
 {
+    public int enemyKey = 0;
     public int hp = 0;
     public int damage = 0;
     public int defensivePower = 0;
@@ -32,11 +33,12 @@ public class Enemy : Elements
     public float itemDropProb5 = 20f;
     public Sprite singleSprite = null;
     public EnemyType enemyType = EnemyType.Slime;
-    public Enemy(string _name, int _hp, int _damage, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
+    public Enemy(string _name, int _enemyKey, int _hp, int _damage, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
         int _itemDropKey1, int _itemDropKey2, int _itemDropKey3, int _itemDropKey4, int _itemDropKey5,
         float _itemDropProb1, float _itemDropProb2, float _itemDropProb3, float _itemDropProb4, float _itemDropProb5)
     {
         objectName = _name;
+        enemyKey = _enemyKey; 
         hp = _hp;
         damage = _damage;
         seeRange = _seeRange;

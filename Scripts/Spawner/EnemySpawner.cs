@@ -11,20 +11,17 @@ using UnityEngine;
 
 public class EnemySpawner : SingletonManager<EnemySpawner>
 {
-
+    [Header("Enemies")]
     [SerializeField]
     private EnemyAIController slimeAIController = null;
     [SerializeField]
     private EnemyAIController slimeKingAIController = null;
     [SerializeField]
     private EnemyAIController goblineArcherAIController = null;
-    private Queue<GameObject> enemies = new Queue<GameObject>();
-    private Queue<EnemyStatus> enemyStatus = new Queue<EnemyStatus>();
 
+    [Header("EnemyPrefab")]
     [SerializeField]
     private GameObject enemyPrefab = null;
-
-
 
     [Header("Option")]
     [SerializeField]
@@ -70,21 +67,9 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         get { return enemySouthPos; }
     }
 
-    [SerializeField]
-    private GameObject enemy_SlimeKing = null;
+    private Queue<GameObject> enemies = new Queue<GameObject>();
+    private Queue<EnemyStatus> enemyStatus = new Queue<EnemyStatus>();
 
-    #region Properties(Instance,IsStart, EnemyNum, Enemies)
-
-
-    public int EnemyNum
-    {
-        get
-        {
-            return enemyNum;
-        }
-    }
-
-    #endregion
     private void Awake()
     {
         InitEnemyPos();
@@ -128,19 +113,17 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             for(int i = 0; i < _enemyNum; i++)
             {
                 _obj = enemies.Dequeue();
-                _enemyStatus = enemyStatus.Dequeue();
                 _obj.transform.position = _Dirqueue.Dequeue();
+                _enemyStatus = enemyStatus.Dequeue();
                 _enemyStatus.SetEnemyStatus(DatabaseManager.Instance.enemyList[(int)EnemyType.Slime]);
-                _enemyStatus.SetAIController(slimeAIController);
                 _enemyStatus.SetAnimator(slimeAIController.GetComponent<Animator>().runtimeAnimatorController);
-                _enemyStatus.CurHp = _enemyStatus.MaxHp;
-                _enemyStatus.IsActive = true;
+                _enemyStatus.GetComponent<EnemyCustomizer>().SetAIController(slimeAIController);
+                _enemyStatus.GetComponent<EnemyCustomizer>().IsActive = true;
                 _Dirqueue.Enqueue(_obj.transform.position);
             }
         }
         else if(_enemyType == EnemyType.SlimeKing)
         {
-            _obj = enemy_SlimeKing;
             _obj.transform.position = new Vector2(0f, 18f);
             curBoss = _obj;
         }

@@ -135,21 +135,13 @@ public class EnemyStatus : Status
         set { isEnemyChange = value; }
     }
 
-    private bool isActive = false;
-    public bool IsActive
-    {
-        get { return isActive; }
-        set { isActive = value; }
-    }
+
 
     private Image[] images = null;
     private SpriteRenderer spriteRenderer = null;
 
     [SerializeField]
     private Enemy enemy = null;
-
-    [SerializeField]
-    private EnemyAIController enemyAIController = null;
 
     private void Awake()
     {
@@ -164,15 +156,6 @@ public class EnemyStatus : Status
         if (isEnemyChange && enemy != null)
         {
             CustomEnemy();
-        }
-        if (isActive)
-        {
-            enemyAIController.Perception(this);
-            enemyAIController.ChangeState(this);
-            enemyAIController.State(this);
-            distance = target.transform.position - this.transform.position;
-            dir = distance.normalized;
-            Debug.Log("현재 상태는 " + enemyState);
         }
         if (isDamaged)
             UpdateEnemyHp();
@@ -209,14 +192,7 @@ public class EnemyStatus : Status
     {
         images[1].fillAmount = curHp / (float)maxHp;
     }
-    public AIController GetAIController()
-    {
-        return enemyAIController;
-    }
-    public void SetAIController(EnemyAIController _enemyAIController)
-    {
-        enemyAIController = _enemyAIController;
-    }
+
 
     public Enemy GetEnemyStatus()
     {
@@ -226,7 +202,7 @@ public class EnemyStatus : Status
     public void SetEnemyStatus(Enemy _enemy)
     {
         enemy = _enemy;
-
+        curHp = maxHp;
         IsEnemyChange = true;
     }
     public void SetAnimator(RuntimeAnimatorController _ani)
