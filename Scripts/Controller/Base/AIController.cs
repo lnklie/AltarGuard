@@ -10,7 +10,6 @@ using UnityEngine;
 */
 public abstract class AIController : BaseController
 {
-
     public abstract void ChangeState(EnemyStatus _status);
     public abstract void State(EnemyStatus _status);
     public abstract void Perception(EnemyStatus _enemy);

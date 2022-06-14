@@ -31,9 +31,11 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("Enemy")]
     public List<Enemy> enemyList = new List<Enemy>();
+    [Header("Stage")]
+    public List<Stage> stageList = new List<Stage>();
     private void Awake()
     {
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
         JsonLoad();
     }
     string fixJson(string value)
@@ -41,9 +43,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         value = "{\"Items\":" + value + "}";
         return value;
     }
-    private string CombinePath(string _folderName)
+    private string CombinePath(string _excelName)
     {
-        return Application.persistentDataPath + "/JsonFiles/"+_folderName +".json";
+        return Application.dataPath + "/JsonFile/"+_excelName +".json";
     }
 
     public void JsonLoad()
@@ -240,7 +242,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
             for (var i = 0; i < enemies.Length; i++)
             {
-                enemyList.Add(new EnemySlime(enemies[i].objectName, enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
+                enemyList.Add(new EnemySlime(enemies[i].objectName, enemies[i].enemyKey,enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
                     enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
                  enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
                  enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));
@@ -258,6 +260,19 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < exp.Length; i++)
             {
                 expList.Add(new Exp(exp[i].lv, exp[i].exp));
+            }
+        }
+        if (!File.Exists(CombinePath("Stage")))
+        {
+            Debug.Log("경로에 스테이지 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Stage")));
+            Stage[] stage = JsonHelper.FromJson<Stage>(loadJson);
+            for (var i = 0; i < stage.Length; i++)
+            {
+                stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
     }
