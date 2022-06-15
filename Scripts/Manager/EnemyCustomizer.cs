@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class EnemyCustomizer : MonoBehaviour
 {
-    protected Animator ani = null;
-    public Animator Ani
-    {
-        get { return ani; }
-        set { ani = value; }
-    }
-
     private bool isActive = false;
 
     [SerializeField]
@@ -35,7 +28,6 @@ public class EnemyCustomizer : MonoBehaviour
             enemyAIController.State(enemyStatus);
             enemyStatus.Distance = enemyStatus.Target.transform.position - this.transform.position;
             enemyStatus.Dir = enemyStatus.Distance.normalized;
-            Debug.Log("현재 상태는 " + enemyStatus.EnemyState);
         }
     }
     public AIController GetAIController()
@@ -45,5 +37,15 @@ public class EnemyCustomizer : MonoBehaviour
     public void SetAIController(EnemyAIController _enemyAIController)
     {
         enemyAIController = _enemyAIController;
+    }
+    public void SetEnemyStatus(Enemy _enemy)
+    {
+        enemyStatus.Enemy = _enemy;
+        enemyStatus.CurHp = enemyStatus.MaxHp;
+        enemyStatus.IsEnemyChange = true;
+    }
+    public void SetAnimator(RuntimeAnimatorController _ani)
+    {
+        enemyStatus.Ani.runtimeAnimatorController = _ani; 
     }
 }

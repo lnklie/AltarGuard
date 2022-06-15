@@ -11,7 +11,6 @@ using UnityEngine;
 
 public class DatabaseManager : SingletonManager<DatabaseManager>
 {
-    private string[] path = {"1","2"};
     [Header("Items")]
     public List<Hair> hairList = new List<Hair>();
     public List<FaceHair> faceHairList = new List<FaceHair>();
@@ -26,11 +25,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Wand> wandList = new List<Wand>();
     public List<Consumables> consumablesList = new List<Consumables>();
     public List<Miscellaneous> miscellaneousList = new List<Miscellaneous>();
+
     [Header("Exp")]
     public List<Exp> expList = new List<Exp>();
 
     [Header("Enemy")]
     public List<Enemy> enemyList = new List<Enemy>();
+
     [Header("Stage")]
     public List<Stage> stageList = new List<Stage>();
     private void Awake()
@@ -45,7 +46,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     }
     private string CombinePath(string _excelName)
     {
-        return Application.dataPath + "/JsonFile/"+_excelName +".json";
+        return Application.dataPath + "/JsonFile/" + _excelName +".json";
     }
 
     public void JsonLoad()
@@ -232,17 +233,17 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             }
 
         }
-        if (!File.Exists(CombinePath("13_Enemy")))
+        if (!File.Exists(CombinePath("Enemy")))
         {
             Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("13_Enemy")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy")));
             Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
             for (var i = 0; i < enemies.Length; i++)
             {
-                enemyList.Add(new EnemySlime(enemies[i].objectName, enemies[i].enemyKey,enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
+                enemyList.Add(new Enemy(enemies[i].objectName, enemies[i].enemyKey,enemies[i].hp, enemies[i].str, enemies[i].dex, enemies[i].wiz, enemies[i].seeRange,
                     enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
                  enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
                  enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));

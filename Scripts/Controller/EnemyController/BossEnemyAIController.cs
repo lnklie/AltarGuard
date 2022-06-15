@@ -19,23 +19,30 @@ public class BossEnemyAIController : EnemyAIController
         }
         else
         {
-            if (_status.AtkRangeRay)
+            if (_status.IsDamaged)
             {
-                if (!_status.IsDelay()) 
-                {
-                    SetState(_status, EnemyState.Attack);
-                }
-                else
-                    SetState(_status, EnemyState.Idle);
+                SetState(_status, EnemyState.Damaged);
             }
             else
             {
-                if (_status.Target == this.gameObject)
+                if (_status.AtkRangeRay)
                 {
-                    SetState(_status, EnemyState.Idle);
+                    if (!_status.IsDelay()) 
+                    {
+                        SetState(_status, EnemyState.Attack);
+                    }
+                    else
+                        SetState(_status, EnemyState.Idle);
                 }
                 else
-                    SetState(_status, EnemyState.Chase);
+                {
+                    if (_status.Target == this.gameObject)
+                    {
+                        SetState(_status, EnemyState.Idle);
+                    }
+                    else
+                        SetState(_status, EnemyState.Chase);
+                }
             }
             
         }
@@ -47,5 +54,14 @@ public class BossEnemyAIController : EnemyAIController
         // 애니메이션 방향
         if (_enemy.Dir.x > 0) this.transform.localScale = new Vector3(-6, 6, 1);
         else if (_enemy.Dir.x < 0) transform.transform.localScale = new Vector3(6, 6, 1);
-    } 
+    }
+    public override IEnumerator Died(EnemyStatus _status)
+    {
+        _status.IsStateChange = false;
+        SetEnabled(_status, false);
+        _status.Rig.velocity = Vector2.zero;
+        yield return new WaitForSeconds(2f);
+        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        EnemySpawner.Instance.ReturnBossEnemy(this.gameObject);
+    }
 }

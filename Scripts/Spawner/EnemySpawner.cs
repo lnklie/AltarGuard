@@ -13,19 +13,13 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 {
     [Header("Enemies")]
     [SerializeField]
-    private EnemyAIController slimeAIController = null;
+    private EnemyAIController[] enemyAIController = null;
     [SerializeField]
-    private EnemyAIController slimeKingAIController = null;
-    [SerializeField]
-    private EnemyAIController goblineArcherAIController = null;
+    private EnemyAIController[] bossEnemyAIController = null;
 
     [Header("EnemyPrefab")]
     [SerializeField]
     private GameObject enemyPrefab = null;
-
-    [Header("Option")]
-    [SerializeField]
-    private int enemyNum = 0;
 
     [Header("Default Target")]
     [SerializeField]
@@ -43,32 +37,14 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         get { return curBoss; }
     }
 
-    private Queue<Vector2> enemyEastPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyEastPos
+    private Queue<Vector2> enemyPos = new Queue<Vector2>();
+    public Queue<Vector2> EnemyPos
     {
-        get { return enemyEastPos; }
+        get { return enemyPos; }
     }
 
-    private Queue<Vector2> enemyNorthPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyNorthPos
-    {
-        get { return enemyNorthPos; }
-    }
-
-    private Queue<Vector2> enemyWestPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyWestPos
-    {
-        get { return enemyWestPos; }
-    }
-
-    private Queue<Vector2> enemySouthPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemySouthPos
-    {
-        get { return enemySouthPos; }
-    }
 
     private Queue<GameObject> enemies = new Queue<GameObject>();
-    private Queue<EnemyStatus> enemyStatus = new Queue<EnemyStatus>();
 
     private void Awake()
     {
@@ -84,68 +60,66 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         {
             for (int i = 0; i < 5; i++)
             {
-                enemyEastPos.Enqueue(new Vector2(spawnPos[0].x + i, spawnPos[0].y - k));
-                enemyWestPos.Enqueue(new Vector2(spawnPos[1].x + i, spawnPos[1].y - k));
-                enemySouthPos.Enqueue(new Vector2(spawnPos[2].x + i, spawnPos[2].y - k));
-                enemyNorthPos.Enqueue(new Vector2(spawnPos[3].x + i, spawnPos[3].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[0].x + i, spawnPos[0].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[1].x + i, spawnPos[1].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[2].x + i, spawnPos[2].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[3].x + i, spawnPos[3].y - k));
             }
         }
     }
     private void InitEnemy(GameObject _enemy)
     {
         // 적 오브젝트풀 생성 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 101; i++)
         {
             GameObject obj = Instantiate(_enemy);
             enemies.Enqueue(obj);
-            enemyStatus.Enqueue(obj.GetComponent<EnemyStatus>());
             obj.SetActive(false);
             obj.transform.SetParent(this.transform);
         }
     }
-    public void EnemySpawn(EnemyType _enemyType, Queue<Vector2> _Dirqueue = null, int _enemyNum = 0)
+    public void EnemySpawn(EnemyType _enemyType, int _enemyNum = 0)
     {
-        // 적 스폰
         GameObject _obj = null;
-        EnemyStatus _enemyStatus = null;
-        if (_enemyType == EnemyType.Slime)
-        {
-            for(int i = 0; i < _enemyNum; i++)
-            {
-                _obj = enemies.Dequeue();
-                _obj.transform.position = _Dirqueue.Dequeue();
-                _enemyStatus = enemyStatus.Dequeue();
-                _enemyStatus.SetEnemyStatus(DatabaseManager.Instance.enemyList[(int)EnemyType.Slime]);
-                _enemyStatus.SetAnimator(slimeAIController.GetComponent<Animator>().runtimeAnimatorController);
-                _enemyStatus.GetComponent<EnemyCustomizer>().SetAIController(slimeAIController);
-                _enemyStatus.GetComponent<EnemyCustomizer>().IsActive = true;
-                _Dirqueue.Enqueue(_obj.transform.position);
-            }
-        }
-        else if(_enemyType == EnemyType.SlimeKing)
-        {
-            _obj.transform.position = new Vector2(0f, 18f);
-            curBoss = _obj;
-        }
-        else if(_enemyType == EnemyType.GoblinArcher)
-        {
-            for (int i = 0; i < _enemyNum; i++)
-            {
+        EnemyCustomizer _enemyCustomizer = null;
 
-            }
+        for (int i = 0; i < _enemyNum; i++)
+        {
+            _obj = enemies.Dequeue();
+            _obj.transform.position = enemyPos.Dequeue();
+            _obj.SetActive(true);
+            _enemyCustomizer = _obj.GetComponent<EnemyCustomizer>();
+            _enemyCustomizer.SetAIController(enemyAIController[(int)_enemyType]);
+            _enemyCustomizer.SetEnemyStatus(DatabaseManager.Instance.enemyList[(int)_enemyType]);
+            _enemyCustomizer.SetAnimator(enemyAIController[(int)_enemyType].GetComponent<Animator>().runtimeAnimatorController);
+            _enemyCustomizer.IsActive = true;
+            enemyPos.Enqueue(_obj.transform.position);
         }
-        _obj.SetActive(true);
-        _obj.GetComponent<EnemyStatus>().Target = building;
+
+
     }
-    public void ReturnEnemy(GameObject _enemy, EnemyType _enemyType)
+    public void BossEnemySpawn(BossEnemyType _bossEnemyType, int _enemyNum = 1)
+    {
+        GameObject _obj = null;
+        EnemyCustomizer _enemyCustomizer = _obj.GetComponent<EnemyCustomizer>();
+
+        _obj.transform.position = new Vector2(0f, 18f);
+        _obj.SetActive(true);
+        _enemyCustomizer = _obj.GetComponent<EnemyCustomizer>();
+        _enemyCustomizer.SetAIController(bossEnemyAIController[(int)_bossEnemyType]);
+        _enemyCustomizer.SetEnemyStatus(DatabaseManager.Instance.enemyList[(int)_bossEnemyType]);
+        _enemyCustomizer.SetAnimator(enemyAIController[(int)_bossEnemyType].GetComponent<Animator>().runtimeAnimatorController);
+        _enemyCustomizer.IsActive = true;
+        curBoss = _obj;
+    }
+    public void ReturnEnemy(GameObject _enemy)
     {
         // 적 다시 돌아오기
-        //if (_enemyType == EnemyType.Slime)
-        //    enemy_Slimes.Enqueue(_enemy);
-        //else if (_enemyType == EnemyType.GoblinArcher)
-        //    enemy_GoblinArcher.Enqueue(_enemy);
-        //else if (_enemyType == EnemyType.SlimeKing)
-        //    enemy_SlimeKing = _enemy;
-        //_enemy.SetActive(false);
+        enemies.Enqueue(_enemy);
+        _enemy.SetActive(false);
+    }
+    public void ReturnBossEnemy(GameObject _enemy)
+    {
+        _enemy.SetActive(false);
     }
 }
