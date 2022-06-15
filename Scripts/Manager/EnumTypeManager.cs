@@ -63,7 +63,10 @@ public enum EnemyType
 {
     Slime,
     GoblinArcher,
-    SlimeKing
+}
+public enum BossEnemyType
+{
+    KingSlime
 }
 public enum AltarState
 {

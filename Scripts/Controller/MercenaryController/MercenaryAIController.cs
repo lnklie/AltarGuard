@@ -54,6 +54,12 @@ public class MercenaryAIController : BaseController
         ani = this.GetComponent<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
     }
+    private void Update()
+    {
+        State();
+        ChangeState();
+        Perception();
+    }
     public void State()
     {
         switch (characterState)
@@ -181,7 +187,7 @@ public class MercenaryAIController : BaseController
         else
             return character.MagicalDamage;
     }
-    public void Attack()
+    public virtual void Attack()
     {
         ActiveLayer(LayerName.AttackLayer);
         ani.SetFloat("AtkType", attackType);

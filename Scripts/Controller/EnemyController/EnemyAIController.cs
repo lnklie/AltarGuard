@@ -52,12 +52,7 @@ public class EnemyAIController : AIController
 
     public override IEnumerator Died(EnemyStatus _status)
     {
-        _status.IsStateChange = false;
-        SetEnabled(_status, false);
-        _status.Rig.velocity = Vector2.zero;
-        yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject, _status.EnemyType);
+        yield return null;
     }
 
     public override void Idle(EnemyStatus _status)
@@ -80,7 +75,6 @@ public class EnemyAIController : AIController
     public override void Perception(EnemyStatus _enemy)
     {
         // 레이를 이용한 인식
-        Debug.Log("레이쏘는중");
         AnimationDirection(_enemy);
         _enemy.SightRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         _enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
@@ -113,6 +107,7 @@ public class EnemyAIController : AIController
     public override void Attack(EnemyStatus _status)
     {
         ActiveLayer(_status.Ani, LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", attackType);
         _status.Rig.velocity = Vector2.zero;
         _status.DelayTime += Time.deltaTime;
     }
@@ -125,5 +120,10 @@ public class EnemyAIController : AIController
         // 애니메이션 방향
         if (_status.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
         else if (_status.Dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public override int AttackTypeDamage(EnemyStatus _status)
+    {
+        return 0;
     }
 }

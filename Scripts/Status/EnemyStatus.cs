@@ -17,7 +17,7 @@ public class EnemyStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    protected Animator ani = null;
+    protected Animator ani;
     public Animator Ani
     {
         get { return ani; }
@@ -35,18 +35,7 @@ public class EnemyStatus : Status
         get { return col; }
         set { col = value; }
     }
-    protected RaycastHit2D atkRangeRay = default;
-    public RaycastHit2D AtkRangeRay
-    {
-        get { return atkRangeRay; }
-        set { atkRangeRay = value; }
-    }
-    protected RaycastHit2D sightRay = default;
-    public RaycastHit2D SightRay
-    {
-        get { return sightRay; }
-        set { sightRay = value; }
-    }
+
     protected RaycastHit2D[] allyRay = default;
     public RaycastHit2D[] AllyRay
     {
@@ -60,7 +49,7 @@ public class EnemyStatus : Status
         set { enemyHitRay = value; }
     }
 
-    private int defeatExp = 0;
+    protected int defeatExp = 0;
     public int DefeatExp
     {
         get { return defeatExp; }
@@ -92,6 +81,7 @@ public class EnemyStatus : Status
     {
         get { return enemyType; }
     }
+
     [SerializeField]
     private EnemyState enemyState;
     public EnemyState EnemyState
@@ -107,87 +97,56 @@ public class EnemyStatus : Status
         set { isKnuckBack = value; }
     }
 
-    private List<int> itemDropKey = new List<int>();
+    protected List<int> itemDropKey = new List<int>();
     public List<int> ItemDropKey
     {
         get { return itemDropKey; }
         set { itemDropKey = value; }
     }
 
-    private List<float> itemDropProb = new List<float>();
+    protected List<float> itemDropProb = new List<float>();
     public List<float> ItemDropProb
     {
         get { return itemDropProb; }
         set { itemDropProb = value; }
     }
 
-    private int damage = 0;
-    public int Damage
-    {
-        get { return damage; }
-        set { damage = value; }
-    }
-
-    private bool isEnemyChange;
+    protected bool isEnemyChange;
     public bool IsEnemyChange
     {
         get { return isEnemyChange; }
         set { isEnemyChange = value; }
     }
-
-
-
+    protected bool isAtk = false;
+    public bool IsAtk
+    {
+        get { return isAtk; }
+        set { isAtk = value; }
+    }
+    [SerializeField]
     private Image[] images = null;
-    private SpriteRenderer spriteRenderer = null;
 
     [SerializeField]
-    private Enemy enemy = null;
-
+    protected Enemy enemy = null;
+    public Enemy Enemy
+    {
+        set { enemy = value; }
+    }
     private void Awake()
     {
-        spriteRenderer = this.GetComponent<SpriteRenderer>();
+
         images = this.GetComponentsInChildren<Image>();
-        ani = this.GetComponent<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
         col = this.GetComponent<CircleCollider2D>();
     }
     private void Update()
     {
-        if (isEnemyChange && enemy != null)
-        {
-            CustomEnemy();
-        }
+
         if (isDamaged)
             UpdateEnemyHp();
     }
 
-    public void CustomEnemy()
-    {
-        isEnemyChange = false;
-        objectName = enemy.objectName;
-        maxHp = enemy.hp;
-        damage = enemy.damage;
-        seeRange = enemy.seeRange;
-        AtkRange = enemy.atkRange;
-        speed = enemy.speed;
-        atkSpeed = enemy.atkSpeed;
-        defensivePower = enemy.defensivePower;
-        arrowSpd = enemy.arrowSpd;
-        defeatExp = enemy.defeatExp;
-        enemyType = enemy.enemyType;
-        spriteRenderer.sprite = enemy.singleSprite;
 
-        itemDropKey.Add(enemy.itemDropKey1);
-        itemDropKey.Add(enemy.itemDropKey2);
-        itemDropKey.Add(enemy.itemDropKey3);
-        itemDropKey.Add(enemy.itemDropKey4);
-        itemDropKey.Add(enemy.itemDropKey5);
-        itemDropProb.Add(enemy.itemDropProb1);
-        itemDropProb.Add(enemy.itemDropProb2);
-        itemDropProb.Add(enemy.itemDropProb3);
-        itemDropProb.Add(enemy.itemDropProb4);
-        itemDropProb.Add(enemy.itemDropProb5);
-    }
     public void UpdateEnemyHp()
     {
         images[1].fillAmount = curHp / (float)maxHp;
@@ -199,16 +158,8 @@ public class EnemyStatus : Status
         return enemy;
     }
 
-    public void SetEnemyStatus(Enemy _enemy)
-    {
-        enemy = _enemy;
-        curHp = maxHp;
-        IsEnemyChange = true;
-    }
-    public void SetAnimator(RuntimeAnimatorController _ani)
-    {
-        ani.runtimeAnimatorController = _ani;
-    }
+
+
     public bool IsDelay()
     {
         if (delayTime >= atkSpeed)

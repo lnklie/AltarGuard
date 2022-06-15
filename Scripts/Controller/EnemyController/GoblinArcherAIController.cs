@@ -8,15 +8,14 @@ using UnityEngine;
  * 파일명 : GoblinArcherAIController.cs
 ==============================
 */
-public class GoblinArcherAIController : RushEnemyAIController
+public class GoblinArcherAIController : EnemyAIController
 {
     private void ShotArrow(EnemyStatus _object)
     {
         // 화살쏘기
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
-            ProjectionSpawner.Instance.ShotArrow(_object, _object.Damage);
-            Debug.Log("현재 화살 수는 " + ProjectionSpawner.Instance.ArrowCount());
+            ProjectionSpawner.Instance.ShotArrow(_object, AttackTypeDamage(_object));
         }
         else
             Debug.Log("화살 없음");

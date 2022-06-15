@@ -196,20 +196,21 @@ public class PlayerController : BaseController
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
             enemy.CurHp -= AttackTypeDamage();
+            Debug.Log("타격");
             
         }
     }
     public RaycastHit2D[] AttackRange()
     {
         // 히트박스를 만들어내고 범위안에 들어온 적들을 반환
-        var hits = Physics2D.CircleCastAll(this.transform.position,1f, lookDir, 1f,LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, character.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
         Debug.DrawRay(this.transform.position, lookDir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
                 EnemyStatus hitsEnemy = hits[i].rigidbody.GetComponent<EnemyStatus>();
-                hitsEnemy.EnemyState = EnemyState.Damaged;
+                hitsEnemy.IsDamaged = true;
             }
         }
         else

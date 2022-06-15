@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
@@ -10,7 +9,9 @@ using UnityEngine;
 */
 public class RushEnemyAIController : EnemyAIController
 {
-    public override void ChangeState( EnemyStatus _status)
+
+
+    public override void ChangeState(EnemyStatus _status)
     {
 
         if (IsDied(_status))
@@ -34,15 +35,26 @@ public class RushEnemyAIController : EnemyAIController
                     if (_status.Target == this.gameObject)
                     {
                         SetState(_status, EnemyState.Idle);
-                        Debug.Log("가만히");
                     }
                     else
                     {
                         SetState(_status, EnemyState.Chase);
-                        Debug.Log("달려라");
                     }
                 }
             }
+        }
+    }
+
+    public bool IsDelay(EnemyStatus _status)
+    {
+        if (_status.DelayTime >= _status.AtkSpeed)
+        {
+            _status.DelayTime = _status.AtkSpeed;
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -92,5 +104,14 @@ public class RushEnemyAIController : EnemyAIController
         }
 
         yield return 0;
+    }
+    public override IEnumerator Died(EnemyStatus _status)
+    {
+        _status.IsStateChange = false;
+        SetEnabled(_status, false);
+        _status.Rig.velocity = Vector2.zero;
+        yield return new WaitForSeconds(2f);
+        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 }

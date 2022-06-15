@@ -20,10 +20,11 @@ public abstract class AIController : BaseController
     public abstract void Damaged(EnemyStatus _enemy);
     public abstract bool IsDied(EnemyStatus _enemy);
 
+    public abstract int AttackTypeDamage(EnemyStatus _status);
+
     public void SetState(EnemyStatus _enemy, EnemyState _enemyState)
     {
         _enemy.EnemyState = _enemyState;
-        Debug.Log("현재상태는 " + _enemy.EnemyState + " 바꾸려는 상태는 " + _enemyState);
         _enemy.IsStateChange = true;
     }
     public void ActiveLayer(Animator _ani,LayerName layerName)
