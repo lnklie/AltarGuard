@@ -7,9 +7,9 @@ public class EnemyCustomizer : MonoBehaviour
     private bool isActive = false;
 
     [SerializeField]
-    private EnemyStatus enemyStatus = null;
+    private RushEnemyStatus rushEnemyStatus = null;
     [SerializeField]
-    private EnemyAIController enemyAIController = null;
+    private RushEnemyAIController rushEnemyAIController = null;
     public bool IsActive
     {
         get { return isActive; }
@@ -17,35 +17,36 @@ public class EnemyCustomizer : MonoBehaviour
     }
     private void Awake()
     {
-        enemyStatus = this.GetComponent<EnemyStatus>();
+        rushEnemyStatus = this.GetComponent<RushEnemyStatus>();
     }
     private void Update()
     {
-        if(enemyAIController != null && isActive)
+        if(rushEnemyAIController != null && isActive)
         {
-            enemyAIController.Perception(enemyStatus);
-            enemyAIController.ChangeState(enemyStatus);
-            enemyAIController.State(enemyStatus);
-            enemyStatus.Distance = enemyStatus.Target.transform.position - this.transform.position;
-            enemyStatus.Dir = enemyStatus.Distance.normalized;
+            rushEnemyAIController.Perception(rushEnemyStatus);
+            rushEnemyAIController.ChangeState(rushEnemyStatus);
+            rushEnemyAIController.State(rushEnemyStatus);
+            rushEnemyStatus.Distance = rushEnemyStatus.Target.transform.position - this.transform.position;
+            rushEnemyStatus.Dir = rushEnemyStatus.Distance.normalized;
         }
     }
     public AIController GetAIController()
     {
-        return enemyAIController;
+        return rushEnemyAIController;
     }
-    public void SetAIController(EnemyAIController _enemyAIController)
+    public void SetAIController(RushEnemyAIController _enemyAIController)
     {
-        enemyAIController = _enemyAIController;
+        RushEnemyAIController _rushEnemyAIController = _enemyAIController;
+        rushEnemyAIController = _rushEnemyAIController;
     }
-    public void SetEnemyStatus(Enemy _enemy)
+    public void SetEnemyStatus(RushEnemy _rushenemy)
     {
-        enemyStatus.Enemy = _enemy;
-        enemyStatus.CurHp = enemyStatus.MaxHp;
-        enemyStatus.IsEnemyChange = true;
+        rushEnemyStatus.RushEnemy = _rushenemy;
+        rushEnemyStatus.CurHp = rushEnemyStatus.MaxHp;
+        rushEnemyStatus.IsEnemyChange = true;
     }
     public void SetAnimator(RuntimeAnimatorController _ani)
     {
-        enemyStatus.Ani.runtimeAnimatorController = _ani; 
+        rushEnemyStatus.Ani.runtimeAnimatorController = _ani; 
     }
 }

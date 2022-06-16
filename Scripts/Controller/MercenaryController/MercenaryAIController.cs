@@ -51,7 +51,7 @@ public class MercenaryAIController : BaseController
         character = this.GetComponent<CharacterStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
         col = this.GetComponent<BoxCollider2D>();
-        ani = this.GetComponent<Animator>();
+        ani = this.GetComponentInChildren<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
     }
     private void Update()

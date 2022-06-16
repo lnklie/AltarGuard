@@ -195,9 +195,9 @@ public class PlayerController : BaseController
         for (int i =0; i < hits.Length; i++)
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-            enemy.CurHp -= AttackTypeDamage();
-            Debug.Log("Å¸°Ý");
-            
+            enemy.CurHp -= Mathf.CeilToInt(AttackTypeDamage() * (1 / (1 + enemy.DefensivePower)));
+            if (enemy.CurHp <= 0)
+                character.CurExp += enemy.DefeatExp;
         }
     }
     public RaycastHit2D[] AttackRange()

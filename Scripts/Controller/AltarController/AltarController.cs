@@ -180,7 +180,6 @@ public class AltarController : BaseController
             if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().IsAlterBuff)
             {
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>());
-                Debug.Log("버프안에 들어옴 " + _raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().ObjectName);
                 BuffUpdate();
             }
         }

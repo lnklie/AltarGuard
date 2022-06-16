@@ -100,7 +100,7 @@ public class Status : MonoBehaviour
     }
 
     [SerializeField]
-    protected float atkSpeed = 0f;
+    protected float atkSpeed = 2f;
     public float AtkSpeed
     {
         get { return atkSpeed; }
@@ -201,6 +201,7 @@ public class Status : MonoBehaviour
     {
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
+
     }
     public IEnumerator HpRegenarate()
     {
@@ -219,13 +220,5 @@ public class Status : MonoBehaviour
                 curHp += hpRegenValue;
             }
         }
-    }
-
-    public virtual void UpdateAbility()
-    {
-        // 상태 업데이트
-        maxHp = 100 + str * 10;
-        maxMp = 100 + wiz * 10;
-        atkSpeed = 2 - dex * 0.1f;
     }
 }

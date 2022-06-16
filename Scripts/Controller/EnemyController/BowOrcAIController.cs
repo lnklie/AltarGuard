@@ -6,6 +6,7 @@ public class BowOrcAIController : RushEnemyAIController
 {
     public override void Attack(EnemyStatus _status)
     {
+        base.Attack(_status);
         if (!IsDelay(_status))
         {
             _status.Ani.SetTrigger("AtkTrigger");

@@ -30,7 +30,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Exp> expList = new List<Exp>();
 
     [Header("Enemy")]
-    public List<Enemy> enemyList = new List<Enemy>();
+    public List<RushEnemy> rushEnemyList = new List<RushEnemy>();
 
     [Header("Stage")]
     public List<Stage> stageList = new List<Stage>();
@@ -240,13 +240,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy")));
-            Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
-            for (var i = 0; i < enemies.Length; i++)
+            RushEnemy[] rushEnemies = JsonHelper.FromJson<RushEnemy>(loadJson);
+            for (var i = 0; i < rushEnemies.Length; i++)
             {
-                enemyList.Add(new Enemy(enemies[i].objectName, enemies[i].enemyKey,enemies[i].hp, enemies[i].str, enemies[i].dex, enemies[i].wiz, enemies[i].seeRange,
-                    enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
-                 enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
-                 enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));
+                rushEnemyList.Add(new RushEnemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey,rushEnemies[i].hp, rushEnemies[i].mp,rushEnemies[i].str, rushEnemies[i].dex, rushEnemies[i].wiz, rushEnemies[i].seeRange,
+                    rushEnemies[i].atkRange, rushEnemies[i].speed, rushEnemies[i].atkSpeed, rushEnemies[i].defeatExp,
+                 rushEnemies[i].itemDropKey1, rushEnemies[i].itemDropKey2, rushEnemies[i].itemDropKey3,rushEnemies[i].itemDropKey4, rushEnemies[i].itemDropKey5, 
+                 rushEnemies[i].itemDropProb1, rushEnemies[i].itemDropProb2, rushEnemies[i].itemDropProb3, rushEnemies[i].itemDropProb4, rushEnemies[i].itemDropProb5));
             }
 
         }
