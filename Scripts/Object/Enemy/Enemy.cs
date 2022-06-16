@@ -13,6 +13,7 @@ public class Enemy : Elements
 {
     public int enemyKey = 0;
     public int hp = 0;
+    public int mp = 0;
     public int str = 0;
     public int dex = 0;
     public int wiz = 0;
@@ -32,15 +33,17 @@ public class Enemy : Elements
     public float itemDropProb3 = 20f;
     public float itemDropProb4 = 20f;
     public float itemDropProb5 = 20f;
-    public Sprite singleSprite = null;
-    public EnemyType enemyType = EnemyType.Slime;
-    public Enemy(string _name, int _enemyKey, int _hp,int _str, int _dex, int _wiz, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
+    public Enemy(string _name, int _enemyKey, int _hp,int _mp, int _str, int _dex, int _wiz, float _seeRange, float _atkRange, float _speed, float _atkSpeed, int _defeatExp, 
         int _itemDropKey1, int _itemDropKey2, int _itemDropKey3, int _itemDropKey4, int _itemDropKey5,
         float _itemDropProb1, float _itemDropProb2, float _itemDropProb3, float _itemDropProb4, float _itemDropProb5)
     {
         objectName = _name;
-        enemyKey = _enemyKey; 
+        enemyKey = _enemyKey;
+        str = _str;
+        dex = _dex;
+        wiz = _wiz;
         hp = _hp;
+        mp = _mp;
         seeRange = _seeRange;
         atkRange = _atkRange;
         speed = _speed;
@@ -56,6 +59,5 @@ public class Enemy : Elements
         itemDropProb3 = _itemDropProb3;
         itemDropProb4 = _itemDropProb4;
         itemDropProb5 = _itemDropProb5;
-        singleSprite = Resources.Load("Sprites/14_Enemy/" + objectName, typeof(Sprite)) as Sprite;
     }
 }

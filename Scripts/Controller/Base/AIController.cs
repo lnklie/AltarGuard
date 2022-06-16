@@ -22,6 +22,8 @@ public abstract class AIController : BaseController
 
     public abstract int AttackTypeDamage(EnemyStatus _status);
 
+     
+
     public void SetState(EnemyStatus _enemy, EnemyState _enemyState)
     {
         _enemy.EnemyState = _enemyState;
