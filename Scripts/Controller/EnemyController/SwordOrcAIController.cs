@@ -19,7 +19,6 @@ public class SwordOrcAIController : RushEnemyAIController
     }
     public RaycastHit2D[] AttackRange(EnemyStatus _status)
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, _status.Dir, 1f, LayerMask.GetMask("Ally"));
         Debug.DrawRay(this.transform.position, _status.Dir, Color.red, 1f);
         if (hits.Length > 0)
         {
@@ -29,7 +28,7 @@ public class SwordOrcAIController : RushEnemyAIController
             }
         }
         else
-            Debug.Log("¾Æ¹«°Íµµ ¾øÀ½");
+            Debug.Log("Â¾Ã†Â¹Â«Â°ÃÂµÂµ Â¾Ã¸Ã€Â½");
         return hits;
     }
     public void EnemyAttack(RaycastHit2D[] hits, EnemyStatus _status)
