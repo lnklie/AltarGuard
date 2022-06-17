@@ -62,6 +62,7 @@ public class Arrow : MonoBehaviour
     private void Shot()
     {
         // 화살 쏘기
+        Debug.Log("화살 간드아");
         rig.velocity = dir * spd;
         durationTime += Time.deltaTime;
         AngleModification();
@@ -75,7 +76,7 @@ public class Arrow : MonoBehaviour
                 {
                     EnemyStatus hitObject = ray.collider.GetComponent<EnemyStatus>();
                     MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
-                    hitObject.CurHp -= dmg;
+                    hitObject.CurHp -= ReviseDamage(dmg,hitObject.DefensivePower);
                     hitObject.IsDamaged = true;
                     mercenary.IsAtk = true;
                     if (archer.GetComponent<MercenaryAIController>().IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
@@ -98,6 +99,11 @@ public class Arrow : MonoBehaviour
             ProjectionSpawner.Instance.ReturnArrow(this);
             durationTime = 0f;
         }
+    }
+
+    public int ReviseDamage(int _damage, int _depensivePower)
+    {
+        return Mathf.CeilToInt(_damage * (1 / (1 + _depensivePower)));
     }
     private bool IsEnemy(GameObject _archer, GameObject _hitObject)
     {

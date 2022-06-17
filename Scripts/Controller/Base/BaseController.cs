@@ -23,4 +23,25 @@ public class BaseController : MonoBehaviour
         get { return attackType; }
         set { attackType = value; }
     }
+
+
+    public int ReviseDamage(int _damage, int _depensivePower)
+    {
+        return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
+    }
+    public float GetDistance(Vector2 _start, Vector2 _end)
+    {
+        // 대상과의 거리 측정
+        float x1 = _start.x;
+        float y1 = _start.y;
+        float x2 = _end.x;
+        float y2 = _end.y;
+        float width = x2 - x1;
+        float height = y2 - y1;
+
+        float distance = width * width + height * height;
+        distance = Mathf.Sqrt(distance);
+
+        return distance;
+    }
 }

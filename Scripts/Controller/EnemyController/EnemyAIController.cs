@@ -11,11 +11,14 @@ using UnityEngine.UI;
 */
 public class EnemyAIController : AIController
 {
+    
     public override void ChangeState(EnemyStatus _status)
     {}
 
     public override void State(EnemyStatus _status)
     {
+        _status.Distance = _status.Target.transform.position - this.transform.position;
+        _status.Dir = _status.Distance.normalized;
         switch (_status.EnemyState)
         {
             case EnemyState.Idle:
@@ -25,7 +28,7 @@ public class EnemyAIController : AIController
                 Chase(_status);
                 break;
             case EnemyState.Damaged:
-                Damaged(_status);
+                Stiffen(_status);
                 break;
             case EnemyState.Attack:
                 Attack(_status);
@@ -45,14 +48,19 @@ public class EnemyAIController : AIController
     public override void Damaged(EnemyStatus _status)
     {
         _status.IsStateChange = false;
-        _status.DmgCombo++;
         _status.StiffenTime = 0f;
         _status.IsDamaged = true;
     }
 
     public override IEnumerator Died(EnemyStatus _status)
     {
-        yield return null;
+        ActiveLayer(_status.Ani, LayerName.IdleLayer);
+        _status.IsStateChange = false;
+        SetEnabled(_status, false);
+        _status.Rig.velocity = Vector2.zero;
+        yield return new WaitForSeconds(2f);
+        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 
     public override void Idle(EnemyStatus _status)
@@ -65,10 +73,10 @@ public class EnemyAIController : AIController
 
     public virtual void Stiffen(EnemyStatus _status)
     {
-        _status.StiffenTime += Time.deltaTime;
-        if (_status.StiffenTime >= _status.MaxStiffenTime)
+        float _stiffenTime = 0f;
+        _stiffenTime += Time.deltaTime;
+        if (_stiffenTime >= 1f)
         {
-            _status.DmgCombo = 0;
             _status.IsDamaged = false;
         }
     }
@@ -77,13 +85,15 @@ public class EnemyAIController : AIController
         // 레이를 이용한 인식
         AnimationDirection(_enemy);
         _enemy.SightRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        _enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
-        _enemy.AllyRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        //_enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
+        _enemy.AltarRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        _enemy.EnemyHitRay = Physics2D.BoxCast(_enemy.transform.position,Vector2.one, 90f,_enemy.Dir, 1f, LayerMask.GetMask("Enemy"));
+        Debug.DrawRay(_enemy.transform.position, _enemy.Dir*2f,Color.cyan);
         GameObject altar = null;
-        for(int i =0; i < _enemy.AllyRay.Length; i++)
+        for(int i =0; i < _enemy.AltarRay.Length; i++)
         {
-            if (_enemy.AllyRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = _enemy.AllyRay[i].collider.gameObject;
+            if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
+                altar = _enemy.AltarRay[i].collider.gameObject;
         }
 
         if (!altar)
@@ -96,7 +106,13 @@ public class EnemyAIController : AIController
                 _enemy.Target = altar;
         }
     }
-
+    public bool IsAtkRange(EnemyStatus _status)
+    {
+        if (GetDistance(_status.transform.position, _status.Target.transform.position) < _status.AtkRange)
+            return true;
+        else
+            return false;
+    }
     public override bool IsDied(EnemyStatus _status)
     {
         if (_status.CurHp <= 0)

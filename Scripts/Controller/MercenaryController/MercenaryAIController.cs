@@ -51,7 +51,7 @@ public class MercenaryAIController : BaseController
         character = this.GetComponent<CharacterStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
         col = this.GetComponent<BoxCollider2D>();
-        ani = this.GetComponent<Animator>();
+        ani = this.GetComponentInChildren<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
     }
     private void Update()
@@ -253,7 +253,7 @@ public class MercenaryAIController : BaseController
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
 
-            enemy.CurHp -= AttackTypeDamage();
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
             isAtk = true;
             if (IsLastHit(enemy))
             {

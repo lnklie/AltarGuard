@@ -11,7 +11,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
 
-
+    [SerializeField]
     private bool isStart = false;
     public bool IsStart
     {

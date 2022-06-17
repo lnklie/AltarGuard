@@ -85,8 +85,8 @@ public class Status : MonoBehaviour
     }
 
     [SerializeField]
-    protected float defensivePower = 0;
-    public float DefensivePower
+    protected int defensivePower = 0;
+    public int DefensivePower
     {
         get { return defensivePower; }
         set { defensivePower = value; }
@@ -100,7 +100,7 @@ public class Status : MonoBehaviour
     }
 
     [SerializeField]
-    protected float atkSpeed = 0f;
+    protected float atkSpeed = 2f;
     public float AtkSpeed
     {
         get { return atkSpeed; }
@@ -115,7 +115,7 @@ public class Status : MonoBehaviour
         set { dir = value; }
     }
 
-    protected float arrowSpd = 1f;
+    protected float arrowSpd = 2f;
     public float ArrowSpd
     {
         get { return arrowSpd; }
@@ -177,13 +177,13 @@ public class Status : MonoBehaviour
         get { return luck; }
         set { luck = value; }
     }
-
-    protected RaycastHit2D atkRangeRay = default;
-    public RaycastHit2D AtkRangeRay
-    {
-        get { return atkRangeRay; }
-        set { atkRangeRay = value; }
-    }
+    //protected RaycastHit2D atkRangeRay = default;
+    //public RaycastHit2D AtkRangeRay
+    //{
+    //    get { return atkRangeRay; }
+    //    set { atkRangeRay = value; }
+    //}
+    [SerializeField]
     protected RaycastHit2D sightRay = default;
     public RaycastHit2D SightRay
     {
@@ -201,6 +201,7 @@ public class Status : MonoBehaviour
     {
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
+
     }
     public IEnumerator HpRegenarate()
     {
@@ -219,13 +220,5 @@ public class Status : MonoBehaviour
                 curHp += hpRegenValue;
             }
         }
-    }
-
-    public virtual void UpdateAbility()
-    {
-        // 상태 업데이트
-        maxHp = 100 + str * 10;
-        maxMp = 100 + wiz * 10;
-        atkSpeed = 2 - dex * 0.1f;
     }
 }

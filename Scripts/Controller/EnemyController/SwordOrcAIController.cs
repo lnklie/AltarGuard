@@ -19,13 +19,13 @@ public class SwordOrcAIController : RushEnemyAIController
     }
     public RaycastHit2D[] AttackRange(EnemyStatus _status)
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, _status.Dir, 1f, LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.Dir, 1f, LayerMask.GetMask("Ally"));
         Debug.DrawRay(this.transform.position, _status.Dir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                hits[i].rigidbody.GetComponent<EnemyStatus>().EnemyState = EnemyState.Damaged;
+                hits[i].rigidbody.GetComponent<Status>().IsDamaged = true;
             }
         }
         else
@@ -36,9 +36,9 @@ public class SwordOrcAIController : RushEnemyAIController
     {
         for (int i = 0; i < hits.Length; i++)
         {
-            EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
+            Status ally = hits[i].collider.GetComponent<Status>();
 
-            enemy.CurHp -= AttackTypeDamage(_status);
+            ally.CurHp -= ReviseDamage(AttackTypeDamage(_status),ally.DefensivePower);
             _status.IsAtk = true;
         }
     }

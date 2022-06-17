@@ -144,21 +144,7 @@ public class AltarController : BaseController
         }
 
     }
-    private float GetDistance(Vector2 _start, Vector2 _end)
-    {
-        // 대상과의 거리 측정
-        float x1 = _start.x;
-        float y1 = _start.y;
-        float x2 = _end.x;
-        float y2 = _end.y;
-        float width = x2 - x1;
-        float height = y2 - y1;
 
-        float distance = width * width + height * height;
-        distance = Mathf.Sqrt(distance);
-
-        return distance;
-    }
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
@@ -180,7 +166,6 @@ public class AltarController : BaseController
             if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().IsAlterBuff)
             {
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>());
-                Debug.Log("버프안에 들어옴 " + _raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().ObjectName);
                 BuffUpdate();
             }
         }

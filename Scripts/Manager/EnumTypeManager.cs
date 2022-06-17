@@ -61,8 +61,9 @@ public enum BossState
 }
 public enum EnemyType
 {
-    Slime,
-    GoblinArcher,
+    SwordOrc,
+    BowOrc,
+    WizardOrc
 }
 public enum BossEnemyType
 {
