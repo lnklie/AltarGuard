@@ -90,10 +90,10 @@ public class EnemyAIController : AIController
         _enemy.EnemyHitRay = Physics2D.BoxCast(_enemy.transform.position,Vector2.one, 90f,_enemy.Dir, 1f, LayerMask.GetMask("Enemy"));
         Debug.DrawRay(_enemy.transform.position, _enemy.Dir*2f,Color.cyan);
         GameObject altar = null;
-        for(int i =0; i < _enemy.AllyRay.Length; i++)
+        for(int i =0; i < _enemy.AltarRay.Length; i++)
         {
-            if (_enemy.AllyRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = _enemy.AllyRay[i].collider.gameObject;
+            if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
+                altar = _enemy.AltarRay[i].collider.gameObject;
         }
 
         if (!altar)
@@ -106,7 +106,13 @@ public class EnemyAIController : AIController
                 _enemy.Target = altar;
         }
     }
-
+    public bool IsAtkRange(EnemyStatus _status)
+    {
+        if (GetDistance(_status.transform.position, _status.Target.transform.position) < _status.AtkRange)
+            return true;
+        else
+            return false;
+    }
     public override bool IsDied(EnemyStatus _status)
     {
         if (_status.CurHp <= 0)

@@ -25,7 +25,7 @@ public class BossEnemyAIController : EnemyAIController
             }
             else
             {
-                if (_status.AtkRangeRay)
+                if (IsAtkRange(_status))
                 {
                     if (!_status.IsDelay()) 
                     {

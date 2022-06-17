@@ -85,8 +85,8 @@ public class Status : MonoBehaviour
     }
 
     [SerializeField]
-    protected float defensivePower = 0;
-    public float DefensivePower
+    protected int defensivePower = 0;
+    public int DefensivePower
     {
         get { return defensivePower; }
         set { defensivePower = value; }
@@ -115,7 +115,7 @@ public class Status : MonoBehaviour
         set { dir = value; }
     }
 
-    protected float arrowSpd = 1f;
+    protected float arrowSpd = 2f;
     public float ArrowSpd
     {
         get { return arrowSpd; }
@@ -177,13 +177,13 @@ public class Status : MonoBehaviour
         get { return luck; }
         set { luck = value; }
     }
-
-    protected RaycastHit2D atkRangeRay = default;
-    public RaycastHit2D AtkRangeRay
-    {
-        get { return atkRangeRay; }
-        set { atkRangeRay = value; }
-    }
+    //protected RaycastHit2D atkRangeRay = default;
+    //public RaycastHit2D AtkRangeRay
+    //{
+    //    get { return atkRangeRay; }
+    //    set { atkRangeRay = value; }
+    //}
+    [SerializeField]
     protected RaycastHit2D sightRay = default;
     public RaycastHit2D SightRay
     {

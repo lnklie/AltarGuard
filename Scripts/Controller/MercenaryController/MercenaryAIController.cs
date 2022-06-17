@@ -253,7 +253,7 @@ public class MercenaryAIController : BaseController
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
 
-            enemy.CurHp -= AttackTypeDamage();
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
             isAtk = true;
             if (IsLastHit(enemy))
             {

@@ -37,7 +37,7 @@ public class RushEnemyAIController : EnemyAIController
             }
             else
             {
-                if (_status.AtkRangeRay)
+                if (IsAtkRange(_status))
                 {
                     SetState(_status, EnemyState.Attack);
                 }
@@ -55,7 +55,7 @@ public class RushEnemyAIController : EnemyAIController
             }
         }
     }
-
+    
     public bool IsDelay(EnemyStatus _status)
     {
         if (_status.DelayTime >= _status.AtkSpeed)

@@ -60,7 +60,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public  void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // Â´Ã‰Â·Ã‚ Â¾Ã·ÂµÂ¥Ã€ÃŒÃ†Â®
         maxHp = rushEnemy.hp + str * 10;
         maxMp = rushEnemy.mp + wiz * 10;
         atkSpeed = 3 - dex * 0.1f;
