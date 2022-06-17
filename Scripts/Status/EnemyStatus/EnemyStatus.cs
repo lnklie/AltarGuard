@@ -11,7 +11,7 @@ using UnityEngine.UI;
 */
 public class EnemyStatus : Status
 {
-    
+    [SerializeField]
     protected float delayTime = 0f;
     public float DelayTime
     {
@@ -39,7 +39,7 @@ public class EnemyStatus : Status
     }
 
     protected RaycastHit2D[] allyRay = default;
-    public RaycastHit2D[] AllyRay
+    public RaycastHit2D[] AltarRay
     {
         get { return allyRay; }
         set { allyRay = value; }

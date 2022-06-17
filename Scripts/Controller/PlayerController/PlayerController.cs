@@ -195,7 +195,7 @@ public class PlayerController : BaseController
         for (int i =0; i < hits.Length; i++)
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-            
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
             if (enemy.CurHp <= 0)
                 character.CurExp += enemy.DefeatExp;
         }

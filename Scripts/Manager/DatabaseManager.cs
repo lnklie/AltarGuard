@@ -243,10 +243,12 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             RushEnemy[] rushEnemies = JsonHelper.FromJson<RushEnemy>(loadJson);
             for (var i = 0; i < rushEnemies.Length; i++)
             {
-                rushEnemyList.Add(new RushEnemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey,rushEnemies[i].hp, rushEnemies[i].mp,rushEnemies[i].str, rushEnemies[i].dex, rushEnemies[i].wiz, rushEnemies[i].seeRange,
-                    rushEnemies[i].atkRange, rushEnemies[i].speed, rushEnemies[i].atkSpeed, rushEnemies[i].defeatExp,
-                 rushEnemies[i].itemDropKey1, rushEnemies[i].itemDropKey2, rushEnemies[i].itemDropKey3,rushEnemies[i].itemDropKey4, rushEnemies[i].itemDropKey5, 
-                 rushEnemies[i].itemDropProb1, rushEnemies[i].itemDropProb2, rushEnemies[i].itemDropProb3, rushEnemies[i].itemDropProb4, rushEnemies[i].itemDropProb5));
+                rushEnemyList.Add(new RushEnemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey, rushEnemies[i].hp, rushEnemies[i].mp,
+                    rushEnemies[i].str, rushEnemies[i].dex, rushEnemies[i].wiz, rushEnemies[i].seeRange,
+                   rushEnemies[i].speed, rushEnemies[i].defeatExp,
+                 rushEnemies[i].itemDropKey1, rushEnemies[i].itemDropKey2, rushEnemies[i].itemDropKey3, rushEnemies[i].itemDropKey4, rushEnemies[i].itemDropKey5,
+                 rushEnemies[i].itemDropProb1, rushEnemies[i].itemDropProb2, rushEnemies[i].itemDropProb3, rushEnemies[i].itemDropProb4, rushEnemies[i].itemDropProb5,
+                 rushEnemies[i].helmetKey, rushEnemies[i].armorKey, rushEnemies[i].pantKey, rushEnemies[i].weaponKey));
             }
 
         }
