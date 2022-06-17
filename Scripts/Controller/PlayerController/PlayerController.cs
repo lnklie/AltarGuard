@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : PlayerController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : PlayerController.cs
 ==============================
 */
 public class PlayerController : BaseController
@@ -111,13 +111,13 @@ public class PlayerController : BaseController
     }
     public void PlayerRun()
     {
-        // ¿òÁ÷ÀÓ ½ÇÇà
+        // ì›€ì§ì„ ì‹¤í–‰
         ActiveLayer(LayerName.WalkLayer);
         rig.velocity = character.Speed * dir;
     }
     public void InputKey()
     {
-        // Å°ÀÔ·Â
+        // í‚¤ì…ë ¥
         dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -142,7 +142,7 @@ public class PlayerController : BaseController
     }
     public bool IsMove()
     {
-        // ¿òÁ÷ÀÌ°í ÀÖ´ÂÁö È®ÀÎ
+        // ì›€ì§ì´ê³  ìˆëŠ”ì§€ í™•ì¸
         if (Mathf.Abs(dir.x) > 0 || Mathf.Abs(dir.y) > 0)
             return true;
         else
@@ -158,7 +158,7 @@ public class PlayerController : BaseController
     }
     private int AttackTypeDamage()
     {
-        // ¹°¸® µ¥¹ÌÁö¿Í ¸¶¹ı µ¥¹ÌÁö ±¸ºĞ
+        // ë¬¼ë¦¬ ë°ë¯¸ì§€ì™€ ë§ˆë²• ë°ë¯¸ì§€ êµ¬ë¶„
         if (attackType < 1f)
             return character.PhysicalDamage;
         else
@@ -166,7 +166,7 @@ public class PlayerController : BaseController
     }
     private void PlayerAttack(float _weaponType)
     {
-        // °ø°İ½ÇÇà
+        // ê³µê²©ì‹¤í–‰
         rig.velocity = Vector2.zero;
         ActiveLayer(LayerName.AttackLayer);
         ani.SetFloat("AtkType", _weaponType);
@@ -176,13 +176,13 @@ public class PlayerController : BaseController
     }
     private IEnumerator AttackState()
     {
-        // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
+        // ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
         ani.SetTrigger("AtkTrigger");
         delayTime = 0f;
         isAtk = true;
         while (!ani.GetCurrentAnimatorStateInfo(2).IsName("PlayerAttack") )
         {
-            //ÀüÈ¯ ÁßÀÏ ¶§ ½ÇÇàµÇ´Â ºÎºĞ
+            //ì „í™˜ ì¤‘ì¼ ë•Œ ì‹¤í–‰ë˜ëŠ” ë¶€ë¶„
             if(isAtk)
                 DamageEnemy(AttackRange());
             yield return null;
@@ -191,7 +191,7 @@ public class PlayerController : BaseController
     }
     public void DamageEnemy(RaycastHit2D[] hits)
     {
-        // ¹üÀ§¾È¿¡ ÀÖ´Â Àûµé¿¡°Ô µ¥¹ÌÁö
+        // ë²”ìœ„ì•ˆì— ìˆëŠ” ì ë“¤ì—ê²Œ ë°ë¯¸ì§€
         for (int i =0; i < hits.Length; i++)
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
@@ -203,7 +203,7 @@ public class PlayerController : BaseController
     }
     public RaycastHit2D[] AttackRange()
     {
-        // È÷Æ®¹Ú½º¸¦ ¸¸µé¾î³»°í ¹üÀ§¾È¿¡ µé¾î¿Â ÀûµéÀ» ¹İÈ¯
+        // íˆíŠ¸ë°•ìŠ¤ë¥¼ ë§Œë“¤ì–´ë‚´ê³  ë²”ìœ„ì•ˆì— ë“¤ì–´ì˜¨ ì ë“¤ì„ ë°˜í™˜
         var hits = Physics2D.CircleCastAll(this.transform.position, character.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
         Debug.DrawRay(this.transform.position, lookDir, Color.red, 1f);
         if (hits.Length > 0)
@@ -215,7 +215,7 @@ public class PlayerController : BaseController
             }
         }
         else
-            Debug.Log("¾Æ¹«°Íµµ ¾øÀ½");
+            Debug.Log("ì•„ë¬´ê²ƒë„ ì—†ìŒ");
         return hits;
     }
     private void AquireRay()

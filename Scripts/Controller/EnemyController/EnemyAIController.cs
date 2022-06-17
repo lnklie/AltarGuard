@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnemyAIController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ìž‘ì„±ìž : Inklie
+ * íŒŒì¼ëª… : EnemyAIController.cs
 ==============================
 */
 public class EnemyAIController : AIController
@@ -82,7 +82,7 @@ public class EnemyAIController : AIController
     }
     public override void Perception(EnemyStatus _enemy)
     {
-        // ·¹ÀÌ¸¦ ÀÌ¿ëÇÑ ÀÎ½Ä
+        // ë ˆì´ë¥¼ ì´ìš©í•œ ì¸ì‹
         AnimationDirection(_enemy);
         _enemy.SightRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         //_enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
@@ -133,7 +133,7 @@ public class EnemyAIController : AIController
     }
     public virtual void AnimationDirection(EnemyStatus _status)
     {
-        // ¾Ö´Ï¸ÞÀÌ¼Ç ¹æÇâ
+        // ì• ë‹ˆë©”ì´ì…˜ ë°©í–¥
         if (_status.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
         else if (_status.Dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
     }

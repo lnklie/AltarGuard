@@ -44,6 +44,7 @@ public class RushEnemyStatus : EnemyStatus
         atkRange = equipmentController.EquipItems[7].atkRange;
         physicalDamage = equipmentController.EquipItems[7].physicalDamage;
         magicalDamage = equipmentController.EquipItems[7].magicalDamage;
+
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -59,7 +60,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public  void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // Â´Ã‰Â·Ã‚ Â¾Ã·ÂµÂ¥Ã€ÃŒÃ†Â®
         maxHp = rushEnemy.hp + str * 10;
         maxMp = rushEnemy.mp + wiz * 10;
         atkSpeed = 3 - dex * 0.1f;
