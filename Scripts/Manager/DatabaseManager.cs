@@ -11,7 +11,6 @@ using UnityEngine;
 
 public class DatabaseManager : SingletonManager<DatabaseManager>
 {
-    private string[] path = {"1","2"};
     [Header("Items")]
     public List<Hair> hairList = new List<Hair>();
     public List<FaceHair> faceHairList = new List<FaceHair>();
@@ -26,14 +25,18 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Wand> wandList = new List<Wand>();
     public List<Consumables> consumablesList = new List<Consumables>();
     public List<Miscellaneous> miscellaneousList = new List<Miscellaneous>();
+
     [Header("Exp")]
     public List<Exp> expList = new List<Exp>();
 
     [Header("Enemy")]
-    public List<Enemy> enemyList = new List<Enemy>();
+    public List<RushEnemy> rushEnemyList = new List<RushEnemy>();
+
+    [Header("Stage")]
+    public List<Stage> stageList = new List<Stage>();
     private void Awake()
     {
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFiles", Application.persistentDataPath + "/JsonFiles");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
         JsonLoad();
     }
     string fixJson(string value)
@@ -41,9 +44,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         value = "{\"Items\":" + value + "}";
         return value;
     }
-    private string CombinePath(string _folderName)
+    private string CombinePath(string _excelName)
     {
-        return Application.persistentDataPath + "/JsonFiles/"+_folderName +".json";
+        return Application.dataPath + "/JsonFile/" + _excelName +".json";
     }
 
     public void JsonLoad()
@@ -156,7 +159,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                swordList.Add(new Sword(items[i].itemKey, items[i].itemName,items[i].attackType,items[i].weaponType, items[i].physicalDamage,items[i].magicalDamage,items[i].atkRange,items[i].atkDistance));
+                swordList.Add(new Sword(items[i].itemKey, items[i].itemName,items[i].attackType,items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed));
             }
 
         }
@@ -170,7 +173,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower));
+                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed));
             }
 
         }
@@ -184,7 +187,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance));
+                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed));
             }
 
         }
@@ -198,7 +201,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance));
+                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed));
             }
 
         }
@@ -230,20 +233,22 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             }
 
         }
-        if (!File.Exists(CombinePath("13_Enemy")))
+        if (!File.Exists(CombinePath("Enemy")))
         {
             Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("13_Enemy")));
-            Enemy[] enemies = JsonHelper.FromJson<Enemy>(loadJson);
-            for (var i = 0; i < enemies.Length; i++)
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy")));
+            RushEnemy[] rushEnemies = JsonHelper.FromJson<RushEnemy>(loadJson);
+            for (var i = 0; i < rushEnemies.Length; i++)
             {
-                enemyList.Add(new Enemy(enemies[i].objectName, enemies[i].hp, enemies[i].damage, enemies[i].seeRange,
-                    enemies[i].atkRange, enemies[i].speed, enemies[i].atkSpeed, enemies[i].defeatExp,
-                 enemies[i].itemDropKey1, enemies[i].itemDropKey2, enemies[i].itemDropKey3,enemies[i].itemDropKey4, enemies[i].itemDropKey5, 
-                 enemies[i].itemDropProb1, enemies[i].itemDropProb2, enemies[i].itemDropProb3, enemies[i].itemDropProb4, enemies[i].itemDropProb5));
+                rushEnemyList.Add(new RushEnemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey, rushEnemies[i].enemyType, rushEnemies[i].hp, rushEnemies[i].mp,
+                    rushEnemies[i].str, rushEnemies[i].dex, rushEnemies[i].wiz, rushEnemies[i].seeRange,
+                   rushEnemies[i].speed, rushEnemies[i].defeatExp,
+                 rushEnemies[i].itemDropKey1, rushEnemies[i].itemDropKey2, rushEnemies[i].itemDropKey3,rushEnemies[i].itemDropKey4, rushEnemies[i].itemDropKey5, 
+                 rushEnemies[i].itemDropProb1, rushEnemies[i].itemDropProb2, rushEnemies[i].itemDropProb3, rushEnemies[i].itemDropProb4, rushEnemies[i].itemDropProb5,
+                 rushEnemies[i].helmetKey, rushEnemies[i].armorKey, rushEnemies[i].pantKey, rushEnemies[i].weaponKey));
             }
 
         }
@@ -258,6 +263,19 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < exp.Length; i++)
             {
                 expList.Add(new Exp(exp[i].lv, exp[i].exp));
+            }
+        }
+        if (!File.Exists(CombinePath("Stage")))
+        {
+            Debug.Log("경로에 스테이지 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Stage")));
+            Stage[] stage = JsonHelper.FromJson<Stage>(loadJson);
+            for (var i = 0; i < stage.Length; i++)
+            {
+                stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
     }
@@ -359,5 +377,17 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 break;
         }
         return _item;
+    }
+
+    public RushEnemy SelectRushEnemy(int _key)
+    {
+        RushEnemy _enemy = null;
+
+        for (int i = 0; i < rushEnemyList.Count; i++)
+        {
+            if (_key == rushEnemyList[i].enemyKey)
+                _enemy = rushEnemyList[i];
+        }
+        return _enemy;
     }
 }

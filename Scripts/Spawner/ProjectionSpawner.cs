@@ -10,47 +10,40 @@ using UnityEngine;
 */
 public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
 {
-    private Queue<GameObject> arrows = new Queue<GameObject>();
-    public Queue<GameObject> Arrows
-    {
-        get { return arrows; }
-        set { arrows = value; }
-    }
-
+    private Queue<Arrow> arrows = new Queue<Arrow>();
     [SerializeField] 
-    private GameObject arrowPrefab = null;
+    private Arrow arrowPrefab = null;
 
     private void Start()
     {
-        for (int i = 0; i < 300; i++)
+        for (int i = 0; i < 100; i++)
         {
-            GameObject arrow = Instantiate(arrowPrefab, this.transform);
+            Arrow arrow = Instantiate(arrowPrefab, this.transform);
             arrows.Enqueue(arrow);
-            arrow.SetActive(false);
+            arrow.gameObject.SetActive(false);
         }
     }
     public void ShotArrow(Status _gameObject,int _damage)
     {
-        GameObject shotArrow = Arrows.Dequeue();
-        shotArrow.transform.position = _gameObject.gameObject.transform.position;
-        Arrow arrow = shotArrow.GetComponent<Arrow>();
+        Arrow arrow = arrows.Dequeue();
+        arrow.gameObject.SetActive(true);
+        arrow.gameObject.transform.position = _gameObject.gameObject.transform.position;
+        arrow.gameObject.transform.parent = _gameObject.transform;
         arrow.Archer = _gameObject.gameObject;
         arrow.Dir = _gameObject.Dir;
         arrow.Spd = _gameObject.ArrowSpd;
         arrow.Dmg = _damage;
-        arrow.gameObject.SetActive(true);
     }
     public int ArrowCount()
     {
         // 화살 수 반환
         return arrows.Count;
     }
-    public void ReturnArrow(GameObject _arrow)
+    public void ReturnArrow(Arrow _arrow)
     {
-        // 화살 돌아오기
-        _arrow.SetActive(false);
-        _arrow.GetComponent<Arrow>().InitArrow();
         arrows.Enqueue(_arrow);
-        Debug.Log("화살 돌아오기 " + ArrowCount());
+        _arrow.GetComponent<Arrow>().InitArrow();
+        _arrow.transform.position = this.transform.position;
+        _arrow.transform.parent = this.transform;
     }
 }

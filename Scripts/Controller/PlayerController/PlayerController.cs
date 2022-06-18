@@ -10,7 +10,7 @@ using UnityEngine;
 */
 public class PlayerController : BaseController
 {
-    private CharacterStatus statusController = null;
+    private CharacterStatus character = null;
     private SpriteRenderer bodySprites = null;
     private Animator ani = null;
     private Rigidbody2D rig = null;
@@ -41,7 +41,7 @@ public class PlayerController : BaseController
     private CharacterState characterState = CharacterState.Idle;
     private void Awake()
     {
-        statusController = this.GetComponent<CharacterStatus>();
+        character = this.GetComponent<CharacterStatus>();
         ani = GetComponentInChildren<Animator>();
         rig = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
@@ -67,7 +67,7 @@ public class PlayerController : BaseController
         }
         else
         {
-            if (isDamaged)
+            if (character.IsDamaged)
                 StartCoroutine(Blink());
 
             if (!IsMove())
@@ -83,7 +83,7 @@ public class PlayerController : BaseController
     public void CurState()
     {
         txtMesh.text = characterState.ToString();
-        if(delayTime < statusController.AtkSpeed)
+        if(delayTime < character.AtkSpeed)
             delayTime += Time.deltaTime;
         AnimationDirection();
 
@@ -113,7 +113,7 @@ public class PlayerController : BaseController
     {
         // 움직임 실행
         ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = statusController.Speed * dir;
+        rig.velocity = character.Speed * dir;
     }
     public void InputKey()
     {
@@ -150,7 +150,7 @@ public class PlayerController : BaseController
     }
     public bool IsDied()
     {
-        int hp = statusController.CurHp;
+        int hp = character.CurHp;
         if (hp <= 0)
             return true;
         else
@@ -160,9 +160,9 @@ public class PlayerController : BaseController
     {
         // 물리 데미지와 마법 데미지 구분
         if (attackType < 1f)
-            return statusController.PhysicalDamage;
+            return character.PhysicalDamage;
         else
-            return statusController.MagicalDamage;
+            return character.MagicalDamage;
     }
     private void PlayerAttack(float _weaponType)
     {
@@ -195,21 +195,23 @@ public class PlayerController : BaseController
         for (int i =0; i < hits.Length; i++)
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-            enemy.CurHp -= AttackTypeDamage();
-            
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
+
+            if (enemy.CurHp <= 0)
+                character.CurExp += enemy.DefeatExp;
         }
     }
     public RaycastHit2D[] AttackRange()
     {
         // 히트박스를 만들어내고 범위안에 들어온 적들을 반환
-        var hits = Physics2D.CircleCastAll(this.transform.position,1f, lookDir, 1f,LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, character.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
         Debug.DrawRay(this.transform.position, lookDir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                AIController hitsEnemy = hits[i].rigidbody.GetComponent<AIController>();
-                hitsEnemy.Damaged();
+                EnemyStatus hitsEnemy = hits[i].rigidbody.GetComponent<EnemyStatus>();
+                hitsEnemy.IsDamaged = true;
             }
         }
         else
@@ -231,7 +233,7 @@ public class PlayerController : BaseController
     }
     public bool IsDelay()
     {
-        float atkSpeed = statusController.AtkSpeed;
+        float atkSpeed = character.AtkSpeed;
         if (delayTime >= atkSpeed)
         {
             return false;
@@ -252,7 +254,7 @@ public class PlayerController : BaseController
 
     private IEnumerator Blink()
     {
-         isDamaged = false;        
+         character.IsDamaged = false;        
          bodySprites.color = new Color(1f,1f,1f,155/255f);
          yield return new WaitForSeconds(0.5f);
          bodySprites.color = new Color(1f, 1f, 1f, 1f);
@@ -272,7 +274,7 @@ public class PlayerController : BaseController
     {
         rig.isKinematic = false;
         col.enabled = true;
-        statusController.CurHp = statusController.MaxHp;
+        character.CurHp = character.MaxHp;
         characterState = CharacterState.Idle;
     }
 

@@ -11,5 +11,5 @@ using UnityEngine;
 [System.Serializable]
 public class Elements
 {
-    public string objectName = null;
+    public string objectName = "";
 }

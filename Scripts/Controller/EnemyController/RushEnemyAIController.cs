@@ -1,121 +1,108 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-13
  * 작성자 : Inklie
  * 파일명 : RushEnemyAIController.cs
 ==============================
 */
 public class RushEnemyAIController : EnemyAIController
 {
-    public override void Awake()
+    private RushEnemyStatus rushEnemyStatus = null;
+    private void Awake()
     {
-        base.Awake();
+        rushEnemyStatus = GetComponent<RushEnemyStatus>();
     }
-    public override void State()
+
+    private void Update()
     {
-        txtMesh.text = enemy.EnemyState.ToString();
-        switch (enemy.EnemyState)
-        {
-            case EnemyState.Idle:
-                Idle();
-                break;
-            case EnemyState.Chase:
-                Chase();
-                break;
-            case EnemyState.Attack:
-                Attack();
-                break;
-            case EnemyState.Damaged:
-                Stiffen();
-                break;
-            case EnemyState.Died:
-                StartCoroutine(Died());
-                break;
-        }
+        Perception(rushEnemyStatus);
+        ChangeState(rushEnemyStatus);
+        State(rushEnemyStatus);
     }
-    public override void ChangeState()
+
+    public override void ChangeState(EnemyStatus _status)
     {
-        distance = enemy.Target.transform.position - enemy.transform.position;
-        enemy.Dir = distance.normalized;
-        if (enemy.CurHp < 0f)
+
+        if (IsDied(_status))
         {
-            enemy.EnemyState = EnemyState.Died;
+            SetState(_status, EnemyState.Died);
         }
         else
         {
-            if (isDamaged)
+            if (_status.IsDamaged)
             {
-                enemy.EnemyState = EnemyState.Damaged;
+                SetState(_status, EnemyState.Damaged);
             }
             else
             {
-                if (atkRange)
+                if (IsAtkRange(_status))
                 {
-                    enemy.EnemyState = EnemyState.Attack;
+                    SetState(_status, EnemyState.Attack);
                 }
                 else
                 {
-                    if (enemy.Target == this.gameObject || FrontOtherEnemy())
+                    if (_status.Target == this.gameObject || FrontOtherEnemy(_status.EnemyHitRay,_status))
                     {
-                        enemy.EnemyState = EnemyState.Idle;
+                        SetState(_status, EnemyState.Idle);
                     }
                     else
-                        enemy.EnemyState = EnemyState.Chase;
+                    {
+                        SetState(_status, EnemyState.Chase);
+                    }
                 }
             }
         }
     }
-
-    public override void Stiffen()
+    
+    public bool IsDelay(EnemyStatus _status)
     {
-        enemy.StiffenTime += Time.deltaTime;
-        enemy.IsKnuckBack = true;
-        if (enemy.StiffenTime >= enemy.MaxStiffenTime)
+        if (_status.DelayTime >= _status.AtkSpeed)
         {
-            enemy.IsKnuckBack = false;
-            enemy.DmgCombo = 0;
-            isDamaged = false;
+            _status.DelayTime = _status.AtkSpeed;
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
-    public override void Perception()
+    public override void Stiffen(EnemyStatus _status)
     {
-        enemyHit = Physics2D.RaycastAll(this.transform.position, enemy.Dir, 0.5f, LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(this.transform.position, enemy.Dir, Color.blue);
-
-        base.Perception();
+        _status.StiffenTime += Time.deltaTime;
+        _status.IsKnuckBack = true;
+        if (_status.StiffenTime >= _status.MaxStiffenTime)
+        {
+            _status.IsKnuckBack = false;
+            _status.IsDamaged = false;
+        }
     }
 
-    public override void Attack()
+    public bool FrontOtherEnemy(RaycastHit2D _enemyHit,Status _enemy)
     {
-        base.Attack();
-    }
-    public bool FrontOtherEnemy()
-    {
+
         // 앞에 다른 적이 있는 지 확인
-        for (int i = 0; i < enemyHit.Length; i++)
+
+        if (_enemyHit.collider.gameObject != _enemy.gameObject)
         {
-            if (enemyHit[i].collider.gameObject != this.gameObject)
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
+        else
+            return false;
     }
 
-    public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
+    public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
         // 넉백 효과
         float timer = 0;
 
-        while(knockbackDuration > timer)
+        while(_knockbackDuration > timer)
         {
             timer += Time.deltaTime;
-            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
-            rig.AddForce(-direction * knockbackPower);
+            Vector2 direction = (_obj.transform.position - this.transform.position).normalized;
+            _rig.AddForce(-direction * _knockbackPower);
         }
 
         yield return 0;

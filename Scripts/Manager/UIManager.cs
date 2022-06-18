@@ -65,8 +65,8 @@ public class UIManager : SingletonManager<UIManager>
     }
     private void Update()
     {
-        if (stageManager.IsStart == true)
-            bossEnemy = enemySpawner.CurBoss.GetComponent<EnemyStatus>();
+        //if (stageManager.IsStart == true)
+        //    bossEnemy = enemySpawner.CurBoss.GetComponent<EnemyStatus>();
 
         if (bossEnemy != null)
         {

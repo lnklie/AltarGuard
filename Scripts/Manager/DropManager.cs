@@ -13,7 +13,7 @@ public class DropManager : SingletonManager<DropManager>
     private Queue<GameObject> dropObject = new Queue<GameObject>();
 
     [SerializeField]
-    private float[] amountItemProb = {0};
+    private List<float> amountItemProb = new List<float>();
     [SerializeField]
     private GameObject dropPrefab = null;
     private void Awake()
@@ -25,7 +25,7 @@ public class DropManager : SingletonManager<DropManager>
             gameObject.SetActive(false);
         }
     }
-    public void DropItem(Vector2 _enemyPos,int[] itemDropKeys, float[] itemDropProb)
+    public void DropItem(Vector2 _enemyPos,List<int> itemDropKeys, List<float> itemDropProb)
     {
         // 아이템 드랍
         int _ranAmount = RandomChoose(amountItemProb);
@@ -49,7 +49,7 @@ public class DropManager : SingletonManager<DropManager>
         dropObject.Enqueue(_item);
         _item.SetActive(false);
     }
-    private int RandomChoose(float[] _probs)
+    private int RandomChoose(List<float> _probs)
     {
         // 무작위 선택
         float total = 0;
@@ -61,7 +61,7 @@ public class DropManager : SingletonManager<DropManager>
 
         float randomPoint = Random.value * total;
 
-        for (int i = 0; i < _probs.Length; i++)
+        for (int i = 0; i < _probs.Count; i++)
         {
             if (randomPoint < _probs[i])
             {
@@ -72,6 +72,6 @@ public class DropManager : SingletonManager<DropManager>
                 randomPoint -= _probs[i];
             }
         }
-        return _probs.Length - 1;
+        return _probs.Count - 1;
     }
 }

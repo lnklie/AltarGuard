@@ -10,29 +10,12 @@ using UnityEngine;
 */
 public class CharacterStatus: Status
 {
-    private EquipmentController equipmentController = null;
+    protected EquipmentController equipmentController = null;
     public EquipmentController EquipmentController
     {
         get { return equipmentController; }
         set { equipmentController = value; }
     }
-
-
-     
-    protected int curMp = 100;
-    public int CurMp
-    {
-        get { return curMp; }
-        set { curMp = value; }
-    }
-
-    private int curLevel = 1;
-    public int CurLevel
-    {
-        get { return curLevel; }
-        set { curLevel = value; }
-    }
-
     protected int curExp = 0;
     public int CurExp
     {
@@ -47,24 +30,7 @@ public class CharacterStatus: Status
         set { maxExp = value; }
     }
 
-    private int maxMp = 100;
-    public int MaxMp
-    {
-        get { return maxMp; }
-        set { maxMp = value; }
-    }
 
-    private int physicalDamage = 0;
-    public int PhysicalDamage
-    {
-        get { return physicalDamage; }
-    }
-
-    private int magicalDamage = 0;
-    public int MagicalDamage
-    {
-        get { return magicalDamage; }
-    }
     [SerializeField]
     private int buffPhysicalDamage = 0;
     public int BuffPhysicalDamage
@@ -120,33 +86,6 @@ public class CharacterStatus: Status
         set { statusPoint = value; }
     }
 
-    private int str = 5;
-    public int Str
-    {
-        get { return str; }
-        set { str = value; }
-    }
-
-    private int dex = 5;
-    public int Dex
-    {
-        get { return dex; }
-        set { dex = value; }
-    }
-
-    private int wiz = 5;
-    public int Wiz
-    {
-        get { return wiz; }
-        set { wiz = value; }
-    }
-
-    private int luck = 5;
-    public int Luck
-    {
-        get { return luck; }
-        set { luck = value; }
-    }
 
     private bool isAlterBuff = false;
     public bool IsAlterBuff
@@ -162,20 +101,7 @@ public class CharacterStatus: Status
         set { checkEquipItems = value; }
     }
 
-    private ItemEquipedCharacter itemEquipedCharacter = ItemEquipedCharacter.NULL;
-    public ItemEquipedCharacter ItemEquipedCharacter
-    {
-        get { return itemEquipedCharacter; }
-        set { itemEquipedCharacter = value; }
-    }
-    private int hpRegenValue = 0;
-    public int HPRegenValue
-    {
-        get { return hpRegenValue; }
-        set { hpRegenValue = value; }
-    }
 
-    private bool isHPRegen = false;   
     private void Awake()
     {
         equipmentController = this.GetComponent<EquipmentController>();
@@ -196,8 +122,7 @@ public class CharacterStatus: Status
             RemoveBuff();
             UpdateAbility();
         }
-        if(!isHPRegen)
-            StartCoroutine(HpRegenarate());
+
         if (equipmentController.IsChangeItem == true)
         {
             UpdateAbility();
@@ -257,34 +182,14 @@ public class CharacterStatus: Status
             Debug.Log("스테이터스 포인트가 없습니다.");
         UpdateAbility();
     }
-    private IEnumerator HpRegenarate()
-    {
-        isHPRegen = true;
-        while(true)
-        {
-            yield return new WaitForSeconds(1f);
-            if (curHp + hpRegenValue >= maxHp)
-            {
 
-                curHp = maxHp;
-                yield return null;
-            }
-            else
-            {
-                curHp += hpRegenValue;
-                Debug.Log("체력회복중 현재 체력은 "+ curHp + " 체력 리젠률은 " + hpRegenValue);
-            }
-        }
-    }
-    public void UpdateAbility()
+    public override void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp = 100 + str * 10;
-        maxMp = 100 + wiz * 10;
+        base.UpdateAbility();
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
         speed = 2 + dex * 0.1f + buffSpeed;
-        atkSpeed = 2 - dex * 0.1f;
         dropProbability = luck * 0.001f;
         itemRarity = luck * 0.001f;
         defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;

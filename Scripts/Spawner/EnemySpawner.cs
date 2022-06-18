@@ -11,24 +11,27 @@ using UnityEngine;
 
 public class EnemySpawner : SingletonManager<EnemySpawner>
 {
-    private Queue<GameObject> enemy_Slimes = new Queue<GameObject>();
-    private Queue<GameObject> enemy_GoblinArcher = new Queue<GameObject>();
 
-    [Header("Option")]
+    [Header("RushEnemyPrefabs")]
     [SerializeField]
-    private int enemyNum = 0;
+    private GameObject swordOrcPrefab = null;
+    [SerializeField]
+    private GameObject bowOrcPrefab = null;
+    [SerializeField]
+    private GameObject wizardOrcPrefab = null;
 
-    [Header("Enemies")]
+    [Header("RushBossEnemyPrefabs")]
     [SerializeField]
-    private EnemyStatus Slime = null;
+    private GameObject swordOrcKingPrefab = null;
     [SerializeField]
-    private EnemyStatus SlimeKing = null;
+    private GameObject bowOrcKingPrefab = null;
     [SerializeField]
-    private EnemyStatus GoblinArcher = null;
+    private GameObject wizardOrcKingPrefab = null;
+
 
     [Header("Default Target")]
     [SerializeField]
-    private GameObject building = null;
+    private GameObject altar = null;
 
     [Header("SpawnPosition")]
     [SerializeField]
@@ -42,60 +45,32 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         get { return curBoss; }
     }
 
-    private Queue<Vector2> enemyEastPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyEastPos
+    private Queue<Vector2> enemyPos = new Queue<Vector2>();
+    public Queue<Vector2> EnemyPos
     {
-        get { return enemyEastPos; }
+        get { return enemyPos; }
     }
 
-    private Queue<Vector2> enemyNorthPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyNorthPos
-    {
-        get { return enemyNorthPos; }
-    }
+    private Queue<GameObject> swordOrcs = new Queue<GameObject>();
+    private Queue<GameObject> bowOrcs = new Queue<GameObject>();
+    private Queue<GameObject> wizardOrcs = new Queue<GameObject>();
 
-    private Queue<Vector2> enemyWestPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyWestPos
-    {
-        get { return enemyWestPos; }
-    }
-
-    private Queue<Vector2> enemySouthPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemySouthPos
-    {
-        get { return enemySouthPos; }
-    }
-
-    [SerializeField]
-    private GameObject enemy_SlimeKing = null;
-
-    #region Properties(Instance,IsStart, EnemyNum, Enemies)
-
-
-    public int EnemyNum
-    {
-        get
-        {
-            return enemyNum;
-        }
-    }
-    public Queue<GameObject> Enemies
-    {
-        get
-        {
-            return enemy_Slimes;
-        }
-    }
-    #endregion
     private void Awake()
     {
         InitEnemyPos();
-        InitEnemy(Slime,EnemyType.Slime);
-        InitEnemy(GoblinArcher, EnemyType.GoblinArcher);
-        InitEnemy(SlimeKing, EnemyType.SlimeKing);
-
+        InitEnemy(swordOrcPrefab, swordOrcs);
+        InitEnemy(bowOrcPrefab, bowOrcs);
+        InitEnemy(wizardOrcPrefab, wizardOrcs);
+        InitBossEnemy(swordOrcKingPrefab);
+        InitBossEnemy(bowOrcKingPrefab);
+        InitBossEnemy(wizardOrcKingPrefab);
     }
-
+    private void Update()
+    {
+        Debug.Log("전사 오크의 수는 " + swordOrcs.Count);
+        Debug.Log("궁사 오크의 수는 " + bowOrcs.Count);
+        Debug.Log("마법사 오크의 수는 " + wizardOrcs.Count);
+    }
     private void InitEnemyPos()
     {
         // 적 위치 담기
@@ -103,84 +78,104 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         {
             for (int i = 0; i < 5; i++)
             {
-                enemyEastPos.Enqueue(new Vector2(spawnPos[0].x + i, spawnPos[0].y - k));
-                enemyWestPos.Enqueue(new Vector2(spawnPos[1].x + i, spawnPos[1].y - k));
-                enemySouthPos.Enqueue(new Vector2(spawnPos[2].x + i, spawnPos[2].y - k));
-                enemyNorthPos.Enqueue(new Vector2(spawnPos[3].x + i, spawnPos[3].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[0].x + i, spawnPos[0].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[1].x + i, spawnPos[1].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[2].x + i, spawnPos[2].y - k));
+                enemyPos.Enqueue(new Vector2(spawnPos[3].x + i, spawnPos[3].y - k));
             }
         }
     }
-    private void InitEnemy(EnemyStatus _enemy, EnemyType _enemyType)
+    private void InitEnemy(GameObject _enemy, Queue<GameObject> _enemyQueue)
     {
         // 적 오브젝트풀 생성 
-        if (_enemyType == EnemyType.Slime)
+        for (int i = 0; i < 100; i++)
         {
-            for (int i = 0; i < 100; i++)
-            {
-                GameObject obj = Instantiate(_enemy.gameObject);
-                enemy_Slimes.Enqueue(obj);
-                obj.SetActive(false);
-                obj.transform.SetParent(this.transform);
-            }
-        }
-        else if (_enemyType == EnemyType.GoblinArcher)
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                GameObject obj = Instantiate(_enemy.gameObject);
-                enemy_GoblinArcher.Enqueue(obj);
-                obj.SetActive(false);
-                obj.transform.SetParent(this.transform);
-            }
-        }
-        else if(_enemyType == EnemyType.SlimeKing)
-        {
-            GameObject obj = Instantiate(_enemy.gameObject);
-            enemy_SlimeKing = obj;
+            GameObject obj = Instantiate(_enemy);
+            _enemyQueue.Enqueue(obj);
             obj.SetActive(false);
             obj.transform.SetParent(this.transform);
         }
     }
-    public void EnemySpawn(EnemyType _enemyType, Queue<Vector2> _Dirqueue = null, int _enemyNum = 0)
+    private void InitBossEnemy(GameObject _enemy)
     {
-        // 적 스폰
-        GameObject obj = null;
-        if (_enemyType == EnemyType.Slime)
-        {
-            for(int i = 0; i < _enemyNum; i++)
-            {
-                obj = enemy_Slimes.Dequeue();
-                obj.transform.position = _Dirqueue.Dequeue();
-                _Dirqueue.Enqueue(obj.transform.position);
-            }
-        }
-        else if(_enemyType == EnemyType.SlimeKing)
-        {
-            obj = enemy_SlimeKing;
-            obj.transform.position = new Vector2(0f, 18f);
-            curBoss = obj;
-        }
-        else if(_enemyType == EnemyType.GoblinArcher)
+        GameObject _bossEnemy = Instantiate(_enemy);
+        _bossEnemy.SetActive(false);
+    }
+    public void EnemySpawn(int _enemyKey, int _enemyNum = 0)
+    {
+        GameObject _obj = null;
+        RushEnemyStatus _rushEnemyStatus = null;
+        if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.SwordOrc)
         {
             for (int i = 0; i < _enemyNum; i++)
             {
-                obj = enemy_GoblinArcher.Dequeue();
-                obj.transform.position = _Dirqueue.Dequeue();
-                _Dirqueue.Enqueue(obj.transform.position);
+                _obj = swordOrcs.Dequeue();
+                _obj.transform.position = enemyPos.Dequeue();
+                _obj.SetActive(true);
+                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+                _rushEnemyStatus.IsEnemyChange = true;
+                enemyPos.Enqueue(_obj.transform.position);
             }
         }
-        obj.SetActive(true);
-        obj.GetComponent<EnemyStatus>().Target = building;
+        else if(DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.BowOrc)
+        {
+            for (int i = 0; i < _enemyNum; i++)
+            {
+                _obj = bowOrcs.Dequeue();
+                _obj.transform.position = enemyPos.Dequeue();
+                _obj.SetActive(true);
+                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+                _rushEnemyStatus.IsEnemyChange = true;
+                enemyPos.Enqueue(_obj.transform.position);
+            }
+        }
+        else if(DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.WizardOrc)
+        {
+            for (int i = 0; i < _enemyNum; i++)
+            {
+                _obj = wizardOrcs.Dequeue();
+                _obj.transform.position = enemyPos.Dequeue();
+                _obj.SetActive(true);
+                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+                _rushEnemyStatus.IsEnemyChange = true;
+                enemyPos.Enqueue(_obj.transform.position);
+            }
+        }
     }
-    public void ReturnEnemy(GameObject _enemy, EnemyType _enemyType)
+    public void BossEnemySpawn(int _enemyKey)
+    {
+        Debug.Log("보스 소환 ?");
+        GameObject _obj = null;
+        if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.SwordOrc)
+            _obj = swordOrcKingPrefab;
+        else if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.BowOrc)
+            _obj = bowOrcKingPrefab;
+        else if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.WizardOrc)
+            _obj = wizardOrcKingPrefab;
+        _obj.transform.position = new Vector2(0f, 18f);
+        _obj.SetActive(true);
+        BossEnemyStatus _rushEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
+        _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+        _rushEnemyStatus.CustomEnemy();
+        curBoss = _obj;
+    }
+    public void ReturnEnemy(GameObject _enemy)
     {
         // 적 다시 돌아오기
-        if (_enemyType == EnemyType.Slime)
-            enemy_Slimes.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.GoblinArcher)
-            enemy_GoblinArcher.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.SlimeKing)
-            enemy_SlimeKing = _enemy;
+        EnemyType _enemyType = _enemy.GetComponent<EnemyStatus>().EnemyType;
+        if (_enemyType == EnemyType.SwordOrc)
+            swordOrcs.Enqueue(_enemy);
+        else if (_enemyType == EnemyType.BowOrc)
+            bowOrcs.Enqueue(_enemy);
+        else if (_enemyType == EnemyType.WizardOrc)
+            wizardOrcs.Enqueue(_enemy);
+        _enemy.SetActive(false);
+    }
+    public void ReturnBossEnemy(GameObject _enemy)
+    {
         _enemy.SetActive(false);
     }
 }

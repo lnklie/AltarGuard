@@ -3,67 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
+ * 최종수정일 : 2022-06-13
  * 작성자 : Inklie
  * 파일명 : AIController.cs
 ==============================
 */
 public abstract class AIController : BaseController
 {
-    [Header("Attack Delay")]
-    [SerializeField]
-    protected float delayTime = 0f;
+    public abstract void ChangeState(EnemyStatus _status);
+    public abstract void State(EnemyStatus _status);
+    public abstract void Perception(EnemyStatus _enemy);
+    public abstract void Idle(EnemyStatus _enemy);
+    public abstract void Chase(EnemyStatus _enemy);
+    public abstract void Attack(EnemyStatus _enemy);
+    public abstract IEnumerator Died(EnemyStatus _enemy);
+    public abstract void Damaged(EnemyStatus _enemy);
+    public abstract bool IsDied(EnemyStatus _enemy);
 
-    protected Animator ani = null;
-    protected Rigidbody2D rig = null;
-    protected TextMesh txtMesh = null;
+    public abstract int AttackTypeDamage(EnemyStatus _status);
 
-    protected Vector2 distance = new Vector2(0, 0);
-    protected RaycastHit2D atkRange = default;
-    protected RaycastHit2D sight = default;
-    protected RaycastHit2D[] allyRay = default;
-    protected RaycastHit2D[] enemyHit = default;
+     
 
-
-
-    public virtual void Awake()
+    public void SetState(EnemyStatus _enemy, EnemyState _enemyState)
     {
-        ani = this.GetComponentInChildren<Animator>();
-        rig = this.GetComponent<Rigidbody2D>();
-        txtMesh = this.GetComponentInChildren<TextMesh>();
-
+        _enemy.EnemyState = _enemyState;
+        _enemy.IsStateChange = true;
     }
-
-    public virtual void Update()
-    {
-        Perception();
-        ChangeState();
-        State();
-    }
-    public abstract void ChangeState();
-    public abstract void State();
-    public abstract void Perception();
-    public abstract void Idle();
-    public abstract void Chase();
-    public abstract void Attack();
-    public abstract IEnumerator Died();
-    public abstract bool IsDelay();
-    public abstract void Damaged();
-    public abstract bool IsDied();
-
-    public void ActiveLayer(LayerName layerName)
+    public void ActiveLayer(Animator _ani,LayerName layerName)
     {
         // 애니메이션 레이어 가중치 조절
-        for (int i = 0; i < ani.layerCount; i++)
+        for (int i = 0; i < _ani.layerCount; i++)
         {
-            ani.SetLayerWeight(i, 0);
+            _ani.SetLayerWeight(i, 0);
         }
-        ani.SetLayerWeight((int)layerName, 1);
-    }
-
-    public void SetDelayTime(float _time)
-    {
-        // 딜레이타임 세팅
-        delayTime = _time;
+        _ani.SetLayerWeight((int)layerName, 1);
     }
 }

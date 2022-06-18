@@ -13,6 +13,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody2D rig = null;
     private float maxDurationTime = 5f;
     private float durationTime = 0f;
+
     [SerializeField]
     private Vector2 dir = Vector2.zero;
     public Vector2 Dir
@@ -48,10 +49,12 @@ public class Arrow : MonoBehaviour
     }
     void Update()
     {
-        Shot();
+        if(archer!= null)
+            Shot();
     }
     public void InitArrow()
     {
+        this.gameObject.SetActive(false);
         dir = Vector2.zero;
         spd = 0f;
         dmg = 0;
@@ -60,6 +63,7 @@ public class Arrow : MonoBehaviour
     private void Shot()
     {
         // 화살 쏘기
+        Debug.Log("화살 간드아");
         rig.velocity = dir * spd;
         durationTime += Time.deltaTime;
         AngleModification();
@@ -73,8 +77,8 @@ public class Arrow : MonoBehaviour
                 {
                     EnemyStatus hitObject = ray.collider.GetComponent<EnemyStatus>();
                     MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
-                    hitObject.CurHp -= dmg;
-                    mercenary.IsDamaged = true;
+                    hitObject.CurHp -= ReviseDamage(dmg,hitObject.DefensivePower);
+                    hitObject.IsDamaged = true;
                     mercenary.IsAtk = true;
                     if (archer.GetComponent<MercenaryAIController>().IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
                     {
@@ -84,16 +88,23 @@ public class Arrow : MonoBehaviour
                 else
                 {
                     Status hitObject = ray.collider.GetComponent<Status>();
-                    EnemyAIController enemy = archer.GetComponent<EnemyAIController>();
                     hitObject.CurHp -= dmg;
-                    enemy.IsDamaged = true;
+                    hitObject.IsDamaged = true;
                 }
                 durationTime = 0f;
-                ProjectionSpawner.Instance.ReturnArrow(this.gameObject);
+                ProjectionSpawner.Instance.ReturnArrow(this);
             }
         }
         if (durationTime >= maxDurationTime)
-            ProjectionSpawner.Instance.ReturnArrow(this.gameObject);
+        {
+            ProjectionSpawner.Instance.ReturnArrow(this);
+            durationTime = 0f;
+        }
+    }
+
+    public int ReviseDamage(int _damage, int _depensivePower)
+    {
+        return Mathf.CeilToInt(_damage * (1 / (1 + _depensivePower)));
     }
     private bool IsEnemy(GameObject _archer, GameObject _hitObject)
     {

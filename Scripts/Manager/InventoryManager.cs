@@ -101,22 +101,22 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 InventroyEquipmentItems.Add(_back);
                 break;
             case 7:
-                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance);
+                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.atkSpeed);
                 _sword.count =+ _amount;
                 inventroyWeaponItems.Add(_sword);
                 break;
             case 8:
-                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.defensivePower);
+                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed);
                 _shield.count =+ _amount;
                 inventroyWeaponItems.Add(_shield);
                 break;
             case 9:
-                Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage,_item.atkRange,_item.atkDistance);
+                Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage,_item.atkRange,_item.atkDistance,_item.atkSpeed);
                 _bow.count =+ _amount;
                 inventroyWeaponItems.Add(_bow);
                 break;
             case 10:
-                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance);
+                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance, _item.atkSpeed);
                 _wand.count =+ _amount;
                 inventroyWeaponItems.Add(_wand);
                 break;
