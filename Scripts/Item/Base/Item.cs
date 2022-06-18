@@ -27,6 +27,7 @@ public class Item
     public int defensivePower = 0;
     public float atkRange = 0f;
     public float atkDistance = 0f;
+    public float atkSpeed = 0f;
     public string attackType = null;
     public string weaponType = null;
     public string purpose = null;

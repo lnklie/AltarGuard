@@ -8,7 +8,7 @@ using UnityEngine;
  * 파일명 : StageManager.cs
 ==============================
 */
-public class StageManager : MonoBehaviour
+public class StageManager : SingletonManager<StageManager>
 {
 
     [SerializeField]
@@ -17,7 +17,12 @@ public class StageManager : MonoBehaviour
     {
         get { return isStart; }
     }
-
+    [SerializeField]
+    private bool isStage = false;
+    public bool IsStage
+    {
+        get { return isStage; }
+    }
     [SerializeField]
     private EnemySpawner enemySpawner = null;
     [SerializeField]
@@ -25,15 +30,30 @@ public class StageManager : MonoBehaviour
     [SerializeField]
     private Stage curStage = null;
 
+    [SerializeField]
+    private int spawnedEneies = 0;
+    public int SpawnedEneies
+    {
+        get { return spawnedEneies;}
+        set { spawnedEneies = value; }
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))
+        {
             isStart = true;
+            isStage = true;
+        }
         if (isStart)
         {
             CheckStage();
             Debug.Log("스테이지 시작");
             StageSpawn();
+        }
+        if (isStage)
+        {
+            if (spawnedEneies <= 0)
+                enemySpawner.BossEnemySpawn(curStage.bossKey);
         }
     }
     public void CheckStage()
@@ -51,8 +71,9 @@ public class StageManager : MonoBehaviour
         // 스테이지
         if (curStage != null)
         {
-            enemySpawner.EnemySpawn((EnemyType)curStage.enemyKey1, curStage.enemyNum1);
-            enemySpawner.EnemySpawn((EnemyType)curStage.enemyKey2, curStage.enemyNum2);
+            spawnedEneies = curStage.enemyNum1 + curStage.enemyNum2;
+            enemySpawner.EnemySpawn(curStage.enemyKey1, curStage.enemyNum1);
+            enemySpawner.EnemySpawn(curStage.enemyKey2, curStage.enemyNum2);
         }
         isStart = false;
     }

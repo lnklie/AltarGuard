@@ -4,8 +4,4 @@ using UnityEngine;
 
 public class WizardOrcStatus : RushEnemyStatus
 {
-    void Start()
-    {
-        enemyType = EnemyType.WizardOrc;
-    }
 }

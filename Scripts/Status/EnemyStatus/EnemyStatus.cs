@@ -50,7 +50,7 @@ public class EnemyStatus : Status
         get { return enemyHitRay; }
         set { enemyHitRay = value; }
     }
-
+    [SerializeField]
     protected int defeatExp = 0;
     public int DefeatExp
     {
@@ -119,7 +119,6 @@ public class EnemyStatus : Status
         set { isAtk = value; }
     }
 
-    private Image[] images = null;
 
     [SerializeField]
     private TextMesh textMesh = null;
@@ -127,23 +126,18 @@ public class EnemyStatus : Status
     public virtual void Awake()
     {
         ani = this.GetComponentInChildren<Animator>();
-        images = this.GetComponentsInChildren<Image>();
         rig = this.GetComponent<Rigidbody2D>();
         col = this.GetComponent<CircleCollider2D>();
         textMesh = this.GetComponentInChildren<TextMesh>();
-        images[1].canvas.worldCamera = Camera.main;
+
     }
     public virtual void Update()
     {
-        if (isDamaged)
-            UpdateEnemyHp();
+
         textMesh.text = enemyState.ToString();
     }
 
-    public void UpdateEnemyHp()
-    {
-        images[1].fillAmount = curHp / (float)maxHp;
-    }
+
 
     public bool IsDelay()
     {

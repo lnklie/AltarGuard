@@ -187,7 +187,7 @@ public class CharacterStatus: Status
         // 능력 업데이트
         maxHp = 100 + str * 10;
         maxMp = 100 + wiz * 10;
-        atkSpeed = 2 - dex * 0.1f;
+        atkSpeed = equipmentController.EquipItems[7].atkSpeed - dex * 0.1f;
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
         speed = 2 + dex * 0.1f + buffSpeed;
