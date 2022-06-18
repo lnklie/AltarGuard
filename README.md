@@ -1,5 +1,12 @@
 Update
 =======
+Version 06-18 Update
+--------
+- Implementing a Boss Monster
+- Modifying Boss Monster
+
+https://blog.naver.com/rnlgus1126/222778797371
+
 Version 06-17 Update
 --------
 - Modifying damage coefficients for objects other than the Player
