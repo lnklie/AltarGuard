@@ -29,7 +29,7 @@ public class SwordOrcAIController : RushEnemyAIController
             }
         }
         else
-            Debug.Log("Â¾Ã†Â¹Â«Â°ÃÂµÂµ Â¾Ã¸Ã€Â½");
+            Debug.Log("¾Æ¹«°Íµµ ¾øÀ½");
         return hits;
     }
     public void EnemyAttack(RaycastHit2D[] hits, EnemyStatus _status)

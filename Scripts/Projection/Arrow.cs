@@ -13,6 +13,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody2D rig = null;
     private float maxDurationTime = 5f;
     private float durationTime = 0f;
+
     [SerializeField]
     private Vector2 dir = Vector2.zero;
     public Vector2 Dir

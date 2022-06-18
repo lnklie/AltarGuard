@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-public class RushEnemyStatus : EnemyStatus
+
+public class BossEnemyStatus : EnemyStatus
 {
     [SerializeField]
     protected RushEnemy rushEnemy = null;
@@ -12,14 +12,11 @@ public class RushEnemyStatus : EnemyStatus
     }
 
     protected EquipmentController equipmentController = null;
-    private Image[] images = null;
 
 
     public override void Awake()
     {
         base.Awake();
-        images = this.GetComponentsInChildren<Image>();
-        images[1].canvas.worldCamera = Camera.main;
         equipmentController = this.GetComponent<EquipmentController>();
 
     }
@@ -30,12 +27,6 @@ public class RushEnemyStatus : EnemyStatus
         {
             CustomEnemy();
         }
-        if (isDamaged)
-            UpdateEnemyHp();
-    }
-    public void UpdateEnemyHp()
-    {
-        images[1].fillAmount = curHp / (float)maxHp;
     }
     public void CustomEnemy()
     {
@@ -45,13 +36,13 @@ public class RushEnemyStatus : EnemyStatus
         wiz = rushEnemy.wiz;
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
-        UpdateAbility();
-        atkRange = equipmentController.EquipItems[7].atkRange;
-        atkSpeed = equipmentController.EquipItems[7].atkSpeed;
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
+        //UpdateAbility();
+        //atkRange = equipmentController.EquipItems[7].atkRange;
+        //atkSpeed = equipmentController.EquipItems[7].atkSpeed;
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);

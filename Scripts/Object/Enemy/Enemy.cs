@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : Enemy.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : Enemy.cs
 ==============================
 */
 [System.Serializable]
@@ -30,8 +30,7 @@ public class Enemy : Elements
     public float itemDropProb3 = 20f;
     public float itemDropProb4 = 20f;
     public float itemDropProb5 = 20f;
-
-    public Enemy(string _name, int _enemyKey, int _hp, int _mp, int _str, int _dex, int _wiz, float _seeRange, float _speed, int _defeatExp,
+    public Enemy(string _name, int _enemyKey, int _hp,int _mp, int _str, int _dex, int _wiz, float _seeRange, float _speed, int _defeatExp, 
         int _itemDropKey1, int _itemDropKey2, int _itemDropKey3, int _itemDropKey4, int _itemDropKey5,
         float _itemDropProb1, float _itemDropProb2, float _itemDropProb3, float _itemDropProb4, float _itemDropProb5)
     {

@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class BowOrcStatus : RushEnemyStatus
 {
-    void Start()
-    {
-        enemyType = EnemyType.BowOrc;
-    }
+
 }

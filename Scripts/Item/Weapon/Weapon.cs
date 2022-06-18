@@ -12,7 +12,7 @@ using UnityEditor;
 [System.Serializable]
 public class Weapon :Item 
 {
-    public Weapon(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance) : base(_itemKey, _itemName)
+    public Weapon(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance,float _atkSpeed) : base(_itemKey, _itemName)
     {
         physicalDamage = _physicalDamage;
         magicalDamage = _magicalDamage;
@@ -20,6 +20,7 @@ public class Weapon :Item
         weaponType = _weaponType;
         atkRange = _atkRange;
         atkDistance = _atkDistance;
+        atkSpeed = _atkSpeed;
         itemType = (int)ItemType.Weapon;
     }
 }
