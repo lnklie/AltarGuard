@@ -11,7 +11,9 @@ using UnityEngine.UI;
 */
 public class EnemyAIController : AIController
 {
-    
+    [SerializeField]
+    private GameObject altar = null;
+
     public override void ChangeState(EnemyStatus _status)
     {}
 
@@ -59,8 +61,8 @@ public class EnemyAIController : AIController
         SetEnabled(_status, false);
         _status.Rig.velocity = Vector2.zero;
         yield return new WaitForSeconds(2f);
-        StageManager.Instance.SpawnedEneies--;
         DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 
@@ -81,21 +83,34 @@ public class EnemyAIController : AIController
             _status.IsDamaged = false;
         }
     }
+    public void FindAltar(EnemyStatus _enemy)
+    {
+        _enemy.AltarRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        for (int i = 0; i < _enemy.AltarRay.Length; i++)
+        {
+            if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
+                altar = _enemy.AltarRay[i].collider.gameObject;
+        }
+    }
+    public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
+    {
+
+        // 앞에 다른 적이 있는 지 확인
+
+        if (_enemyHit.collider.gameObject != _enemy.gameObject)
+        {
+            return true;
+        }
+        else
+            return false;
+    }
     public override void Perception(EnemyStatus _enemy)
     {
         // 레이를 이용한 인식
         AnimationDirection(_enemy);
         _enemy.SightRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        //_enemy.AtkRangeRay = Physics2D.CircleCast(_enemy.transform.position, _enemy.AtkRange, _enemy.Dir, 0, LayerMask.GetMask("Ally"));
-        _enemy.AltarRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
         _enemy.EnemyHitRay = Physics2D.BoxCast(_enemy.transform.position,Vector2.one, 90f,_enemy.Dir, 1f, LayerMask.GetMask("Enemy"));
         Debug.DrawRay(_enemy.transform.position, _enemy.Dir*2f,Color.cyan);
-        GameObject altar = null;
-        for(int i =0; i < _enemy.AltarRay.Length; i++)
-        {
-            if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = _enemy.AltarRay[i].collider.gameObject;
-        }
 
         if (!altar)
             _enemy.Target = null;

@@ -47,7 +47,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
     private void Start()
     {
-        AcquireItem(DatabaseManager.Instance.SelectItem(7001), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(7024), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7003), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(11000), 3);
