@@ -10,7 +10,7 @@ public class BossEnemyStatus : EnemyStatus
     {
         set { rushEnemy = value; }
     }
-
+    [SerializeField]
     protected EquipmentController equipmentController = null;
 
 
@@ -18,31 +18,46 @@ public class BossEnemyStatus : EnemyStatus
     {
         base.Awake();
         equipmentController = this.GetComponent<EquipmentController>();
-
+        //if (equipmentController != null)
+        //{
+        //    Debug.Log("장비 컨트롤러 비어있지 않음 " + equipmentController.name);
+        //}
+        //else
+        //    Debug.Log("비어져있음");
     }
     public override void Update()
     {
         base.Update();
-        if (isEnemyChange && rushEnemy != null)
+        if (isEnemyChange)
         {
+            Debug.Log("커스텀 에너미 1");
             CustomEnemy();
         }
     }
     public void CustomEnemy()
     {
+        Debug.Log("커스텀 에너미 2");
         objectName = rushEnemy.objectName;
         str = rushEnemy.str;
         dex = rushEnemy.dex;
         wiz = rushEnemy.wiz;
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
-        //UpdateAbility();
-        //atkRange = equipmentController.EquipItems[7].atkRange;
-        //atkSpeed = equipmentController.EquipItems[7].atkSpeed;
+        if (equipmentController != null )
+        {
+            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(4000));
+            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(5000));
+            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(3000));
+            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(10000));
+            UpdateAbility();
+            atkRange = equipmentController.EquipItems[7].atkRange;
+            atkSpeed = equipmentController.EquipItems[7].atkSpeed;
+        }
+        else
+        {
+            Debug.Log("여긴 왜없나요?!!!!!!");
+        }
+
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -53,7 +68,7 @@ public class BossEnemyStatus : EnemyStatus
         itemDropProb.Add(rushEnemy.itemDropProb3);
         itemDropProb.Add(rushEnemy.itemDropProb4);
         itemDropProb.Add(rushEnemy.itemDropProb5);
-        isEnemyChange = false;
+        //isEnemyChange = false;
     }
 
     public void UpdateAbility()

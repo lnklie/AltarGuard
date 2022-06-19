@@ -10,9 +10,60 @@ using UnityEngine;
 */
 public class BossEnemyAIController : EnemyAIController
 {
-
+    private BossEnemyStatus bossEnemyStatus = null;
+    private void Awake()
+    {
+        bossEnemyStatus = GetComponent<BossEnemyStatus>();
+    }
+    private void Start()
+    {
+        FindAltar(bossEnemyStatus);
+    }
+    private void Update()
+    {
+        Perception(bossEnemyStatus);
+        ChangeState(bossEnemyStatus);
+        State(bossEnemyStatus);
+    }
+    //public override void ChangeState(EnemyStatus _status)
+    //{
+    //    if (IsDied(_status))
+    //    {
+    //        SetState(_status, EnemyState.Died);
+    //    }
+    //    else
+    //    {
+    //        if (_status.IsDamaged)
+    //        {
+    //            SetState(_status, EnemyState.Damaged);
+    //        }
+    //        else
+    //        {
+    //            if (IsAtkRange(_status))
+    //            {
+    //                if (!_status.IsDelay()) 
+    //                {
+    //                    SetState(_status, EnemyState.Attack);
+    //                }
+    //                else
+    //                    SetState(_status, EnemyState.Idle);
+    //            }
+    //            else
+    //            {
+    //                if (_status.Target == this.gameObject)
+    //                {
+    //                    SetState(_status, EnemyState.Idle);
+    //                }
+    //                else
+    //                    SetState(_status, EnemyState.Chase);
+    //            }
+    //        }
+            
+    //    }
+    //}
     public override void ChangeState(EnemyStatus _status)
     {
+
         if (IsDied(_status))
         {
             SetState(_status, EnemyState.Died);
@@ -27,27 +78,34 @@ public class BossEnemyAIController : EnemyAIController
             {
                 if (IsAtkRange(_status))
                 {
-                    if (!_status.IsDelay()) 
-                    {
-                        SetState(_status, EnemyState.Attack);
-                    }
-                    else
-                        SetState(_status, EnemyState.Idle);
+                    SetState(_status, EnemyState.Attack);
                 }
                 else
                 {
-                    if (_status.Target == this.gameObject)
+                    if (_status.Target == this.gameObject || FrontOtherEnemy(_status.EnemyHitRay, _status))
                     {
                         SetState(_status, EnemyState.Idle);
                     }
                     else
+                    {
                         SetState(_status, EnemyState.Chase);
+                    }
                 }
             }
-            
         }
     }
-
+    public bool IsDelay(EnemyStatus _status)
+    {
+        if (_status.DelayTime >= _status.AtkSpeed)
+        {
+            _status.DelayTime = _status.AtkSpeed;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
     public override void AnimationDirection(EnemyStatus _enemy)
     {
@@ -57,11 +115,9 @@ public class BossEnemyAIController : EnemyAIController
     }
     public override IEnumerator Died(EnemyStatus _status)
     {
-        _status.IsStateChange = false;
-        SetEnabled(_status, false);
-        _status.Rig.velocity = Vector2.zero;
-        yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+        base.Died(_status);
+        Debug.Log("Á×À½");
         EnemySpawner.Instance.ReturnBossEnemy(this.gameObject);
+        yield return null;
     }
 }

@@ -45,7 +45,7 @@ public class RushEnemyStatus : EnemyStatus
         wiz = rushEnemy.wiz;
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
+        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey)); 
         equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
         equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
         equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));

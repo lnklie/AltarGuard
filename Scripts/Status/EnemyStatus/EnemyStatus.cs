@@ -133,11 +133,8 @@ public class EnemyStatus : Status
     }
     public virtual void Update()
     {
-
         textMesh.text = enemyState.ToString();
     }
-
-
 
     public bool IsDelay()
     {

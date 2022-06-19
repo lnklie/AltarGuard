@@ -72,12 +72,13 @@ public class Status : MonoBehaviour
         set { maxMp = value; }
     }
 
+    [SerializeField]
     protected int physicalDamage = 0;
     public int PhysicalDamage
     {
         get { return physicalDamage; }
     }
-
+    [SerializeField]
     protected int magicalDamage = 0;
     public int MagicalDamage
     {
