@@ -11,7 +11,7 @@ using UnityEngine;
 */
 public class EquipmentController : MonoBehaviour
 {
-    private BaseController characterContoller = null;
+    private Status status = null;
     private HairSpace hairSpace = null;
     private ArmorSpace[] armorSpaces = null;
     private BackSpace backSpace = null;
@@ -47,7 +47,7 @@ public class EquipmentController : MonoBehaviour
 
     private void Awake()
     {
-        characterContoller = GetComponent<BaseController>();
+        status = GetComponent<Status>();
         hairSpace = this.GetComponentInChildren<HairSpace>();
         armorSpaces = this.GetComponentsInChildren<ArmorSpace>();
         backSpace = this.GetComponentInChildren<BackSpace>();
@@ -102,14 +102,14 @@ public class EquipmentController : MonoBehaviour
         {
             int num = equipItems[7].itemKey / 1000;
             if (num == 7)
-                characterContoller.AttackType = 0f;
+                status.AttackType = 0f;
             else if (num == 9)
-                characterContoller.AttackType = 0.5f;
+                status.AttackType = 0.5f;
             else if (num == 10)
-                characterContoller.AttackType = 1f;
+                status.AttackType = 1f;
         }
         else
-            characterContoller.AttackType = 0f;
+            status.AttackType = 0f;
     }
 
     public void ChangeEquipment(Item _item)

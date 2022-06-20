@@ -96,7 +96,7 @@ public class PlayerController : BaseController
                 PlayerRun();
                 break;
             case CharacterState.Attack:
-                PlayerAttack(attackType);
+                PlayerAttack(character.AttackType);
                 break;
             case CharacterState.Died:
                 StartCoroutine(Died());
@@ -159,7 +159,7 @@ public class PlayerController : BaseController
     private int AttackTypeDamage()
     {
         // 물리 데미지와 마법 데미지 구분
-        if (attackType < 1f)
+        if (character.AttackType < 1f)
             return character.PhysicalDamage;
         else
             return character.MagicalDamage;

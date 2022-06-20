@@ -23,19 +23,23 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private StageManager stageManager = null;
 
+    [Header("MercenaryManager")]
+    [SerializeField]
+    private MercenaryManager mercenaryManager = null;
+
     [Header("Player")]
     [SerializeField]
     private PlayerStatus player = null;
 
     [Header("Boss")]
     [SerializeField]
-    private EnemyStatus bossEnemy = null;
+    private BossEnemyStatus bossEnemy = null;
 
     [Header("Altar")]
     [SerializeField]
     private AltarStatus altar = null;
 
-    private CharacterStatus[] mercenary = null;
+    private List<GameObject> mercenary = new List<GameObject>();
     [SerializeField]
     private List<EquipmentController> characterList = new List<EquipmentController>();
 
@@ -50,44 +54,63 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Awake()
     {
-        mercenary = player.Mercenarys;
-
         characterList.Add(player.GetComponent<EquipmentController>());
-        for(int i =0; i < mercenary.Length; i++)
-            characterList.Add(mercenary[i].GetComponent<EquipmentController>());
     }
     private void Start()
     {
         ChangePlayerUIItemImage();
-        ChangeMercenaryUIItemImage(0);
-        ChangeMercenaryUIItemImage(1);
-        ChangeMercenaryUIItemImage(2);
+        UpdatePlayerProfile();
+        for(int i = 0; i < mercenary.Count; i++)
+        {
+            if(mercenary[i] != null)
+            {
+                ChangeMercenaryUIItemImage(i);
+                UpdateMercenaryProfile(i);
+                AddMercenaryEC(mercenary[i]);
+            }
+        }
     }
+
     private void Update()
     {
-        //if (stageManager.IsStart == true)
-        //    bossEnemy = enemySpawner.CurBoss.GetComponent<EnemyStatus>();
-
         if (bossEnemy != null)
         {
             profilePanelController.BossUpdate(bossEnemy);
         }
-        profilePanelController.UpdatePlayerProfile(player);
-        profilePanelController.UpdateMercenaryProfile(mercenary);
-
-        
-        ChangeMercenaryUIItemImage(0);
-        ChangeMercenaryUIItemImage(1);
-        ChangeMercenaryUIItemImage(2);
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            if(mercenaryManager.Mercenarys.Count < 4)
+                mercenaryManager.AddNewMercenary();
+        }
     }
-
+    public void AddMercenary(GameObject _mercenary)
+    {
+        mercenary.Add(_mercenary);
+        AddMercenaryEC(_mercenary);
+    }
+    public void AddMercenaryEC(GameObject _mercenary)
+    {
+        characterList.Add(_mercenary.GetComponent<EquipmentController>());
+    }
+    public void SetBossEnemy()
+    {
+        bossEnemy = enemySpawner.CurBoss.GetComponent<BossEnemyStatus>();
+    }
     public void ChangePlayerUIItemImage()
     {
         profilePanelController.ChangePlayerUIItemImage(characterList);
     }
     public void ChangeMercenaryUIItemImage(int _index)
     {
-        profilePanelController.ChangeMercenaryUIItemImage(characterList,_index);
+        profilePanelController.ChangeMercenaryUIItemImage(characterList, _index);
+    }
+    public void UpdatePlayerProfile()
+    {
+        profilePanelController.UpdatePlayerProfile(player);
+    }
+    public void UpdateMercenaryProfile(int _index)
+    {
+        profilePanelController.UpdateMercenaryProfile(mercenary[_index - 1], mercenary.Count);
     }
     public void InventorySlotChange(int _index)
     {
@@ -100,6 +123,10 @@ public class UIManager : SingletonManager<UIManager>
     public void UpdateEquipmentName()
     {
         inventoryPanelController.UpdateEquipmentName();
+    }
+    public void SetActiveCharactersProfile(int _index, bool _bool)
+    {
+        profilePanelController.Profiles[_index].SetActive(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
@@ -125,7 +152,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public int GetMercenaryNum()
     {
-        return mercenary.Length;
+        return mercenary.Count;
     }
     public void SelectSlotItem(Item _item)
     {

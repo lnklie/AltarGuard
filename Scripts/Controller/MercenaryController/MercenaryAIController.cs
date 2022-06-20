@@ -182,7 +182,7 @@ public class MercenaryAIController : BaseController
     }
     public int AttackTypeDamage()
     {
-        if (attackType < 1f)
+        if (character.AttackType < 1f)
             return character.PhysicalDamage;
         else
             return character.MagicalDamage;
@@ -190,10 +190,10 @@ public class MercenaryAIController : BaseController
     public virtual void Attack()
     {
         ActiveLayer(LayerName.AttackLayer);
-        ani.SetFloat("AtkType", attackType);
+        ani.SetFloat("AtkType", character.AttackType);
         delayTime += Time.deltaTime;
         rig.velocity = Vector2.zero;
-        if (attackType == 0f)
+        if (character.AttackType == 0f)
         {
             if (!IsDelay())
             {
@@ -204,7 +204,7 @@ public class MercenaryAIController : BaseController
             else
                 isAtk = false;
         }
-        else if(attackType == 0.5f)
+        else if(character.AttackType == 0.5f)
         {
             if (!IsDelay())
             {

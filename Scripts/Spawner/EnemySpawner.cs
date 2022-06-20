@@ -158,6 +158,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
         _rushEnemyStatus.CustomEnemy();
         curBoss = _obj;
+        UIManager.Instance.SetBossEnemy();
     }
     public void ReturnEnemy(GameObject _enemy)
     {
