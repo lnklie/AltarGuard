@@ -1,5 +1,21 @@
 Update
 =======
+Version 06-20 Update
+--------
+- Connecting the Boss to the UI
+- Can add mercenaries
+- Connect UI after adding mercenary
+- Equip items and acquire items when adding mercenaries
+
+https://blog.naver.com/rnlgus1126/222781415556
+
+Version 06-19 Update
+--------
+- Update Boss Monster
+- Three Boss Monster
+
+https://blog.naver.com/rnlgus1126/222780118487
+
 Version 06-18 Update
 --------
 - Implementing a Boss Monster
