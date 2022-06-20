@@ -60,8 +60,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
         // 리스트에 아이템 추가 
         _itemList.Add(_item);    
     }
-    public void AcquireItem(Item _item, int _amount = 1)
+    public Item AcquireItem(Item _item, int _amount = 1)
     {
+        Item __item = null;
         // 아이템 얻기
         switch (_item.itemKey / 1000)
         {
@@ -69,56 +70,67 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 Hair _hair = new Hair(_item.itemKey, _item.itemName);
                 _hair.count =+ _amount;
                 inventroyDecorationItems.Add(_hair);
+                __item  = _hair;
                 break;
             case 1:
                 FaceHair _faceHair = new FaceHair(_item.itemKey, _item.itemName);
                 _faceHair.count =+ _amount;
                 inventroyDecorationItems.Add(_faceHair);
+                __item = _faceHair;
                 break;
             case 2:
                 Cloth _cloth = new Cloth(_item.itemKey, _item.itemName,_item.defensivePower);
                 _cloth.count =+ _amount;
                 InventroyEquipmentItems.Add(_cloth);
+                __item = _cloth;
                 break;
             case 3:
                 Pant _pant = new Pant(_item.itemKey, _item.itemName, _item.defensivePower);
                 _pant.count =+ _amount;
                 InventroyEquipmentItems.Add(_pant);
+                __item = _pant;
                 break;
             case 4:
                 Helmet _helmet = new Helmet(_item.itemKey, _item.itemName, _item.defensivePower);
                 _helmet.count =+ _amount;
                 InventroyEquipmentItems.Add(_helmet);
+                __item = _helmet;
                 break;
             case 5:
                 Armor _armor = new Armor(_item.itemKey, _item.itemName, _item.defensivePower);
                 _armor.count =+ _amount;
                 InventroyEquipmentItems.Add(_armor);
+                __item = _armor;
                 break;
             case 6:
                 Back _back = new Back(_item.itemKey, _item.itemName, _item.defensivePower);
                 _back.count =+ _amount;
                 InventroyEquipmentItems.Add(_back);
+                __item = _back;
                 break;
             case 7:
                 Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.atkSpeed);
                 _sword.count =+ _amount;
                 inventroyWeaponItems.Add(_sword);
+                __item = _sword;
                 break;
             case 8:
                 Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed);
                 _shield.count =+ _amount;
                 inventroyWeaponItems.Add(_shield);
+                __item = _shield;
                 break;
             case 9:
                 Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage,_item.atkRange,_item.atkDistance,_item.atkSpeed);
                 _bow.count =+ _amount;
                 inventroyWeaponItems.Add(_bow);
+                __item = _bow;
                 break;
             case 10:
                 Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance, _item.atkSpeed);
                 _wand.count =+ _amount;
                 inventroyWeaponItems.Add(_wand);
+                __item = _wand;
                 break;
             case 11:
                 if (IndexOfItem(_item) != -1)
@@ -149,6 +161,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 }
                 break;
         }
+        return __item;
     }
 
     public int IndexOfItem(Item _item)
@@ -339,15 +352,28 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
     }
 
-    public void SortInventory(List<Item> _inventory)
+    public void SortItemKeyInventory(List<Item> _inventory)
     {
         // 리스트 정렬
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
             else if (a.itemKey > b.itemKey) return 1;
-            return 0;
+            else return 0;
+
         });
     }
+    public void SortItemEquipNumInventory(List<Item> _inventory)
+    {
+        // 리스트 정렬
+        _inventory.Sort(delegate (Item a, Item b)
+        {
+            if (a.equipCharNum < b.equipCharNum) return -1;
+            else if (a.equipCharNum > b.equipCharNum) return 1;
+            else return 0;
+
+        });
+    }
+
 }
 

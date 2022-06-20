@@ -21,6 +21,9 @@ public class DataManager : MonoBehaviour
     private PlayerStatus playerStatus = null ;
     [SerializeField]
     private AltarStatus altarState = null ;
+
+    [SerializeField]
+    private MercenaryManager mercenaryManager = null;
     private void Start()
     {
         path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
@@ -122,28 +125,29 @@ public class DataManager : MonoBehaviour
 
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
-                    playerStatus.Mercenarys[j].ObjectName = playerData.mercenaries[j].objectName;
-                    playerStatus.Mercenarys[j].Str = playerData.mercenaries[j].str;
-                    playerStatus.Mercenarys[j].Dex = playerData.mercenaries[j].dex;
-                    playerStatus.Mercenarys[j].Wiz = playerData.mercenaries[j].wiz;
-                    playerStatus.Mercenarys[j].Luck = playerData.mercenaries[j].luck;
-                    playerStatus.Mercenarys[j].StatusPoint = playerData.mercenaries[j].statusPoint;
-                    playerStatus.Mercenarys[j].CurExp = playerData.mercenaries[j].exp;
-                    playerStatus.Mercenarys[j].CurLevel = playerData.mercenaries[j].level;
+                    CharacterStatus _mercenaryStatus = mercenaryManager.Mercenarys[j].GetComponent<CharacterStatus>();
+                    _mercenaryStatus.ObjectName = playerData.mercenaries[j].objectName;
+                    _mercenaryStatus.Str = playerData.mercenaries[j].str;
+                    _mercenaryStatus.Dex = playerData.mercenaries[j].dex;
+                    _mercenaryStatus.Wiz = playerData.mercenaries[j].wiz;
+                    _mercenaryStatus.Luck = playerData.mercenaries[j].luck;
+                    _mercenaryStatus.StatusPoint = playerData.mercenaries[j].statusPoint;
+                    _mercenaryStatus.CurExp = playerData.mercenaries[j].exp;
+                    _mercenaryStatus.CurLevel = playerData.mercenaries[j].level;
                     for (int i = 0; i < 2; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            playerStatus.Mercenarys[j].EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                     for (int i = 2; i < 7; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            playerStatus.Mercenarys[j].EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                     for (int i = 7; i < 9; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            playerStatus.Mercenarys[j].EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                 }
             }
@@ -188,23 +192,24 @@ public class DataManager : MonoBehaviour
         playerData.altar.buffDefensivePowerLevel = altarState.BuffDefensivePowerLevel;
         playerData.altar.buffSpeedLevel = altarState.BuffSpeedLevel;
         playerData.altar.buffHealingLevel = altarState.BuffHpRegenLevel;
-        playerData.mercenaries = new Character[playerStatus.Mercenarys.Length];
-        for (int i = 0; i < playerStatus.Mercenarys.Length; i++)
+        playerData.mercenaries = new Character[mercenaryManager.Mercenarys.Count];
+        for (int i = 0; i < mercenaryManager.Mercenarys.Count; i++)
         {
             Character character = new Character();
-            character.objectName = playerStatus.Mercenarys[i].ObjectName;
-            character.str = playerStatus.Mercenarys[i].Str;
-            character.dex = playerStatus.Mercenarys[i].Dex;
-            character.wiz = playerStatus.Mercenarys[i].Wiz;
-            character.luck = playerStatus.Mercenarys[i].Luck;
-            character.statusPoint = playerStatus.Mercenarys[i].StatusPoint;
-            character.exp = playerStatus.Mercenarys[i].CurExp;
-            character.level = playerStatus.Mercenarys[i].CurLevel;
-            character.checkEquipItems = playerStatus.Mercenarys[i].CheckEquipItems;
+            CharacterStatus _mercenaryStatus = mercenaryManager.Mercenarys[i].GetComponent<CharacterStatus>();
+            character.objectName = _mercenaryStatus.ObjectName;
+            character.str = _mercenaryStatus.Str;
+            character.dex = _mercenaryStatus.Dex;
+            character.wiz = _mercenaryStatus.Wiz;
+            character.luck = _mercenaryStatus.Luck;
+            character.statusPoint = _mercenaryStatus.StatusPoint;
+            character.exp = _mercenaryStatus.CurExp;
+            character.level = _mercenaryStatus.CurLevel;
+            character.checkEquipItems = _mercenaryStatus.CheckEquipItems;
             for (int j = 0; j < playerData.equipedItems.Length; j++)
             {
                 if(character.checkEquipItems[j])
-                    character.equipedItems[j] = playerStatus.Mercenarys[i].EquipmentController.EquipItems[j];
+                    character.equipedItems[j] = _mercenaryStatus.EquipmentController.EquipItems[j];
                 
             }
             playerData.mercenaries[i] = character;

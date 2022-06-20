@@ -100,7 +100,7 @@ public class InventoryPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
             {
-                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyWeaponItems);
+                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
                 inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
@@ -111,7 +111,8 @@ public class InventoryPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
             {
-                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyEquipmentItems);
+                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
+                InventoryManager.Instance.SortItemEquipNumInventory(InventoryManager.Instance.InventroyEquipmentItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
                 inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
@@ -122,7 +123,7 @@ public class InventoryPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyConsumableItems.Count; i++)
             {
-                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyConsumableItems);
+                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyConsumableItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyConsumableItems[i];
                 inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
@@ -132,7 +133,7 @@ public class InventoryPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyMiscellaneousItems.Count; i++)
             {
-                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
+                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyMiscellaneousItems[i];
                 inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
@@ -143,7 +144,7 @@ public class InventoryPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyDecorationItems.Count; i++)
             {
-                InventoryManager.Instance.SortInventory(InventoryManager.Instance.InventroyDecorationItems);
+                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyDecorationItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
                 inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
@@ -333,7 +334,7 @@ public class InventoryPanelController : MonoBehaviour
         if (_character == 0)
             UIManager.Instance.ChangePlayerUIItemImage();
         else
-            UIManager.Instance.ChangeMercenaryUIItemImage(_character - 1);
+            UIManager.Instance.ChangeMercenaryUIItemImage(_character);
     }
 
     public bool IsEquipingCharacter(EquipmentController _char, Item _equipItem)
@@ -355,7 +356,7 @@ public class InventoryPanelController : MonoBehaviour
             if (selectNum == 0)
                 UIManager.Instance.ChangePlayerUIItemImage();
             else
-                UIManager.Instance.ChangeMercenaryUIItemImage(selectNum - 1);
+                UIManager.Instance.ChangeMercenaryUIItemImage(selectNum);
         }
         else
             Debug.Log("Âø¿ëÁßÀÌ ¾Æ´Ô");

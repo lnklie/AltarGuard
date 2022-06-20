@@ -100,6 +100,13 @@ public class CharacterStatus: Status
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
+    [SerializeField]
+    private int characterNum = 0;
+    public int CharacterNum
+    {
+        get { return characterNum; }
+        set { characterNum = value; }
+    }
 
     private void Awake()
     {

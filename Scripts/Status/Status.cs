@@ -178,12 +178,13 @@ public class Status : MonoBehaviour
         get { return luck; }
         set { luck = value; }
     }
-    //protected RaycastHit2D atkRangeRay = default;
-    //public RaycastHit2D AtkRangeRay
-    //{
-    //    get { return atkRangeRay; }
-    //    set { atkRangeRay = value; }
-    //}
+
+    protected float attackType = 0f;
+    public float AttackType
+    {
+        get { return attackType; }
+        set { attackType = value; }
+    }
     [SerializeField]
     protected RaycastHit2D sightRay = default;
     public RaycastHit2D SightRay

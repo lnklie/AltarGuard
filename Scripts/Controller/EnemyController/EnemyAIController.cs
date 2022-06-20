@@ -139,7 +139,7 @@ public class EnemyAIController : AIController
     public override void Attack(EnemyStatus _status)
     {
         ActiveLayer(_status.Ani, LayerName.AttackLayer);
-        _status.Ani.SetFloat("AtkType", attackType);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
         _status.Rig.velocity = Vector2.zero;
         _status.DelayTime += Time.deltaTime;
     }
