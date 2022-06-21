@@ -1,5 +1,13 @@
 Update
 =======
+Version 06-21 Update
+--------
+- Modifying InventoryManager And EquipmentContoller
+- Modifying Boss Enemy 
+- Implementing Attack Effect
+
+https://blog.naver.com/rnlgus1126/222783098827
+
 Version 06-20 Update
 --------
 - Connecting the Boss to the UI
