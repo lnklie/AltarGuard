@@ -9,7 +9,7 @@ using UnityEngine;
 */
 public class MercenaryAIController : BaseController
 {
-    protected CharacterStatus character = null;
+    protected MercenaryStatus mercenary = null;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected bool isAtk = false;
@@ -48,7 +48,7 @@ public class MercenaryAIController : BaseController
 
     public  void Awake()
     {
-        character = this.GetComponent<CharacterStatus>();
+        mercenary = this.GetComponent<MercenaryStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
         col = this.GetComponent<BoxCollider2D>();
         ani = this.GetComponentInChildren<Animator>();
@@ -84,21 +84,21 @@ public class MercenaryAIController : BaseController
     public void ChangeState()  
     {
         if (sightRay)
-            distance = character.Target.transform.position - this.transform.position;
-        character.Dir = distance.normalized;
-        if (character.CurHp < 0f)
+            distance = mercenary.Target.transform.position - this.transform.position;
+        mercenary.Dir = distance.normalized;
+        if (mercenary.CurHp < 0f)
         {
             characterState = CharacterState.Died;
         }
         else
         {
-            if (character.IsDamaged)
+            if (mercenary.IsDamaged)
             {
                 characterState = CharacterState.Damaged;
             }
             else
             {
-                if (character.Target == null)
+                if (mercenary.Target == null)
                 {
                     characterState = CharacterState.Idle;
                 }
@@ -131,7 +131,7 @@ public class MercenaryAIController : BaseController
     public void Chase()
     {
         ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = character.Speed * character.Dir;
+        rig.velocity = mercenary.Speed * mercenary.Dir;
     }
 
     public IEnumerator Died()
@@ -147,7 +147,7 @@ public class MercenaryAIController : BaseController
     {
         rig.isKinematic = false;
         col.enabled = true;
-        character.CurHp = character.MaxHp;
+        mercenary.CurHp = mercenary.MaxHp;
         characterState = CharacterState.Idle;
     }
     public void Idle()
@@ -166,14 +166,14 @@ public class MercenaryAIController : BaseController
     public  void Perception()
     {
         AnimationDirection();
-        sightRay = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        atkRangeRay = Physics2D.CircleCast(this.transform.position, character.AtkRange, character.Dir, 0, LayerMask.GetMask("Enemy"));
-        allyRay = Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        sightRay = Physics2D.CircleCast(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        atkRangeRay = Physics2D.CircleCast(this.transform.position, mercenary.AtkRange, mercenary.Dir, 0, LayerMask.GetMask("Enemy"));
+        allyRay = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if (!sightRay)
-            character.Target = null;
+            mercenary.Target = null;
         else
         {
-            character.Target = sightRay.collider.gameObject;
+            mercenary.Target = sightRay.collider.gameObject;
         }
     }
     public EnemyState CheckBossState()
@@ -182,18 +182,18 @@ public class MercenaryAIController : BaseController
     }
     public int AttackTypeDamage()
     {
-        if (character.AttackType < 1f)
-            return character.PhysicalDamage;
+        if (mercenary.AttackType < 1f)
+            return mercenary.PhysicalDamage;
         else
-            return character.MagicalDamage;
+            return mercenary.MagicalDamage;
     }
     public virtual void Attack()
     {
         ActiveLayer(LayerName.AttackLayer);
-        ani.SetFloat("AtkType", character.AttackType);
+        ani.SetFloat("AtkType", mercenary.AttackType);
         delayTime += Time.deltaTime;
         rig.velocity = Vector2.zero;
-        if (character.AttackType == 0f)
+        if (mercenary.AttackType == 0f)
         {
             if (!IsDelay())
             {
@@ -204,7 +204,7 @@ public class MercenaryAIController : BaseController
             else
                 isAtk = false;
         }
-        else if(character.AttackType == 0.5f)
+        else if(mercenary.AttackType == 0.5f)
         {
             if (!IsDelay())
             {
@@ -234,8 +234,8 @@ public class MercenaryAIController : BaseController
     }
     public RaycastHit2D[] AttackRange()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, character.Dir, 1f, LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(this.transform.position, character.Dir, Color.red, 1f);
+        var hits = Physics2D.CircleCastAll(this.transform.position, 1f, mercenary.Dir, 1f, LayerMask.GetMask("Enemy"));
+        Debug.DrawRay(this.transform.position, mercenary.Dir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
@@ -258,15 +258,15 @@ public class MercenaryAIController : BaseController
             if (IsLastHit(enemy))
             {
                 Debug.Log("¸·Å¸ °æÇèÄ¡ È®µæ");
-                character.CurExp += enemy.DefeatExp;
+                mercenary.CurExp += enemy.DefeatExp;
             }
         }
     }
     public bool IsDelay()
     {
-        if (delayTime >= character.AtkSpeed)
+        if (delayTime >= mercenary.AtkSpeed)
         {
-            delayTime = character.AtkSpeed;
+            delayTime = mercenary.AtkSpeed;
             return false;
         }
         else
@@ -277,7 +277,7 @@ public class MercenaryAIController : BaseController
 
     public bool IsDied()
     {
-        if (character.CurHp <= 0)
+        if (mercenary.CurHp <= 0)
             return true;
         else
             return false;
@@ -286,18 +286,19 @@ public class MercenaryAIController : BaseController
     public void Damaged()
     {
         StartCoroutine(Blink());
+        UIManager.Instance.UpdateMercenaryProfile(mercenary.MercenaryNum);
     }
     private IEnumerator Blink()
     {
-        character.IsDamaged = false;
+        mercenary.IsDamaged = false;
         bodySprites.color = new Color(1f, 1f, 1f, 155 / 255f);
         yield return new WaitForSeconds(0.5f);
         bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
     public void AnimationDirection()
     {
-        if (character.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-        else if (character.Dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
+        if (mercenary.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+        else if (mercenary.Dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
     }
     public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
     {
@@ -316,7 +317,7 @@ public class MercenaryAIController : BaseController
         // È°½î±â
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
-            ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
+            ProjectionSpawner.Instance.ShotArrow(mercenary, AttackTypeDamage());
 
         }
         else

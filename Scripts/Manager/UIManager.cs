@@ -60,7 +60,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         ChangePlayerUIItemImage();
         UpdatePlayerProfile();
-        for(int i = 0; i < mercenary.Count; i++)
+        for (int i = 0; i < mercenary.Count; i++)
         {
             if(mercenary[i] != null)
             {
@@ -73,14 +73,17 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Update()
     {
-        if (bossEnemy != null)
-        {
-            profilePanelController.BossUpdate(bossEnemy);
-        }
         if (Input.GetKeyDown(KeyCode.F2))
         {
             if(mercenaryManager.Mercenarys.Count < 4)
                 mercenaryManager.AddNewMercenary();
+        }
+    }
+    public void UpdateBossInfo()
+    {
+        if (bossEnemy != null)
+        {
+            profilePanelController.BossUpdate(bossEnemy);
         }
     }
     public void AddMercenary(GameObject _mercenary)

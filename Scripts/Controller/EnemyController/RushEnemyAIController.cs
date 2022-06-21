@@ -74,12 +74,13 @@ public class RushEnemyAIController : EnemyAIController
 
     public override void Stiffen(EnemyStatus _status)
     {
-        _status.StiffenTime += Time.deltaTime;
+        base.Stiffen(_status);
         _status.IsKnuckBack = true;
-        if (_status.StiffenTime >= _status.MaxStiffenTime)
+        if (_status.StiffenTime >= 0.5f)
         {
             _status.IsKnuckBack = false;
             _status.IsDamaged = false;
+            _status.StiffenTime = 0f;
         }
     }
 

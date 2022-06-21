@@ -159,6 +159,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         _rushEnemyStatus.CustomEnemy();
         curBoss = _obj;
         UIManager.Instance.SetBossEnemy();
+        UIManager.Instance.UpdateBossInfo();
     }
     public void ReturnEnemy(GameObject _enemy)
     {

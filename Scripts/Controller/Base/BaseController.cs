@@ -17,9 +17,6 @@ public class BaseController : MonoBehaviour
         set { debuff = value; }
     }
 
-
-
-
     public int ReviseDamage(int _damage, int _depensivePower)
     {
         return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));

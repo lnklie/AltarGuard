@@ -48,7 +48,7 @@ public class InventoryPanelController : MonoBehaviour
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
     [SerializeField]
-    private int selectNum = 0;
+    private int selectCharNum = 0;
     private int selectInventoryIndex = 0;
     [SerializeField]
     private Item selectItem = null;
@@ -102,7 +102,6 @@ public class InventoryPanelController : MonoBehaviour
             {
                 InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
-                inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
                 inventorySlots[i].EnableItemCount(false);
             }
@@ -112,9 +111,7 @@ public class InventoryPanelController : MonoBehaviour
             for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
             {
                 InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
-                InventoryManager.Instance.SortItemEquipNumInventory(InventoryManager.Instance.InventroyEquipmentItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
-                inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
                 inventorySlots[i].EnableItemCount(false);
             }
@@ -125,7 +122,6 @@ public class InventoryPanelController : MonoBehaviour
             {
                 InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyConsumableItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyConsumableItems[i];
-                inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
             }
         }
@@ -135,7 +131,6 @@ public class InventoryPanelController : MonoBehaviour
             {
                 InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyMiscellaneousItems[i];
-                inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
 
             }
@@ -146,7 +141,6 @@ public class InventoryPanelController : MonoBehaviour
             {
                 InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyDecorationItems);
                 inventorySlots[i].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
-                inventorySlots[i].IsItemChange = true;
                 inventorySlots[i].SlotSetting();
                 inventorySlots[i].EnableItemCount(false);
             }
@@ -319,16 +313,15 @@ public class InventoryPanelController : MonoBehaviour
         // 장착하기 버튼
         if (_characterList[_character].CheckEquipItems[selectItem.itemType])
         {
-            inventorySlots[InventoryManager.Instance.IndexOfItem(_characterList[_character].EquipItems[selectItem.itemType])].IsItemChange = true;
             _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
         }
         selectItem.equipCharNum = _character;
         SelectCharacter(_characterList);
-        _characterList[_character].ChangeEquipment(selectItem);
-        inventorySlots[InventoryManager.Instance.IndexOfItem(selectItem)].IsItemChange = true;
         SetActiveEquipCharacterBox(false);
-        ChangeEquipmentImage();
+        _characterList[_character].ChangeEquipment(selectItem);
+        InventorySlotChange(selectInventoryIndex);
         UpdateEquipmentName();
+        ChangeAllEquipmentImage();
         SetActiveItemInfo(false);
         selectItem = null;
         if (_character == 0)
@@ -337,38 +330,30 @@ public class InventoryPanelController : MonoBehaviour
             UIManager.Instance.ChangeMercenaryUIItemImage(_character);
     }
 
-    public bool IsEquipingCharacter(EquipmentController _char, Item _equipItem)
-    {
-        // 현재 캐릭터가 해당 아이템의 부위를 착용중인지 체크
-        if (_char.CheckEquipItems[_equipItem.itemType])
-            return true;
-        else
-            return false;
-    }
     public void TakeOff(List<EquipmentController> _characterList)
     {
         // 장착해제
-        if (selectItem.isEquip)
+        if (selectItem.equipCharNum != -1)
         {
-            SelectCharacter(_characterList);
-            inventorySlots[InventoryManager.Instance.IndexOfItem(selectItem)].IsItemChange = true;
-            _characterList[selectNum].TakeOffEquipment(selectItem);
-            if (selectNum == 0)
+            Debug.Log("뭐임>");
+            _characterList[selectCharNum].TakeOffEquipment(selectItem);
+            if (selectCharNum == 0)
                 UIManager.Instance.ChangePlayerUIItemImage();
             else
-                UIManager.Instance.ChangeMercenaryUIItemImage(selectNum);
+                UIManager.Instance.ChangeMercenaryUIItemImage(selectCharNum);
         }
         else
             Debug.Log("착용중이 아님");
         SetActiveItemInfo(false);
-        ChangeEquipmentImage();
+        TakeOffEquipmentImage(selectItem.itemType);
+        InventorySlotChange(selectInventoryIndex);
         UpdateEquipmentName();
     }
     public void SelectCharacter(List<EquipmentController> _characterList)
     {
-        selectNum = selectItem.equipCharNum;
-        selectCharacterEqipment = _characterList[selectNum];
-        selectCharStatus = _characterList[selectNum].GetComponent<CharacterStatus>();
+        selectCharNum = selectItem.equipCharNum;
+        selectCharacterEqipment = _characterList[selectCharNum];
+        selectCharStatus = _characterList[selectCharNum].GetComponent<CharacterStatus>();
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
@@ -377,31 +362,40 @@ public class InventoryPanelController : MonoBehaviour
         for (int i = 0; i < UIManager.Instance.GetMercenaryNum(); i++)
             equipCharactersBtn[i + 1].gameObject.SetActive(_bool);
     }
+
     public void SelectSlotItem(Item _item)
     {
         // 슬롯에 선택한 아이템 
         selectItem = _item;
         isItemSelect = true;
     }
-    public void ChangeEquipmentImage()
+    public void ChangeAllEquipmentImage()
     { 
         // 장비창 이미지 바꾸기
         for (int i = 0; i < selectCharacterEqipment.EquipItems.Length; i++)
         {
             if (selectCharacterEqipment.CheckEquipItems[i])
             {
-                equipmentSlots[i].ItemImages[1].sprite = selectCharacterEqipment.EquipItems[i].singleSprite;
-                equipmentSlots[i].SlotSetting(selectCharacterEqipment.EquipItems[i]);
+                EquipEquipmentImage(i);
             }
             else
             {
+
                 TakeOffEquipmentImage(i);
             }
         }
     }
+    public void EquipEquipmentImage(int _index)
+    {
+        equipmentSlots[_index].CurItem = selectItem;
+        equipmentSlots[_index].ItemImages[1].sprite = selectCharacterEqipment.EquipItems[_index].singleSprite;
+        equipmentSlots[_index].SlotSetting(selectCharacterEqipment.EquipItems[_index]);
+    }
     public void TakeOffEquipmentImage(int _index)
     {
         // 장비 해제시 장비창 이미지 변경
+        Debug.Log("장착 해제");
+        equipmentSlots[_index].CurItem = null;
         equipmentSlots[_index].ItemImages[1].sprite = UIMask;
         equipmentSlots[_index].InitImageSize();
     }
@@ -411,20 +405,23 @@ public class InventoryPanelController : MonoBehaviour
         InitEquipment();
         if (_isUp)
         {
-            selectNum++;
-            if (selectNum == _charaterList.Count)
-                selectNum = 0;
+            if (selectCharNum >= _charaterList.Count - 1)
+                selectCharNum = 0;
+            else
+                selectCharNum++;
         }
         else
         {
-            selectNum--;
-            if (selectNum < 0)
-                selectNum = _charaterList.Count;
+            if (selectCharNum <= 0)
+                selectCharNum = _charaterList.Count - 1;
+            else
+                selectCharNum--;
+
         }
-        selectCharacterEqipment = _charaterList[selectNum];
-        selectCharStatus = _charaterList[selectNum].GetComponent<CharacterStatus>();
+        selectCharacterEqipment = _charaterList[selectCharNum];
+        selectCharStatus = _charaterList[selectCharNum].GetComponent<CharacterStatus>();
         UpdateEquipmentName();
-        ChangeEquipmentImage();
+        ChangeAllEquipmentImage();
     }
     public void UpdateEquipmentName()
     {
@@ -477,7 +474,7 @@ public class InventoryPanelController : MonoBehaviour
     {
         // UI 활성화 
         UIImages.SetActive(true);
-        ChangeEquipmentImage();
+        ChangeAllEquipmentImage();
         
     }
 

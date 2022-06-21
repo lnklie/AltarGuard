@@ -30,7 +30,6 @@ public class CharacterStatus: Status
         set { maxExp = value; }
     }
 
-
     [SerializeField]
     private int buffPhysicalDamage = 0;
     public int BuffPhysicalDamage
@@ -100,23 +99,14 @@ public class CharacterStatus: Status
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
-    [SerializeField]
-    private int characterNum = 0;
-    public int CharacterNum
-    {
-        get { return characterNum; }
-        set { characterNum = value; }
-    }
 
     private void Awake()
     {
         equipmentController = this.GetComponent<EquipmentController>();
-    }
-    private void Start()
-    {
         UpdateAbility();
         LvToExp();
         curHp = maxHp;
+        curMp = maxMp;
         statusPoint = 5;
     }
     private void Update()
@@ -187,6 +177,7 @@ public class CharacterStatus: Status
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
         UpdateAbility();
+        UIManager.Instance.UpdatePlayerProfile();
     }
 
     public void UpdateAbility()
@@ -194,7 +185,7 @@ public class CharacterStatus: Status
         // 능력 업데이트
         maxHp = 100 + str * 10;
         maxMp = 100 + wiz * 10;
-        atkSpeed = equipmentController.EquipItems[7].atkSpeed - dex * 0.1f;
+        atkSpeed = equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f - dex * 0.1f;
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
         speed = 2 + dex * 0.1f + buffSpeed;
