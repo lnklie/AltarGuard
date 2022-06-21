@@ -45,13 +45,7 @@ public class InventorySlot : MonoBehaviour
         itemImages = GetComponentsInChildren<Image>();
         itemCount = GetComponentInChildren<Text>();
     }
-    private void Update()
-    {
-        if (curItem != null && isItemChange)
-        {
-            TargetingSprites();
-        }
-    }
+
     public void SlotReset()
     {
         // 슬롯 리셋
@@ -109,31 +103,9 @@ public class InventorySlot : MonoBehaviour
             UpdateItemCount();
         }
     }
-    public bool isEmpty()
-    {
-        if (curItem == null || curItem.count == 0)
-            return true;
-        else
-            return false;
-    }
     public void UpdateItemCount()
     {
         itemCount.text = curItem.count.ToString();
-    }
-    public void TargetingSprites()
-    {
-        // 해당 아이템의 장착중인 캐릭터 별로 다른 색의 타겟팅 이미지가 표시
-
-        if (curItem.isEquip)
-        {
-            itemImages[2].sprite = itemTargetingSprites[curItem.equipCharNum];
-        }
-        else
-        {
-            itemImages[2].sprite = uiMask;
-        }
-
-        isItemChange = false;
     }
     public void EnableItemCount(bool _bool)
     {
@@ -141,6 +113,7 @@ public class InventorySlot : MonoBehaviour
     }
     public void SelectItem()
     {
-        UIManager.Instance.SelectSlotItem(curItem);
+        if(curItem != null)
+            UIManager.Instance.SelectSlotItem(curItem);
     }
 }

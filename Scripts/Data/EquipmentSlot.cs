@@ -20,6 +20,7 @@ public class EquipmentSlot : MonoBehaviour
         set { itemImages = value; }
     }
 
+    [SerializeField]
     private Item curItem = null;
     public Item CurItem
     {
@@ -76,5 +77,9 @@ public class EquipmentSlot : MonoBehaviour
                 break;
         }
     }
-
+    public void SelectItem()
+    {
+        if (curItem != null)
+            UIManager.Instance.SelectSlotItem(curItem);
+    }
 }

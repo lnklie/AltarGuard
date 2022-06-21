@@ -106,7 +106,18 @@ public class BossEnemyAIController : EnemyAIController
             return true;
         }
     }
-
+    public override void Stiffen(EnemyStatus _status)
+    {
+        UIManager.Instance.UpdateBossInfo();
+        Debug.Log("맞는 중");
+        base.Stiffen(_status);
+        if (_status.StiffenTime >= 0.5f)
+        {
+            Debug.Log("정신 차림");
+            _status.IsDamaged = false;
+            _status.StiffenTime = 0f;
+        }
+    }
     public override void AnimationDirection(EnemyStatus _enemy)
     {
         // 애니메이션 방향
@@ -117,6 +128,7 @@ public class BossEnemyAIController : EnemyAIController
     {
         base.Died(_status);
         Debug.Log("죽음");
+        UIManager.Instance.UpdateBossInfo();
         EnemySpawner.Instance.ReturnBossEnemy(this.gameObject);
         yield return null;
     }

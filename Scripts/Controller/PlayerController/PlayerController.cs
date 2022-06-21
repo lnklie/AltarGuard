@@ -39,6 +39,8 @@ public class PlayerController : BaseController
 
     [SerializeField]
     private CharacterState characterState = CharacterState.Idle;
+
+
     private void Awake()
     {
         character = this.GetComponent<CharacterStatus>();
@@ -63,12 +65,16 @@ public class PlayerController : BaseController
     {
         if(IsDied())
         {
+            UIManager.Instance.UpdatePlayerProfile();
             characterState = CharacterState.Died;
         }
         else
         {
             if (character.IsDamaged)
+            {
+                UIManager.Instance.UpdatePlayerProfile();
                 StartCoroutine(Blink());
+            }
 
             if (!IsMove())
                 characterState = CharacterState.Idle;
@@ -254,10 +260,10 @@ public class PlayerController : BaseController
 
     private IEnumerator Blink()
     {
-         character.IsDamaged = false;        
-         bodySprites.color = new Color(1f,1f,1f,155/255f);
-         yield return new WaitForSeconds(0.5f);
-         bodySprites.color = new Color(1f, 1f, 1f, 1f);
+        character.IsDamaged = false;        
+        bodySprites.color = new Color(1f,1f,1f,155/255f);
+        yield return new WaitForSeconds(0.5f);
+        bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
 
     private IEnumerator Died()

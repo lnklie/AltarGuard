@@ -76,12 +76,7 @@ public class EnemyAIController : AIController
 
     public virtual void Stiffen(EnemyStatus _status)
     {
-        float _stiffenTime = 0f;
-        _stiffenTime += Time.deltaTime;
-        if (_stiffenTime >= 1f)
-        {
-            _status.IsDamaged = false;
-        }
+        _status.StiffenTime += Time.deltaTime;
     }
     public void FindAltar(EnemyStatus _enemy)
     {

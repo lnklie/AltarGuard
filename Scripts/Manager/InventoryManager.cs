@@ -45,11 +45,18 @@ public class InventoryManager : SingletonManager<InventoryManager>
         get { return inventroyDecorationItems; }
     }
 
+    public delegate void Del(string message);
+    public static void DelegateMethod(string message)
+    {
+        Debug.Log(message);
+    }
     private void Start()
     {
         AcquireItem(DatabaseManager.Instance.SelectItem(7024), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(9002), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(10002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(11000), 3);
         AcquireItem(DatabaseManager.Instance.SelectItem(11001),3);
         AcquireItem(DatabaseManager.Instance.SelectItem(11002), 3);
@@ -363,17 +370,5 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
         });
     }
-    public void SortItemEquipNumInventory(List<Item> _inventory)
-    {
-        // 리스트 정렬
-        _inventory.Sort(delegate (Item a, Item b)
-        {
-            if (a.equipCharNum < b.equipCharNum) return -1;
-            else if (a.equipCharNum > b.equipCharNum) return 1;
-            else return 0;
-
-        });
-    }
-
 }
 
