@@ -34,6 +34,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("Stage")]
     public List<Stage> stageList = new List<Stage>();
+
+    [Header("Skill")]
+    public List<Skill> skillList = new List<Skill>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -278,6 +281,23 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
+        if (!File.Exists(CombinePath("Skill")))
+        {
+            Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill")));
+            Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
+            for (var i = 0; i < skill.Length; i++)
+            {
+                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel,skill[i].skillType, skill[i].skillVariable,
+                    skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
+                    skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
+                    skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
+            }
+        }
     }
     public Item SelectItem(int _key)
     {
@@ -389,5 +409,17 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 _enemy = rushEnemyList[i];
         }
         return _enemy;
+    }
+
+    public Skill SelectSkill(int _key)
+    {
+        Skill _skill = null;
+
+        for(int i =0; i< skillList.Count; i++)
+        {
+            if(skillList[i].skillKey == _key)
+                _skill = skillList[i];
+        }
+        return _skill;
     }
 }
