@@ -116,25 +116,29 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 __item = _back;
                 break;
             case 7:
-                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.atkSpeed);
+                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
+                    _item.atkRange, _item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2);
                 _sword.count =+ _amount;
                 inventroyWeaponItems.Add(_sword);
                 __item = _sword;
                 break;
             case 8:
-                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed);
+                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
+                    _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed, _item.skillKey1, _item.skillKey2);
                 _shield.count =+ _amount;
                 inventroyWeaponItems.Add(_shield);
                 __item = _shield;
                 break;
             case 9:
-                Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage,_item.atkRange,_item.atkDistance,_item.atkSpeed);
+                Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage, 
+                    _item.atkRange,_item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2);
                 _bow.count =+ _amount;
                 inventroyWeaponItems.Add(_bow);
                 __item = _bow;
                 break;
             case 10:
-                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, _item.atkRange, _item.atkDistance, _item.atkSpeed);
+                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, 
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2);
                 _wand.count =+ _amount;
                 inventroyWeaponItems.Add(_wand);
                 __item = _wand;
