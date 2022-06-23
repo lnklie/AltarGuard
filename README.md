@@ -1,5 +1,18 @@
 Update
 =======
+Version 06-23 Update
+--------
+- Skill Update
+
+https://blog.naver.com/rnlgus1126/222786272902
+
+Version 06-22 Update
+--------
+- Modifying Attack Animation
+- Create Skill Controller
+
+https://blog.naver.com/rnlgus1126/222784758361
+
 Version 06-21 Update
 --------
 - Modifying InventoryManager And EquipmentContoller
