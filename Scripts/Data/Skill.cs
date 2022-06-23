@@ -30,8 +30,7 @@ public class Skill
     public float skillFigures8;
     public float skillFigures9;
     public float skillFigures10;
-
-    public GameObject skillPrefab;
+    public float coolTime;
     public Skill(int _skillKey, string _skillName, int _skillLevel
         , int _skillType, int _skillVarable
         , int  _skillValue1, int _skillValue2, int _skillValue3
@@ -40,7 +39,7 @@ public class Skill
         , int _skillValue10, float _skillFigures1, float _skillFigures2
         , float _skillFigures3, float _skillFigures4, float _skillFigures5
         , float _skillFigures6, float _skillFigures7, float _skillFigures8
-        , float _skillFigures9, float _skillFigures10)
+        , float _skillFigures9, float _skillFigures10, float _coolTime)
     {
         skillKey = _skillKey;
         skillName = _skillName;
@@ -67,7 +66,6 @@ public class Skill
         skillFigures8 = _skillFigures8;
         skillFigures9 = _skillFigures9;
         skillFigures10 = _skillFigures10;
-
-        skillPrefab = Resources.Load<GameObject>("Prefabs/Skills/"+ skillName);
+        coolTime = _coolTime;
     }
 }
