@@ -35,6 +35,7 @@ public class SkillController : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F3))
         {
             if (!isCoolTime[1])
                 UseSkill(skills[1], status.Target);
