@@ -1,6 +1,6 @@
 Update
 =======
-Version 06-23 Update
+Version 06-24 Update
 --------
 - Skill CoolTime Update
 - Modifying Character Left and right changes
