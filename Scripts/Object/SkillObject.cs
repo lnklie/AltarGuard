@@ -58,7 +58,6 @@ public class SkillObject : MonoBehaviour
         }
         else
         {
-            Debug.Log("Å¸°ÙÀÌ ¾ø½À´Ï´Ù.");
         }
     }
     public IEnumerator CastingSkill()
@@ -115,8 +114,6 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
-        // ·¹ÀÌ¸¦ ½î´Â ¿ªÇÒ
-        
         RaycastHit2D[] ray = default;
         if (this.gameObject.layer == 3)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally"));

@@ -58,8 +58,8 @@ public class EnemyAIController : AIController
     {
         ActiveLayer(_status.Ani, LayerName.IdleLayer);
         _status.IsStateChange = false;
-        SetEnabled(_status, false);
         _status.Rig.velocity = Vector2.zero;
+        SetEnabled(_status, false);
         yield return new WaitForSeconds(2f);
         DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
         StageManager.Instance.SpawnedEneies--;

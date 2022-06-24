@@ -6,7 +6,7 @@ public class SkillController : MonoBehaviour
 {
     [SerializeField]
     private List<Skill> skills = new List<Skill>();
-    // 얻기, 없애기, 사용하기, 스킬 레벨업,
+
     [SerializeField]
     private List<float> coolTimes = new List<float>();
 
@@ -40,7 +40,6 @@ public class SkillController : MonoBehaviour
                 UseSkill(skills[1], status.Target);
         }
 
-
         CalculateSkillCoolTime();
     }
     public void AquireSkill(int _skillKey)
@@ -71,11 +70,6 @@ public class SkillController : MonoBehaviour
             _skillObject.Target = _target;
             _skillObject.Damage = SetSkillDamageByLevel(_skill);
 
-            Debug.Log("쿨타임중");
-            
-        }
-        else
-            Debug.Log("없는 스킬");
     }
     public void CalculateSkillCoolTime()
     {

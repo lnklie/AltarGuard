@@ -71,29 +71,21 @@ public class Arrow : MonoBehaviour
         Debug.DrawRay(this.transform.position, dir);
         if(ray)
         {
-            if (IsEnemy(archer,ray.collider.gameObject))
+            Status hitObject = ray.collider.GetComponent<Status>();
+            hitObject.CurHp -= ReviseDamage(dmg, hitObject.DefensivePower);
+            hitObject.IsDamaged = true;
+            if (archer.CompareTag("Mercenary"))
             {
-                if (archer.CompareTag("Mercenary"))
+                MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
+                mercenary.IsAtk = true;
+                if (mercenary.IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
                 {
-                    EnemyStatus hitObject = ray.collider.GetComponent<EnemyStatus>();
-                    MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
-                    hitObject.CurHp -= ReviseDamage(dmg,hitObject.DefensivePower);
-                    hitObject.IsDamaged = true;
-                    mercenary.IsAtk = true;
-                    if (archer.GetComponent<MercenaryAIController>().IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
-                    {
-                        mercenary.GetComponent<CharacterStatus>().CurExp += ray.collider.GetComponent<EnemyStatus>().DefeatExp;
-                    }
+                    mercenary.GetComponent<CharacterStatus>().CurExp += ray.collider.GetComponent<EnemyStatus>().DefeatExp;
                 }
-                else
-                {
-                    Status hitObject = ray.collider.GetComponent<Status>();
-                    hitObject.CurHp -= dmg;
-                    hitObject.IsDamaged = true;
-                }
-                durationTime = 0f;
-                ProjectionSpawner.Instance.ReturnArrow(this);
             }
+            durationTime = 0f;
+            ProjectionSpawner.Instance.ReturnArrow(this);
+
         }
         if (durationTime >= maxDurationTime)
         {
