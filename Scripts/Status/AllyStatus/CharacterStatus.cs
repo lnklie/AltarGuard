@@ -107,7 +107,7 @@ public class CharacterStatus: Status
         LvToExp();
         curHp = maxHp;
         curMp = maxMp;
-        statusPoint = 5;
+        statusPoint = 1000;
     }
     private void Update()
     {
@@ -185,7 +185,7 @@ public class CharacterStatus: Status
         // 능력 업데이트
         maxHp = 100 + str * 10;
         maxMp = 100 + wiz * 10;
-        atkSpeed = equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f - dex * 0.1f;
+        atkSpeed = (equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f) - dex * 0.1f;
         physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
         speed = 2 + dex * 0.1f + buffSpeed;

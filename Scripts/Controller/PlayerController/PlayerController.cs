@@ -20,6 +20,9 @@ public class PlayerController : BaseController
     private Vector2 dir = new Vector2(0, 0);
     private Vector2 lookDir = Vector2.down;
 
+    private RaycastHit2D sightRay = default;
+    private RaycastHit2D atkRangeRay = default;
+
     private float delayTime = 0f;
     private bool isAtk = false;
 
@@ -39,7 +42,8 @@ public class PlayerController : BaseController
 
     [SerializeField]
     private CharacterState characterState = CharacterState.Idle;
-
+    [SerializeField]
+    private GameObject unitRoot = null;
 
     private void Awake()
     {
@@ -60,6 +64,7 @@ public class PlayerController : BaseController
         ChangeState();
         CurState();
         AquireRay();
+        MouseTargeting();
     }
     public void ChangeState()
     {
@@ -109,7 +114,34 @@ public class PlayerController : BaseController
                 break;
         }
     }
+    public void MouseTargeting()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("클릭");
 
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Enemy", "Ally"));
+            if (hit.rigidbody)
+            {
+                if(character.Target)
+                {
+                    character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                }
+                Debug.Log("물체 타겟팅 "+ hit.rigidbody.gameObject.name);
+                character.Target = hit.rigidbody.gameObject;
+                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+            }
+            else
+            {
+                if(character.Target)
+                {
+                    character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    character.Target = null;
+                }
+            }
+
+        }
+    }
     public void PlayerIdle() 
     {
         ActiveLayer(LayerName.IdleLayer);
@@ -253,8 +285,8 @@ public class PlayerController : BaseController
     {
         if(characterState != CharacterState.Died)
         {
-            if (dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-            else if (dir.x < 0) transform.transform.localScale = new Vector3(1, 1, 1);
+            if (dir.x > 0) unitRoot.transform.localScale = new Vector3(-1, 1, 1);
+            else if (dir.x < 0) unitRoot.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -304,6 +336,18 @@ public class PlayerController : BaseController
         }
 
         yield return 0;
+    }
+    public void Perception()
+    {
+        AnimationDirection();
+        sightRay = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        atkRangeRay = Physics2D.CircleCast(this.transform.position, character.AtkRange, character.Dir, 0, LayerMask.GetMask("Enemy"));
+        if (!sightRay)
+            character.Target = null;
+        else
+        {
+            character.Target = sightRay.collider.gameObject;
+        }
     }
 }
     
