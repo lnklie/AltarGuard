@@ -6,7 +6,7 @@ public class SkillController : MonoBehaviour
 {
     [SerializeField]
     private List<Skill> skills = new List<Skill>();
-    // ¾ò±â, ¾ø¾Ö±â, »ç¿ëÇÏ±â, ½ºÅ³ ·¹º§¾÷,
+    // ì–»ê¸°, ì—†ì• ê¸°, ì‚¬ìš©í•˜ê¸°, ìŠ¤í‚¬ ë ˆë²¨ì—…,
     [SerializeField]
     private List<float> coolTimes = new List<float>();
 
@@ -21,8 +21,11 @@ public class SkillController : MonoBehaviour
     {
         status = this.GetComponentInParent<Status>();
         skillPrefabs.AddRange(this.GetComponentsInChildren<SkillObject>());
-        for(int i =0; i < skillPrefabs.Count; i++) 
+        for(int i =0; i < skillPrefabs.Count; i++)
+        {
             skillPrefabs[i].gameObject.SetActive(false);
+            skillPrefabs[i].gameObject.layer = this.gameObject.layer;
+        }
     }
     private void Start()
     {
@@ -32,15 +35,13 @@ public class SkillController : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F3))
-            UseSkill(skills[1], status.Target);
-
-     
-        for(int i = 0; i < coolTimes.Count; i++ )
         {
-            if (isCoolTime[i])
-                coolTimes[i] += Time.deltaTime;
+            if (!isCoolTime[1])
+                UseSkill(skills[1], status.Target);
         }
+
+
+        CalculateSkillCoolTime();
     }
     public void AquireSkill(int _skillKey)
     {
@@ -53,7 +54,7 @@ public class SkillController : MonoBehaviour
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
     public void UseSkill(Skill _skill, GameObject _target)
@@ -62,21 +63,31 @@ public class SkillController : MonoBehaviour
         {
             SkillObject _skillObject = skillPrefabs[_skill.skillKey];
             int index = skills.IndexOf(_skill);
-            if (coolTimes[index] >= _skill.coolTime)
-            {
-                isCoolTime[index] = true;
-                coolTimes[index] = 0;
-                _skillObject.gameObject.SetActive(true);
-                _skillObject.Target = _target;
-                _skillObject.Damage = SetSkillDamageByLevel(_skill);
-            }
-            else
-            {
-                Debug.Log("ÄðÅ¸ÀÓÁß");
-            }
+            isCoolTime[index] = true;
+            coolTimes[index] = 0;
+
+            _skillObject.IsSkillUse = true;
+            _skillObject.gameObject.SetActive(true);
+            _skillObject.Target = _target;
+            _skillObject.Damage = SetSkillDamageByLevel(_skill);
+
+            Debug.Log("ì¿¨íƒ€ìž„ì¤‘");
+            
         }
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
+    }
+    public void CalculateSkillCoolTime()
+    {
+        for (int i = 0; i < coolTimes.Count; i++)
+        {
+            if (isCoolTime[i])
+            {
+                coolTimes[i] += Time.deltaTime;
+                if (coolTimes[i] >= skills[i].coolTime)
+                    isCoolTime[i] = false;
+            }
+        }
     }
     public int SetSkillDamageByLevel(Skill _skill)
     {
