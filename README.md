@@ -2,6 +2,13 @@ Update
 =======
 Version 06-23 Update
 --------
+- Skill CoolTime Update
+- Modifying Character Left and right changes
+- 
+https://blog.naver.com/rnlgus1126/222787726472
+
+Version 06-23 Update
+--------
 - Skill Update
 
 https://blog.naver.com/rnlgus1126/222786272902
@@ -10,6 +17,8 @@ Version 06-22 Update
 --------
 - Modifying Attack Animation
 - Create Skill Controller
+- Implementing Player Target System
+- Implementing Skill Hit
 
 https://blog.naver.com/rnlgus1126/222784758361
 
