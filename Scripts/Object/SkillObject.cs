@@ -58,6 +58,7 @@ public class SkillObject : MonoBehaviour
         }
         else
         {
+            Debug.Log("타겟이 없습니다.");
         }
     }
     public IEnumerator CastingSkill()
@@ -114,6 +115,8 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
+        // 레이를 쏘는 역할
+        
         RaycastHit2D[] ray = default;
         if (this.gameObject.layer == 3)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally"));

@@ -20,7 +20,8 @@ public class PlayerController : BaseController
     private Vector2 dir = new Vector2(0, 0);
     private Vector2 lookDir = Vector2.down;
 
-    private RaycastHit2D sightRay = default;
+    [SerializeField]
+    private List<RaycastHit2D> sightRay = new List<RaycastHit2D>();
     private RaycastHit2D atkRangeRay = default;
 
     private float delayTime = 0f;
@@ -65,6 +66,7 @@ public class PlayerController : BaseController
         CurState();
         AquireRay();
         MouseTargeting();
+        Perception();
     }
     public void ChangeState()
     {
@@ -118,28 +120,41 @@ public class PlayerController : BaseController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("클릭");
+            Debug.Log("아군 클릭");
 
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Enemy", "Ally"));
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
+
             if (hit.rigidbody)
             {
-                if(character.Target)
+                if (GetDistance(this.transform.position, hit.rigidbody.transform.position) <= character.SeeRange)
                 {
-                    character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    if (character.AllyTarget)
+                    {
+                        character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    }
+                    Debug.Log("아군 타겟팅 " + hit.rigidbody.gameObject.name);
+                    TargetAlly(hit.rigidbody.gameObject);
                 }
-                Debug.Log("물체 타겟팅 "+ hit.rigidbody.gameObject.name);
-                character.Target = hit.rigidbody.gameObject;
-                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+                else
+                    Debug.Log("대상이 너무 멀리있습니다.");
             }
             else
             {
-                if(character.Target)
+                if (character.AllyTarget)
                 {
-                    character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                    character.Target = null;
+                    character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    character.AllyTarget = null;
                 }
             }
+        }
+        if (character.AllyTarget)
+        {
+            if (GetDistance(this.transform.position, character.AllyTarget.transform.position) >= character.SeeRange)
+            {
+                character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                character.AllyTarget = null;
 
+            }
         }
     }
     public void PlayerIdle() 
@@ -339,14 +354,61 @@ public class PlayerController : BaseController
     }
     public void Perception()
     {
-        AnimationDirection();
-        sightRay = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         atkRangeRay = Physics2D.CircleCast(this.transform.position, character.AtkRange, character.Dir, 0, LayerMask.GetMask("Enemy"));
-        if (!sightRay)
-            character.Target = null;
-        else
+        TargetCloseEnemy();
+    }
+    public void TargetCloseEnemy()
+    {
+        sightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
+        SortSightRayList(sightRay);
+        if (sightRay.Count > 0)
+            TargetEnemy(sightRay[0].collider.gameObject);
+
+        if (character.Target)
         {
-            character.Target = sightRay.collider.gameObject;
+            if (GetDistance(this.transform.position, character.Target.transform.position) >= character.SeeRange)
+            {
+                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                character.Target = null;
+
+            }
+        }
+    }
+    public void SortSightRayList(List<RaycastHit2D> _inventory)
+    {
+        // 리스트 정렬
+        _inventory.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
+        {
+            if (GetDistance(this.transform.position, a.rigidbody.position) < GetDistance(this.transform.position, b.rigidbody.position)) return -1;
+            else if (GetDistance(this.transform.position, a.rigidbody.position) > GetDistance(this.transform.position, b.rigidbody.position)) return 1;
+            else return 0;
+
+        });
+    }
+    public void TargetEnemy(GameObject _target)
+    {
+        Debug.Log("타겟팅");
+        if(_target)
+        {
+            if(character.Target)
+            {
+                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+            }
+            character.Target = _target;
+            character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+        }
+    }
+    public void TargetAlly(GameObject _allyTarget)
+    {
+        Debug.Log("타겟팅");
+        if (_allyTarget)
+        {
+            if (character.Target)
+            {
+                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+            }
+            character.AllyTarget = _allyTarget;
+            character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
     }
 }

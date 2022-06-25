@@ -16,6 +16,13 @@ public class CharacterStatus: Status
         get { return equipmentController; }
         set { equipmentController = value; }
     }
+    [SerializeField]
+    protected GameObject allyTarget = null;
+    public GameObject AllyTarget
+    {
+        get { return allyTarget; }
+        set { allyTarget = value; }
+    }
     protected int curExp = 0;
     public int CurExp
     {
