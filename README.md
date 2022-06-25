@@ -1,8 +1,14 @@
 Update
 =======
+Version 06-25 Update
+--------
+- Updating Targeting System
+
+https://blog.naver.com/rnlgus1126/222788734287
+
 Version 06-24 Update
 --------
-- Skill CoolTime Update
+- Updating Skill CoolTime
 - Modifying Character Left and right changes
 - Implementing Player Target System
 - Implementing Skill Hit
