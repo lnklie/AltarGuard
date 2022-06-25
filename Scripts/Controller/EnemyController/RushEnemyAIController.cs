@@ -14,7 +14,10 @@ public class RushEnemyAIController : EnemyAIController
     {
         rushEnemyStatus = GetComponent<RushEnemyStatus>();
     }
-
+    private void Start()
+    {
+        FindAltar(rushEnemyStatus);
+    }
     private void Update()
     {
         Perception(rushEnemyStatus);
@@ -71,27 +74,17 @@ public class RushEnemyAIController : EnemyAIController
 
     public override void Stiffen(EnemyStatus _status)
     {
-        _status.StiffenTime += Time.deltaTime;
+        base.Stiffen(_status);
         _status.IsKnuckBack = true;
-        if (_status.StiffenTime >= _status.MaxStiffenTime)
+        if (_status.StiffenTime >= 0.5f)
         {
             _status.IsKnuckBack = false;
             _status.IsDamaged = false;
+            _status.StiffenTime = 0f;
         }
     }
 
-    public bool FrontOtherEnemy(RaycastHit2D _enemyHit,Status _enemy)
-    {
 
-        // 앞에 다른 적이 있는 지 확인
-
-        if (_enemyHit.collider.gameObject != _enemy.gameObject)
-        {
-            return true;
-        }
-        else
-            return false;
-    }
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
@@ -106,5 +99,12 @@ public class RushEnemyAIController : EnemyAIController
         }
 
         yield return 0;
+    }
+    public override IEnumerator Died(EnemyStatus _status)
+    {
+        base.Died(_status);
+        StageManager.Instance.SpawnedEneies--;
+        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
+        yield return null;
     }
 }

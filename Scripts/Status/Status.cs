@@ -51,33 +51,35 @@ public class Status : MonoBehaviour
     }
 
     [SerializeField]
-    protected int maxHp = 100;
+    protected int maxHp = 0;
     public int MaxHp
     {
         get { return maxHp; }
         set { maxHp = value; }
     }
 
-    protected int curMp = 100;
+    [SerializeField]
+    protected int curMp = 0;
     public int CurMp
     {
         get { return curMp; }
         set { curMp = value; }
     }
-
-    protected int maxMp = 100;
+    [SerializeField]
+    protected int maxMp = 0;
     public int MaxMp
     {
         get { return maxMp; }
         set { maxMp = value; }
     }
 
+    [SerializeField]
     protected int physicalDamage = 0;
     public int PhysicalDamage
     {
         get { return physicalDamage; }
     }
-
+    [SerializeField]
     protected int magicalDamage = 0;
     public int MagicalDamage
     {
@@ -121,7 +123,7 @@ public class Status : MonoBehaviour
         get { return arrowSpd; }
         set { arrowSpd = value; }
     }
-
+    [SerializeField]
     protected bool isDamaged = false;
     public bool IsDamaged
     {
@@ -177,12 +179,13 @@ public class Status : MonoBehaviour
         get { return luck; }
         set { luck = value; }
     }
-    //protected RaycastHit2D atkRangeRay = default;
-    //public RaycastHit2D AtkRangeRay
-    //{
-    //    get { return atkRangeRay; }
-    //    set { atkRangeRay = value; }
-    //}
+
+    protected float attackType = 0f;
+    public float AttackType
+    {
+        get { return attackType; }
+        set { attackType = value; }
+    }
     [SerializeField]
     protected RaycastHit2D sightRay = default;
     public RaycastHit2D SightRay

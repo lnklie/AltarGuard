@@ -12,8 +12,8 @@ using UnityEditor;
 [System.Serializable]
 public class Shield : Weapon
 {
-    public Shield(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance, int _defensivePower, float _atkSpeed) 
-        : base(_itemKey,_itemName,_attackType,_weaponType, _physicalDamage, _magicalDamage, _atkRange,_atkDistance, _atkSpeed) 
+    public Shield(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance, int _defensivePower, float _atkSpeed, int _skillKey1, int _skillKey2) 
+        : base(_itemKey,_itemName,_attackType,_weaponType, _physicalDamage, _magicalDamage, _atkRange,_atkDistance, _atkSpeed, _skillKey1, _skillKey2) 
     {
 
         defensivePower = (int)_defensivePower;

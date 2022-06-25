@@ -11,7 +11,7 @@ using UnityEngine;
 */
 public class EquipmentController : MonoBehaviour
 {
-    private BaseController characterContoller = null;
+    private Status status = null;
     private HairSpace hairSpace = null;
     private ArmorSpace[] armorSpaces = null;
     private BackSpace backSpace = null;
@@ -47,7 +47,7 @@ public class EquipmentController : MonoBehaviour
 
     private void Awake()
     {
-        characterContoller = GetComponent<BaseController>();
+        status = GetComponent<Status>();
         hairSpace = this.GetComponentInChildren<HairSpace>();
         armorSpaces = this.GetComponentsInChildren<ArmorSpace>();
         backSpace = this.GetComponentInChildren<BackSpace>();
@@ -102,14 +102,14 @@ public class EquipmentController : MonoBehaviour
         {
             int num = equipItems[7].itemKey / 1000;
             if (num == 7)
-                characterContoller.AttackType = 0f;
+                status.AttackType = 0f;
             else if (num == 9)
-                characterContoller.AttackType = 0.5f;
+                status.AttackType = 0.5f;
             else if (num == 10)
-                characterContoller.AttackType = 1f;
+                status.AttackType = 1f;
         }
         else
-            characterContoller.AttackType = 0f;
+            status.AttackType = 0f;
     }
 
     public void ChangeEquipment(Item _item)
@@ -118,7 +118,9 @@ public class EquipmentController : MonoBehaviour
         if (checkEquipItems[_item.itemType])
         {
             equipItems[_item.itemType].isEquip = false;
+            InventoryManager.Instance.AcquireItem(equipItems[_item.itemType]);
         }
+        InventoryManager.Instance.DiscardItem(_item);
         equipItems[_item.itemType] = _item;
         equipItems[_item.itemType].isEquip = true;
         checkEquipItems[_item.itemType] = true;
@@ -166,11 +168,12 @@ public class EquipmentController : MonoBehaviour
     }
     public void TakeOffEquipment(Item _item)
     {
+        InventoryManager.Instance.AcquireItem(equipItems[_item.itemType]);
         // ¿Â¬¯«ÿ¡¶
         switch (_item.itemType)
         {
             case 0:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[0])
                 {
                     equipItems[0].isEquip = false;
                     equipItems[0].equipCharNum = -1;
@@ -180,7 +183,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 1:
-                if (InventoryManager.Instance.IndexOfItem( _item) != -1)
+                if (checkEquipItems[1])
                 {
                     equipItems[1].isEquip = false;
                     equipItems[1].equipCharNum = -1;
@@ -190,7 +193,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 2:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[2])
                 {
                     equipItems[2].isEquip = false;
                     equipItems[2].equipCharNum = -1;
@@ -203,7 +206,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 3:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[3])
                 {
                     equipItems[3].isEquip = false;
                     equipItems[3].equipCharNum = -1;
@@ -216,7 +219,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 4:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[4])
                 {
                     equipItems[4].isEquip = false;
                     equipItems[4].equipCharNum = -1;
@@ -226,7 +229,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 5:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[5])
                 {
                     equipItems[5].isEquip = false;
                     equipItems[5].equipCharNum = -1;
@@ -239,7 +242,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 6:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[6])
                 {
                     equipItems[6].isEquip = false;
                     equipItems[6].equipCharNum = -1;
@@ -249,7 +252,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 7:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[7])
                 {
 
                     equipItems[7].isEquip = false;
@@ -261,7 +264,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
             case 8:
-                if (InventoryManager.Instance.IndexOfItem(_item) != -1)
+                if (checkEquipItems[8])
                 {
                     equipItems[8].isEquip = false;
                     equipItems[8].equipCharNum = -1;

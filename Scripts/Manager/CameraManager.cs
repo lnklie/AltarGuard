@@ -18,6 +18,7 @@ public class CameraManager : MonoBehaviour
     private float halfHeight = 0f;
 
     private Camera M_camera = null;
+    [SerializeField]
     private GameObject target = null;
 
     [SerializeField]

@@ -58,17 +58,12 @@ public class EnemyStatus : Status
         set { defeatExp = value; }
     }
 
+    [SerializeField]
     private float stiffenTime = 0f;
     public float StiffenTime
     {
         get { return stiffenTime; }
         set { stiffenTime = value; }
-    }
-
-    private float maxStiffenTime = 1f;
-    public float MaxStiffenTime
-    {
-        get { return maxStiffenTime; }
     }
 
     protected EnemyType enemyType;
@@ -133,11 +128,8 @@ public class EnemyStatus : Status
     }
     public virtual void Update()
     {
-
         textMesh.text = enemyState.ToString();
     }
-
-
 
     public bool IsDelay()
     {

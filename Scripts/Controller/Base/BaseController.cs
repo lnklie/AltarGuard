@@ -17,14 +17,6 @@ public class BaseController : MonoBehaviour
         set { debuff = value; }
     }
 
-    protected float attackType = 0f;
-    public float AttackType
-    {
-        get { return attackType; }
-        set { attackType = value; }
-    }
-
-
     public int ReviseDamage(int _damage, int _depensivePower)
     {
         return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));

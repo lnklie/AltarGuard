@@ -10,13 +10,6 @@ using UnityEngine;
 */
 public class PlayerStatus : CharacterStatus
 {
-    [SerializeField]
-    private CharacterStatus[] mercenarys = null;
-    public CharacterStatus[] Mercenarys
-    {
-        get { return mercenarys; }
-        set { mercenarys = value; }
-    }
 
     [SerializeField]
     private AltarStatus altarStatus = null;

@@ -55,7 +55,10 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     private Queue<GameObject> bowOrcs = new Queue<GameObject>();
     private Queue<GameObject> wizardOrcs = new Queue<GameObject>();
 
-    private void Awake()
+    [SerializeField]
+    private List<GameObject> bossOrcs = new List<GameObject>();
+
+    private void Start()
     {
         InitEnemyPos();
         InitEnemy(swordOrcPrefab, swordOrcs);
@@ -67,9 +70,9 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     private void Update()
     {
-        Debug.Log("전사 오크의 수는 " + swordOrcs.Count);
-        Debug.Log("궁사 오크의 수는 " + bowOrcs.Count);
-        Debug.Log("마법사 오크의 수는 " + wizardOrcs.Count);
+        //Debug.Log("전사 오크의 수는 " + swordOrcs.Count);
+        //Debug.Log("궁사 오크의 수는 " + bowOrcs.Count);
+        //Debug.Log("마법사 오크의 수는 " + wizardOrcs.Count);
     }
     private void InitEnemyPos()
     {
@@ -96,10 +99,11 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             obj.transform.SetParent(this.transform);
         }
     }
-    private void InitBossEnemy(GameObject _enemy)
+    private void InitBossEnemy(GameObject _enemyPrefab)
     {
-        GameObject _bossEnemy = Instantiate(_enemy);
-        _bossEnemy.SetActive(false);
+        GameObject _enemy = Instantiate(_enemyPrefab, this.transform);
+        _enemy.SetActive(false);
+        bossOrcs.Add(_enemy);
     }
     public void EnemySpawn(int _enemyKey, int _enemyNum = 0)
     {
@@ -147,20 +151,15 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     public void BossEnemySpawn(int _enemyKey)
     {
-        Debug.Log("보스 소환 ?");
-        GameObject _obj = null;
-        if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.SwordOrc)
-            _obj = swordOrcKingPrefab;
-        else if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.BowOrc)
-            _obj = bowOrcKingPrefab;
-        else if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.WizardOrc)
-            _obj = wizardOrcKingPrefab;
-        _obj.transform.position = new Vector2(0f, 18f);
+        GameObject _obj = bossOrcs[DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType];
         _obj.SetActive(true);
+        _obj.transform.position = new Vector2(0f, 18f);
         BossEnemyStatus _rushEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
         _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
         _rushEnemyStatus.CustomEnemy();
         curBoss = _obj;
+        UIManager.Instance.SetBossEnemy();
+        UIManager.Instance.UpdateBossInfo();
     }
     public void ReturnEnemy(GameObject _enemy)
     {
@@ -172,10 +171,12 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             bowOrcs.Enqueue(_enemy);
         else if (_enemyType == EnemyType.WizardOrc)
             wizardOrcs.Enqueue(_enemy);
+        _enemy.transform.localScale = new Vector3(1, 1, 1);
         _enemy.SetActive(false);
     }
     public void ReturnBossEnemy(GameObject _enemy)
     {
+        Debug.Log("보스 돌아오기");
         _enemy.SetActive(false);
     }
 }
