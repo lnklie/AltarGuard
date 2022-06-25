@@ -6,7 +6,7 @@ public class SkillController : MonoBehaviour
 {
     [SerializeField]
     private List<Skill> skills = new List<Skill>();
-
+    // ¾ò±â, ¾ø¾Ö±â, »ç¿ëÇÏ±â, ½ºÅ³ ·¹º§¾÷,
     [SerializeField]
     private List<float> coolTimes = new List<float>();
 
@@ -41,6 +41,7 @@ public class SkillController : MonoBehaviour
                 UseSkill(skills[1], status.Target);
         }
 
+
         CalculateSkillCoolTime();
     }
     public void AquireSkill(int _skillKey)
@@ -54,7 +55,7 @@ public class SkillController : MonoBehaviour
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
 
     public void UseSkill(Skill _skill, GameObject _target)
@@ -71,6 +72,11 @@ public class SkillController : MonoBehaviour
             _skillObject.Target = _target;
             _skillObject.Damage = SetSkillDamageByLevel(_skill);
 
+            Debug.Log("ÄðÅ¸ÀÓÁß");
+            
+        }
+        else
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
     public void CalculateSkillCoolTime()
     {
