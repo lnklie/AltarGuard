@@ -39,7 +39,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private AltarStatus altar = null;
 
-    private List<GameObject> mercenary = new List<GameObject>();
+    private List<CharacterStatus> mercenary = new List<CharacterStatus>();
     [SerializeField]
     private List<EquipmentController> characterList = new List<EquipmentController>();
 
@@ -78,6 +78,21 @@ public class UIManager : SingletonManager<UIManager>
             if(mercenaryManager.Mercenarys.Count < 4)
                 mercenaryManager.AddNewMercenary();
         }
+
+        if(player.IsStatusUpdate)
+        {
+            UpdatePlayerProfile();
+            player.IsStatusUpdate = false;
+        }
+
+        for(int i = 0; i < mercenary.Count; i++)
+        {
+            if (mercenary[i].IsStatusUpdate)
+            {
+                UpdateMercenaryProfile(i);
+                mercenary[i].IsStatusUpdate = false;
+            }
+        }
     }
     public void UpdateBossInfo()
     {
@@ -86,12 +101,12 @@ public class UIManager : SingletonManager<UIManager>
             profilePanelController.BossUpdate(bossEnemy);
         }
     }
-    public void AddMercenary(GameObject _mercenary)
+    public void AddMercenary(CharacterStatus _mercenary)
     {
         mercenary.Add(_mercenary);
         AddMercenaryEC(_mercenary);
     }
-    public void AddMercenaryEC(GameObject _mercenary)
+    public void AddMercenaryEC(CharacterStatus _mercenary)
     {
         characterList.Add(_mercenary.GetComponent<EquipmentController>());
     }

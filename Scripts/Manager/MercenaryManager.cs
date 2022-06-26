@@ -35,7 +35,7 @@ public class MercenaryManager : MonoBehaviour
                 _equipmentController.EquipItems[i].equipCharNum = _mercenaryStatus.MercenaryNum;
         }
         mercenarys.Add(_newCharacter);
-        UIManager.Instance.AddMercenary(_newCharacter);
+        UIManager.Instance.AddMercenary(_mercenaryStatus);
         UIManager.Instance.SetActiveCharactersProfile(_mercenaryStatus.MercenaryNum, true);
         UIManager.Instance.ChangeMercenaryUIItemImage(_mercenaryStatus.MercenaryNum);
         UIManager.Instance.UpdateMercenaryProfile(_mercenaryStatus.MercenaryNum);

@@ -54,17 +54,18 @@ public class EnemyAIController : AIController
         _status.IsDamaged = true;
     }
 
-    public override IEnumerator Died(EnemyStatus _status)
-    {
-        ActiveLayer(_status.Ani, LayerName.IdleLayer);
-        _status.IsStateChange = false;
-        _status.Rig.velocity = Vector2.zero;
-        SetEnabled(_status, false);
-        yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
-        StageManager.Instance.SpawnedEneies--;
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
-    }
+    //public override IEnumerator Died(EnemyStatus _status)
+    //{
+    //    ActiveLayer(_status.Ani, LayerName.IdleLayer);
+    //    _status.IsStateChange = false;
+    //    _status.Rig.velocity = Vector2.zero;
+    //    SetEnabled(_status, false);
+    //    yield return new WaitForSeconds(2f);
+    //    DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
+    //    StageManager.Instance.SpawnedEneies--;
+        
+        
+    //}
 
     public override void Idle(EnemyStatus _status)
     {
@@ -152,5 +153,10 @@ public class EnemyAIController : AIController
     public override int AttackTypeDamage(EnemyStatus _status)
     {
         return 0;
+    }
+
+    public override IEnumerator Died(EnemyStatus _enemy)
+    {
+        yield return null;
     }
 }

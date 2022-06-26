@@ -13,7 +13,7 @@ using UnityEditor;
 [System.Serializable]
 public class Cloth : Equipment
 {
-    public Cloth(int _itemKey, string _itemName, int _defensivePower) : base(_itemKey, _itemName, _defensivePower)
+    public Cloth(int _itemKey, string _itemName, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _defensivePower, _equipLevel)
     {
         itemType = (int)ItemType.Cloth;
         singleSprite = Resources.Load("Sprites/2_Cloth/" + itemName + "_Single", typeof(Sprite)) as Sprite;

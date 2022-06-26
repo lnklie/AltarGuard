@@ -106,6 +106,12 @@ public class CharacterStatus: Status
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
+    private bool isStatusUpdate = false;
+    public bool IsStatusUpdate
+    {
+        get { return isStatusUpdate; }
+        set { isStatusUpdate = value; }
+    }
 
     private void Awake()
     {
@@ -150,6 +156,7 @@ public class CharacterStatus: Status
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
+        isStatusUpdate = true;
     }
     private bool CheckMaxExp()
     {
@@ -184,7 +191,7 @@ public class CharacterStatus: Status
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
         UpdateAbility();
-        UIManager.Instance.UpdatePlayerProfile();
+        isStatusUpdate = true;
     }
 
     public void UpdateAbility()

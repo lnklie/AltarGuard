@@ -94,19 +94,18 @@ public class ProfilePanelController : MonoBehaviour
             playerStateImages[i].fillAmount = infoImage[i];
         }
     }
-    public void UpdateMercenaryProfile(GameObject _mercenary, int _mercenaryNum)
+    public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
     {
 
-        CharacterStatus _mercenaryStatus = _mercenary.GetComponent<CharacterStatus>();
         string[] infoText = {
-            _mercenaryStatus.CurHp.ToString() + " / " + _mercenaryStatus.MaxHp.ToString(),
-            _mercenaryStatus.CurMp.ToString() + " / " + _mercenaryStatus.MaxMp.ToString(),
-            _mercenaryStatus.CurExp.ToString() + " / " + _mercenaryStatus.MaxExp.ToString(),
-            "Lv. " + _mercenaryStatus.CurLevel.ToString()};
+            _mercenary.CurHp.ToString() + " / " + _mercenary.MaxHp.ToString(),
+            _mercenary.CurMp.ToString() + " / " + _mercenary.MaxMp.ToString(),
+            _mercenary.CurExp.ToString() + " / " + _mercenary.MaxExp.ToString(),
+            "Lv. " + _mercenary.CurLevel.ToString()};
         float[] infoImage = {
-            _mercenaryStatus.CurHp / (float)_mercenaryStatus.MaxHp ,
-            _mercenaryStatus.CurMp / (float)_mercenaryStatus.MaxMp,
-            _mercenaryStatus.CurExp / (float)_mercenaryStatus.MaxExp
+            _mercenary.CurHp / (float)_mercenary.MaxHp ,
+            _mercenary.CurMp / (float)_mercenary.MaxMp,
+            _mercenary.CurExp / (float)_mercenary.MaxExp
         };
         for(int i = 0; i < _mercenaryNum; i++)
         {
