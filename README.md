@@ -1,5 +1,13 @@
 Update
 =======
+
+Version 06-26 Update
+--------
+- Updating Skill
+- Updating Item
+
+https://blog.naver.com/rnlgus1126/222789915850
+
 Version 06-25 Update
 --------
 - Updating Targeting System
