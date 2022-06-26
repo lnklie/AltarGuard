@@ -286,7 +286,7 @@ public class MercenaryAIController : BaseController
     public void Damaged()
     {
         StartCoroutine(Blink());
-        UIManager.Instance.UpdateMercenaryProfile(mercenary.MercenaryNum);
+        mercenary.IsStatusUpdate = true;
     }
     private IEnumerator Blink()
     {

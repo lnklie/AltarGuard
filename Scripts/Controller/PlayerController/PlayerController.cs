@@ -26,7 +26,11 @@ public class PlayerController : BaseController
 
     private float delayTime = 0f;
     private bool isAtk = false;
-
+    public bool IsAtk
+    {
+        get { return isAtk; }
+        set { isAtk = value; }
+    }
     private float revivalTime = 5f;
     public float RevivalTime
     {
@@ -72,14 +76,14 @@ public class PlayerController : BaseController
     {
         if(IsDied())
         {
-            UIManager.Instance.UpdatePlayerProfile();
+            character.IsStatusUpdate = true;
             characterState = CharacterState.Died;
         }
         else
         {
             if (character.IsDamaged)
             {
-                UIManager.Instance.UpdatePlayerProfile();
+                character.IsStatusUpdate = true;
                 StartCoroutine(Blink());
             }
 
@@ -250,10 +254,19 @@ public class PlayerController : BaseController
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
             enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
 
-            if (enemy.CurHp <= 0)
+            if (IsLastHit(enemy))
                 character.CurExp += enemy.DefeatExp;
         }
     }
+    public bool IsLastHit(EnemyStatus _enemy)
+    {
+        // 마지막 공격을 했는지 체크
+        if (isAtk == true && _enemy.CurHp <= 0f)
+            return true;
+        else
+            return false;
+    }
+
     public RaycastHit2D[] AttackRange()
     {
         // 히트박스를 만들어내고 범위안에 들어온 적들을 반환

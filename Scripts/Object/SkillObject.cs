@@ -13,6 +13,12 @@ public class SkillObject : MonoBehaviour
         get { return damage; }
         set { damage = value; }
     }
+    private int skillHitCount = 0;
+    public int SkillHitCount
+    {
+        get { return skillHitCount; }
+        set { skillHitCount = value; }
+    }
     private float maxDurationTime = 0f;
     public float MaxDuration
     {
@@ -71,20 +77,37 @@ public class SkillObject : MonoBehaviour
             if (_hitRay[i])
             {
                 Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < skillHitCount; j++)
                 {
-                    _status.CurHp -= damage / 3;
+                    _status.CurHp -= damage / skillHitCount;
                     _status.IsDamaged = true;
                     Debug.Log(_status.CurHp);
-                    yield return new WaitForSeconds(durationTime / 3);
+                    yield return new WaitForSeconds(durationTime / skillHitCount);
                 }
-                if (this.gameObject.CompareTag("Mercenary"))
+                Debug.Log("뭘까 여긴");
+                if (this.gameObject.layer == 8)
                 {
-                    MercenaryAIController mercenary = this.gameObject.GetComponent<MercenaryAIController>();
-                    mercenary.IsAtk = true;
-                    if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                    Debug.Log("맞았나?");
+                    if(this.gameObject.CompareTag("Mercenary"))
                     {
-                        mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                        MercenaryAIController mercenary = this.gameObject.GetComponentInParent<MercenaryAIController>();
+                        mercenary.IsAtk = true;
+                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        {
+                            mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            // 용병 업데이트
+                        }
+                    }
+                    else
+                    {
+                        PlayerController player = this.gameObject.GetComponentInParent<PlayerController>();
+                        player.IsAtk = true;
+                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        {
+                            Debug.Log("막타!");
+                            player.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            Debug.Log("막타2!");
+                        }
                     }
                 }
             }

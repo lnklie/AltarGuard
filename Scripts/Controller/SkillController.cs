@@ -25,6 +25,7 @@ public class SkillController : MonoBehaviour
         {
             skillPrefabs[i].gameObject.SetActive(false);
             skillPrefabs[i].gameObject.layer = this.gameObject.layer;
+            skillPrefabs[i].gameObject.tag = this.gameObject.tag;
         }
     }
     private void Start()
@@ -37,8 +38,8 @@ public class SkillController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            if (!isCoolTime[1])
-                UseSkill(skills[1], status.Target);
+            if (!isCoolTime[0])
+                UseSkill(skills[0], status.Target);
         }
 
 
@@ -71,9 +72,7 @@ public class SkillController : MonoBehaviour
             _skillObject.gameObject.SetActive(true);
             _skillObject.Target = _target;
             _skillObject.Damage = SetSkillDamageByLevel(_skill);
-
-            Debug.Log("쿨타임중");
-            
+            _skillObject.SkillHitCount = _skill.skillHitCount;
         }
         else
             Debug.Log("없는 스킬");
@@ -97,10 +96,10 @@ public class SkillController : MonoBehaviour
         {
             case 1:
                 if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.Str * _skill.skillFigures1);
+                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.Str * _skill.skillFigures1 * 1000);
                 else if (_skill.skillVariable == 1)
                     _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.Dex * _skill.skillFigures1);
-                else if (_skill.skillVariable == 2)
+                else if (_skill.skillVariable == 2) 
                     _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.Wiz * _skill.skillFigures1);
                 break;
             case 2:
