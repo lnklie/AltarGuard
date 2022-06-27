@@ -72,6 +72,7 @@ public class Arrow : MonoBehaviour
         if(ray)
         {
             Status hitObject = ray.collider.GetComponent<Status>();
+            Debug.Log(hitObject.ObjectName + " "+ ReviseDamage(dmg, hitObject.DefensivePower));
             hitObject.CurHp -= ReviseDamage(dmg, hitObject.DefensivePower);
             hitObject.IsDamaged = true;
             if (archer.CompareTag("Mercenary"))
@@ -96,7 +97,7 @@ public class Arrow : MonoBehaviour
 
     public int ReviseDamage(int _damage, int _depensivePower)
     {
-        return Mathf.CeilToInt(_damage * (1 / (1 + _depensivePower)));
+        return Mathf.CeilToInt(_damage * (1 / (1.0f + _depensivePower)));
     }
 
     private RaycastHit2D HitRay(GameObject _archer)

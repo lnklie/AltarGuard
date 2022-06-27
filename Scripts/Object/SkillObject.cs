@@ -56,21 +56,14 @@ public class SkillObject : MonoBehaviour
     }
     private void Update()
     {
-        if (target != null)
-        {
-            if(isSkillUse)
-                StartCoroutine(CastingSkill());
-            RemoveSkill();
-        }
-        else
-        {
-            Debug.Log("타겟이 없습니다.");
-        }
+        if(isSkillUse)
+            StartCoroutine(CastingSkill());
+        RemoveSkill();
     }
     public IEnumerator CastingSkill()
     {
         isSkillUse = false;
-        this.transform.position = target.transform.position;
+        
         RaycastHit2D[] _hitRay = HitRay();
         for(int i = 0; i < _hitRay.Length; i++)
         {
@@ -84,13 +77,11 @@ public class SkillObject : MonoBehaviour
                     Debug.Log(_status.CurHp);
                     yield return new WaitForSeconds(durationTime / skillHitCount);
                 }
-                Debug.Log("뭘까 여긴");
-                if (this.gameObject.layer == 8)
+                if (this.transform.parent.gameObject.layer == 8)
                 {
-                    Debug.Log("맞았나?");
                     if(this.gameObject.CompareTag("Mercenary"))
                     {
-                        MercenaryAIController mercenary = this.gameObject.GetComponentInParent<MercenaryAIController>();
+                        MercenaryAIController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryAIController>();
                         mercenary.IsAtk = true;
                         if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
                         {
@@ -100,27 +91,18 @@ public class SkillObject : MonoBehaviour
                     }
                     else
                     {
-                        PlayerController player = this.gameObject.GetComponentInParent<PlayerController>();
+                        PlayerController player = this.transform.parent.parent.GetComponentInChildren<PlayerController>();
                         player.IsAtk = true;
                         if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
                         {
-                            Debug.Log("막타!");
                             player.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
-                            Debug.Log("막타2!");
                         }
                     }
                 }
             }
         }
     }
-    //public IEnumerator ContinuousDamage(Status _status, int _damage)
-    //{
-    //    for(int i = 0; i < 3; i++ )
-    //    {
-    //        _status.CurHp -= _damage / 3;
-    //        yield return new WaitForSeconds(durationTime / 3);
-    //    }
-    //}
+
     public void RemoveSkill()
     {
         durationTime += Time.deltaTime;
@@ -141,9 +123,9 @@ public class SkillObject : MonoBehaviour
         // 레이를 쏘는 역할
         
         RaycastHit2D[] ray = default;
-        if (this.gameObject.layer == 3)
+        if (this.transform.parent.gameObject.layer == 3)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally"));
-        else if (this.gameObject.layer == 8)
+        else if (this.transform.parent.gameObject.layer == 8)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius, Vector2.zero, 0f, LayerMask.GetMask("Enemy"));
         return ray;
     }

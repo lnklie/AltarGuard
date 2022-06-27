@@ -14,12 +14,14 @@ public class MercenaryManager : MonoBehaviour
 
     [SerializeField]
     private GameObject characterPrefab = null;
-
+    [SerializeField]
+    private GameObject revialZone = null;
     public void AddNewMercenary()
     {
         GameObject _newCharacter = Instantiate(characterPrefab, this.transform);
-        EquipmentController _equipmentController = _newCharacter.GetComponent<EquipmentController>();
-        MercenaryStatus _mercenaryStatus = _newCharacter.GetComponent<MercenaryStatus>();
+        EquipmentController _equipmentController = _newCharacter.GetComponentInChildren<EquipmentController>();
+        MercenaryStatus _mercenaryStatus = _newCharacter.GetComponentInChildren<MercenaryStatus>();
+        _mercenaryStatus.gameObject.transform.position = revialZone.transform.position;
         _mercenaryStatus.MercenaryNum = mercenarys.Count + 1;
         _equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(0));
         _equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(1000));

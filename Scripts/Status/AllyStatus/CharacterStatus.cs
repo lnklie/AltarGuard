@@ -132,7 +132,7 @@ public class CharacterStatus: Status
             UpdateAbility();
         }
 
-        if (equipmentController.IsChangeItem == true)
+        if (equipmentController.IsChangeItem)
         {
             UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
@@ -190,6 +190,7 @@ public class CharacterStatus: Status
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
+        UpdateBasicStatus();
         UpdateAbility();
         isStatusUpdate = true;
     }
@@ -197,16 +198,16 @@ public class CharacterStatus: Status
     public void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp = 100 + str * 10;
-        maxMp = 100 + wiz * 10;
-        atkSpeed = (equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f) - dex * 0.1f;
-        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
-        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
-        speed = 2 + dex * 0.1f + buffSpeed;
-        dropProbability = luck * 0.001f;
-        itemRarity = luck * 0.001f;
-        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
-        hpRegenValue = str * 1 + buffHpRegenValue;
+        maxHp = 100 + totalStr * 10;
+        maxMp = 100 + totalWiz * 10;
+        atkSpeed = (equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f) - totalDex * 0.1f;
+        physicalDamage = totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
+        magicalDamage = totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
+        speed = 2 + totalDex * 0.1f + buffSpeed;
+        dropProbability = totalLuck * 0.001f;
+        itemRarity = totalLuck * 0.001f;
+        defensivePower = totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
+        hpRegenValue = totalStr * 1 + buffHpRegenValue;
     }
     public void RemoveBuff()
     {
