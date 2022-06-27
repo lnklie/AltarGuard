@@ -1,6 +1,15 @@
 Update
 =======
 
+Version 06-27 Update
+--------
+- Modifying Skill Targeting 
+- Updating Skill Categorization
+- Updating Passive Skill
+- Updating Passive Skill Level Up
+
+https://blog.naver.com/rnlgus1126/222791407235
+
 Version 06-26 Update
 --------
 - Updating Skill
