@@ -11,10 +11,13 @@ using UnityEngine;
 public class PlayerController : BaseController
 {
     private CharacterStatus character = null;
+    [SerializeField]
+    private SkillController skillController = null;
     private SpriteRenderer bodySprites = null;
     private Animator ani = null;
     private Rigidbody2D rig = null;
-    private BoxCollider2D col = null;
+    private CapsuleCollider2D col = null;
+    [SerializeField]
     private TextMesh txtMesh = null;
     private RaycastHit2D[] itemSight = default;
     private Vector2 dir = new Vector2(0, 0);
@@ -47,17 +50,14 @@ public class PlayerController : BaseController
 
     [SerializeField]
     private CharacterState characterState = CharacterState.Idle;
-    [SerializeField]
-    private GameObject unitRoot = null;
 
     private void Awake()
     {
+        ani = this.GetComponent<Animator>();
+        rig = this.GetComponent<Rigidbody2D>();
+        col = this.GetComponent<CapsuleCollider2D>();
         character = this.GetComponent<CharacterStatus>();
-        ani = GetComponentInChildren<Animator>();
-        rig = GetComponent<Rigidbody2D>();
-        col = GetComponent<BoxCollider2D>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
-        txtMesh = GetComponentInChildren<TextMesh>();
     }
 
     private void FixedUpdate()
@@ -94,6 +94,85 @@ public class PlayerController : BaseController
 
             if (Input.GetKey(KeyCode.LeftControl))
                 characterState = CharacterState.Attack;
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                if (!skillController.IsCoolTime[0])
+                {
+                    if (skillController.ActiveSkills[0].skillType == 0)
+                    {
+                        if (character.Target)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[0], character.Target);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                    else if (skillController.ActiveSkills[0].skillType == 1)
+                    {
+                        if (character.AllyTarget)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[0], character.AllyTarget);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                }
+                else
+                    Debug.Log("첫 번째 스킬 쿨타임 중");
+            }
+            else if(Input.GetKeyDown(KeyCode.X))
+            {
+                if (!skillController.IsCoolTime[1])
+                {
+                    if (skillController.ActiveSkills[1].skillType == 0)
+                    {
+                        if (character.Target)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[1], character.Target);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                    else if (skillController.ActiveSkills[1].skillType == 1)
+                    {
+                        if (character.AllyTarget)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[1], character.AllyTarget);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                }
+                else
+                    Debug.Log("두 번째 스킬 쿨타임 중");
+            }
+            else if(Input.GetKeyDown(KeyCode.C))
+            {
+
+                if (!skillController.IsCoolTime[2])
+                {
+                    if (skillController.ActiveSkills[2].skillType == 0)
+                    {
+                        if (character.Target)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[2], character.Target);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                    else if(skillController.ActiveSkills[2].skillType == 1)
+                    {
+                        if (character.AllyTarget)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[2], character.AllyTarget);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+                }
+                else
+                    Debug.Log("세 번째 스킬 쿨타임 중");
+            }
         }
 
     }
@@ -313,8 +392,8 @@ public class PlayerController : BaseController
     {
         if(characterState != CharacterState.Died)
         {
-            if (dir.x > 0) unitRoot.transform.localScale = new Vector3(-1, 1, 1);
-            else if (dir.x < 0) unitRoot.transform.localScale = new Vector3(1, 1, 1);
+            if (dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+            else if (dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -416,9 +495,9 @@ public class PlayerController : BaseController
         Debug.Log("타겟팅");
         if (_allyTarget)
         {
-            if (character.Target)
+            if (character.AllyTarget)
             {
-                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
             }
             character.AllyTarget = _allyTarget;
             character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;

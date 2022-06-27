@@ -30,6 +30,8 @@ public class UIManager : SingletonManager<UIManager>
     [Header("Player")]
     [SerializeField]
     private PlayerStatus player = null;
+    [SerializeField]
+    private SkillController playerSkillController = null;
 
     [Header("Boss")]
     [SerializeField]
@@ -51,6 +53,8 @@ public class UIManager : SingletonManager<UIManager>
     private StatusPanelController statusPanelController = null;
     [SerializeField]
     private AltarInfoPanelController altarInfoPanelController = null;
+    [SerializeField]
+    private SkillInfoPanelController skillInfoPanelController = null;
 
     private void Awake()
     {
@@ -253,5 +257,13 @@ public class UIManager : SingletonManager<UIManager>
         {
             altarInfoPanelController.DeactiveAltarInfo();
         }
+    }
+
+    public void LearnPassiveSkillBtn(int _skillKey)
+    {
+        if (playerSkillController.GetPassiveSkill(_skillKey) == null)
+            skillInfoPanelController.LearnSkill(playerSkillController, _skillKey);
+        else
+            skillInfoPanelController.LevelUpSkill(playerSkillController, _skillKey);
     }
 }

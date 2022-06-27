@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-
-public class AltarInfoSlot : MonoBehaviour
+public class SkillInfoSlot : MonoBehaviour
 {
     [SerializeField]
-    private Text[] altarInfoTexts = null;
+    private Text[] skillInfoTexts = null;
 
     private void Awake()
     {
-        altarInfoTexts = GetComponentsInChildren<Text>();
+        skillInfoTexts = GetComponentsInChildren<Text>();
     }
 
     public void SetAlterInfoLevel(int _lv)
     {
-        altarInfoTexts[2].text = "LV. " + _lv.ToString();
+        skillInfoTexts[2].text = "LV. " + _lv.ToString();
     }
     public void SetAlterInfoValue(float _value)
     {
-        altarInfoTexts[3].text = "+ " + _value.ToString();
+        skillInfoTexts[3].text = "+ " + _value.ToString();
     }
 }
