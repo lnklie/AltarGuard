@@ -1,6 +1,12 @@
 Update
 =======
 
+Version 06-28 Update
+--------
+- Modifying Tilemap
+
+https://blog.naver.com/rnlgus1126/222792765882
+
 Version 06-27 Update
 --------
 - Modifying Skill Targeting 
