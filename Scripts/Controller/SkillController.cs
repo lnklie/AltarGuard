@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
-
     [SerializeField]
     private Status status = null;
 
@@ -36,11 +35,11 @@ public class SkillController : MonoBehaviour
 
     private void Awake()
     {
-        skillPrefabs.AddRange(this.GetComponentsInChildren<SkillObject>());
-        for(int i =0; i < skillPrefabs.Count; i++)
-        {
-            skillPrefabs[i].gameObject.SetActive(false);
-        }
+        //skillPrefabs.AddRange(this.GetComponentsInChildren<SkillObject>());
+        //for(int i =0; i < skillPrefabs.Count; i++)
+        //{
+        //    skillPrefabs[i].gameObject.SetActive(false);
+        //}
     }
     private void Start()
     {
@@ -185,7 +184,7 @@ public class SkillController : MonoBehaviour
         {
             case 1:
                 if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures1);
+                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures1 * 1000);
                 else if (_skill.skillVariable == 1)
                     _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures1);
                 else if (_skill.skillVariable == 2) 

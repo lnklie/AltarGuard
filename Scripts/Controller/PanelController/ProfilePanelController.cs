@@ -15,17 +15,20 @@ public class ProfilePanelController : MonoBehaviour
     [SerializeField]
     private Image[] playerStateImages = null;
     [SerializeField]
-    private Image[] mercenaryStateImages = null;
-    [SerializeField]
     private Image bossStateImages = null;
     [SerializeField]
     private Text[] playerTexts = null;
+
+    [SerializeField]
+    private Image[] mercenaryStateImages = null;
     [SerializeField]
     private Text[] mercenaryTexts = null;
     [SerializeField]
     private Text[] bossTexts = null;
 
     [Header("ProfileImages")]
+    [SerializeField]
+    private GameObject bossProfile = null;
 
     [SerializeField]
     private List<GameObject> profiles = new List<GameObject>();
@@ -35,14 +38,9 @@ public class ProfilePanelController : MonoBehaviour
         set { profiles = value; }
     }
 
-
-    [SerializeField]
     private List<Image> playerProfileImages = new List<Image>();
-    [SerializeField]
     private List<Image> mercenaryAProfileImages = new List<Image>();
-    [SerializeField]
     private List<Image> mercenaryBProfileImages = new List<Image>();
-    [SerializeField]
     private List<Image> mercenaryCProfileImages = new List<Image>();
     private List<Image> mercenaryDProfileImages = new List<Image>();
 
@@ -60,6 +58,10 @@ public class ProfilePanelController : MonoBehaviour
         }
     }
     #region "º¸½º ¾÷µ¥ÀÌÆ®"
+    public void SetBossProfile(bool _bool)
+    {
+        bossProfile.SetActive(_bool);
+    }
     public void BossUpdate(BossEnemyStatus _bossEnemy)
     {
         bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.MaxHp.ToString();
@@ -96,7 +98,6 @@ public class ProfilePanelController : MonoBehaviour
     }
     public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
     {
-
         string[] infoText = {
             _mercenary.CurHp.ToString() + " / " + _mercenary.MaxHp.ToString(),
             _mercenary.CurMp.ToString() + " / " + _mercenary.MaxMp.ToString(),
@@ -107,16 +108,15 @@ public class ProfilePanelController : MonoBehaviour
             _mercenary.CurMp / (float)_mercenary.MaxMp,
             _mercenary.CurExp / (float)_mercenary.MaxExp
         };
-        for(int i = 0; i < _mercenaryNum; i++)
+
+
+        for (int j = 0; j < infoText.Length; j++)
         {
-            for (int j = 0; j < 4; j++)
-            {
-                mercenaryTexts[4 * i + j].text = infoText[j];
-            }
-            for (int j = 0; j < 3; j++)
-            {
-                mercenaryStateImages[3 * i + j].fillAmount = infoImage[j];
-            }
+            mercenaryTexts[4 * _mercenaryNum + j].text = infoText[j];
+        }
+        for (int j = 0; j < infoImage.Length; j++)
+        {
+            mercenaryStateImages[3 * _mercenaryNum + j].fillAmount = infoImage[j];
         }
 
     }
@@ -171,24 +171,24 @@ public class ProfilePanelController : MonoBehaviour
     public void ChangeMercenaryUIItemImage(List<EquipmentController> _characterList,int _index)
     {
         // ¿ëº´ ÇÁ·ÎÇÊ UI º¯°æÇÏ±â
-        if (_index == 1)
+        if (_index == 0)
         {
             // ¸Ó¸®
-            if (_characterList[_index].CheckEquipItems[0])
-                mercenaryAProfileImages[7].sprite = _characterList[_index].EquipItems[0].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[0])
+                mercenaryAProfileImages[7].sprite = _characterList[_index  +1].EquipItems[0].spList[0];
             else
                 mercenaryAProfileImages[7].sprite = UIMask;
             // ¾ó±¼Àå½Ä
-            if (_characterList[_index].CheckEquipItems[1])
-                mercenaryAProfileImages[6].sprite = _characterList[_index].EquipItems[1].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[1])
+                mercenaryAProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
             else
                 mercenaryAProfileImages[6].sprite = UIMask;
             // À§¿Ê
-            if (_characterList[_index].CheckEquipItems[2])
+            if (_characterList[_index + 1].CheckEquipItems[2])
             {
-                mercenaryAProfileImages[4].sprite = _characterList[_index].EquipItems[2].spList[0];
-                mercenaryAProfileImages[2].sprite = _characterList[_index].EquipItems[2].spList[1];
-                mercenaryAProfileImages[0].sprite = _characterList[_index].EquipItems[2].spList[2];
+                mercenaryAProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
+                mercenaryAProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
+                mercenaryAProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
             }
             else
             {
@@ -197,16 +197,16 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryAProfileImages[0].sprite = UIMask;
             }
             // Åõ±¸
-            if (_characterList[_index].CheckEquipItems[4])
-                mercenaryAProfileImages[8].sprite = _characterList[_index].EquipItems[4].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[4])
+                mercenaryAProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
             else
                 mercenaryAProfileImages[8].sprite = UIMask;
             // °©¿Ê
-            if (_characterList[_index].CheckEquipItems[5])
+            if (_characterList[_index + 1].CheckEquipItems[5])
             {
-                mercenaryAProfileImages[5].sprite = _characterList[_index].EquipItems[5].spList[0];
-                mercenaryAProfileImages[3].sprite = _characterList[_index].EquipItems[5].spList[1];
-                mercenaryAProfileImages[1].sprite = _characterList[_index].EquipItems[5].spList[2];
+                mercenaryAProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
+                mercenaryAProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
+                mercenaryAProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
             }
             else
             {
@@ -215,24 +215,24 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryAProfileImages[1].sprite = UIMask;
             }
         }
-        else if (_index == 2)
+        else if (_index == 1)
         {
             // ¸Ó¸®
-            if (_characterList[_index].CheckEquipItems[0])
-                mercenaryBProfileImages[7].sprite = _characterList[_index].EquipItems[0].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[0])
+                mercenaryBProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
             else
                 mercenaryBProfileImages[7].sprite = UIMask;
             // ¾ó±¼Àå½Ä
-            if (_characterList[_index].CheckEquipItems[1])
-                mercenaryBProfileImages[6].sprite = _characterList[_index].EquipItems[1].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[1])
+                mercenaryBProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
             else
                 mercenaryBProfileImages[6].sprite = UIMask;
             // À§¿Ê
-            if (_characterList[_index].CheckEquipItems[2])
+            if (_characterList[_index + 1].CheckEquipItems[2])
             {
-                mercenaryBProfileImages[4].sprite = _characterList[_index].EquipItems[2].spList[0];
-                mercenaryBProfileImages[2].sprite = _characterList[_index].EquipItems[2].spList[1];
-                mercenaryBProfileImages[0].sprite = _characterList[_index].EquipItems[2].spList[2];
+                mercenaryBProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
+                mercenaryBProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
+                mercenaryBProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
             }
             else
             {
@@ -241,16 +241,16 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryBProfileImages[0].sprite = UIMask;
             }
             // Åõ±¸
-            if (_characterList[_index].CheckEquipItems[4])
-                mercenaryBProfileImages[8].sprite = _characterList[_index].EquipItems[4].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[4])
+                mercenaryBProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
             else
                 mercenaryBProfileImages[8].sprite = UIMask;
             // °©¿Ê
-            if (_characterList[_index].CheckEquipItems[5])
+            if (_characterList[_index + 1].CheckEquipItems[5])
             {
-                mercenaryBProfileImages[5].sprite = _characterList[_index].EquipItems[5].spList[0];
-                mercenaryBProfileImages[3].sprite = _characterList[_index].EquipItems[5].spList[1];
-                mercenaryBProfileImages[1].sprite = _characterList[_index].EquipItems[5].spList[2];
+                mercenaryBProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
+                mercenaryBProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
+                mercenaryBProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
             }
             else
             {
@@ -259,24 +259,24 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryBProfileImages[1].sprite = UIMask;
             }
         }
-        if (_index == 3)
+        if (_index == 2)
         {
             // ¸Ó¸®
-            if (_characterList[_index].CheckEquipItems[0])
-                mercenaryCProfileImages[7].sprite = _characterList[_index].EquipItems[0].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[0])
+                mercenaryCProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
             else
                 mercenaryCProfileImages[7].sprite = UIMask;
             // ¾ó±¼Àå½Ä
-            if (_characterList[_index].CheckEquipItems[1])
-                mercenaryCProfileImages[6].sprite = _characterList[_index].EquipItems[1].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[1])
+                mercenaryCProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
             else
                 mercenaryCProfileImages[6].sprite = UIMask;
             // À§¿Ê
-            if (_characterList[_index].CheckEquipItems[2])
+            if (_characterList[_index + 1].CheckEquipItems[2])
             {
-                mercenaryCProfileImages[4].sprite = _characterList[_index].EquipItems[2].spList[0];
-                mercenaryCProfileImages[2].sprite = _characterList[_index].EquipItems[2].spList[1];
-                mercenaryCProfileImages[0].sprite = _characterList[_index].EquipItems[2].spList[2];
+                mercenaryCProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
+                mercenaryCProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
+                mercenaryCProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
             }
             else
             {
@@ -285,16 +285,16 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryCProfileImages[0].sprite = UIMask;
             }
             // Åõ±¸
-            if (_characterList[_index].CheckEquipItems[4])
-                mercenaryCProfileImages[8].sprite = _characterList[_index].EquipItems[4].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[4])
+                mercenaryCProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
             else
                 mercenaryCProfileImages[8].sprite = UIMask;
             // °©¿Ê
-            if (_characterList[_index].CheckEquipItems[5])
+            if (_characterList[_index + 1].CheckEquipItems[5])
             {
-                mercenaryCProfileImages[5].sprite = _characterList[_index].EquipItems[5].spList[0];
-                mercenaryCProfileImages[3].sprite = _characterList[_index].EquipItems[5].spList[1];
-                mercenaryCProfileImages[1].sprite = _characterList[_index].EquipItems[5].spList[2];
+                mercenaryCProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
+                mercenaryCProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
+                mercenaryCProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
             }
             else
             {
@@ -303,24 +303,24 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryCProfileImages[1].sprite = UIMask;
             }
         }
-        if (_index == 4)
+        if (_index == 3)
         {
             // ¸Ó¸®
-            if (_characterList[_index].CheckEquipItems[0])
-                mercenaryDProfileImages[7].sprite = _characterList[_index].EquipItems[0].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[0])
+                mercenaryDProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
             else
                 mercenaryDProfileImages[7].sprite = UIMask;
             // ¾ó±¼Àå½Ä
-            if (_characterList[_index].CheckEquipItems[1])
-                mercenaryDProfileImages[6].sprite = _characterList[_index].EquipItems[1].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[1])
+                mercenaryDProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
             else
                 mercenaryDProfileImages[6].sprite = UIMask;
             // À§¿Ê
-            if (_characterList[_index].CheckEquipItems[2])
+            if (_characterList[_index + 1].CheckEquipItems[2])
             {
-                mercenaryDProfileImages[4].sprite = _characterList[_index].EquipItems[2].spList[0];
-                mercenaryDProfileImages[2].sprite = _characterList[_index].EquipItems[2].spList[1];
-                mercenaryDProfileImages[0].sprite = _characterList[_index].EquipItems[2].spList[2];
+                mercenaryDProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
+                mercenaryDProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
+                mercenaryDProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
             }
             else
             {
@@ -329,16 +329,16 @@ public class ProfilePanelController : MonoBehaviour
                 mercenaryDProfileImages[0].sprite = UIMask;
             }
             // Åõ±¸
-            if (_characterList[_index].CheckEquipItems[4])
-                mercenaryDProfileImages[8].sprite = _characterList[_index].EquipItems[4].spList[0];
+            if (_characterList[_index + 1].CheckEquipItems[4])
+                mercenaryDProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
             else
                 mercenaryDProfileImages[8].sprite = UIMask;
             // °©¿Ê
-            if (_characterList[_index].CheckEquipItems[5])
+            if (_characterList[_index + 1].CheckEquipItems[5])
             {
-                mercenaryDProfileImages[5].sprite = _characterList[_index].EquipItems[5].spList[0];
-                mercenaryDProfileImages[3].sprite = _characterList[_index].EquipItems[5].spList[1];
-                mercenaryDProfileImages[1].sprite = _characterList[_index].EquipItems[5].spList[2];
+                mercenaryDProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
+                mercenaryDProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
+                mercenaryDProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
             }
             else
             {
