@@ -11,6 +11,10 @@ public class SkillInfoPanelController : MonoBehaviour
         skillInfoSlots = GetComponentsInChildren<SkillInfoSlot>();
     }
 
+    public void ActiveSkillPanel(bool _bool)
+    {
+        this.gameObject.SetActive(_bool);
+    }
     public void LearnSkill(SkillController _skillController, int _skillKey)
     {
         _skillController.AquireSkill(_skillKey);

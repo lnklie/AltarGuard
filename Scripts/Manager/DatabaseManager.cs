@@ -38,6 +38,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     [Header("Skill")]
     public List<ActiveSkill> activeSkillList = new List<ActiveSkill>();
     public List<PassiveSkill> passiveSkillList = new List<PassiveSkill>();
+
+    [Header("Grace")]
+    public List<Grace> graceList = new List<Grace>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -318,6 +321,19 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
                     skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10)) ;
+            }
+        }
+        if (!File.Exists(CombinePath("Grace")))
+        {
+            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Grace")));
+            Grace[] skill = JsonHelper.FromJson<Grace>(loadJson);
+            for (var i = 0; i < skill.Length; i++)
+            {
+                graceList.Add(new Grace(skill[i].graceKey, skill[i].explain));
             }
         }
     }
