@@ -1,6 +1,12 @@
 Update
 =======
 
+Version 06-29 Update
+--------
+- Updating Grace System
+
+https://blog.naver.com/rnlgus1126/222794022689
+
 Version 06-28 Update
 --------
 - Modifying Tilemap
