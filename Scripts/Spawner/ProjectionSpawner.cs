@@ -28,7 +28,6 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
         Arrow arrow = arrows.Dequeue();
         arrow.gameObject.SetActive(true);
         arrow.gameObject.transform.position = _gameObject.gameObject.transform.position;
-        arrow.gameObject.transform.parent = _gameObject.transform;
         arrow.Archer = _gameObject.gameObject;
         arrow.Dir = _gameObject.Dir;
         arrow.Spd = _gameObject.ArrowSpd;

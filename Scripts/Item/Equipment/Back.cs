@@ -12,7 +12,7 @@ using UnityEditor;
 [System.Serializable]
 public class Back : Equipment
 {
-    public Back(int _itemKey, string _itemName, int _defensivePower) : base(_itemKey,_itemName, _defensivePower)
+    public Back(int _itemKey, string _itemName, int _defensivePower, int _equipLevel) : base(_itemKey,_itemName, _defensivePower, _equipLevel)
     {
         texture2D = Resources.Load("Sprites/6_Back/" + itemName, typeof(Texture2D)) as Texture2D;
         singleSprite = Resources.Load("Sprites/6_Back/" + itemName, typeof(Sprite)) as Sprite;

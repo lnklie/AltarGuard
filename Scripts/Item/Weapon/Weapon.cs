@@ -13,7 +13,7 @@ using UnityEditor;
 public class Weapon :Item 
 {
     public Weapon(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, 
-        float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2) 
+        float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
         : base(_itemKey, _itemName)
     {
         itemType = (int)ItemType.Weapon;
@@ -26,5 +26,6 @@ public class Weapon :Item
         atkSpeed = _atkSpeed;
         skillKey1 = _skillKey1;
         skillKey2 = _skillKey2;
+        equipLevel = _equipLevel;
     }
 }

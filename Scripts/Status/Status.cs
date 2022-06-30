@@ -152,6 +152,35 @@ public class Status : MonoBehaviour
         get { return curLevel; }
         set { curLevel = value; }
     }
+    [SerializeField]
+    protected int totalStr = 5;
+    public int TotalStr
+    {
+        get { return totalStr; }
+        set { totalStr = value; }
+    }
+    [SerializeField]
+    protected int totalDex = 5;
+    public int TotalDex
+    {
+        get { return totalDex; }
+        set { totalDex = value; }
+    }
+    [SerializeField]
+    protected int totalWiz = 5;
+    public int TotalWiz
+    {
+        get { return totalWiz; }
+        set { totalWiz = value; }
+    }
+    [SerializeField]
+    protected int totalLuck = 5;
+    public int TotalLuck
+    {
+        get { return totalLuck; }
+        set { totalLuck = value; }
+    }
+
     protected int str = 5;
     public int Str
     {
@@ -198,13 +227,41 @@ public class Status : MonoBehaviour
 
     protected bool isHPRegen = false;
 
-
-
+    protected int passiveStr = 0;
+    public int PassiveStr
+    {
+        get { return passiveStr; }
+        set { passiveStr = value; }
+    }
+    protected int passiveDex = 0;
+    public int PassiveDex
+    {
+        get { return passiveDex; }
+        set { passiveDex = value; }
+    }
+    protected int passiveWiz = 0;
+    public int PassiveWiz
+    {
+        get { return passiveWiz; }
+        set { passiveWiz = value; }
+    }
+    protected int passiveLuck = 0;
+    public int PassiveLuck
+    {
+        get { return passiveLuck; }
+        set { passiveLuck = value; }
+    }
     private void Update()
     {
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
-
+    }
+    public void UpdateBasicStatus()
+    {
+        totalStr = str + passiveStr;
+        totalDex = dex + passiveDex;
+        totalWiz = wiz + passiveWiz;
+        totalLuck = luck + passiveLuck;
     }
     public IEnumerator HpRegenarate()
     {

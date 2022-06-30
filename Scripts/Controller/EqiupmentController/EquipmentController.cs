@@ -114,12 +114,6 @@ public class EquipmentController : MonoBehaviour
 
     public void ChangeEquipment(Item _item)
     {
-        // 아이템 장착
-        if (checkEquipItems[_item.itemType])
-        {
-            equipItems[_item.itemType].isEquip = false;
-            InventoryManager.Instance.AcquireItem(equipItems[_item.itemType]);
-        }
         InventoryManager.Instance.DiscardItem(_item);
         equipItems[_item.itemType] = _item;
         equipItems[_item.itemType].isEquip = true;

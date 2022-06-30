@@ -310,24 +310,29 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void Equip(List<EquipmentController> _characterList,int _character)
     {
-        // 장착하기 버튼
-        if (_characterList[_character].CheckEquipItems[selectItem.itemType])
+        if (_characterList[_character].GetComponent<Status>().CurLevel >= selectItem.equipLevel)
         {
-            _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
+            // 장착하기 버튼
+            if (_characterList[_character].CheckEquipItems[selectItem.itemType])
+            {
+                _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
+            }
+            selectItem.equipCharNum = _character;
+            SelectCharacter(_characterList);
+            SetActiveEquipCharacterBox(false);
+            _characterList[_character].ChangeEquipment(selectItem);
+            InventorySlotChange(selectInventoryIndex);
+            UpdateEquipmentName();
+            ChangeAllEquipmentImage();
+            SetActiveItemInfo(false);
+            selectItem = null;
+            if (_character == 0)
+                UIManager.Instance.ChangePlayerUIItemImage();
+            else
+                UIManager.Instance.ChangeMercenaryUIItemImage(_character);
         }
-        selectItem.equipCharNum = _character;
-        SelectCharacter(_characterList);
-        SetActiveEquipCharacterBox(false);
-        _characterList[_character].ChangeEquipment(selectItem);
-        InventorySlotChange(selectInventoryIndex);
-        UpdateEquipmentName();
-        ChangeAllEquipmentImage();
-        SetActiveItemInfo(false);
-        selectItem = null;
-        if (_character == 0)
-            UIManager.Instance.ChangePlayerUIItemImage();
         else
-            UIManager.Instance.ChangeMercenaryUIItemImage(_character);
+            Debug.Log("레벨이 부족합니다.");
     }
 
     public void TakeOff(List<EquipmentController> _characterList)

@@ -72,6 +72,7 @@ public class Arrow : MonoBehaviour
         if(ray)
         {
             Status hitObject = ray.collider.GetComponent<Status>();
+            Debug.Log(hitObject.ObjectName + " "+ ReviseDamage(dmg, hitObject.DefensivePower));
             hitObject.CurHp -= ReviseDamage(dmg, hitObject.DefensivePower);
             hitObject.IsDamaged = true;
             if (archer.CompareTag("Mercenary"))
@@ -96,16 +97,9 @@ public class Arrow : MonoBehaviour
 
     public int ReviseDamage(int _damage, int _depensivePower)
     {
-        return Mathf.CeilToInt(_damage * (1 / (1 + _depensivePower)));
+        return Mathf.CeilToInt(_damage * (1 / (1.0f + _depensivePower)));
     }
-    private bool IsEnemy(GameObject _archer, GameObject _hitObject)
-    {
-        // 쏘는 사람과 맞는 사람 서로가 적인지 확인
-        if ((_archer.layer == 3 && _hitObject.layer == 8) || (_archer.layer == 8 && _hitObject.layer == 3))
-            return true;
-        else
-            return false;
-    }
+
     private RaycastHit2D HitRay(GameObject _archer)
     {
         // 레이를 쏘는 역할
