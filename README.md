@@ -1,6 +1,13 @@
 Update
 =======
 
+Version 06-30 Update
+--------
+- Updating Grace System
+- Uddating Grace UI
+
+https://blog.naver.com/rnlgus1126/222795335160
+
 Version 06-29 Update
 --------
 - Updating Grace System
