@@ -333,7 +333,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Grace[] skill = JsonHelper.FromJson<Grace>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
-                graceList.Add(new Grace(skill[i].graceKey, skill[i].explain));
+                graceList.Add(new Grace(skill[i].graceKey, skill[i].explain, skill[i].necessaryGraceKey));
             }
         }
     }
@@ -469,5 +469,16 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             }
         }
         return _skill;
+    }
+
+    public Grace SelectGrace(int _key)
+    {
+        Grace _grace = null;
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (graceList[i].graceKey == _key)
+                _grace = graceList[i];
+        }
+        return _grace;
     }
 }

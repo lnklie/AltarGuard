@@ -9,10 +9,11 @@ public class Grace
     public int graceType = -1;
     public int isActive = 0;
     public string explain = null;
-
-    public Grace (int _graceKey, string _explain)
+    public int necessaryGraceKey = -1;
+    public Grace (int _graceKey, string _explain, int _necessaryGraceKey)
     {
         graceKey = _graceKey;
         explain = _explain;
+        necessaryGraceKey = _necessaryGraceKey;
     }
 }
