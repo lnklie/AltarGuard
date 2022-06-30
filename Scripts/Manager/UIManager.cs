@@ -27,6 +27,10 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private MercenaryManager mercenaryManager = null;
 
+    [Header("GraceManager")]
+    [SerializeField]
+    private GraceManager graceManager = null;
+
     [Header("Player")]
     [SerializeField]
     private PlayerStatus player = null;
@@ -55,6 +59,8 @@ public class UIManager : SingletonManager<UIManager>
     private AltarInfoPanelController altarInfoPanelController = null;
     [SerializeField]
     private SkillInfoPanelController skillInfoPanelController = null;
+    [SerializeField]
+    private GracePanelController gracePanelController = null;
 
     private void Awake()
     {
@@ -73,6 +79,7 @@ public class UIManager : SingletonManager<UIManager>
                 AddMercenaryEquipmentController(mercenary[i]);
             }
         }
+        UpdateGracePanel();
     }
 
     private void Update()
@@ -104,6 +111,11 @@ public class UIManager : SingletonManager<UIManager>
         {
             profilePanelController.SetBossProfile(_bool);
         }
+    }
+
+    public void UpdateGracePanel()
+    {
+        gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
     {
@@ -260,6 +272,13 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #region GracePanel
+    public void AquireGrace(int _index)
+    {
+        gracePanelController.AquireGrace(_index, graceManager.AquireGrace);
+        UpdateGracePanel();
+    }
+    #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
