@@ -8,105 +8,127 @@ using UnityEngine;
  * 파일명 : CharacterStatus.cs
 ==============================
 */
-public class CharacterStatus: Status
+public class CharacterStatus : Status
 {
     protected EquipmentController equipmentController = null;
+    [SerializeField]
+    protected GameObject allyTarget = null;
+    protected int curExp = 0;
+    private int maxExp = 0;
+    private int buffPhysicalDamage = 0;
+    private int buffMagicalDamage = 0;
+    private int buffDefensivePower = 0;
+    private float buffSpeed = 0f;
+    private int buffHpRegenValue = 0;
+    private float dropProbability = 0;
+    private float itemRarity = 0;
+
+    private float gracePhysicalDamage = 1f;
+    private float graceMagicalDamage = 1f;
+    private float graceAttackSpeed = 1f;
+    private float graceDefensivePower = 1f;
+
+    private int statusPoint = 0;
+    private bool isAlterBuff = false;
+    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
+    private bool isStatusUpdate = false;
+    #region Properties
+
     public EquipmentController EquipmentController
     {
         get { return equipmentController; }
         set { equipmentController = value; }
     }
-    [SerializeField]
-    protected GameObject allyTarget = null;
     public GameObject AllyTarget
     {
         get { return allyTarget; }
         set { allyTarget = value; }
     }
-    protected int curExp = 0;
+    public float GraceMagicalDamage
+    {
+        get { return graceMagicalDamage; }
+        set { graceMagicalDamage = value; }
+    }
+    public float GracePhysicalDamage
+    {
+        get { return gracePhysicalDamage; }
+        set { gracePhysicalDamage = value; }
+    }
+    public float GraceAttackSpeed
+    {
+        get { return graceAttackSpeed; }
+        set { graceAttackSpeed = value; }
+    }
+    public float GraceDefensivePower
+    {
+        get { return graceDefensivePower; }
+        set { graceDefensivePower = value; }
+    }
     public int CurExp
     {
         get { return curExp; }
         set { curExp = value; }
     }
-
-    private int maxExp = 0;
     public int MaxExp
     {
         get { return maxExp; }
         set { maxExp = value; }
     }
 
-    [SerializeField]
-    private int buffPhysicalDamage = 0;
     public int BuffPhysicalDamage
     {
         get { return buffPhysicalDamage; }
         set { buffPhysicalDamage = value; }
     }
-    [SerializeField]
-    private int buffMagicalDamage = 0;
     public int BuffMagicalDamage
     {
         get { return buffMagicalDamage; }
         set { buffMagicalDamage = value; }
     }
-
-    private int buffDefensivePower = 0;
     public int BuffDefensivePower
     {
         get { return buffDefensivePower; }
         set { buffDefensivePower = value; }
     }
-
-    private float buffSpeed = 0f;
     public float BuffSpeed
     {
         get { return buffSpeed; }
         set { buffSpeed = value; }
     }
-
-    private int buffHpRegenValue = 0;
     public int BuffHpRegenValue
     {
         get { return buffHpRegenValue; }
         set { buffHpRegenValue = value; }
     }
-
-    private float dropProbability = 0;
     public float DropProbability
     {
         get { return dropProbability; }
     }
-
-    private float itemRarity = 0;
     public float ItemRarity
     {
         get { return itemRarity; }
     }
-
-    private int statusPoint = 0;
     public int StatusPoint
     {
         get { return statusPoint; }
         set { statusPoint = value; }
     }
-
-
-    private bool isAlterBuff = false;
     public bool IsAlterBuff
     {
         get { return isAlterBuff; }
         set { isAlterBuff = value; }
     }
-
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     public bool[] CheckEquipItems
     {
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
-
+    public bool IsStatusUpdate
+    {
+        get { return isStatusUpdate; }
+        set { isStatusUpdate = value; }
+    }
+    #endregion
     private void Awake()
     {
         equipmentController = this.GetComponent<EquipmentController>();
@@ -123,12 +145,15 @@ public class CharacterStatus: Status
         if (!isAlterBuff)
         {
             RemoveBuff();
+        }
+        if(isStatusUpdate)
+        {
             UpdateAbility();
         }
 
-        if (equipmentController.IsChangeItem == true)
+        if (equipmentController.IsChangeItem)
         {
-            UpdateAbility();
+            isStatusUpdate = true;
             checkEquipItems = equipmentController.CheckEquipItems;
             equipmentController.IsChangeItem = false;
         }
@@ -150,6 +175,7 @@ public class CharacterStatus: Status
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
+        isStatusUpdate = true;
     }
     private bool CheckMaxExp()
     {
@@ -183,23 +209,24 @@ public class CharacterStatus: Status
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
-        UpdateAbility();
-        UIManager.Instance.UpdatePlayerProfile();
+        isStatusUpdate = true;
     }
 
     public void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp = 100 + str * 10;
-        maxMp = 100 + wiz * 10;
-        atkSpeed = (equipmentController.EquipItems[7] != null ? equipmentController.EquipItems[7].atkSpeed : 3f) - dex * 0.1f;
-        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage;
-        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage;
-        speed = 2 + dex * 0.1f + buffSpeed;
-        dropProbability = luck * 0.001f;
-        itemRarity = luck * 0.001f;
-        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower;
-        hpRegenValue = str * 1 + buffHpRegenValue;
+        UpdateBasicStatus();
+        maxHp = 100 + totalStr * 10;
+        maxMp = 100 + totalWiz * 10;
+        atkSpeed = 3f - ((equipmentController.EquipItems[7].atkSpeed + (totalDex * 0.1f)) * graceAttackSpeed);
+        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage) * gracePhysicalDamage);
+        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage) * graceMagicalDamage);
+        speed = 2 + totalDex * 0.1f + buffSpeed;
+        dropProbability = totalLuck * 0.001f;
+        itemRarity = totalLuck * 0.001f;
+        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower) * graceDefensivePower);
+        hpRegenValue = totalStr * 1 + buffHpRegenValue;
+        isStatusUpdate = false;
     }
     public void RemoveBuff()
     {
@@ -208,5 +235,13 @@ public class CharacterStatus: Status
         buffSpeed = 0;
         buffDefensivePower = 0;
         buffHpRegenValue = 0;
+        isStatusUpdate = true;
+    }
+    public void InitGraceStatus()
+    {
+        gracePhysicalDamage = 1f;
+        graceMagicalDamage = 1f;
+        graceAttackSpeed = 1f;
+        graceDefensivePower = 1f;
     }
 }

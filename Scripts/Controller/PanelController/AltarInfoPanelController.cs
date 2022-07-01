@@ -42,16 +42,10 @@ public class AltarInfoPanelController : MonoBehaviour
     {
         altar = _altar;
     }
-    public void ActiveAltarInfo()
+    public void ActiveAltarInfo(bool _bool)
     {
         // UI 활성화 
-        this.gameObject.SetActive(true);
+        this.gameObject.SetActive(_bool);
 
-    }
-
-    public void DeactiveAltarInfo()
-    {
-        // UI 비활성화
-        this.gameObject.SetActive(false);
     }
 }

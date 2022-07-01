@@ -14,13 +14,15 @@ public class MercenaryManager : MonoBehaviour
 
     [SerializeField]
     private GameObject characterPrefab = null;
-
+    [SerializeField]
+    private GameObject revialZone = null;
     public void AddNewMercenary()
     {
         GameObject _newCharacter = Instantiate(characterPrefab, this.transform);
-        EquipmentController _equipmentController = _newCharacter.GetComponent<EquipmentController>();
-        MercenaryStatus _mercenaryStatus = _newCharacter.GetComponent<MercenaryStatus>();
-        _mercenaryStatus.MercenaryNum = mercenarys.Count + 1;
+        EquipmentController _equipmentController = _newCharacter.GetComponentInChildren<EquipmentController>();
+        MercenaryStatus _mercenaryStatus = _newCharacter.GetComponentInChildren<MercenaryStatus>();
+        _mercenaryStatus.gameObject.transform.position = revialZone.transform.position;
+        _mercenaryStatus.MercenaryNum = mercenarys.Count;
         _equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(0));
         _equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(1000));
         _equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(2000));
@@ -35,8 +37,8 @@ public class MercenaryManager : MonoBehaviour
                 _equipmentController.EquipItems[i].equipCharNum = _mercenaryStatus.MercenaryNum;
         }
         mercenarys.Add(_newCharacter);
-        UIManager.Instance.AddMercenary(_newCharacter);
-        UIManager.Instance.SetActiveCharactersProfile(_mercenaryStatus.MercenaryNum, true);
+        UIManager.Instance.AddMercenary(_mercenaryStatus);
+        UIManager.Instance.SetActiveCharactersProfile(_mercenaryStatus.MercenaryNum + 1, true);
         UIManager.Instance.ChangeMercenaryUIItemImage(_mercenaryStatus.MercenaryNum);
         UIManager.Instance.UpdateMercenaryProfile(_mercenaryStatus.MercenaryNum);
     }

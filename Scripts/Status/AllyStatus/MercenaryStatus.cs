@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MercenaryStatus : CharacterStatus
 {
+    [SerializeField]
     private int mercenaryNum = 0;
     public int MercenaryNum
     {
