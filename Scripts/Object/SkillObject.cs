@@ -13,6 +13,12 @@ public class SkillObject : MonoBehaviour
         get { return damage; }
         set { damage = value; }
     }
+    private int skillHitCount = 0;
+    public int SkillHitCount
+    {
+        get { return skillHitCount; }
+        set { skillHitCount = value; }
+    }
     private float maxDurationTime = 0f;
     public float MaxDuration
     {
@@ -50,54 +56,53 @@ public class SkillObject : MonoBehaviour
     }
     private void Update()
     {
-        if (target != null)
-        {
-            if(isSkillUse)
-                StartCoroutine(CastingSkill());
-            RemoveSkill();
-        }
-        else
-        {
-            Debug.Log("타겟이 없습니다.");
-        }
+        if(isSkillUse)
+            StartCoroutine(CastingSkill());
+        RemoveSkill();
     }
     public IEnumerator CastingSkill()
     {
         isSkillUse = false;
-        this.transform.position = target.transform.position;
+        
         RaycastHit2D[] _hitRay = HitRay();
         for(int i = 0; i < _hitRay.Length; i++)
         {
             if (_hitRay[i])
             {
                 Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < skillHitCount; j++)
                 {
-                    _status.CurHp -= damage / 3;
+                    _status.CurHp -= damage / skillHitCount;
                     _status.IsDamaged = true;
                     Debug.Log(_status.CurHp);
-                    yield return new WaitForSeconds(durationTime / 3);
+                    yield return new WaitForSeconds(durationTime / skillHitCount);
                 }
-                if (this.gameObject.CompareTag("Mercenary"))
+                if (this.transform.parent.gameObject.layer == 8)
                 {
-                    MercenaryAIController mercenary = this.gameObject.GetComponent<MercenaryAIController>();
-                    mercenary.IsAtk = true;
-                    if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                    if(this.gameObject.CompareTag("Mercenary"))
                     {
-                        mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                        MercenaryAIController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryAIController>();
+                        mercenary.IsAtk = true;
+                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        {
+                            mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            // 용병 업데이트
+                        }
+                    }
+                    else
+                    {
+                        PlayerController player = this.transform.parent.parent.GetComponentInChildren<PlayerController>();
+                        player.IsAtk = true;
+                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        {
+                            player.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                        }
                     }
                 }
             }
         }
     }
-    //public IEnumerator ContinuousDamage(Status _status, int _damage)
-    //{
-    //    for(int i = 0; i < 3; i++ )
-    //    {
-    //        _status.CurHp -= _damage / 3;
-    //        yield return new WaitForSeconds(durationTime / 3);
-    //    }
-    //}
+
     public void RemoveSkill()
     {
         durationTime += Time.deltaTime;
@@ -118,9 +123,9 @@ public class SkillObject : MonoBehaviour
         // 레이를 쏘는 역할
         
         RaycastHit2D[] ray = default;
-        if (this.gameObject.layer == 3)
+        if (this.transform.parent.gameObject.layer == 3)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally"));
-        else if (this.gameObject.layer == 8)
+        else if (this.transform.parent.gameObject.layer == 8)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius, Vector2.zero, 0f, LayerMask.GetMask("Enemy"));
         return ray;
     }
