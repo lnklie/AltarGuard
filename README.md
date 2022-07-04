@@ -1,7 +1,13 @@
 Update
 =======
 
-Version 06-30 Update
+Version 07-04 Update
+--------
+- Updating Grace Panel
+
+https://blog.naver.com/rnlgus1126/222800117675
+
+Version 07-01 Update
 --------
 - Updating Grace Ability
 
