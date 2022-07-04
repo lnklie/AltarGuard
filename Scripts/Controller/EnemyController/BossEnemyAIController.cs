@@ -25,42 +25,7 @@ public class BossEnemyAIController : EnemyAIController
         ChangeState(bossEnemyStatus);
         State(bossEnemyStatus);
     }
-    //public override void ChangeState(EnemyStatus _status)
-    //{
-    //    if (IsDied(_status))
-    //    {
-    //        SetState(_status, EnemyState.Died);
-    //    }
-    //    else
-    //    {
-    //        if (_status.IsDamaged)
-    //        {
-    //            SetState(_status, EnemyState.Damaged);
-    //        }
-    //        else
-    //        {
-    //            if (IsAtkRange(_status))
-    //            {
-    //                if (!_status.IsDelay()) 
-    //                {
-    //                    SetState(_status, EnemyState.Attack);
-    //                }
-    //                else
-    //                    SetState(_status, EnemyState.Idle);
-    //            }
-    //            else
-    //            {
-    //                if (_status.Target == this.gameObject)
-    //                {
-    //                    SetState(_status, EnemyState.Idle);
-    //                }
-    //                else
-    //                    SetState(_status, EnemyState.Chase);
-    //            }
-    //        }
-            
-    //    }
-    //}
+
     public override void ChangeState(EnemyStatus _status)
     {
 
@@ -126,10 +91,14 @@ public class BossEnemyAIController : EnemyAIController
     }
     public override IEnumerator Died(EnemyStatus _status)
     {
-        base.Died(_status);
-        Debug.Log("Á×À½");
+        ActiveLayer(_status.Ani, LayerName.IdleLayer);
+        _status.IsStateChange = false;
+        _status.Rig.velocity = Vector2.zero;
+        SetEnabled(_status, false);
         UIManager.Instance.UpdateBossInfo();
+        yield return new WaitForSeconds(2f);
+        Debug.Log("Á×À½");
+        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
         EnemySpawner.Instance.ReturnBossEnemy(this.gameObject);
-        yield return null;
     }
 }

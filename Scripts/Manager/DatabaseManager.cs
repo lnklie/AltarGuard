@@ -36,7 +36,11 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Stage> stageList = new List<Stage>();
 
     [Header("Skill")]
-    public List<Skill> skillList = new List<Skill>();
+    public List<ActiveSkill> activeSkillList = new List<ActiveSkill>();
+    public List<PassiveSkill> passiveSkillList = new List<PassiveSkill>();
+
+    [Header("Grace")]
+    public List<Grace> graceList = new List<Grace>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -92,7 +96,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -106,7 +110,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                pantList.Add(new Pant(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -120,7 +124,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -134,7 +138,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                armorList.Add(new Armor(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+                armorList.Add(new Armor(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -148,7 +152,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                backList.Add(new Back(items[i].itemKey, items[i].itemName,items[i].defensivePower));
+                backList.Add(new Back(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -163,7 +167,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 swordList.Add(new Sword(items[i].itemKey, items[i].itemName,items[i].attackType,items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
         }
@@ -178,7 +182,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
         }
@@ -193,7 +197,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
         }
@@ -208,7 +212,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
         }
@@ -285,21 +289,51 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
-        if (!File.Exists(CombinePath("Skill")))
+        if (!File.Exists(CombinePath("ActiveSkill")))
         {
-            Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("경로에 액티브 스킬 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill")));
-            Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ActiveSkill")));
+            ActiveSkill[] skill = JsonHelper.FromJson<ActiveSkill>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
-                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel,skill[i].skillType, skill[i].skillVariable,
+                activeSkillList.Add(new ActiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel,skill[i].skillType, skill[i].skillVariable,
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].coolTime));
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].coolTime, skill[i].skillHitCount));
+            }
+        }
+        if (!File.Exists(CombinePath("PassiveSkill")))
+        {
+            Debug.Log("경로에 패시브 스킬 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("PassiveSkill")));
+            PassiveSkill[] skill = JsonHelper.FromJson<PassiveSkill>(loadJson);
+            for (var i = 0; i < skill.Length; i++)
+            {
+                passiveSkillList.Add(new PassiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel, skill[i].skillVariable, skill[i].targetStatus,
+                    skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
+                    skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
+                    skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10)) ;
+            }
+        }
+        if (!File.Exists(CombinePath("Grace")))
+        {
+            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Grace")));
+            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
             }
         }
     }
@@ -418,12 +452,35 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public Skill SelectSkill(int _key)
     {
         Skill _skill = null;
-
-        for(int i =0; i< skillList.Count; i++)
+        if(_key < 1000)
         {
-            if(skillList[i].skillKey == _key)
-                _skill = skillList[i];
+            for(int i =0; i< activeSkillList.Count; i++)
+            {
+                if(activeSkillList[i].skillKey == _key)
+                    _skill = activeSkillList[i];
+            }
+        }
+        else
+        {
+            for (int i = 0; i < passiveSkillList.Count; i++)
+            {
+                if (passiveSkillList[i].skillKey == _key)
+                    _skill = passiveSkillList[i];
+            }
         }
         return _skill;
+    }
+
+    public Grace SelectGrace(int _key)
+    {
+        Grace _grace = null;
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (graceList[i].graceKey == _key)
+                _grace = graceList[i];
+            else
+                Debug.Log("해당 은총이 없습니다.");
+        }
+        return _grace;
     }
 }

@@ -37,7 +37,7 @@ public class Item
     public int value = 0;
     public int skillKey1 = -1;
     public int skillKey2 = -1;
-
+    public int equipLevel = 0;
     public Item(int _itemKey, string _itemName)
     {
         itemKey = _itemKey;

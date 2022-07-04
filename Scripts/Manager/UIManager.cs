@@ -27,9 +27,15 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private MercenaryManager mercenaryManager = null;
 
+    [Header("GraceManager")]
+    [SerializeField]
+    private GraceManager graceManager = null;
+
     [Header("Player")]
     [SerializeField]
     private PlayerStatus player = null;
+    [SerializeField]
+    private SkillController playerSkillController = null;
 
     [Header("Boss")]
     [SerializeField]
@@ -38,8 +44,8 @@ public class UIManager : SingletonManager<UIManager>
     [Header("Altar")]
     [SerializeField]
     private AltarStatus altar = null;
-
-    private List<GameObject> mercenary = new List<GameObject>();
+    [SerializeField]
+    private List<CharacterStatus> mercenary = new List<CharacterStatus>();
     [SerializeField]
     private List<EquipmentController> characterList = new List<EquipmentController>();
 
@@ -51,6 +57,10 @@ public class UIManager : SingletonManager<UIManager>
     private StatusPanelController statusPanelController = null;
     [SerializeField]
     private AltarInfoPanelController altarInfoPanelController = null;
+    [SerializeField]
+    private SkillInfoPanelController skillInfoPanelController = null;
+    [SerializeField]
+    private GracePanelController gracePanelController = null;
 
     private void Awake()
     {
@@ -66,7 +76,7 @@ public class UIManager : SingletonManager<UIManager>
             {
                 ChangeMercenaryUIItemImage(i);
                 UpdateMercenaryProfile(i);
-                AddMercenaryEC(mercenary[i]);
+                AddMercenaryEquipmentController(mercenary[i]);
             }
         }
     }
@@ -78,26 +88,64 @@ public class UIManager : SingletonManager<UIManager>
             if(mercenaryManager.Mercenarys.Count < 4)
                 mercenaryManager.AddNewMercenary();
         }
+
+        if(player.IsStatusUpdate)
+        {
+            UpdatePlayerProfile();
+            player.IsStatusUpdate = false;
+        }
+
+        for(int i = 0; i < mercenary.Count; i++)
+        {
+            if (mercenary[i].IsStatusUpdate)
+            {
+                UpdateMercenaryProfile(i);
+                mercenary[i].IsStatusUpdate = false;
+            }
+        }
     }
-    public void UpdateBossInfo()
+    public void SetBossInfo(bool _bool)
     {
         if (bossEnemy != null)
         {
-            profilePanelController.BossUpdate(bossEnemy);
+            profilePanelController.SetBossProfile(_bool);
         }
     }
-    public void AddMercenary(GameObject _mercenary)
+
+    public void UpdateGracePanel()
+    {
+        Debug.Log("그레이스 업데이트");
+        gracePanelController.UpdateSlots(graceManager.CheckIsActive);
+    }
+    public void AddMercenary(CharacterStatus _mercenary)
     {
         mercenary.Add(_mercenary);
-        AddMercenaryEC(_mercenary);
+        AddMercenaryEquipmentController(_mercenary);
     }
-    public void AddMercenaryEC(GameObject _mercenary)
+    public void AddMercenaryEquipmentController(CharacterStatus _mercenary)
     {
         characterList.Add(_mercenary.GetComponent<EquipmentController>());
     }
     public void SetBossEnemy()
     {
         bossEnemy = enemySpawner.CurBoss.GetComponent<BossEnemyStatus>();
+    }
+    public int GetMercenaryNum()
+    {
+        return mercenary.Count;
+    }
+    public void SelectSlotItem(Item _item)
+    {
+        // 슬롯에 선택한 아이템 
+        inventoryPanelController.SelectSlotItem(_item);
+    }
+    #region Profile
+    public void UpdateBossInfo()
+    {
+        if (bossEnemy != null)
+        {
+            profilePanelController.BossUpdate(bossEnemy);
+        }
     }
     public void ChangePlayerUIItemImage()
     {
@@ -113,23 +161,36 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void UpdateMercenaryProfile(int _index)
     {
-        profilePanelController.UpdateMercenaryProfile(mercenary[_index - 1], mercenary.Count);
-    }
-    public void InventorySlotChange(int _index)
-    {
-        inventoryPanelController.InventorySlotChange(_index);
-    }
-    public void EquipBtn(int _character)
-    {
-        inventoryPanelController.Equip(characterList, _character);
-    }
-    public void UpdateEquipmentName()
-    {
-        inventoryPanelController.UpdateEquipmentName();
+        profilePanelController.UpdateMercenaryProfile(mercenary[_index], _index);
     }
     public void SetActiveCharactersProfile(int _index, bool _bool)
     {
         profilePanelController.Profiles[_index].SetActive(_bool);
+    }
+    #endregion
+
+    #region Button
+
+    #region Inventory Panel
+    public void SetActiveItemInfo(bool _bool)
+    {
+        // 아이템 정보창 활성화 여부
+        inventoryPanelController.SetActiveItemInfo(_bool);
+    }
+    public void InventorySlotChange(int _index)
+    {
+        // 인벤토리 슬롯 변경
+        inventoryPanelController.InventorySlotChange(_index);
+    }
+    public void EquipBtn(int _character)
+    {
+        // 아이템 장착
+        inventoryPanelController.Equip(characterList, _character);
+    }
+    public void SetActiveEquipCharacterBox(bool _bool)
+    {
+        // 아이템 장착 캐릭터 선택 활성화 여부 
+        inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
@@ -138,57 +199,59 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void UseSelectItemBtn()
     {
+        // 아이템 사용
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
+        // 아이템 버리기
         inventoryPanelController.DiscardSelectItem();
+    }
+    public void DiscardSelectAmountItem()
+    {
+        // 아이템 수량으로 버리기
+        inventoryPanelController.DiscardSelectAmountItem();
+    }
+    public void SetActiveCheckDiscard(bool _bool)
+    {
+        // 아이템 버리기 확인창 활성화 여부
+        inventoryPanelController.SetActiveCheckDiscard(_bool);
+    }
+    public void SetActiveCheckDiscardAmount(bool _bool)
+    {
+        // 아이템 수량 버리기 확인창 활성화 여부
+        inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
         // 장비창에서 캐릭터 선택
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
-    public void SetActiveEquipCharacterBox(bool _bool)
+    public void UpdateEquipmentName()
     {
-        inventoryPanelController.SetActiveEquipCharacterBox(_bool);
+        // 장비창 캐릭터 이름 업데이트
+        inventoryPanelController.UpdateEquipmentName();
     }
-    public int GetMercenaryNum()
+
+    #endregion
+
+    #region Status Panel
+    public void UpdateStatus()
     {
-        return mercenary.Count;
-    }
-    public void SelectSlotItem(Item _item)
-    {
-        // 슬롯에 선택한 아이템 
-        inventoryPanelController.SelectSlotItem(_item);
-    }
-    public void SetActiveItemInfo(bool _bool)
-    {
-        // 아이템 정보창 활성화 여부
-        inventoryPanelController.SetActiveItemInfo(_bool);
-    }
-    public void SetActiveCheckDiscard(bool _bool)
-    {
-        // 아이템 정보창 활성화 여부
-        inventoryPanelController.SetActiveCheckDiscard(_bool);
-    }
-    public void SetActiveCheckDiscardAmount(bool _bool)
-    {
-        // 아이템 정보창 활성화 여부
-        inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
+        statusPanelController.UpdateStatusText();
     }
     public void SelectCharacterInStatus(bool _isUp)
     {
         statusPanelController.SelectCharacterInStatus(characterList,_isUp);
     }
-    public void DiscardSelectAmountItem()
+    public void StatusUp(int _index)
     {
-        inventoryPanelController.DiscardSelectAmountItem();
+        // 스텟 업
+        statusPanelController.StatusUp(_index);
     }
-    public void UpdateStatus()
-    {
-        statusPanelController.UpdateStatusText();
-    }
+    #endregion
+
+    #region Altar Panel
     public void UpdateAltarInfo()
     {
         altarInfoPanelController.UpdateAltarInfo();
@@ -197,29 +260,67 @@ public class UIManager : SingletonManager<UIManager>
     {
         altarInfoPanelController.UpgradeAltarStatus(_index);
     }
-    public void StatusUp(int _index)
-    {
-        // 스텟 업
-        statusPanelController.StatusUp(_index);
-    }
+    #endregion
 
+    #region SkillPanel
+    public void LearnPassiveSkillBtn(int _skillKey)
+    {
+        if (playerSkillController.GetPassiveSkill(_skillKey) == null)
+            skillInfoPanelController.LearnSkill(playerSkillController, _skillKey);
+        else
+            skillInfoPanelController.LevelUpSkill(playerSkillController, _skillKey);
+    }
+    #endregion
+
+    #region GracePanel
+    public void AquireGrace()
+    {
+        gracePanelController.AquireGrace(graceManager.AquireGrace);
+        UpdateGracePanel();
+        ActiveGraceInfo(false);
+    }
+    public void SelectGrace(int _index)
+    {
+        gracePanelController.SelectGrace(_index,graceManager.CheckIsActive);
+        ActiveGraceInfo(true);
+    }
+    public void ActiveGraceInfo(bool _bool)
+    {
+        gracePanelController.ActiveGraceInfo(_bool);
+    }
+    public void SetGraceSlot(int _egraceType)
+    {
+        gracePanelController.SetSlotGrace(_egraceType);
+        UpdateGracePanel();
+    }
+    #endregion
+    #region MainUI
     public void ActiveUIBtn(int _index)
     {
         // UI 활성화 
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
-            inventoryPanelController.ActiveInventory();
+            inventoryPanelController.ActiveInventoryPanel(true);
         }
         else if(_index == 1)
         {
             statusPanelController.SetPlayer(player);
-            statusPanelController.ActiveStatus();
+            statusPanelController.ActiveStatusPanel(true);
         }
         else if(_index == 2)
         {
             altarInfoPanelController.SetAltar(altar);
-            altarInfoPanelController.ActiveAltarInfo();
+            altarInfoPanelController.ActiveAltarInfo(true);
+        }
+        else if(_index == 3)
+        {
+            skillInfoPanelController.ActiveSkillPanel(true);
+        }
+        else if (_index == 4)
+        {
+            gracePanelController.ActiveGracePanel(true);
+            UpdateGracePanel();
         }
     }
 
@@ -228,15 +329,26 @@ public class UIManager : SingletonManager<UIManager>
         // UI 비활성화
         if (_index == 0)
         {
-            inventoryPanelController.DeactiveInventory();
+            inventoryPanelController.ActiveInventoryPanel(false);
         }
         else if (_index == 1)
         {
-            statusPanelController.DeactiveStatus();
+            statusPanelController.ActiveStatusPanel(false);
         }
         else if (_index == 2)
         {
-            altarInfoPanelController.DeactiveAltarInfo();
+            altarInfoPanelController.ActiveAltarInfo(false);
+        }
+        else if (_index == 3)
+        {
+            skillInfoPanelController.ActiveSkillPanel(false);
+        }
+        else if (_index == 4)
+        {
+            gracePanelController.ActiveGracePanel(false);
         }
     }
+    #endregion
+
+    #endregion
 }

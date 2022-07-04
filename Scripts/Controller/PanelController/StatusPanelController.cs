@@ -11,9 +11,6 @@ using UnityEngine.UI;
 */
 public class StatusPanelController : MonoBehaviour
 {
-    [Header("UIImages")]
-    [SerializeField]
-    private GameObject UIImages = null;
     [Header("Status")]
     [SerializeField]
     private Text[] statusTexts = null;
@@ -38,10 +35,10 @@ public class StatusPanelController : MonoBehaviour
             "Drop Probability : " + selectCharStatus.DropProbability.ToString(),
             "ItemRarity : " + selectCharStatus.ItemRarity.ToString(),
             selectCharStatus.ObjectName.ToString(),
-            "Str : " + selectCharStatus.Str.ToString(),
-            "Dex : " + selectCharStatus.Dex.ToString(),
-            "Int : " + selectCharStatus.Wiz.ToString(),
-            "Luck : " + selectCharStatus.Luck.ToString(),
+            "Str : " + selectCharStatus.TotalStr.ToString(),
+            "Dex : " + selectCharStatus.TotalDex.ToString(),
+            "wiz : " + selectCharStatus.TotalWiz.ToString(),
+            "Luck : " + selectCharStatus.TotalLuck.ToString(),
             "Point : " + selectCharStatus.StatusPoint.ToString(),
             "Level : " + selectCharStatus.CurLevel.ToString()
         };
@@ -89,15 +86,10 @@ public class StatusPanelController : MonoBehaviour
         selectCharStatus.UpStatus(_index);
         UpdateStatusText();
     }
-    public void ActiveStatus()
+    public void ActiveStatusPanel(bool _bool)
     {
         // UI 활성화 
-        this.gameObject.SetActive(true);
+        this.gameObject.SetActive(_bool);
     }
 
-    public void DeactiveStatus()
-    {
-        // UI 비활성화
-        this.gameObject.SetActive(false);
-    }
 }

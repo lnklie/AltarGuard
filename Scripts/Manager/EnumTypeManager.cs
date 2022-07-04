@@ -101,3 +101,10 @@ public enum SlimeKingPattern
     DashAttack,
     JumpJump
 }
+public enum EgraceType
+{
+    Warrior = 0,
+    Archer = 1000,
+    Wizard = 2000,
+    Commander = 3000
+}

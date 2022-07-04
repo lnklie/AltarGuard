@@ -10,7 +10,7 @@ using UnityEngine;
 public class MercenaryAIController : BaseController
 {
     protected MercenaryStatus mercenary = null;
-    protected BoxCollider2D col = null;
+    protected CapsuleCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected bool isAtk = false;
     protected Animator ani = null; 
@@ -50,7 +50,7 @@ public class MercenaryAIController : BaseController
     {
         mercenary = this.GetComponent<MercenaryStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
-        col = this.GetComponent<BoxCollider2D>();
+        col = this.GetComponent<CapsuleCollider2D>();
         ani = this.GetComponentInChildren<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
     }
@@ -286,7 +286,7 @@ public class MercenaryAIController : BaseController
     public void Damaged()
     {
         StartCoroutine(Blink());
-        UIManager.Instance.UpdateMercenaryProfile(mercenary.MercenaryNum);
+        mercenary.IsStatusUpdate = true;
     }
     private IEnumerator Blink()
     {

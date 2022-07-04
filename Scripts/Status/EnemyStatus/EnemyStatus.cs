@@ -31,8 +31,8 @@ public class EnemyStatus : Status
         get { return rig; }
         set { rig = value; }
     }
-    protected CircleCollider2D col = null;
-    public CircleCollider2D Col
+    protected CapsuleCollider2D col = null;
+    public CapsuleCollider2D Col
     {
         get { return col; }
         set { col = value; }
@@ -122,7 +122,7 @@ public class EnemyStatus : Status
     {
         ani = this.GetComponentInChildren<Animator>();
         rig = this.GetComponent<Rigidbody2D>();
-        col = this.GetComponent<CircleCollider2D>();
+        col = this.GetComponent<CapsuleCollider2D>();
         textMesh = this.GetComponentInChildren<TextMesh>();
 
     }
