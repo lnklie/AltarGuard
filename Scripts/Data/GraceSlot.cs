@@ -11,5 +11,4 @@ public class GraceSlot : MonoBehaviour
         get { return grace; }
         set { grace = value; }
     }
-
 }

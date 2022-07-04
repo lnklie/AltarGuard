@@ -22,6 +22,7 @@ public class GraceManager : MonoBehaviour
     }
     public void AquireGrace(int _key)
     {
+
         if (!CheckIsActive(_key))
         {
             graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
@@ -29,13 +30,13 @@ public class GraceManager : MonoBehaviour
             SetGraceAbility();
         }
         else
-            Debug.Log("�̹� ��� ����");
+            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("üũ�Ϸ��� Ű�� " + _key);
+        Debug.Log("Ã¼Å©ÇÏ·Á´Â Å°´Â " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)

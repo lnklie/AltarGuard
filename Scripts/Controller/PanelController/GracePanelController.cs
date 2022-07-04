@@ -8,6 +8,7 @@ public class GracePanelController : MonoBehaviour
     private List<GraceSlot> slots = new List<GraceSlot>();
     [SerializeField]
     private List<Button> slotButtons = new List<Button>();
+
     [SerializeField]
     private GameObject graceInfo = null;
     [SerializeField]
@@ -20,6 +21,7 @@ public class GracePanelController : MonoBehaviour
     private Text graceLearnButtonText = null;
 
     private Grace selectGrace = null;
+
     public delegate bool CheckIsActiveGrace(int _key);
     public delegate void AquireGraceDel(int _key);
     private void Awake()
@@ -32,6 +34,7 @@ public class GracePanelController : MonoBehaviour
         }
     }
 
+
     public void SetSlotGrace(int _egraceType)
     {
         for (int i = 0; i < slots.Count; i++)
@@ -41,7 +44,7 @@ public class GracePanelController : MonoBehaviour
                 slots[i].Grace = DatabaseManager.Instance.SelectGrace(_egraceType + i);
             }
             else
-                Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 
@@ -63,10 +66,12 @@ public class GracePanelController : MonoBehaviour
         }
         
     }
+
     public void ActiveGracePanel(bool _bool)
     {
         this.gameObject.SetActive(_bool);
     }
+
 
     public void ActiveGraceInfo(bool _bool)
     {
@@ -89,4 +94,5 @@ public class GracePanelController : MonoBehaviour
                 slotButtons[i].interactable = false;
         }
     }
+
 }
