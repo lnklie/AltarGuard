@@ -1,6 +1,13 @@
 Update
 =======
 
+Version 07-05 Update
+--------
+- Implementing Notice System
+- Modifying Tile Map
+
+https://blog.naver.com/rnlgus1126/222801509497
+
 Version 07-04 Update
 --------
 - Updating Grace Panel
@@ -16,7 +23,7 @@ https://blog.naver.com/rnlgus1126/222796876396
 Version 06-30 Update
 --------
 - Updating Grace System
-- Uddating Grace UI
+- Updating Grace UI
 
 https://blog.naver.com/rnlgus1126/222795335160
 
