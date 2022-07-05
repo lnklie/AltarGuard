@@ -44,6 +44,7 @@ public class EnemyStatus : Status
         get { return allyRay; }
         set { allyRay = value; }
     }
+    [SerializeField]
     protected RaycastHit2D enemyHitRay = default;
     public RaycastHit2D EnemyHitRay
     {

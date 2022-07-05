@@ -356,6 +356,7 @@ public class PlayerController : BaseController
             for (int i = 0; i < hits.Length; i++)
             {
                 EnemyStatus hitsEnemy = hits[i].rigidbody.GetComponent<EnemyStatus>();
+                UIManager.Instance.Notice(hitsEnemy.ObjectName);
                 hitsEnemy.IsDamaged = true;
             }
         }
