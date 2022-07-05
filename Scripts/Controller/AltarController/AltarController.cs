@@ -14,9 +14,8 @@ public class AltarController : BaseController
     private AltarStatus altar = null;
     private TextMesh[] txtMesh = null;
     private Image[] images = null;
-
-    [SerializeField]
     private SpriteRenderer[] spriteRenderers = null;
+
     [SerializeField]
     private List<CharacterStatus> characters = new List<CharacterStatus>();
     void Awake()
