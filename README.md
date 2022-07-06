@@ -1,6 +1,12 @@
 Update
 =======
 
+Version 07-06 Update
+--------
+- Modifying Class Structure
+
+https://blog.naver.com/rnlgus1126
+
 Version 07-05 Update
 --------
 - Implementing Notice System
