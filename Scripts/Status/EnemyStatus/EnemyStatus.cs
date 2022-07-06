@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnemyStatus.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EnemyStatus.cs
 ==============================
 */
 public class EnemyStatus : CharacterStatus
@@ -19,7 +19,6 @@ public class EnemyStatus : CharacterStatus
         get { return allyRay; }
         set { allyRay = value; }
     }
-
     [SerializeField]
     protected int defeatExp = 0;
     public int DefeatExp
