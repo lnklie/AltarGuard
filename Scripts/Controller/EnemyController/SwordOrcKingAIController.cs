@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordOrcKingAIController : BossEnemyAIController
+public class SwordOrcKingAIController : BossEnemyController
 {
-    public override void Attack(EnemyStatus _status)
+    public override void AttackByAttackType(CharacterStatus _status)
     {
         base.Attack(_status);
 
@@ -15,9 +15,9 @@ public class SwordOrcKingAIController : BossEnemyAIController
             EnemyAttack(AttackRange(_status), _status);
         }
         else
-            _status.IsAtk = false;
+            enemyStatus.IsAtk = false;
     }
-    public RaycastHit2D[] AttackRange(EnemyStatus _status)
+    public RaycastHit2D[] AttackRange(CharacterStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.Dir, 1f, LayerMask.GetMask("Ally"));
         Debug.DrawRay(this.transform.position, _status.Dir, Color.red, 1f);
@@ -32,17 +32,17 @@ public class SwordOrcKingAIController : BossEnemyAIController
             Debug.Log("아무것도 없음");
         return hits;
     }
-    public void EnemyAttack(RaycastHit2D[] hits, EnemyStatus _status)
+    public void EnemyAttack(RaycastHit2D[] hits, CharacterStatus _status)
     {
         for (int i = 0; i < hits.Length; i++)
         {
             Status ally = hits[i].collider.GetComponent<Status>();
 
             ally.CurHp -= ReviseDamage(AttackTypeDamage(_status), ally.DefensivePower);
-            _status.IsAtk = true;
+            enemyStatus.IsAtk = true;
         }
     }
-    public override int AttackTypeDamage(EnemyStatus _status)
+    public override int AttackTypeDamage(CharacterStatus _status)
     {
         return _status.PhysicalDamage;
     }

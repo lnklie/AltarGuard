@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillController : MonoBehaviour
 {
     [SerializeField]
-    private Status status = null;
+    private CharacterStatus status = null;
 
     [SerializeField]
     private List<Skill> activeSkills = new List<Skill>();

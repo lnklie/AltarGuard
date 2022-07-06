@@ -8,7 +8,7 @@ using UnityEngine;
  * ÆÄÀÏ¸í : PlayerStatus.cs
 ==============================
 */
-public class PlayerStatus : CharacterStatus
+public class PlayerStatus : AllyStatus
 {
 
     [SerializeField]

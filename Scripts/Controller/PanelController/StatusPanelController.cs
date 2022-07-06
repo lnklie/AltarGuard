@@ -16,7 +16,7 @@ public class StatusPanelController : MonoBehaviour
     private Text[] statusTexts = null;
 
     private int selectNum = 0;
-    private CharacterStatus selectCharStatus = null;
+    private AllyStatus selectAllyStatus = null;
 
     [SerializeField]
     private Button[] statusButtons = null;
@@ -25,29 +25,29 @@ public class StatusPanelController : MonoBehaviour
     {
         // 상태 텍스트 업데이트
         string[] status = {
-            "HP : " + selectCharStatus.MaxHp.ToString(),
-            "MP : " + selectCharStatus.MaxMp.ToString(),
-            "Physical Damage : " + selectCharStatus.PhysicalDamage.ToString(),
-            "Magical Damage : " + selectCharStatus.MagicalDamage.ToString(),
-            "Defensive : " + selectCharStatus.DefensivePower.ToString(),
-            "Speed : " + selectCharStatus.Speed.ToString(),
-            "Attack Speed : " + selectCharStatus.AtkSpeed.ToString(),
-            "Drop Probability : " + selectCharStatus.DropProbability.ToString(),
-            "ItemRarity : " + selectCharStatus.ItemRarity.ToString(),
-            selectCharStatus.ObjectName.ToString(),
-            "Str : " + selectCharStatus.TotalStr.ToString(),
-            "Dex : " + selectCharStatus.TotalDex.ToString(),
-            "wiz : " + selectCharStatus.TotalWiz.ToString(),
-            "Luck : " + selectCharStatus.TotalLuck.ToString(),
-            "Point : " + selectCharStatus.StatusPoint.ToString(),
-            "Level : " + selectCharStatus.CurLevel.ToString()
+            "HP : " + selectAllyStatus.MaxHp.ToString(),
+            "MP : " + selectAllyStatus.MaxMp.ToString(),
+            "Physical Damage : " + selectAllyStatus.PhysicalDamage.ToString(),
+            "Magical Damage : " + selectAllyStatus.MagicalDamage.ToString(),
+            "Defensive : " + selectAllyStatus.DefensivePower.ToString(),
+            "Speed : " + selectAllyStatus.Speed.ToString(),
+            "Attack Speed : " + selectAllyStatus.AtkSpeed.ToString(),
+            "Drop Probability : " + selectAllyStatus.DropProbability.ToString(),
+            "ItemRarity : " + selectAllyStatus.ItemRarity.ToString(),
+            selectAllyStatus.ObjectName.ToString(),
+            "Str : " + selectAllyStatus.TotalStr.ToString(),
+            "Dex : " + selectAllyStatus.TotalDex.ToString(),
+            "wiz : " + selectAllyStatus.TotalWiz.ToString(),
+            "Luck : " + selectAllyStatus.TotalLuck.ToString(),
+            "Point : " + selectAllyStatus.StatusPoint.ToString(),
+            "Level : " + selectAllyStatus.CurLevel.ToString()
         };
 
         for (int i = 0; i < statusTexts.Length; i++)
         {
             statusTexts[i].text = status[i];
         }
-        if (selectCharStatus.StatusPoint > 0)
+        if (selectAllyStatus.StatusPoint > 0)
         {
             for (int i = 0; i < statusButtons.Length; i++)
                 statusButtons[i].gameObject.SetActive(true);
@@ -60,7 +60,7 @@ public class StatusPanelController : MonoBehaviour
     }
     public void SetPlayer(PlayerStatus _player)
     {
-        selectCharStatus = _player.GetComponent<CharacterStatus>();
+        selectAllyStatus = _player.GetComponent<AllyStatus>();
     }
     public void SelectCharacterInStatus(List<EquipmentController> _charaterList,bool _isUp)
     {
@@ -77,13 +77,13 @@ public class StatusPanelController : MonoBehaviour
             if (selectNum < 0)
                 selectNum = UIManager.Instance.GetMercenaryNum();
         }
-        selectCharStatus = _charaterList[selectNum].GetComponent<CharacterStatus>();
+        selectAllyStatus = _charaterList[selectNum].GetComponent<AllyStatus>();
         UpdateStatusText();
     }
     public void StatusUp(int _index)
     {
         // 스텟 업
-        selectCharStatus.UpStatus(_index);
+        selectAllyStatus.UpStatus(_index);
         UpdateStatusText();
     }
     public void ActiveStatusPanel(bool _bool)

@@ -7,7 +7,7 @@ using UnityEngine;
  * 파일명 : MercenaryAIController.cs
 ==============================
 */
-public class MercenaryAIController : BaseController
+public class MercenaryAIController : BaseController , IAIController
 {
     protected MercenaryStatus mercenary = null;
     protected CapsuleCollider2D col = null;
@@ -17,7 +17,7 @@ public class MercenaryAIController : BaseController
     private SpriteRenderer bodySprites = null;
 
     private RaycastHit2D sightRay = default;
-    private RaycastHit2D atkRangeRay = default;
+
     private RaycastHit2D[] allyRay = default;
     private Vector2 distance = Vector2.zero;
 
@@ -43,8 +43,7 @@ public class MercenaryAIController : BaseController
         set { knuckBackPower = value; }
     }
 
-    [SerializeField]
-    private CharacterState characterState = CharacterState.Idle;
+
 
     public  void Awake()
     {
@@ -56,69 +55,11 @@ public class MercenaryAIController : BaseController
     }
     private void Update()
     {
-        State();
-        ChangeState();
-        Perception();
+        State(mercenary);
+        ChangeState(mercenary);
+        Perception(mercenary);
     }
-    public void State()
-    {
-        switch (characterState)
-        {
-            case CharacterState.Idle:
-                Idle();
-                break;
-            case CharacterState.Walk:
-                Chase();
-                break;
-            case CharacterState.Attack:
-                Attack();
-                break;
-            case CharacterState.Damaged:
-                Damaged ();
-                break;
-            case CharacterState.Died:
-                StartCoroutine(Died());
-                break;
-        }
-    }
-    public void ChangeState()  
-    {
-        if (sightRay)
-            distance = mercenary.Target.transform.position - this.transform.position;
-        mercenary.Dir = distance.normalized;
-        if (mercenary.CurHp < 0f)
-        {
-            characterState = CharacterState.Died;
-        }
-        else
-        {
-            if (mercenary.IsDamaged)
-            {
-                characterState = CharacterState.Damaged;
-            }
-            else
-            {
-                if (mercenary.Target == null)
-                {
-                    characterState = CharacterState.Idle;
-                }
-                else
-                {
-                    characterState = CharacterState.Walk;
-                    if (atkRangeRay)
-                    {
-                        characterState = CharacterState.Attack;
-                        if (sightRay.collider.CompareTag("Boss"))
-                        {
 
-                            if (CheckBossState() != EnemyState.Attack)
-                                characterState = CharacterState.Idle;
-                        }
-                    }
-                }
-            }
-        }
-    }
     public void ActiveLayer(LayerName layerName)
     {
         // 애니메이션 레이어 가중치 조절
@@ -128,27 +69,13 @@ public class MercenaryAIController : BaseController
         }
         ani.SetLayerWeight((int)layerName, 1);
     }
-    public void Chase()
-    {
-        ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = mercenary.Speed * mercenary.Dir;
-    }
 
-    public IEnumerator Died()
-    {
-        rig.velocity = Vector2.zero;
-        col.enabled = false;
-
-        ActiveLayer(LayerName.DieLayer);
-        yield return new WaitForSeconds(revivalTime);
-        Rivive();
-    }
     private void Rivive()
     {
         rig.isKinematic = false;
         col.enabled = true;
         mercenary.CurHp = mercenary.MaxHp;
-        characterState = CharacterState.Idle;
+        mercenary.AIState = AIState.Idle;
     }
     public void Idle()
     {
@@ -165,20 +92,11 @@ public class MercenaryAIController : BaseController
     }
     public  void Perception()
     {
-        AnimationDirection();
-        sightRay = Physics2D.CircleCast(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        atkRangeRay = Physics2D.CircleCast(this.transform.position, mercenary.AtkRange, mercenary.Dir, 0, LayerMask.GetMask("Enemy"));
-        allyRay = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (!sightRay)
-            mercenary.Target = null;
-        else
-        {
-            mercenary.Target = sightRay.collider.gameObject;
-        }
+
     }
-    public EnemyState CheckBossState()
+    public AIState CheckBossState()
     {
-        return sightRay.rigidbody.GetComponent<EnemyStatus>().EnemyState;
+        return sightRay.rigidbody.GetComponent<EnemyStatus>().AIState;
     }
     public int AttackTypeDamage()
     {
@@ -187,51 +105,7 @@ public class MercenaryAIController : BaseController
         else
             return mercenary.MagicalDamage;
     }
-    public virtual void Attack()
-    {
-        ActiveLayer(LayerName.AttackLayer);
-        ani.SetFloat("AtkType", mercenary.AttackType);
-        delayTime += Time.deltaTime;
-        rig.velocity = Vector2.zero;
-        if (mercenary.AttackType == 0f)
-        {
-            if (!IsDelay())
-            {
-                ani.SetTrigger("AtkTrigger");
-                delayTime = 0f;
-                EnemyAttack(AttackRange());
-            }
-            else
-                isAtk = false;
-        }
-        else if(mercenary.AttackType == 0.5f)
-        {
-            if (!IsDelay())
-            {
-                ani.SetTrigger("AtkTrigger");
-                Debug.Log("공격");
-                delayTime = 0f;
-                if (ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
-                {
-                    Debug.Log("쐈다");
-                    ShotArrow();
-                }
-            }
-            else
-                isAtk = false;
-        }
-        else
-        {
-            if (!IsDelay())
-            {
-                ani.SetTrigger("AtkTrigger");
-                delayTime = 0f;
-                isAtk = true;
-            }
-            else
-                isAtk = false;
-        }
-    }
+
     public RaycastHit2D[] AttackRange()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, 1f, mercenary.Dir, 1f, LayerMask.GetMask("Enemy"));
@@ -240,7 +114,7 @@ public class MercenaryAIController : BaseController
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                hits[i].rigidbody.GetComponent<EnemyStatus>().EnemyState = EnemyState.Damaged;
+                hits[i].rigidbody.GetComponent<EnemyStatus>().AIState = AIState.Damaged;
             }
         }
         else
@@ -275,19 +149,7 @@ public class MercenaryAIController : BaseController
         }
     }
 
-    public bool IsDied()
-    {
-        if (mercenary.CurHp <= 0)
-            return true;
-        else
-            return false;
-    }
 
-    public void Damaged()
-    {
-        StartCoroutine(Blink());
-        mercenary.IsStatusUpdate = true;
-    }
     private IEnumerator Blink()
     {
         mercenary.IsDamaged = false;
@@ -322,5 +184,161 @@ public class MercenaryAIController : BaseController
         }
         else
             Debug.Log("화살 없음");
+    }
+
+    public void ChangeState(CharacterStatus _status)
+    {
+        if (sightRay)
+            distance = mercenary.Target.transform.position - this.transform.position;
+        mercenary.Dir = distance.normalized;
+        if (mercenary.CurHp < 0f)
+        {
+            _status.AIState = AIState.Died;
+        }
+        else
+        {
+            if (mercenary.IsDamaged)
+            {
+                _status.AIState = AIState.Damaged;
+            }
+            else
+            {
+                if (mercenary.Target == null)
+                {
+                    _status.AIState = AIState.Idle;
+                }
+                else
+                {
+                    _status.AIState = AIState.Walk;
+                    if (_status.HitRay)
+                    {
+                        _status.AIState = AIState.Attack;
+                        if (sightRay.collider.CompareTag("Boss"))
+                        {
+
+                            if (CheckBossState() != AIState.Attack)
+                                _status.AIState = AIState.Idle;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void State(CharacterStatus _status)
+    {
+        switch (_status.AIState)
+        {
+            case AIState.Idle:
+                Idle();
+                break;
+            case AIState.Walk:
+                Chase(_status);
+                break;
+            case AIState.Attack:
+                Attack(_status);
+                break;
+            case AIState.Damaged:
+                Damaged(_status);
+                break;
+            case AIState.Died:
+                StartCoroutine(Died(_status));
+                break;
+        }
+    }
+
+    public void Perception(CharacterStatus _status)
+    {
+        AnimationDirection();
+        _status.SightRay = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        _status.HitRay = Physics2D.CircleCast(this.transform.position, _status.AtkRange, _status.Dir, 0, LayerMask.GetMask("Enemy"));
+        allyRay = Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (!sightRay)
+            _status.Target = null;
+        else
+        {
+            _status.Target = sightRay.collider.gameObject;
+        }
+    }
+
+    public void Idle(CharacterStatus _status)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Chase(CharacterStatus _status)
+    {
+        ActiveLayer(LayerName.WalkLayer);
+        _status.Rig.velocity = _status.Speed * _status.Dir;
+    }
+
+    public void Attack(CharacterStatus _status)
+    {
+        ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", mercenary.AttackType);
+        _status.DelayTime += Time.deltaTime;
+        _status.Rig.velocity = Vector2.zero;
+        if (_status.AttackType == 0f)
+        {
+            if (!IsDelay())
+            {
+                _status.Ani.SetTrigger("AtkTrigger");
+                delayTime = 0f;
+                EnemyAttack(AttackRange());
+            }
+            else
+                isAtk = false;
+        }
+        else if (_status.AttackType == 0.5f)
+        {
+            if (!IsDelay())
+            {
+                _status.Ani.SetTrigger("AtkTrigger");
+                Debug.Log("공격");
+                _status.DelayTime = 0f;
+                if (_status.Ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
+                {
+                    Debug.Log("쐈다");
+                    ShotArrow();
+                }
+            }
+            else
+                isAtk = false;
+        }
+        else
+        {
+            if (!IsDelay())
+            {
+                _status.Ani.SetTrigger("AtkTrigger");
+                delayTime = 0f;
+                isAtk = true;
+            }
+            else
+                isAtk = false;
+        }
+    }
+
+    public IEnumerator Died(CharacterStatus _status)
+    {
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
+
+        ActiveLayer(LayerName.DieLayer);
+        yield return new WaitForSeconds(revivalTime);
+        Rivive();
+    }
+
+    public void Damaged(CharacterStatus _status)
+    {
+        StartCoroutine(Blink());
+        _status.IsStatusUpdate = true;
+    }
+
+    public bool IsDied(CharacterStatus _status)
+    {
+        if (_status.CurHp <= 0)
+            return true;
+        else
+            return false;
     }
 }

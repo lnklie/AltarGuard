@@ -15,7 +15,7 @@ public enum LayerName
     AttackLayer = 2,
     DieLayer = 3
 }
-public enum CharacterState
+public enum AIState
 {
     Idle,
     Walk,

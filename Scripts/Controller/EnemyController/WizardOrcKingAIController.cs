@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WizardOrcKingAIController : BossEnemyAIController
+public class WizardOrcKingAIController : BossEnemyController
 {
-    public override void Attack(EnemyStatus _status)
+    public override void AttackByAttackType(CharacterStatus _status)
     {
         base.Attack(_status);
 
@@ -12,12 +12,12 @@ public class WizardOrcKingAIController : BossEnemyAIController
         {
             _status.Ani.SetTrigger("AtkTrigger");
             _status.DelayTime = 0f;
-            _status.IsAtk = true;
+            enemyStatus.IsAtk = true;
         }
         else
-            _status.IsAtk = false;
+            enemyStatus.IsAtk = false;
     }
-    public override int AttackTypeDamage(EnemyStatus _status)
+    public override int AttackTypeDamage(CharacterStatus _status)
     {
         return _status.MagicalDamage;
     }

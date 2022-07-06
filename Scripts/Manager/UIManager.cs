@@ -106,7 +106,13 @@ public class UIManager : SingletonManager<UIManager>
             UpdatePlayerProfile();
             player.IsStatusUpdate = false;
         }
-
+        if(bossEnemy)
+        {
+            if(bossEnemy.IsDamaged)
+            {
+                UpdateBossInfo();
+            }
+        }
         for(int i = 0; i < mercenary.Count; i++)
         {
             if (mercenary[i].IsStatusUpdate)
@@ -163,7 +169,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetBossEnemy()
     {
-        bossEnemy = enemySpawner.CurBoss.GetComponent<BossEnemyStatus>();
+        bossEnemy = enemySpawner.CurBoss;
     }
     public int GetMercenaryNum()
     {

@@ -7,7 +7,7 @@ using UnityEngine;
  * ÆÄÀÏ¸í : RushEnemyAIController.cs
 ==============================
 */
-public class RushEnemyAIController : EnemyAIController
+public class RushEnemyAIController : EnemyController
 {
     private RushEnemyStatus rushEnemyStatus = null;
     private void Awake()
@@ -25,39 +25,6 @@ public class RushEnemyAIController : EnemyAIController
         State(rushEnemyStatus);
     }
 
-    public override void ChangeState(EnemyStatus _status)
-    {
-
-        if (IsDied(_status))
-        {
-            SetState(_status, EnemyState.Died);
-        }
-        else
-        {
-            if (_status.IsDamaged)
-            {
-                SetState(_status, EnemyState.Damaged);
-            }
-            else
-            {
-                if (IsAtkRange(_status))
-                {
-                    SetState(_status, EnemyState.Attack);
-                }
-                else
-                {
-                    if (_status.Target == this.gameObject || FrontOtherEnemy(_status.EnemyHitRay,_status))
-                    {
-                        SetState(_status, EnemyState.Idle);
-                    }
-                    else
-                    {
-                        SetState(_status, EnemyState.Chase);
-                    }
-                }
-            }
-        }
-    }
     
     public bool IsDelay(EnemyStatus _status)
     {
@@ -72,17 +39,7 @@ public class RushEnemyAIController : EnemyAIController
         }
     }
 
-    public override void Stiffen(EnemyStatus _status)
-    {
-        base.Stiffen(_status);
-        _status.IsKnuckBack = true;
-        if (_status.StiffenTime >= 0.5f)
-        {
-            _status.IsKnuckBack = false;
-            _status.IsDamaged = false;
-            _status.StiffenTime = 0f;
-        }
-    }
+
 
 
 
@@ -99,16 +56,5 @@ public class RushEnemyAIController : EnemyAIController
         }
 
         yield return 0;
-    }
-    public override IEnumerator Died(EnemyStatus _status)
-    {
-        ActiveLayer(_status.Ani, LayerName.IdleLayer);
-        _status.IsStateChange = false;
-        _status.Rig.velocity = Vector2.zero;
-        SetEnabled(_status, false);
-        yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, _status.ItemDropKey, _status.ItemDropProb);
-        StageManager.Instance.SpawnedEneies--;
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 }

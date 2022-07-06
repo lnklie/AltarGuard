@@ -312,7 +312,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void Equip(List<EquipmentController> _characterList,int _character)
     {
-        if (_characterList[_character].GetComponent<Status>().CurLevel >= selectItem.equipLevel)
+        if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
         {
             // 장착하기 버튼
             if (_characterList[_character].CheckEquipItems[selectItem.itemType])
