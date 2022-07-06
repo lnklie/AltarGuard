@@ -30,10 +30,7 @@ public class EnemyCustomizer : MonoBehaviour
             rushEnemyStatus.Dir = rushEnemyStatus.Distance.normalized;
         }
     }
-    public AIController GetAIController()
-    {
-        return rushEnemyAIController;
-    }
+
     public void SetAIController(RushEnemyAIController _enemyAIController)
     {
         RushEnemyAIController _rushEnemyAIController = _enemyAIController;

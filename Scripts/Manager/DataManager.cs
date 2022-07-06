@@ -125,7 +125,7 @@ public class DataManager : MonoBehaviour
 
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
-                    CharacterStatus _mercenaryStatus = mercenaryManager.Mercenarys[j].GetComponent<CharacterStatus>();
+                    AllyStatus _mercenaryStatus = mercenaryManager.Mercenarys[j].GetComponent<AllyStatus>();
                     _mercenaryStatus.ObjectName = playerData.mercenaries[j].objectName;
                     _mercenaryStatus.Str = playerData.mercenaries[j].str;
                     _mercenaryStatus.Dex = playerData.mercenaries[j].dex;
@@ -196,7 +196,7 @@ public class DataManager : MonoBehaviour
         for (int i = 0; i < mercenaryManager.Mercenarys.Count; i++)
         {
             Character character = new Character();
-            CharacterStatus _mercenaryStatus = mercenaryManager.Mercenarys[i].GetComponent<CharacterStatus>();
+            AllyStatus _mercenaryStatus = mercenaryManager.Mercenarys[i].GetComponent<AllyStatus>();
             character.objectName = _mercenaryStatus.ObjectName;
             character.str = _mercenaryStatus.Str;
             character.dex = _mercenaryStatus.Dex;

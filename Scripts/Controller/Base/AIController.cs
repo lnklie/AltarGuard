@@ -8,34 +8,7 @@ using UnityEngine;
  * 파일명 : AIController.cs
 ==============================
 */
-public abstract class AIController : BaseController
+public class AIController : MonoBehaviour
 {
-    public abstract void ChangeState(EnemyStatus _status);
-    public abstract void State(EnemyStatus _status);
-    public abstract void Perception(EnemyStatus _enemy);
-    public abstract void Idle(EnemyStatus _enemy);
-    public abstract void Chase(EnemyStatus _enemy);
-    public abstract void Attack(EnemyStatus _enemy);
-    public abstract IEnumerator Died(EnemyStatus _enemy);
-    public abstract void Damaged(EnemyStatus _enemy);
-    public abstract bool IsDied(EnemyStatus _enemy);
 
-    public abstract int AttackTypeDamage(EnemyStatus _status);
-
-     
-
-    public void SetState(EnemyStatus _enemy, EnemyState _enemyState)
-    {
-        _enemy.EnemyState = _enemyState;
-        _enemy.IsStateChange = true;
-    }
-    public void ActiveLayer(Animator _ani,LayerName layerName)
-    {
-        // 애니메이션 레이어 가중치 조절
-        for (int i = 0; i < _ani.layerCount; i++)
-        {
-            _ani.SetLayerWeight(i, 0);
-        }
-        _ani.SetLayerWeight((int)layerName, 1);
-    }
 }

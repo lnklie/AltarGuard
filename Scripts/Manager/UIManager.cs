@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine.UI;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-10
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : UIManager.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-10
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : UIManager.cs
 ==============================
 */
 public class UIManager : SingletonManager<UIManager>
@@ -49,6 +46,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private List<EquipmentController> characterList = new List<EquipmentController>();
 
+    [Header("Panels")]
     [SerializeField]
     private InventoryPanelController inventoryPanelController = null;    
     [SerializeField]
@@ -62,6 +60,15 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private GracePanelController gracePanelController = null;
 
+    [Header("NoticeText")]
+    [SerializeField]
+    private Text noticeText = null;
+
+    [SerializeField]
+    private bool isNotice = false;
+
+    [SerializeField]
+    private Coroutine preNotice = null;
     private void Awake()
     {
         characterList.Add(player.GetComponent<EquipmentController>());
@@ -79,6 +86,8 @@ public class UIManager : SingletonManager<UIManager>
                 AddMercenaryEquipmentController(mercenary[i]);
             }
         }
+
+        
     }
 
     private void Update()
@@ -88,13 +97,22 @@ public class UIManager : SingletonManager<UIManager>
             if(mercenaryManager.Mercenarys.Count < 4)
                 mercenaryManager.AddNewMercenary();
         }
-
+        if(Input.GetKeyDown(KeyCode.F4))
+        {
+            Notice("Game Start");
+        }
         if(player.IsStatusUpdate)
         {
             UpdatePlayerProfile();
             player.IsStatusUpdate = false;
         }
-
+        if(bossEnemy)
+        {
+            if(bossEnemy.IsDamaged)
+            {
+                UpdateBossInfo();
+            }
+        }
         for(int i = 0; i < mercenary.Count; i++)
         {
             if (mercenary[i].IsStatusUpdate)
@@ -111,10 +129,33 @@ public class UIManager : SingletonManager<UIManager>
             profilePanelController.SetBossProfile(_bool);
         }
     }
+    public void Notice(string _notice)
+    {
+        if (isNotice)
+        {
+            StopCoroutine(preNotice);
+        }
+        preNotice = StartCoroutine(NoticeCoroutine(_notice));
+    }
+    public IEnumerator NoticeCoroutine(string _notice)
+    {
+        isNotice = true;
+        noticeText.gameObject.SetActive(true);
+        noticeText.text = _notice;
+        yield return new WaitForSeconds(2f);
+        isNotice = false;
+        for (float i = 1; i >= 0; i -= 0.05f)
+        {
+            noticeText.color = new Vector4(noticeText.color.r, noticeText.color.g, noticeText.color.b, i);
+            yield return new WaitForFixedUpdate();
+        }
+        noticeText.gameObject.SetActive(false);
+        noticeText.color = new Vector4(noticeText.color.r, noticeText.color.g, noticeText.color.b, 1);
+    }
 
     public void UpdateGracePanel()
     {
-        Debug.Log("ê·¸ë ˆì´ìŠ¤ ì—…ë°ì´íŠ¸");
+        Debug.Log("±×·¹ÀÌ½º ¾÷µ¥ÀÌÆ®");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
@@ -128,7 +169,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetBossEnemy()
     {
-        bossEnemy = enemySpawner.CurBoss.GetComponent<BossEnemyStatus>();
+        bossEnemy = enemySpawner.CurBoss;
     }
     public int GetMercenaryNum()
     {
@@ -136,7 +177,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectSlotItem(Item _item)
     {
-        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         inventoryPanelController.SelectSlotItem(_item);
     }
     #region Profile
@@ -174,62 +215,62 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë³€ê²½
+        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
         inventoryPanelController.InventorySlotChange(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ì•„ì´í…œ ì¥ì°©
+        // ¾ÆÀÌÅÛ ÀåÂø
         inventoryPanelController.Equip(characterList, _character);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ì•„ì´í…œ ì¥ì°© ìºë¦­í„° ì„ íƒ í™œì„±í™” ì—¬ë¶€ 
+        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ì„ íƒí•œ ì•„ì´í…œ í•´ì œ
+        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
         inventoryPanelController.TakeOff(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ì•„ì´í…œ ì‚¬ìš©
+        // ¾ÆÀÌÅÛ »ç¿ë
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¹ö¸®±â
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ìœ¼ë¡œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ì¥ë¹„ì°½ì—ì„œ ìºë¦­í„° ì„ íƒ
+        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ì¥ë¹„ì°½ ìºë¦­í„° ì´ë¦„ ì—…ë°ì´íŠ¸
+        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
         inventoryPanelController.UpdateEquipmentName();
     }
 
@@ -246,7 +287,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // ìŠ¤í…Ÿ ì—…
+        // ½ºÅİ ¾÷
         statusPanelController.StatusUp(_index);
     }
     #endregion
@@ -297,7 +338,7 @@ public class UIManager : SingletonManager<UIManager>
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI í™œì„±í™” 
+        // UI È°¼ºÈ­ 
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
@@ -326,7 +367,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ë¹„í™œì„±í™”
+        // UI ºñÈ°¼ºÈ­
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);

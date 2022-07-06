@@ -8,8 +8,10 @@ using UnityEngine;
  * 파일명 : BaseController.cs
 ==============================
 */
-public class BaseController : MonoBehaviour
+public abstract class BaseController : MonoBehaviour
 {
+    private DamageText[] damageTexts;
+
     private Debuff debuff = Debuff.Not;
     public Debuff Debuff
     {
@@ -35,5 +37,19 @@ public class BaseController : MonoBehaviour
         distance = Mathf.Sqrt(distance);
 
         return distance;
+    }
+    public void SetState(CharacterStatus _status, AIState _state)
+    {
+        _status.AIState = _state;
+        _status.IsStateChange = true;
+    }
+    public void ActiveLayer(Animator _ani, LayerName layerName)
+    {
+        // 애니메이션 레이어 가중치 조절
+        for (int i = 0; i < _ani.layerCount; i++)
+        {
+            _ani.SetLayerWeight(i, 0);
+        }
+        _ani.SetLayerWeight((int)layerName, 1);
     }
 }

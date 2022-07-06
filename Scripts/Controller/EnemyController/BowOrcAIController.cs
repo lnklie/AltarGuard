@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BowOrcAIController : RushEnemyAIController
 {
-    public override void Attack(EnemyStatus _status)
+    public override void AttackByAttackType(CharacterStatus _status)
     {
         base.Attack(_status);
         if (!IsDelay(_status))
@@ -19,11 +19,11 @@ public class BowOrcAIController : RushEnemyAIController
             }
         }
         else
-            _status.IsAtk = false;
+            enemyStatus.IsAtk = false;
 
 
     }
-    private void ShotArrow(EnemyStatus _status)
+    private void ShotArrow(CharacterStatus _status)
     {
         // 활쏘기
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
@@ -34,7 +34,7 @@ public class BowOrcAIController : RushEnemyAIController
         else
             Debug.Log("화살 없음");
     }
-    public override int AttackTypeDamage(EnemyStatus _status)
+    public override int AttackTypeDamage(CharacterStatus _status)
     {
         return _status.PhysicalDamage;
     }

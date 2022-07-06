@@ -11,7 +11,6 @@ public class RushEnemyStatus : EnemyStatus
         set { rushEnemy = value; }
     }
 
-    protected EquipmentController equipmentController = null;
     private Image[] images = null;
 
 
@@ -20,8 +19,6 @@ public class RushEnemyStatus : EnemyStatus
         base.Awake();
         images = this.GetComponentsInChildren<Image>();
         images[1].canvas.worldCamera = Camera.main;
-        equipmentController = this.GetComponent<EquipmentController>();
-
     }
     public override void Update()
     {
