@@ -81,19 +81,19 @@ public class SkillObject : MonoBehaviour
                 {
                     if(this.gameObject.CompareTag("Mercenary"))
                     {
-                        MercenaryAIController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryAIController>();
+                        CharacterStatus mercenary = this.transform.parent.parent.GetComponentInChildren<CharacterStatus>();
                         mercenary.IsAtk = true;
-                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        if (mercenary.GetComponent<MercenaryAIController>().IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
                         {
-                            mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            mercenary.CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
                             // 용병 업데이트
                         }
                     }
                     else
                     {
-                        PlayerController player = this.transform.parent.parent.GetComponentInChildren<PlayerController>();
+                        CharacterStatus player = this.transform.parent.parent.GetComponentInChildren<CharacterStatus>();
                         player.IsAtk = true;
-                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        if(player.GetComponent<PlayerController>().IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>(), player))
                         {
                             player.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
                         }

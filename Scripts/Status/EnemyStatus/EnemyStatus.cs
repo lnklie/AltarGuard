@@ -9,34 +9,9 @@ using UnityEngine.UI;
  * ÆÄÀÏ¸í : EnemyStatus.cs
 ==============================
 */
-public class EnemyStatus : Status
+public class EnemyStatus : CharacterStatus
 {
-    [SerializeField]
-    protected float delayTime = 0f;
-    public float DelayTime
-    {
-        get { return delayTime; }
-        set { delayTime = value; }
-    }
-    [SerializeField]
-    protected Animator ani;
-    public Animator Ani
-    {
-        get { return ani; }
-        set { ani = value; }
-    }
-    protected Rigidbody2D rig = null;
-    public Rigidbody2D Rig
-    {
-        get { return rig; }
-        set { rig = value; }
-    }
-    protected CapsuleCollider2D col = null;
-    public CapsuleCollider2D Col
-    {
-        get { return col; }
-        set { col = value; }
-    }
+
 
     protected RaycastHit2D[] allyRay = default;
     public RaycastHit2D[] AltarRay
@@ -44,13 +19,7 @@ public class EnemyStatus : Status
         get { return allyRay; }
         set { allyRay = value; }
     }
-    [SerializeField]
-    protected RaycastHit2D enemyHitRay = default;
-    public RaycastHit2D EnemyHitRay
-    {
-        get { return enemyHitRay; }
-        set { enemyHitRay = value; }
-    }
+
     [SerializeField]
     protected int defeatExp = 0;
     public int DefeatExp
@@ -59,13 +28,7 @@ public class EnemyStatus : Status
         set { defeatExp = value; }
     }
 
-    [SerializeField]
-    private float stiffenTime = 0f;
-    public float StiffenTime
-    {
-        get { return stiffenTime; }
-        set { stiffenTime = value; }
-    }
+
 
     protected EnemyType enemyType;
     public EnemyType EnemyType
@@ -73,13 +36,6 @@ public class EnemyStatus : Status
         get { return enemyType; }
     }
 
-    [SerializeField]
-    private EnemyState enemyState;
-    public EnemyState EnemyState
-    {
-        get { return enemyState; }
-        set { enemyState = value; }
-    }
 
     private bool isKnuckBack = false;
     public bool IsKnuckBack
@@ -119,28 +75,14 @@ public class EnemyStatus : Status
     [SerializeField]
     private TextMesh textMesh = null;
 
-    public virtual void Awake()
+    public override void Awake()
     {
-        ani = this.GetComponentInChildren<Animator>();
-        rig = this.GetComponent<Rigidbody2D>();
-        col = this.GetComponent<CapsuleCollider2D>();
+        base.Awake();
         textMesh = this.GetComponentInChildren<TextMesh>();
-
     }
-    public virtual void Update()
+    public override void Update()
     {
-        textMesh.text = enemyState.ToString();
-    }
-
-    public bool IsDelay()
-    {
-        if (delayTime >= atkSpeed)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        base.Update();
+        textMesh.text = aiState.ToString();
     }
 }

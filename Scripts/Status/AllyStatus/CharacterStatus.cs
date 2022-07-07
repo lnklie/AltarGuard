@@ -10,30 +10,266 @@ using UnityEngine;
 */
 public class CharacterStatus : Status
 {
+    [SerializeField]
+    protected GameObject target = null;
+    [SerializeField]
+    protected float seeRange = 0f;
+    [SerializeField]
+    protected float atkRange = 0f;
+    [SerializeField]
+    protected int curMp = 0;
+    [SerializeField]
+    protected int maxMp = 0;
+    [SerializeField]
+    protected int physicalDamage = 0;
+    [SerializeField]
+    protected int magicalDamage = 0;
+
+    [SerializeField]
+    protected float speed = 0f;
+
+    [SerializeField]
+    protected float atkSpeed = 2f;
+
+    protected float arrowSpd = 2f;
+
+    [SerializeField]
+    protected Vector2 distance = new Vector2(0, 0);
+
+    protected int curLevel = 100;
+
+    [SerializeField]
+    protected int totalStr = 5;
+    [SerializeField]
+    protected int totalDex = 5;
+    [SerializeField]
+    protected int totalWiz = 5;
+    [SerializeField]
+    protected int totalLuck = 5;
+    protected int str = 5;
+    protected int dex = 5;
+    protected int wiz = 5;
+    protected int luck = 5;
+    protected float attackType = 0f;
+    [SerializeField]
+    protected RaycastHit2D hitRay = default;
+    [SerializeField]
+    protected List<RaycastHit2D> sightRay = new List<RaycastHit2D>();
+    protected List<RaycastHit2D> allyRay = new List<RaycastHit2D>();
+    protected int hpRegenValue = 0;
+    protected bool isHPRegen = false;
+    protected int passiveStr = 0;
+    protected int passiveDex = 0;
+    protected int passiveWiz = 0;
+    protected int passiveLuck = 0;
+    protected AIState aiState = AIState.Idle;
+    [SerializeField]
+    protected Vector2 dir = Vector2.zero;
     protected EquipmentController equipmentController = null;
     [SerializeField]
     protected GameObject allyTarget = null;
     protected int curExp = 0;
-    private int maxExp = 0;
-    private int buffPhysicalDamage = 0;
-    private int buffMagicalDamage = 0;
-    private int buffDefensivePower = 0;
-    private float buffSpeed = 0f;
-    private int buffHpRegenValue = 0;
-    private float dropProbability = 0;
-    private float itemRarity = 0;
+    protected int maxExp = 0;
+    protected int buffPhysicalDamage = 0;
+    protected int buffMagicalDamage = 0;
+    protected int buffDefensivePower = 0;
+    protected float buffSpeed = 0f;
+    protected int buffHpRegenValue = 0;
+    protected bool isStatusUpdate = false;
 
-    private float gracePhysicalDamage = 1f;
-    private float graceMagicalDamage = 1f;
-    private float graceAttackSpeed = 1f;
-    private float graceDefensivePower = 1f;
-
-    private int statusPoint = 0;
-    private bool isAlterBuff = false;
     private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
-    private bool isStatusUpdate = false;
-    #region Properties
+    [SerializeField]
+    protected float delayTime = 0f;
 
+    [SerializeField]
+    protected Animator ani;
+
+    protected Rigidbody2D rig = null;
+
+    protected CapsuleCollider2D col = null;
+    private bool isAtk = false;
+
+    [SerializeField]
+    private float stiffenTime = 0f;
+
+    #region Properties
+    public List<RaycastHit2D> AllyRay
+    {
+        get { return allyRay; }
+        set { allyRay = value; }
+    }
+    public bool IsAtk
+    {
+        get { return isAtk; }
+        set { isAtk = value; }
+    }
+    public RaycastHit2D HitRay
+    {
+        get { return hitRay; }
+        set { hitRay = value; }
+    }
+    public float StiffenTime
+    {
+        get { return stiffenTime; }
+        set { stiffenTime = value; }
+    }
+    public Animator Ani
+    {
+        get { return ani; }
+        set { ani = value; }
+    }
+    public Rigidbody2D Rig
+    {
+        get { return rig; }
+        set { rig = value; }
+    }
+    public CapsuleCollider2D Col
+    {
+        get { return col; }
+        set { col = value; }
+    }
+    public float DelayTime
+    {
+        get { return delayTime; }
+        set { delayTime = value; }
+    }
+    public List<RaycastHit2D> SightRay
+    {
+        get { return sightRay; }
+        set { sightRay = value; }
+    }
+    public float AttackType
+    {
+        get { return attackType; }
+        set { attackType = value; }
+    }
+    public AIState AIState
+    {
+        get { return aiState; }
+        set { aiState = value; }
+    }
+    public int PassiveLuck
+    {
+        get { return passiveLuck; }
+        set { passiveLuck = value; }
+    }
+    public int PassiveWiz
+    {
+        get { return passiveWiz; }
+        set { passiveWiz = value; }
+    }
+    public int PassiveDex
+    {
+        get { return passiveDex; }
+        set { passiveDex = value; }
+    }
+    public int PassiveStr
+    {
+        get { return passiveStr; }
+        set { passiveStr = value; }
+    }
+    public int Luck
+    {
+        get { return luck; }
+        set { luck = value; }
+    }
+    public int Wiz
+    {
+        get { return wiz; }
+        set { wiz = value; }
+    }
+    public int Dex
+    {
+        get { return dex; }
+        set { dex = value; }
+    }
+    public int Str
+    {
+        get { return str; }
+        set { str = value; }
+    }
+    public int TotalLuck
+    {
+        get { return totalLuck; }
+        set { totalLuck = value; }
+    }
+    public int TotalWiz
+    {
+        get { return totalWiz; }
+        set { totalWiz = value; }
+    }
+    public int TotalDex
+    {
+        get { return totalDex; }
+        set { totalDex = value; }
+    }
+    public int TotalStr
+    {
+        get { return totalStr; }
+        set { totalStr = value; }
+    }
+    public int CurLevel
+    {
+        get { return curLevel; }
+        set { curLevel = value; }
+    }
+    public Vector2 Distance
+    {
+        get { return distance; }
+        set { distance = value; }
+    }
+    public float ArrowSpd
+    {
+        get { return arrowSpd; }
+        set { arrowSpd = value; }
+    }
+    public Vector2 Dir
+    {
+        get { return dir; }
+        set { dir = value; }
+    }
+    public float AtkSpeed
+    {
+        get { return atkSpeed; }
+        set { atkSpeed = value; }
+    }
+    public float Speed
+    {
+        get { return speed; }
+    }
+    public int PhysicalDamage
+    {
+        get { return physicalDamage; }
+    }
+    public int MagicalDamage
+    {
+        get { return magicalDamage; }
+    }
+    public int CurMp
+    {
+        get { return curMp; }
+        set { curMp = value; }
+    }
+    public int MaxMp
+    {
+        get { return maxMp; }
+        set { maxMp = value; }
+    }
+    public float AtkRange
+    {
+        get { return atkRange; }
+        set { atkRange = value; }
+    }
+    public float SeeRange
+    {
+        get { return seeRange; }
+        set { seeRange = value; }
+    }
+    public GameObject Target
+    {
+        get { return target; }
+        set { target = value; }
+    }
     public EquipmentController EquipmentController
     {
         get { return equipmentController; }
@@ -44,26 +280,7 @@ public class CharacterStatus : Status
         get { return allyTarget; }
         set { allyTarget = value; }
     }
-    public float GraceMagicalDamage
-    {
-        get { return graceMagicalDamage; }
-        set { graceMagicalDamage = value; }
-    }
-    public float GracePhysicalDamage
-    {
-        get { return gracePhysicalDamage; }
-        set { gracePhysicalDamage = value; }
-    }
-    public float GraceAttackSpeed
-    {
-        get { return graceAttackSpeed; }
-        set { graceAttackSpeed = value; }
-    }
-    public float GraceDefensivePower
-    {
-        get { return graceDefensivePower; }
-        set { graceDefensivePower = value; }
-    }
+
     public int CurExp
     {
         get { return curExp; }
@@ -100,24 +317,9 @@ public class CharacterStatus : Status
         get { return buffHpRegenValue; }
         set { buffHpRegenValue = value; }
     }
-    public float DropProbability
-    {
-        get { return dropProbability; }
-    }
-    public float ItemRarity
-    {
-        get { return itemRarity; }
-    }
-    public int StatusPoint
-    {
-        get { return statusPoint; }
-        set { statusPoint = value; }
-    }
-    public bool IsAlterBuff
-    {
-        get { return isAlterBuff; }
-        set { isAlterBuff = value; }
-    }
+
+
+
     public bool[] CheckEquipItems
     {
         get { return checkEquipItems; }
@@ -129,23 +331,24 @@ public class CharacterStatus : Status
         set { isStatusUpdate = value; }
     }
     #endregion
-    private void Awake()
+    public virtual void Awake()
     {
+        ani = this.GetComponent<Animator>();
+        rig = this.GetComponent<Rigidbody2D>();
+        col = this.GetComponent<CapsuleCollider2D>();
         equipmentController = this.GetComponent<EquipmentController>();
         UpdateAbility();
-        LvToExp();
+
+    }
+    public virtual void Start()
+    {
         curHp = maxHp;
         curMp = maxMp;
-        statusPoint = 1000;
     }
-    private void Update()
+    public virtual void Update()
     {
-        if (CheckMaxExp())
-            UpLevel();
-        if (!isAlterBuff)
-        {
-            RemoveBuff();
-        }
+
+
         if(isStatusUpdate)
         {
             UpdateAbility();
@@ -157,74 +360,23 @@ public class CharacterStatus : Status
             checkEquipItems = equipmentController.CheckEquipItems;
             equipmentController.IsChangeItem = false;
         }
-    }
-    private void LvToExp()
-    {
-        // 레벨별 경험치 전환
-        for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
-        {
-            if (curLevel == DatabaseManager.Instance.expList[i].lv)
-                maxExp = DatabaseManager.Instance.expList[i].exp;
-        }
+        if (!isHPRegen)
+            StartCoroutine(HpRegenarate());
     }
 
-    private void UpLevel()
-    {
-        // 레벨업
-        curLevel++;
-        curExp -= maxExp;
-        statusPoint += 5;
-        LvToExp();
-        isStatusUpdate = true;
-    }
-    private bool CheckMaxExp()
-    {
-        // 최대 경험치 인지 확인
-        if (curExp >= maxExp)
-            return true;
-        else
-            return false;
-    }
-    public void UpStatus(int _index)
-    {
-        // 스텟 상승
-        if (statusPoint > 0)
-        {
-            switch (_index)
-            {
-                case 0:
-                    str++;
-                    break;
-                case 1:
-                    dex++;
-                    break;
-                case 2:
-                    wiz++;
-                    break;
-                case 3:
-                    luck++;
-                    break;
-            }
-            statusPoint--;
-        }
-        else
-            Debug.Log("스테이터스 포인트가 없습니다.");
-        isStatusUpdate = true;
-    }
 
-    public void UpdateAbility()
+
+
+
+
+    public virtual void UpdateAbility()
     {
         // 능력 업데이트
         UpdateBasicStatus();
         maxHp = 100 + totalStr * 10;
         maxMp = 100 + totalWiz * 10;
-        atkSpeed = 3f - ((equipmentController.EquipItems[7].atkSpeed + (totalDex * 0.1f)) * graceAttackSpeed);
-        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage) * gracePhysicalDamage);
-        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage) * graceMagicalDamage);
+
         speed = 2 + totalDex * 0.1f + buffSpeed;
-        dropProbability = totalLuck * 0.001f;
-        itemRarity = totalLuck * 0.001f;
-        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower) * graceDefensivePower);
         hpRegenValue = totalStr * 1 + buffHpRegenValue;
         isStatusUpdate = false;
     }
@@ -237,11 +389,31 @@ public class CharacterStatus : Status
         buffHpRegenValue = 0;
         isStatusUpdate = true;
     }
-    public void InitGraceStatus()
+
+    public void UpdateBasicStatus()
     {
-        gracePhysicalDamage = 1f;
-        graceMagicalDamage = 1f;
-        graceAttackSpeed = 1f;
-        graceDefensivePower = 1f;
+        totalStr = str + passiveStr;
+        totalDex = dex + passiveDex;
+        totalWiz = wiz + passiveWiz;
+        totalLuck = luck + passiveLuck;
     }
+    public IEnumerator HpRegenarate()
+    {
+        isHPRegen = true;
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            if (curHp + hpRegenValue >= maxHp)
+            {
+
+                curHp = maxHp;
+                yield return null;
+            }
+            else
+            {
+                curHp += hpRegenValue;
+            }
+        }
+    }
+
 }

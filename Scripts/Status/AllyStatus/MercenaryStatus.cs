@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MercenaryStatus : CharacterStatus
+public class MercenaryStatus : AllyStatus
 {
     [SerializeField]
     private int mercenaryNum = 0;

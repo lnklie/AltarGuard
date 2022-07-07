@@ -8,9 +8,14 @@ using UnityEngine;
  * ÆÄÀÏ¸í : PlayerStatus.cs
 ==============================
 */
-public class PlayerStatus : CharacterStatus
+public class PlayerStatus : AllyStatus
 {
-
+    private RaycastHit2D[] itemSight = default;
+    public RaycastHit2D[] ItemSight
+    {
+        get { return itemSight; }
+        set { itemSight = value; }
+    }
     [SerializeField]
     private AltarStatus altarStatus = null;
     public AltarStatus AltarStatus
