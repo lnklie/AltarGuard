@@ -9,7 +9,7 @@ public class EnemyCustomizer : MonoBehaviour
     [SerializeField]
     private RushEnemyStatus rushEnemyStatus = null;
     [SerializeField]
-    private RushEnemyAIController rushEnemyAIController = null;
+    private RushEnemyController rushEnemyAIController = null;
     public bool IsActive
     {
         get { return isActive; }
@@ -23,23 +23,20 @@ public class EnemyCustomizer : MonoBehaviour
     {
         if(rushEnemyAIController != null && isActive)
         {
-            rushEnemyAIController.Perception(rushEnemyStatus);
-            rushEnemyAIController.ChangeState(rushEnemyStatus);
-            rushEnemyAIController.State(rushEnemyStatus);
+            rushEnemyAIController.AIPerception(rushEnemyStatus);
+            rushEnemyAIController.AIChangeState(rushEnemyStatus);
+            rushEnemyAIController.AIState(rushEnemyStatus);
             rushEnemyStatus.Distance = rushEnemyStatus.Target.transform.position - this.transform.position;
             rushEnemyStatus.Dir = rushEnemyStatus.Distance.normalized;
         }
     }
-    public AIController GetAIController()
+
+    public void SetAIController(RushEnemyController _enemyAIController)
     {
-        return rushEnemyAIController;
-    }
-    public void SetAIController(RushEnemyAIController _enemyAIController)
-    {
-        RushEnemyAIController _rushEnemyAIController = _enemyAIController;
+        RushEnemyController _rushEnemyAIController = _enemyAIController;
         rushEnemyAIController = _rushEnemyAIController;
     }
-    public void SetEnemyStatus(RushEnemy _rushenemy)
+    public void SetEnemyStatus(Enemy _rushenemy)
     {
         rushEnemyStatus.RushEnemy = _rushenemy;
         rushEnemyStatus.CurHp = rushEnemyStatus.MaxHp;

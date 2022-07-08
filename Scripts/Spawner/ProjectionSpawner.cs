@@ -23,7 +23,7 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
             arrow.gameObject.SetActive(false);
         }
     }
-    public void ShotArrow(Status _gameObject,int _damage)
+    public void ShotArrow(CharacterStatus _gameObject,int _damage)
     {
         Arrow arrow = arrows.Dequeue();
         arrow.gameObject.SetActive(true);

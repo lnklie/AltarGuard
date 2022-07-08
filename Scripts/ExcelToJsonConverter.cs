@@ -7,13 +7,7 @@ using System.Collections.Generic;
 using Excel;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-/*
-==============================
- * 최종수정일 : 2022-06-07
- * 작성자 : Inklie
- * 파일명 : ExcelToJsonConverter.cs
-==============================
-*/
+
 public class ExcelToJsonConverter
 {
 	public delegate void ConversionToJsonSuccessfullHandler();
@@ -53,6 +47,7 @@ public class ExcelToJsonConverter
 
 		for (int i = 0; i < excelFiles.Count; i++)
 		{
+			Debug.Log("엑셀 파일의 이름은 " + excelFiles[i]);
 			if (!ConvertExcelFileToJson(excelFiles[i], outputPath))
 			{
 				succeeded = false;

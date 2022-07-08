@@ -12,17 +12,15 @@ using UnityEngine.UI;
 public class AltarController : BaseController
 {
     private AltarStatus altar = null;
-    private TextMesh[] txtMesh = null;
     private Image[] images = null;
+    private SpriteRenderer[] spriteRenderers = null;
 
     [SerializeField]
-    private SpriteRenderer[] spriteRenderers = null;
-    [SerializeField]
-    private List<CharacterStatus> characters = new List<CharacterStatus>();
-    void Awake()
+    private List<AllyStatus> characters = new List<AllyStatus>();
+    public override void Awake()
     {
+        base.Awake();
         altar = this.GetComponent<AltarStatus>();
-        txtMesh = this.GetComponentsInChildren<TextMesh>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
         images = this.GetComponentsInChildren<Image>();
     }
@@ -113,7 +111,7 @@ public class AltarController : BaseController
     public void CheckState()
     {
         // 상태 체크
-        txtMesh[0].text = altar.AltarState.ToString();
+        txtMesh.text = altar.AltarState.ToString();
     }
     private void Idle()
     {
@@ -163,9 +161,9 @@ public class AltarController : BaseController
         // 닿은 캐릭터들을 리스트에 넣는 것
         for (int i = 0; i < _raycastHit2Ds.Length; i++)
         {
-            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>().IsAlterBuff)
+            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
-                characters.Add(_raycastHit2Ds[i].collider.GetComponent<CharacterStatus>());
+                characters.Add(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>());
                 BuffUpdate();
             }
         }

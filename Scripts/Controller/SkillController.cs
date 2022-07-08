@@ -5,42 +5,35 @@ using UnityEngine;
 public class SkillController : MonoBehaviour
 {
     [SerializeField]
-    private Status status = null;
+    private CharacterStatus status = null;
 
     [SerializeField]
     private List<Skill> activeSkills = new List<Skill>();
+    [SerializeField]
+    private List<Skill> passiveSkills = new List<Skill>();
+    [SerializeField]
+    private List<float> coolTimes = new List<float>();
+    [SerializeField]
+    private List<SkillObject> skillPrefabs = new List<SkillObject>();
+    [SerializeField]
+    private bool[] isCoolTime = { false, false, false };
+
+    #region Property
     public List<Skill> ActiveSkills
     {
         get { return activeSkills; }
     }
-    [SerializeField]
-    private List<Skill> passiveSkills = new List<Skill>();
     public List<Skill> PassiveSkills
     {
         get { return passiveSkills; }
         set { passiveSkills = value; }
     }
-    // 얻기, 없애기, 사용하기, 스킬 레벨업,
-    [SerializeField]
-    private List<float> coolTimes = new List<float>();
-    [SerializeField]
-    private bool[] isCoolTime = { false, false, false };
     public bool[] IsCoolTime
     {
         get { return isCoolTime; }
         set { isCoolTime = value; }
     }
-    [SerializeField]
-    private List<SkillObject> skillPrefabs = new List<SkillObject>();
-
-    private void Awake()
-    {
-        //skillPrefabs.AddRange(this.GetComponentsInChildren<SkillObject>());
-        //for(int i =0; i < skillPrefabs.Count; i++)
-        //{
-        //    skillPrefabs[i].gameObject.SetActive(false);
-        //}
-    }
+    #endregion
     private void Start()
     {
         AquireSkill(0);
