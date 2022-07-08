@@ -56,7 +56,9 @@ public class InventoryPanelController : MonoBehaviour
     private EquipmentController selectCharacterEqipment = null;
     [SerializeField]
     private CharacterStatus selectCharStatus = null;
+    [SerializeField]
     private InventorySlot[] inventorySlots = null;
+    [SerializeField]
     private EquipmentSlot[] equipmentSlots = null;
     private Text[] iteminfoText = null;
 
@@ -310,7 +312,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void Equip(List<EquipmentController> _characterList,int _character)
     {
-        if (_characterList[_character].GetComponent<Status>().CurLevel >= selectItem.equipLevel)
+        if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
         {
             // 장착하기 버튼
             if (_characterList[_character].CheckEquipItems[selectItem.itemType])
@@ -350,7 +352,7 @@ public class InventoryPanelController : MonoBehaviour
         else
             Debug.Log("착용중이 아님");
         SetActiveItemInfo(false);
-        TakeOffEquipmentImage(selectItem.itemType);
+        InitEquipmentSlotImage(selectItem.itemType);
         InventorySlotChange(selectInventoryIndex);
         UpdateEquipmentName();
     }
@@ -381,25 +383,23 @@ public class InventoryPanelController : MonoBehaviour
         {
             if (selectCharacterEqipment.CheckEquipItems[i])
             {
-                EquipEquipmentImage(i);
+                SetEquipmentSlotImage(i);
             }
             else
             {
-
-                TakeOffEquipmentImage(i);
+                InitEquipmentSlotImage(i);
             }
         }
     }
-    public void EquipEquipmentImage(int _index)
+    public void SetEquipmentSlotImage(int _index)
     {
         equipmentSlots[_index].CurItem = selectItem;
         equipmentSlots[_index].ItemImages[1].sprite = selectCharacterEqipment.EquipItems[_index].singleSprite;
         equipmentSlots[_index].SlotSetting(selectCharacterEqipment.EquipItems[_index]);
     }
-    public void TakeOffEquipmentImage(int _index)
+    public void InitEquipmentSlotImage(int _index)
     {
-        // 장비 해제시 장비창 이미지 변경
-        Debug.Log("장착 해제");
+        // 장비가 없을 시 장비 슬롯 비우기
         equipmentSlots[_index].CurItem = null;
         equipmentSlots[_index].ItemImages[1].sprite = UIMask;
         equipmentSlots[_index].InitImageSize();
@@ -475,18 +475,13 @@ public class InventoryPanelController : MonoBehaviour
         SetActiveItemInfo(false);
         InventorySlotChange(2);
     }
-    public void ActiveInventory()
+    public void ActiveInventoryPanel(bool _bool)
     {
         // UI 활성화 
-        UIImages.SetActive(true);
-        ChangeAllEquipmentImage();
-        
-    }
-
-    public void DeactiveInventory()
-    {
-        // UI 비활성화
-        UIImages.SetActive(false);
-        SetActiveItemInfo(false);
+        UIImages.SetActive(_bool);
+        if(_bool)
+            ChangeAllEquipmentImage();
+        else
+            SetActiveItemInfo(_bool);
     }
 }

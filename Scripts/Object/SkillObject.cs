@@ -81,21 +81,23 @@ public class SkillObject : MonoBehaviour
                 {
                     if(this.gameObject.CompareTag("Mercenary"))
                     {
-                        MercenaryAIController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryAIController>();
-                        mercenary.IsAtk = true;
-                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        MercenaryController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryController>();
+                        CharacterStatus mercenartStatus = mercenary.GetComponent<CharacterStatus>();
+                        mercenartStatus.IsAtk = true;
+                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>(), mercenartStatus))
                         {
-                            mercenary.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            mercenartStatus.CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
                             // 용병 업데이트
                         }
                     }
                     else
                     {
                         PlayerController player = this.transform.parent.parent.GetComponentInChildren<PlayerController>();
-                        player.IsAtk = true;
-                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>()))
+                        CharacterStatus playerStatus = player.GetComponent<CharacterStatus>();
+                        playerStatus.IsAtk = true;
+                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>(), playerStatus))
                         {
-                            player.GetComponent<CharacterStatus>().CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
+                            playerStatus.CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
                         }
                     }
                 }

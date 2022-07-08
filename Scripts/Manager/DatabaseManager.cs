@@ -30,7 +30,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Exp> expList = new List<Exp>();
 
     [Header("Enemy")]
-    public List<RushEnemy> rushEnemyList = new List<RushEnemy>();
+    public List<Enemy> rushEnemyList = new List<Enemy>();
 
     [Header("Stage")]
     public List<Stage> stageList = new List<Stage>();
@@ -43,7 +43,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Grace> graceList = new List<Grace>();
     private void Awake()
     {
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFile", Application.persistentDataPath + "/JsonFile");
         JsonLoad();
     }
     string fixJson(string value)
@@ -53,7 +53,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     }
     private string CombinePath(string _excelName)
     {
-        return Application.dataPath + "/JsonFile/" + _excelName +".json";
+        return Application.persistentDataPath + "/JsonFile/" + _excelName +".json";
     }
 
     public void JsonLoad()
@@ -251,10 +251,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy")));
-            RushEnemy[] rushEnemies = JsonHelper.FromJson<RushEnemy>(loadJson);
+            Enemy[] rushEnemies = JsonHelper.FromJson<Enemy>(loadJson);
             for (var i = 0; i < rushEnemies.Length; i++)
             {
-                rushEnemyList.Add(new RushEnemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey, rushEnemies[i].enemyType, rushEnemies[i].hp, rushEnemies[i].mp,
+                rushEnemyList.Add(new Enemy(rushEnemies[i].objectName, rushEnemies[i].enemyKey, rushEnemies[i].enemyType, rushEnemies[i].hp, rushEnemies[i].mp,
                     rushEnemies[i].str, rushEnemies[i].dex, rushEnemies[i].wiz, rushEnemies[i].seeRange,
                    rushEnemies[i].speed, rushEnemies[i].defeatExp,
                  rushEnemies[i].itemDropKey1, rushEnemies[i].itemDropKey2, rushEnemies[i].itemDropKey3,rushEnemies[i].itemDropKey4, rushEnemies[i].itemDropKey5, 
@@ -330,10 +330,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("Grace")));
-            Grace[] skill = JsonHelper.FromJson<Grace>(loadJson);
-            for (var i = 0; i < skill.Length; i++)
+            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
             {
-                graceList.Add(new Grace(skill[i].graceKey, skill[i].explain, skill[i].necessaryGraceKey));
+                graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
             }
         }
     }
@@ -437,9 +437,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         return _item;
     }
 
-    public RushEnemy SelectRushEnemy(int _key)
+    public Enemy SelectRushEnemy(int _key)
     {
-        RushEnemy _enemy = null;
+        Enemy _enemy = null;
 
         for (int i = 0; i < rushEnemyList.Count; i++)
         {
@@ -478,6 +478,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         {
             if (graceList[i].graceKey == _key)
                 _grace = graceList[i];
+            else
+                Debug.Log("해당 은총이 없습니다.");
         }
         return _grace;
     }

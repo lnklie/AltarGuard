@@ -5,13 +5,12 @@ using UnityEngine;
 public class BossEnemyStatus : EnemyStatus
 {
     [SerializeField]
-    protected RushEnemy rushEnemy = null;
-    public RushEnemy RushEnemy
+    protected Enemy bossEnemy = null;
+    public Enemy BossEnemy
     {
-        set { rushEnemy = value; }
+        set { bossEnemy = value; }
     }
-    [SerializeField]
-    protected EquipmentController equipmentController = null;
+
 
 
     public override void Awake()
@@ -37,12 +36,12 @@ public class BossEnemyStatus : EnemyStatus
     public void CustomEnemy()
     {
         Debug.Log("커스텀 에너미 2");
-        objectName = rushEnemy.objectName;
-        str = rushEnemy.str;
-        dex = rushEnemy.dex;
-        wiz = rushEnemy.wiz;
-        seeRange = rushEnemy.seeRange;
-        defeatExp = rushEnemy.defeatExp;
+        objectName = bossEnemy.objectName;
+        str = bossEnemy.str;
+        dex = bossEnemy.dex;
+        wiz = bossEnemy.wiz;
+        seeRange = bossEnemy.seeRange;
+        defeatExp = bossEnemy.defeatExp;
         if (equipmentController != null )
         {
             equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(4000));
@@ -58,29 +57,29 @@ public class BossEnemyStatus : EnemyStatus
             Debug.Log("여긴 왜없나요?!!!!!!");
         }
 
-        itemDropKey.Add(rushEnemy.itemDropKey1);
-        itemDropKey.Add(rushEnemy.itemDropKey2);
-        itemDropKey.Add(rushEnemy.itemDropKey3);
-        itemDropKey.Add(rushEnemy.itemDropKey4);
-        itemDropKey.Add(rushEnemy.itemDropKey5);
-        itemDropProb.Add(rushEnemy.itemDropProb1);
-        itemDropProb.Add(rushEnemy.itemDropProb2);
-        itemDropProb.Add(rushEnemy.itemDropProb3);
-        itemDropProb.Add(rushEnemy.itemDropProb4);
-        itemDropProb.Add(rushEnemy.itemDropProb5);
+        itemDropKey.Add(bossEnemy.itemDropKey1);
+        itemDropKey.Add(bossEnemy.itemDropKey2);
+        itemDropKey.Add(bossEnemy.itemDropKey3);
+        itemDropKey.Add(bossEnemy.itemDropKey4);
+        itemDropKey.Add(bossEnemy.itemDropKey5);
+        itemDropProb.Add(bossEnemy.itemDropProb1);
+        itemDropProb.Add(bossEnemy.itemDropProb2);
+        itemDropProb.Add(bossEnemy.itemDropProb3);
+        itemDropProb.Add(bossEnemy.itemDropProb4);
+        itemDropProb.Add(bossEnemy.itemDropProb5);
         //isEnemyChange = false;
     }
 
-    public void UpdateAbility()
-    {
-        // 능력 업데이트
-        maxHp = rushEnemy.hp + str * 10;
-        maxMp = rushEnemy.mp + wiz * 10;
-        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
-        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
-        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
-        speed = rushEnemy.speed + dex * 0.1f;
-        hpRegenValue = str * 1;
-        curHp = maxHp;
-    }
+    //public void UpdateAbility()
+    //{
+    //    // 능력 업데이트
+    //    maxHp = rushEnemy.hp + str * 10;
+    //    maxMp = rushEnemy.mp + wiz * 10;
+    //    physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
+    //    magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
+    //    defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
+    //    speed = rushEnemy.speed + dex * 0.1f;
+    //    hpRegenValue = str * 1;
+    //    curHp = maxHp;
+    //}
 }

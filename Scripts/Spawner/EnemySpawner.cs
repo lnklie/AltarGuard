@@ -14,19 +14,12 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 
     [Header("RushEnemyPrefabs")]
     [SerializeField]
-    private GameObject swordOrcPrefab = null;
-    [SerializeField]
-    private GameObject bowOrcPrefab = null;
-    [SerializeField]
-    private GameObject wizardOrcPrefab = null;
+    private GameObject rushOrcPrefab = null;
+
 
     [Header("RushBossEnemyPrefabs")]
     [SerializeField]
-    private GameObject swordOrcKingPrefab = null;
-    [SerializeField]
-    private GameObject bowOrcKingPrefab = null;
-    [SerializeField]
-    private GameObject wizardOrcKingPrefab = null;
+    private GameObject bossOrcPrefab = null;
 
 
     [Header("Default Target")]
@@ -39,8 +32,8 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 
     [Header("Current Boss")]
     [SerializeField]
-    private GameObject curBoss = null;
-    public GameObject CurBoss
+    private BossEnemyStatus curBoss = null;
+    public BossEnemyStatus CurBoss
     {
         get { return curBoss; }
     }
@@ -51,9 +44,8 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         get { return enemyPos; }
     }
 
-    private Queue<GameObject> swordOrcs = new Queue<GameObject>();
-    private Queue<GameObject> bowOrcs = new Queue<GameObject>();
-    private Queue<GameObject> wizardOrcs = new Queue<GameObject>();
+    private Queue<GameObject> rushOrcs = new Queue<GameObject>();
+
 
     [SerializeField]
     private List<GameObject> bossOrcs = new List<GameObject>();
@@ -61,23 +53,13 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     private void Start()
     {
         InitEnemyPos();
-        InitEnemy(swordOrcPrefab, swordOrcs);
-        InitEnemy(bowOrcPrefab, bowOrcs);
-        InitEnemy(wizardOrcPrefab, wizardOrcs);
-        InitBossEnemy(swordOrcKingPrefab);
-        InitBossEnemy(bowOrcKingPrefab);
-        InitBossEnemy(wizardOrcKingPrefab);
-    }
-    private void Update()
-    {
-        //Debug.Log("전사 오크의 수는 " + swordOrcs.Count);
-        //Debug.Log("궁사 오크의 수는 " + bowOrcs.Count);
-        //Debug.Log("마법사 오크의 수는 " + wizardOrcs.Count);
+        InitEnemy(rushOrcPrefab, rushOrcs);
+        InitBossEnemy(bossOrcPrefab);
     }
     private void InitEnemyPos()
     {
         // 적 위치 담기
-        for(int k = 0; k < 5; k++)
+        for (int k = 0; k < 5; k++)
         {
             for (int i = 0; i < 5; i++)
             {
@@ -109,44 +91,16 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     {
         GameObject _obj = null;
         RushEnemyStatus _rushEnemyStatus = null;
-        if (DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.SwordOrc)
+
+        for (int i = 0; i < _enemyNum; i++)
         {
-            for (int i = 0; i < _enemyNum; i++)
-            {
-                _obj = swordOrcs.Dequeue();
-                _obj.transform.position = enemyPos.Dequeue();
-                _obj.SetActive(true);
-                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
-                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
-                _rushEnemyStatus.IsEnemyChange = true;
-                enemyPos.Enqueue(_obj.transform.position);
-            }
-        }
-        else if(DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.BowOrc)
-        {
-            for (int i = 0; i < _enemyNum; i++)
-            {
-                _obj = bowOrcs.Dequeue();
-                _obj.transform.position = enemyPos.Dequeue();
-                _obj.SetActive(true);
-                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
-                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
-                _rushEnemyStatus.IsEnemyChange = true;
-                enemyPos.Enqueue(_obj.transform.position);
-            }
-        }
-        else if(DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType == (int)EnemyType.WizardOrc)
-        {
-            for (int i = 0; i < _enemyNum; i++)
-            {
-                _obj = wizardOrcs.Dequeue();
-                _obj.transform.position = enemyPos.Dequeue();
-                _obj.SetActive(true);
-                _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
-                _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
-                _rushEnemyStatus.IsEnemyChange = true;
-                enemyPos.Enqueue(_obj.transform.position);
-            }
+            _obj = rushOrcs.Dequeue();
+            _obj.transform.position = enemyPos.Dequeue();
+            _obj.SetActive(true);
+            _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+            _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+            _rushEnemyStatus.IsEnemyChange = true;
+            enemyPos.Enqueue(_obj.transform.position);
         }
     }
     public void BossEnemySpawn(int _enemyKey)
@@ -154,10 +108,10 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         GameObject _obj = bossOrcs[DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType];
         _obj.SetActive(true);
         _obj.transform.position = new Vector2(0f, 18f);
-        BossEnemyStatus _rushEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
-        _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
-        _rushEnemyStatus.CustomEnemy();
-        curBoss = _obj;
+        BossEnemyStatus _bossEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
+        curBoss = _bossEnemyStatus;
+        _bossEnemyStatus.BossEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+        _bossEnemyStatus.CustomEnemy();
         UIManager.Instance.SetBossEnemy();
         UIManager.Instance.SetBossInfo(true);
         UIManager.Instance.UpdateBossInfo();
@@ -165,15 +119,16 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     public void ReturnEnemy(GameObject _enemy)
     {
         // 적 다시 돌아오기
-        EnemyType _enemyType = _enemy.GetComponent<EnemyStatus>().EnemyType;
-        if (_enemyType == EnemyType.SwordOrc)
-            swordOrcs.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.BowOrc)
-            bowOrcs.Enqueue(_enemy);
-        else if (_enemyType == EnemyType.WizardOrc)
-            wizardOrcs.Enqueue(_enemy);
-        _enemy.transform.localScale = new Vector3(1, 1, 1);
-        _enemy.SetActive(false);
+        if (!_enemy.CompareTag("Boss"))
+        {
+            rushOrcs.Enqueue(_enemy);
+            _enemy.transform.localScale = new Vector3(1, 1, 1);
+            _enemy.SetActive(false);
+        }
+        else
+        {
+            ReturnBossEnemy(_enemy);
+        }
     }
     public void ReturnBossEnemy(GameObject _enemy)
     {

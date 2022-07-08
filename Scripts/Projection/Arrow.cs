@@ -77,11 +77,12 @@ public class Arrow : MonoBehaviour
             hitObject.IsDamaged = true;
             if (archer.CompareTag("Mercenary"))
             {
-                MercenaryAIController mercenary = archer.GetComponent<MercenaryAIController>();
-                mercenary.IsAtk = true;
-                if (mercenary.IsLastHit(ray.collider.GetComponent<EnemyStatus>()))
+                MercenaryController mercenary = archer.GetComponent<MercenaryController>();
+                CharacterStatus mercenaryStatus = mercenary.GetComponent<CharacterStatus>();
+                mercenaryStatus.IsAtk = true;
+                if (mercenary.IsLastHit(ray.collider.GetComponent<EnemyStatus>(), mercenaryStatus))
                 {
-                    mercenary.GetComponent<CharacterStatus>().CurExp += ray.collider.GetComponent<EnemyStatus>().DefeatExp;
+                    mercenaryStatus.CurExp += ray.collider.GetComponent<EnemyStatus>().DefeatExp;
                 }
             }
             durationTime = 0f;

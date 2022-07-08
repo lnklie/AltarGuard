@@ -8,110 +8,77 @@ using UnityEngine;
  * 파일명 : PlayerController.cs
 ==============================
 */
-public class PlayerController : BaseController
+public class PlayerController : CharacterController
 {
-    private CharacterStatus character = null;
-    [SerializeField]
-    private SkillController skillController = null;
+    private PlayerStatus player = null;
     private SpriteRenderer bodySprites = null;
-    private Animator ani = null;
-    private Rigidbody2D rig = null;
-    private CapsuleCollider2D col = null;
-    [SerializeField]
-    private TextMesh txtMesh = null;
-    private RaycastHit2D[] itemSight = default;
-    private Vector2 dir = new Vector2(0, 0);
     private Vector2 lookDir = Vector2.down;
 
-    [SerializeField]
-    private List<RaycastHit2D> sightRay = new List<RaycastHit2D>();
-    private RaycastHit2D atkRangeRay = default;
-
-    private float delayTime = 0f;
-    private bool isAtk = false;
-    public bool IsAtk
+    public override void Awake()
     {
-        get { return isAtk; }
-        set { isAtk = value; }
-    }
-    private float revivalTime = 5f;
-    public float RevivalTime
-    {
-        get { return revivalTime; }
-        set { revivalTime = value; }
-    }
-
-    private float knuckBackPower = 1f;
-    public float KnuckBackPower
-    {
-        get { return knuckBackPower; }
-        set { knuckBackPower = value; }
-    }
-
-    [SerializeField]
-    private CharacterState characterState = CharacterState.Idle;
-
-    private void Awake()
-    {
-        ani = this.GetComponent<Animator>();
-        rig = this.GetComponent<Rigidbody2D>();
-        col = this.GetComponent<CapsuleCollider2D>();
-        character = this.GetComponent<CharacterStatus>();
+        base.Awake();
+        player = this.GetComponent<PlayerStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
-        InputKey();
+        if(!player.IsAutoMode)
+            InputKey(player);
     }
-    private void Update()
+    public override void Update()
     {
-        ChangeState();
-        CurState();
         AquireRay();
-        MouseTargeting();
-        Perception();
-    }
-    public void ChangeState()
-    {
-        if(IsDied())
+        MouseTargeting(player);
+        if (player.IsAutoMode)
+            base.Update();
+        else
         {
-            character.IsStatusUpdate = true;
-            characterState = CharacterState.Died;
+            ChangeState(player);
+            CurState(player);
+            Perception(player);
+        }
+    }
+    public void ChangeState(CharacterStatus _status)
+    {
+        if (IsDied(_status))
+        {
+            _status.IsStatusUpdate = true;
+            _status.AIState = EAIState.Died;
         }
         else
         {
-            if (character.IsDamaged)
+            if (_status.IsDamaged)
             {
-                character.IsStatusUpdate = true;
-                StartCoroutine(Blink());
+                _status.IsStatusUpdate = true;
+                StartCoroutine(Blink(_status));
             }
 
-            if (!IsMove())
-                characterState = CharacterState.Idle;
+            if (!IsMove(_status))
+                _status.AIState = EAIState.Idle;
             else
-                characterState = CharacterState.Walk;
+                _status.AIState = EAIState.Walk;
 
             if (Input.GetKey(KeyCode.LeftControl))
-                characterState = CharacterState.Attack;
+                _status.AIState = EAIState.Attack;
             else if (Input.GetKeyDown(KeyCode.Z))
             {
                 if (!skillController.IsCoolTime[0])
                 {
                     if (skillController.ActiveSkills[0].skillType == 0)
                     {
-                        if (character.Target)
+                        if (_status.Target)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[0], character.Target);
+                            skillController.UseSkill(skillController.ActiveSkills[0], _status.Target);
                         }
                         else
                             Debug.Log("타겟이 없음");
                     }
                     else if (skillController.ActiveSkills[0].skillType == 1)
                     {
-                        if (character.AllyTarget)
+                        if (_status.AllyTarget)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[0], character.AllyTarget);
+                            skillController.UseSkill(skillController.ActiveSkills[0], _status.AllyTarget);
                         }
                         else
                             Debug.Log("타겟이 없음");
@@ -120,24 +87,24 @@ public class PlayerController : BaseController
                 else
                     Debug.Log("첫 번째 스킬 쿨타임 중");
             }
-            else if(Input.GetKeyDown(KeyCode.X))
+            else if (Input.GetKeyDown(KeyCode.X))
             {
                 if (!skillController.IsCoolTime[1])
                 {
                     if (skillController.ActiveSkills[1].skillType == 0)
                     {
-                        if (character.Target)
+                        if (_status.Target)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[1], character.Target);
+                            skillController.UseSkill(skillController.ActiveSkills[1], _status.Target);
                         }
                         else
                             Debug.Log("타겟이 없음");
                     }
                     else if (skillController.ActiveSkills[1].skillType == 1)
                     {
-                        if (character.AllyTarget)
+                        if (_status.AllyTarget)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[1], character.AllyTarget);
+                            skillController.UseSkill(skillController.ActiveSkills[1], _status.AllyTarget);
                         }
                         else
                             Debug.Log("타겟이 없음");
@@ -146,25 +113,25 @@ public class PlayerController : BaseController
                 else
                     Debug.Log("두 번째 스킬 쿨타임 중");
             }
-            else if(Input.GetKeyDown(KeyCode.C))
+            else if (Input.GetKeyDown(KeyCode.C))
             {
 
                 if (!skillController.IsCoolTime[2])
                 {
                     if (skillController.ActiveSkills[2].skillType == 0)
                     {
-                        if (character.Target)
+                        if (_status.Target)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[2], character.Target);
+                            skillController.UseSkill(skillController.ActiveSkills[2], _status.Target);
                         }
                         else
                             Debug.Log("타겟이 없음");
                     }
-                    else if(skillController.ActiveSkills[2].skillType == 1)
+                    else if (skillController.ActiveSkills[2].skillType == 1)
                     {
-                        if (character.AllyTarget)
+                        if (_status.AllyTarget)
                         {
-                            skillController.UseSkill(skillController.ActiveSkills[2], character.AllyTarget);
+                            skillController.UseSkill(skillController.ActiveSkills[2], _status.AllyTarget);
                         }
                         else
                             Debug.Log("타겟이 없음");
@@ -176,30 +143,30 @@ public class PlayerController : BaseController
         }
 
     }
-    public void CurState()
+    public void CurState(CharacterStatus _status)
     {
-        txtMesh.text = characterState.ToString();
-        if(delayTime < character.AtkSpeed)
-            delayTime += Time.deltaTime;
-        AnimationDirection();
+        txtMesh.text = _status.ToString();
+        if(_status.DelayTime < player.AtkSpeed)
+            _status.DelayTime += Time.deltaTime;
+        AnimationDirection(_status);
 
-        switch (characterState)
+        switch (_status.AIState)
         {
-            case CharacterState.Idle:
-                PlayerIdle();
+            case EAIState.Idle:
+                PlayerIdle(_status);
                 break;
-            case CharacterState.Walk:
-                PlayerRun();
+            case EAIState.Walk:
+                PlayerRun(_status);
                 break;
-            case CharacterState.Attack:
-                PlayerAttack(character.AttackType);
+            case EAIState.Attack:
+                PlayerAttack(_status);
                 break;
-            case CharacterState.Died:
-                StartCoroutine(Died());
+            case EAIState.Died:
+                StartCoroutine(Died(_status));
                 break;
         }
     }
-    public void MouseTargeting()
+    public void MouseTargeting(CharacterStatus _status)
     {
         if(Input.GetMouseButtonDown(0))
         {
@@ -209,11 +176,11 @@ public class PlayerController : BaseController
 
             if (hit.rigidbody)
             {
-                if (GetDistance(this.transform.position, hit.rigidbody.transform.position) <= character.SeeRange)
+                if (GetDistance(this.transform.position, hit.rigidbody.transform.position) <= _status.SeeRange)
                 {
-                    if (character.AllyTarget)
+                    if (player.AllyTarget)
                     {
-                        character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                        _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
                     Debug.Log("아군 타겟팅 " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.gameObject);
@@ -223,139 +190,125 @@ public class PlayerController : BaseController
             }
             else
             {
-                if (character.AllyTarget)
+                if (_status.AllyTarget)
                 {
-                    character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                    character.AllyTarget = null;
+                    _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    _status.AllyTarget = null;
                 }
             }
         }
-        if (character.AllyTarget)
+        if (_status.AllyTarget)
         {
-            if (GetDistance(this.transform.position, character.AllyTarget.transform.position) >= character.SeeRange)
+            if (GetDistance(this.transform.position, _status.AllyTarget.transform.position) >= _status.SeeRange)
             {
-                character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                character.AllyTarget = null;
+                _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                _status.AllyTarget = null;
 
             }
         }
     }
-    public void PlayerIdle() 
+    public void PlayerIdle(CharacterStatus _status) 
     {
-        ActiveLayer(LayerName.IdleLayer);
-        rig.velocity = Vector2.zero;
+        _status.ActiveLayer(LayerName.IdleLayer);
+        _status.Rig.velocity = Vector2.zero;
     }
-    public void PlayerRun()
+    public void PlayerRun(CharacterStatus _status)
     {
         // 움직임 실행
-        ActiveLayer(LayerName.WalkLayer);
-        rig.velocity = character.Speed * dir;
+        _status.ActiveLayer(LayerName.WalkLayer);
+        _status.Rig.velocity = _status.Speed * _status.Dir;
     }
-    public void InputKey()
+    public void InputKey(CharacterStatus _status)
     {
         // 키입력
-        dir = new Vector2(0, 0);
+        _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             lookDir = Vector2.left;
-            dir.x = -1;
+            _status.Dir = Vector2.left;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             lookDir = Vector2.right;
-            dir.x = 1;
+            _status.Dir = Vector2.right;
         }
         else if (Input.GetKey(KeyCode.UpArrow))
         {
             lookDir = Vector2.up;
-            dir.y = 1;
+            _status.Dir = Vector2.up;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             lookDir = Vector2.down;
-            dir.y = -1;
+            _status.Dir = Vector2.down;
         }            
     }
-    public bool IsMove()
+    public bool IsMove(CharacterStatus _status)
     {
         // 움직이고 있는지 확인
-        if (Mathf.Abs(dir.x) > 0 || Mathf.Abs(dir.y) > 0)
+        if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
             return false;
     }
-    public bool IsDied()
-    {
-        int hp = character.CurHp;
-        if (hp <= 0)
-            return true;
-        else
-            return false;
-    }
-    private int AttackTypeDamage()
-    {
-        // 물리 데미지와 마법 데미지 구분
-        if (character.AttackType < 1f)
-            return character.PhysicalDamage;
-        else
-            return character.MagicalDamage;
-    }
-    private void PlayerAttack(float _weaponType)
+
+    private void PlayerAttack(CharacterStatus _status)
     {
         // 공격실행
-        rig.velocity = Vector2.zero;
-        ActiveLayer(LayerName.AttackLayer);
-        ani.SetFloat("AtkType", _weaponType);
+        _status.Rig.velocity = Vector2.zero;
+        _status.ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
 
-        if (!IsDelay())
-            StartCoroutine(AttackState());
+        if (!IsDelay(_status))
+            StartCoroutine(AttackState(_status));
     }
-    private IEnumerator AttackState()
+    private IEnumerator AttackState(CharacterStatus _status)
     {
         // 공격 애니메이션 실행
-        ani.SetTrigger("AtkTrigger");
-        delayTime = 0f;
-        isAtk = true;
-        while (!ani.GetCurrentAnimatorStateInfo(2).IsName("PlayerAttack") )
+        _status.Ani.SetTrigger("AtkTrigger");
+        _status.DelayTime = 0f;
+        _status.IsAtk = true;
+        while (!_status.Ani.GetCurrentAnimatorStateInfo(2).IsName("PlayerAttack") )
         {
             //전환 중일 때 실행되는 부분
-            if(isAtk)
-                DamageEnemy(AttackRange());
+            if(_status.IsAtk)
+                DamageEnemy(_status,AttackRange(_status));
             yield return null;
         }
-        isAtk = false;
+        _status.IsAtk = false;
     }
-    public void DamageEnemy(RaycastHit2D[] hits)
+    public void DamageEnemy(CharacterStatus _status, RaycastHit2D[] hits)
     {
         // 범위안에 있는 적들에게 데미지
         for (int i =0; i < hits.Length; i++)
         {
             EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-            enemy.CurHp -= ReviseDamage(AttackTypeDamage(), enemy.DefensivePower);
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(_status), enemy.DefensivePower);
 
-            if (IsLastHit(enemy))
-                character.CurExp += enemy.DefeatExp;
+            if (IsLastHit(enemy, _status))
+                _status.CurExp += enemy.DefeatExp;
         }
     }
-    public bool IsLastHit(EnemyStatus _enemy)
+    public bool IsLastHit(EnemyStatus _enemy, CharacterStatus _status)
     {
         // 마지막 공격을 했는지 체크
-        if (isAtk == true && _enemy.CurHp <= 0f)
+        if (_status.IsAtk == true && _enemy.CurHp <= 0f)
             return true;
         else
             return false;
     }
 
-    public RaycastHit2D[] AttackRange()
+    public override RaycastHit2D[] AttackRange(CharacterStatus _status)
     {
         // 히트박스를 만들어내고 범위안에 들어온 적들을 반환
-        var hits = Physics2D.CircleCastAll(this.transform.position, character.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
         Debug.DrawRay(this.transform.position, lookDir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
                 EnemyStatus hitsEnemy = hits[i].rigidbody.GetComponent<EnemyStatus>();
+                UIManager.Instance.Notice(hitsEnemy.ObjectName);
                 hitsEnemy.IsDamaged = true;
             }
         }
@@ -365,129 +318,76 @@ public class PlayerController : BaseController
     }
     private void AquireRay()
     {
-        itemSight = Physics2D.CircleCastAll(this.transform.position, 1f, Vector2.up, 0, LayerMask.GetMask("Item"));
-        for (int i = 0; i < itemSight.Length; i++)
+        player.ItemSight = Physics2D.CircleCastAll(this.transform.position, 1f, Vector2.up, 0, LayerMask.GetMask("Item"));
+        for (int i = 0; i < player.ItemSight.Length; i++)
         {
-            if (itemSight[i])
+            if (player.ItemSight[i])
             {
-                DropItem dropItem = itemSight[i].collider.GetComponent<DropItem>();
+                DropItem dropItem = player.ItemSight[i].collider.GetComponent<DropItem>();
                 InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(dropItem.CurItemKey));
                 DropManager.Instance.ReturnItem(dropItem.gameObject);
             }
         }
     }
-    public bool IsDelay()
-    {
-        float atkSpeed = character.AtkSpeed;
-        if (delayTime >= atkSpeed)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-    public void AnimationDirection()
-    {
-        if(characterState != CharacterState.Died)
-        {
-            if (dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-            else if (dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
-        }
-    }
 
-    private IEnumerator Blink()
+
+
+    private IEnumerator Blink(CharacterStatus _status)
     {
-        character.IsDamaged = false;        
+        _status.IsDamaged = false;        
         bodySprites.color = new Color(1f,1f,1f,155/255f);
         yield return new WaitForSeconds(0.5f);
         bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
 
-    private IEnumerator Died()
+    private IEnumerator Died(CharacterStatus _status)
     {
-        rig.velocity = Vector2.zero;
-        col.enabled = false;
-        dir = Vector2.zero;
-        ActiveLayer(LayerName.DieLayer); 
-        yield return new WaitForSeconds(revivalTime);
-        Rivive();
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
+        _status.Dir = Vector2.zero;
+        _status.ActiveLayer(LayerName.DieLayer); 
+        yield return new WaitForSeconds(player.RevivalTime);
+        Rivive(_status);
     }
 
-    private void Rivive()
+    private void Rivive(CharacterStatus _status)
     {
-        rig.isKinematic = false;
-        col.enabled = true;
-        character.CurHp = character.MaxHp;
-        characterState = CharacterState.Idle;
+        _status.Rig.isKinematic = false;
+        _status.Col.enabled = true;
+        _status.CurHp = _status.MaxHp;
+        _status.AIState = EAIState.Idle;
     }
 
-    public void ActiveLayer(LayerName layerName)
+
+    public void Perception(CharacterStatus _status)
     {
-        for(int i = 0; i < ani.layerCount; i++)
+        _status.SightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
+        SortSightRayList(_status.SightRay);
+        if (_status.SightRay.Count > 0)
+            TargetEnemy(_status.SightRay[0].collider.gameObject);
+
+        if (_status.Target)
         {
-            ani.SetLayerWeight(i, 0);
-        }
-        ani.SetLayerWeight((int)layerName, 1);
-    }
-    public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
-    {
-        float timer = 0;
-
-        while (knockbackDuration > timer)
-        {
-            timer += Time.deltaTime;
-            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
-            rig.AddForce(-direction * knockbackPower);
-        }
-
-        yield return 0;
-    }
-    public void Perception()
-    {
-        atkRangeRay = Physics2D.CircleCast(this.transform.position, character.AtkRange, character.Dir, 0, LayerMask.GetMask("Enemy"));
-        TargetCloseEnemy();
-    }
-    public void TargetCloseEnemy()
-    {
-        sightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
-        SortSightRayList(sightRay);
-        if (sightRay.Count > 0)
-            TargetEnemy(sightRay[0].collider.gameObject);
-
-        if (character.Target)
-        {
-            if (GetDistance(this.transform.position, character.Target.transform.position) >= character.SeeRange)
+            if (GetDistance(this.transform.position, _status.Target.transform.position) >= _status.SeeRange)
             {
-                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                character.Target = null;
+                _status.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                _status.Target = null;
 
             }
         }
     }
-    public void SortSightRayList(List<RaycastHit2D> _inventory)
-    {
-        // 리스트 정렬
-        _inventory.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
-        {
-            if (GetDistance(this.transform.position, a.rigidbody.position) < GetDistance(this.transform.position, b.rigidbody.position)) return -1;
-            else if (GetDistance(this.transform.position, a.rigidbody.position) > GetDistance(this.transform.position, b.rigidbody.position)) return 1;
-            else return 0;
 
-        });
-    }
     public void TargetEnemy(GameObject _target)
     {
         Debug.Log("타겟팅");
         if(_target)
         {
-            if(character.Target)
+            if(player.Target)
             {
-                character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                player.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
             }
-            character.Target = _target;
-            character.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+            player.Target = _target;
+            player.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
     }
     public void TargetAlly(GameObject _allyTarget)
@@ -495,13 +395,93 @@ public class PlayerController : BaseController
         Debug.Log("타겟팅");
         if (_allyTarget)
         {
-            if (character.AllyTarget)
+            if (player.AllyTarget)
             {
-                character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
             }
-            character.AllyTarget = _allyTarget;
-            character.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+            player.AllyTarget = _allyTarget;
+            player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
+    }
+
+    public override void AIChangeState(CharacterStatus _status)
+    {
+        if (_status.SightRay[0])
+        {
+            _status.Distance = _status.Target.transform.position - this.transform.position;
+            _status.Dir = _status.Distance.normalized;
+        }
+        if (_status.CurHp < 0f)
+        {
+            _status.AIState = EAIState.Died;
+        }
+        else
+        {
+            if (_status.IsDamaged)
+            {
+                _status.AIState = EAIState.Damaged;
+            }
+            else
+            {
+                if (_status.Target == null)
+                {
+                    _status.AIState = EAIState.Idle;
+                }
+                else
+                {
+                    _status.AIState = EAIState.Walk;
+                    if (_status.HitRay)
+                    {
+                        _status.AIState = EAIState.Attack;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public override void AIPerception(CharacterStatus _status)
+    {
+        _status.SightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
+        SortSightRayList(_status.SightRay);
+        _status.AllyRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
+        _status.HitRay = Physics2D.CircleCast(this.transform.position, _status.AtkRange, _status.Dir, 0, LayerMask.GetMask("Enemy"));
+        if (!_status.SightRay[0])
+            _status.Target = null;
+        else
+        {
+            _status.Target = _status.SightRay[0].collider.gameObject;
+        }
+    }
+
+
+    public override void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
+    {
+        for (int i = 0; i < hits.Length; i++)
+        {
+            EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
+
+            enemy.CurHp -= ReviseDamage(AttackTypeDamage(_status), enemy.DefensivePower);
+            _status.IsAtk = true;
+            if (IsLastHit(enemy, _status))
+            {
+                Debug.Log("막타 경험치 확득");
+                _status.CurExp += enemy.DefeatExp;
+            }
+        }
+    }
+    public override IEnumerator AIDied(CharacterStatus _status)
+    {
+        base.AIDied(_status);
+        yield return new WaitForSeconds(player.RevivalTime);
+        Rivive(_status);
+    }
+
+    public override void AIDamaged(CharacterStatus _status)
+    {
+        base.AIDamaged(_status);
+        StartCoroutine(Blink(_status));
     }
 }
     

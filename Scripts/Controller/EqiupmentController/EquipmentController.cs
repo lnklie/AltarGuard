@@ -11,7 +11,7 @@ using UnityEngine;
 */
 public class EquipmentController : MonoBehaviour
 {
-    private Status status = null;
+    private CharacterStatus status = null;
     private HairSpace hairSpace = null;
     private ArmorSpace[] armorSpaces = null;
     private BackSpace backSpace = null;
@@ -47,7 +47,7 @@ public class EquipmentController : MonoBehaviour
 
     private void Awake()
     {
-        status = GetComponent<Status>();
+        status = GetComponent<CharacterStatus>();
         hairSpace = this.GetComponentInChildren<HairSpace>();
         armorSpaces = this.GetComponentsInChildren<ArmorSpace>();
         backSpace = this.GetComponentInChildren<BackSpace>();

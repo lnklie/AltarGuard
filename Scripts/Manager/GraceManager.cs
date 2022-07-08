@@ -15,10 +15,21 @@ public class GraceManager : MonoBehaviour
     [SerializeField]
     private MercenaryManager mercenaryManager = null;
 
+    private void Update()
+    {
+        if (playerStatus.EquipmentController.IsChangeItem)
+            SetGraceAbility();
+    }
     public void AquireGrace(int _key)
     {
-        graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
-        graceList[graceList.Count - 1].isActive = 1;
+        if (!CheckIsActive(_key))
+        {
+            graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
+            graceList[graceList.Count - 1].isActive = 1;
+            SetGraceAbility();
+        }
+        else
+            Debug.Log("이미 배운 은총");
     }
     
     public bool CheckIsActive(int _key)
@@ -36,5 +47,37 @@ public class GraceManager : MonoBehaviour
             }
         }
         return isActive;
+    }
+
+    public void SetGraceAbility()
+    {
+        playerStatus.InitGraceStatus();
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            switch(graceList[i].graceKey)
+            {
+                case 0:
+                    if (playerStatus.EquipmentController.EquipItems[7].attackType == "Melee")
+                        playerStatus.GracePhysicalDamage += 0.1f;
+                    break;
+                case 1:
+                    if(playerStatus.EquipmentController.EquipItems[7].weaponType == "Sword")
+                        playerStatus.GracePhysicalDamage += 0.1f;
+                    break;
+                case 2:
+                    if (playerStatus.EquipmentController.EquipItems[7].weaponType == "Axe" ||
+                        playerStatus.EquipmentController.EquipItems[7].weaponType == "Spear")
+                        playerStatus.GracePhysicalDamage += 0.1f;
+                    break;
+                case 3:
+                    if (playerStatus.EquipmentController.EquipItems[7].weaponType == "Sword")
+                        playerStatus.GraceAttackSpeed += 0.1f;
+                    break;
+                case 4:
+                    if (playerStatus.EquipmentController.EquipItems[7].weaponType == "Sword")
+                        playerStatus.GracePhysicalDamage += 0.2f;
+                    break;
+            }
+        }
     }
 }

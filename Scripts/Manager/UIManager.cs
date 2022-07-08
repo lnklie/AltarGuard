@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine.UI;
 /*
 ==============================
  * 최종수정일 : 2022-06-10
@@ -49,6 +46,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private List<EquipmentController> characterList = new List<EquipmentController>();
 
+    [Header("Panels")]
     [SerializeField]
     private InventoryPanelController inventoryPanelController = null;    
     [SerializeField]
@@ -62,6 +60,15 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private GracePanelController gracePanelController = null;
 
+    [Header("NoticeText")]
+    [SerializeField]
+    private Text noticeText = null;
+
+    [SerializeField]
+    private bool isNotice = false;
+
+    [SerializeField]
+    private Coroutine preNotice = null;
     private void Awake()
     {
         characterList.Add(player.GetComponent<EquipmentController>());
@@ -79,7 +86,8 @@ public class UIManager : SingletonManager<UIManager>
                 AddMercenaryEquipmentController(mercenary[i]);
             }
         }
-        UpdateGracePanel();
+
+        
     }
 
     private void Update()
@@ -89,13 +97,22 @@ public class UIManager : SingletonManager<UIManager>
             if(mercenaryManager.Mercenarys.Count < 4)
                 mercenaryManager.AddNewMercenary();
         }
-
+        if(Input.GetKeyDown(KeyCode.F4))
+        {
+            Notice("Game Start");
+        }
         if(player.IsStatusUpdate)
         {
             UpdatePlayerProfile();
             player.IsStatusUpdate = false;
         }
-
+        if(bossEnemy)
+        {
+            if(bossEnemy.IsDamaged)
+            {
+                UpdateBossInfo();
+            }
+        }
         for(int i = 0; i < mercenary.Count; i++)
         {
             if (mercenary[i].IsStatusUpdate)
@@ -112,9 +129,33 @@ public class UIManager : SingletonManager<UIManager>
             profilePanelController.SetBossProfile(_bool);
         }
     }
+    public void Notice(string _notice)
+    {
+        if (isNotice)
+        {
+            StopCoroutine(preNotice);
+        }
+        preNotice = StartCoroutine(NoticeCoroutine(_notice));
+    }
+    public IEnumerator NoticeCoroutine(string _notice)
+    {
+        isNotice = true;
+        noticeText.gameObject.SetActive(true);
+        noticeText.text = _notice;
+        yield return new WaitForSeconds(2f);
+        isNotice = false;
+        for (float i = 1; i >= 0; i -= 0.05f)
+        {
+            noticeText.color = new Vector4(noticeText.color.r, noticeText.color.g, noticeText.color.b, i);
+            yield return new WaitForFixedUpdate();
+        }
+        noticeText.gameObject.SetActive(false);
+        noticeText.color = new Vector4(noticeText.color.r, noticeText.color.g, noticeText.color.b, 1);
+    }
 
     public void UpdateGracePanel()
     {
+        Debug.Log("그레이스 업데이트");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
@@ -128,7 +169,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetBossEnemy()
     {
-        bossEnemy = enemySpawner.CurBoss.GetComponent<BossEnemyStatus>();
+        bossEnemy = enemySpawner.CurBoss;
     }
     public int GetMercenaryNum()
     {
@@ -273,9 +314,24 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region GracePanel
-    public void AquireGrace(int _index)
+    public void AquireGrace()
     {
-        gracePanelController.AquireGrace(_index, graceManager.AquireGrace);
+        gracePanelController.AquireGrace(graceManager.AquireGrace);
+        UpdateGracePanel();
+        ActiveGraceInfo(false);
+    }
+    public void SelectGrace(int _index)
+    {
+        gracePanelController.SelectGrace(_index,graceManager.CheckIsActive);
+        ActiveGraceInfo(true);
+    }
+    public void ActiveGraceInfo(bool _bool)
+    {
+        gracePanelController.ActiveGraceInfo(_bool);
+    }
+    public void SetGraceSlot(int _egraceType)
+    {
+        gracePanelController.SetSlotGrace(_egraceType);
         UpdateGracePanel();
     }
     #endregion
@@ -286,21 +342,26 @@ public class UIManager : SingletonManager<UIManager>
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
-            inventoryPanelController.ActiveInventory();
+            inventoryPanelController.ActiveInventoryPanel(true);
         }
         else if(_index == 1)
         {
             statusPanelController.SetPlayer(player);
-            statusPanelController.ActiveStatus();
+            statusPanelController.ActiveStatusPanel(true);
         }
         else if(_index == 2)
         {
             altarInfoPanelController.SetAltar(altar);
-            altarInfoPanelController.ActiveAltarInfo();
+            altarInfoPanelController.ActiveAltarInfo(true);
         }
         else if(_index == 3)
         {
             skillInfoPanelController.ActiveSkillPanel(true);
+        }
+        else if (_index == 4)
+        {
+            gracePanelController.ActiveGracePanel(true);
+            UpdateGracePanel();
         }
     }
 
@@ -309,15 +370,23 @@ public class UIManager : SingletonManager<UIManager>
         // UI 비활성화
         if (_index == 0)
         {
-            inventoryPanelController.DeactiveInventory();
+            inventoryPanelController.ActiveInventoryPanel(false);
         }
         else if (_index == 1)
         {
-            statusPanelController.DeactiveStatus();
+            statusPanelController.ActiveStatusPanel(false);
         }
         else if (_index == 2)
         {
-            altarInfoPanelController.DeactiveAltarInfo();
+            altarInfoPanelController.ActiveAltarInfo(false);
+        }
+        else if (_index == 3)
+        {
+            skillInfoPanelController.ActiveSkillPanel(false);
+        }
+        else if (_index == 4)
+        {
+            gracePanelController.ActiveGracePanel(false);
         }
     }
     #endregion

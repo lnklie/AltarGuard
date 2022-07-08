@@ -15,7 +15,7 @@ public enum LayerName
     AttackLayer = 2,
     DieLayer = 3
 }
-public enum CharacterState
+public enum EAIState
 {
     Idle,
     Walk,
@@ -100,4 +100,11 @@ public enum SlimeKingPattern
     JumpAttack,
     DashAttack,
     JumpJump
+}
+public enum EgraceType
+{
+    Warrior = 0,
+    Archer = 1000,
+    Wizard = 2000,
+    Commander = 3000
 }
