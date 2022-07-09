@@ -48,7 +48,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 
 
     [SerializeField]
-    private List<GameObject> bossOrcs = new List<GameObject>();
+    private GameObject bossOrcs = null;
 
     private void Start()
     {
@@ -83,9 +83,8 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     private void InitBossEnemy(GameObject _enemyPrefab)
     {
-        GameObject _enemy = Instantiate(_enemyPrefab, this.transform);
-        _enemy.SetActive(false);
-        bossOrcs.Add(_enemy);
+        bossOrcs = Instantiate(_enemyPrefab, this.transform);
+        bossOrcs.SetActive(false);
     }
     public void EnemySpawn(int _enemyKey, int _enemyNum = 0)
     {
@@ -97,7 +96,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
             _obj = rushOrcs.Dequeue();
             _obj.transform.position = enemyPos.Dequeue();
             _obj.SetActive(true);
-            _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+            _rushEnemyStatus = _obj.GetComponentInChildren<RushEnemyStatus>();
             _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
             _rushEnemyStatus.IsEnemyChange = true;
             enemyPos.Enqueue(_obj.transform.position);
@@ -105,10 +104,9 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     public void BossEnemySpawn(int _enemyKey)
     {
-        GameObject _obj = bossOrcs[DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType];
-        _obj.SetActive(true);
-        _obj.transform.position = new Vector2(0f, 18f);
-        BossEnemyStatus _bossEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
+        bossOrcs.SetActive(true);
+        bossOrcs.transform.position = new Vector2(0f, 18f);
+        BossEnemyStatus _bossEnemyStatus = bossOrcs.GetComponentInChildren<BossEnemyStatus>();
         curBoss = _bossEnemyStatus;
         _bossEnemyStatus.BossEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
         _bossEnemyStatus.CustomEnemy();
