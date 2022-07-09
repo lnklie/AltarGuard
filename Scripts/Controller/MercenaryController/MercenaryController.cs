@@ -11,14 +11,10 @@ public class MercenaryController : CharacterController
 {
     protected MercenaryStatus mercenary = null;
     private SpriteRenderer bodySprites = null;
-    private Vector2 distance = Vector2.zero;
-
-    [Header("Attack Delay")]
-    [SerializeField]
-    protected float delayTime = 0f;
 
     public override  void Awake()
     {
+        base.Awake();
         mercenary = this.GetComponent<MercenaryStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
@@ -42,7 +38,7 @@ public class MercenaryController : CharacterController
 
     public EAIState CheckBossState(CharacterStatus _Status)
     {
-        return _Status.SightRay[0].rigidbody.GetComponent<EnemyStatus>().AIState;
+        return _Status.SightRayList[0].rigidbody.GetComponent<EnemyStatus>().AIState;
     }
 
 
@@ -88,7 +84,7 @@ public class MercenaryController : CharacterController
 
     public override void AIChangeState(CharacterStatus _status)
     {
-        if (_status.SightRay[0])
+        if (_status.SightRayList[0])
         {
             _status.Distance = _status.Target.transform.position - this.transform.position;
             _status.Dir = _status.Distance.normalized;
@@ -112,7 +108,7 @@ public class MercenaryController : CharacterController
                 else
                 {
                     _status.AIState = EAIState.Walk;
-                    if (_status.HitRay)
+                    if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                     {
                         _status.AIState = EAIState.Attack;
                     }
@@ -125,15 +121,29 @@ public class MercenaryController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        _status.SightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
-        SortSightRayList(_status.SightRay);
-        _status.AllyRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
-        _status.HitRay = Physics2D.CircleCast(this.transform.position, _status.AtkRange, _status.Dir, 0, LayerMask.GetMask("Enemy"));
-        if (!_status.SightRay[0])
-            _status.Target = null;
-        else
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
+            _status.SightRayList.Add(_enemyHit);
+
+        SortSightRayList(_status.SightRayList);
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
+            _status.AllyRayList.Add(_allyHit);
+
+
+        if (_status.SightRayList.Count > 0)
         {
-            _status.Target = _status.SightRay[0].collider.gameObject;
+            _status.Target = _status.SightRayList[0].collider.gameObject;
+        }
+
+        for (int i = 0; i < _status.SightRayList.Count; i++)
+        {
+            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
+            {
+                if (_status.Target == _status.SightRayList[i])
+                    _status.Target = null;
+                _status.SightRayList.Remove(_status.SightRayList[i]);
+            }
         }
     }
 

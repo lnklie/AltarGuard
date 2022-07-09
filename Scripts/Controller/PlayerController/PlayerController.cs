@@ -28,12 +28,15 @@ public class PlayerController : CharacterController
     }
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F12))
+            player.IsAutoMode = !player.IsAutoMode;
         AquireRay();
         MouseTargeting(player);
         if (player.IsAutoMode)
             base.Update();
         else
         {
+            Debug.Log("현재 시야 안에 있는 적의 수는 " + characterStatus.SightRayList.Count);
             ChangeState(player);
             CurState(player);
             Perception(player);
@@ -358,21 +361,33 @@ public class PlayerController : CharacterController
         _status.AIState = EAIState.Idle;
     }
 
-
     public void Perception(CharacterStatus _status)
     {
-        _status.SightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
-        SortSightRayList(_status.SightRay);
-        if (_status.SightRay.Count > 0)
-            TargetEnemy(_status.SightRay[0].collider.gameObject);
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
+            _status.SightRayList.Add(_enemyHit);
 
-        if (_status.Target)
+        SortSightRayList(_status.SightRayList);
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
+            _status.AllyRayList.Add(_allyHit);
+
+
+        if (_status.SightRayList.Count > 0)
         {
-            if (GetDistance(this.transform.position, _status.Target.transform.position) >= _status.SeeRange)
-            {
-                _status.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                _status.Target = null;
+            TargetEnemy(_status.SightRayList[0].collider.gameObject);
+        }
 
+        for (int i = 0; i < _status.SightRayList.Count; i++)
+        {
+            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
+            {
+                if (_status.Target == _status.SightRayList[i])
+                {
+                    _status.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    _status.Target = null;
+                }
+                _status.SightRayList.Remove(_status.SightRayList[i]);
             }
         }
     }
@@ -384,10 +399,10 @@ public class PlayerController : CharacterController
         {
             if(player.Target)
             {
-                player.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
             }
             player.Target = _target;
-            player.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+            player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
     }
     public void TargetAlly(GameObject _allyTarget)
@@ -403,10 +418,10 @@ public class PlayerController : CharacterController
             player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
     }
-
+    #region AI
     public override void AIChangeState(CharacterStatus _status)
     {
-        if (_status.SightRay[0])
+        if (_status.SightRayList.Count > 0)
         {
             _status.Distance = _status.Target.transform.position - this.transform.position;
             _status.Dir = _status.Distance.normalized;
@@ -430,7 +445,7 @@ public class PlayerController : CharacterController
                 else
                 {
                     _status.AIState = EAIState.Walk;
-                    if (_status.HitRay)
+                    if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                     {
                         _status.AIState = EAIState.Attack;
                     }
@@ -443,15 +458,32 @@ public class PlayerController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        _status.SightRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
-        SortSightRayList(_status.SightRay);
-        _status.AllyRay.AddRange(Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
-        _status.HitRay = Physics2D.CircleCast(this.transform.position, _status.AtkRange, _status.Dir, 0, LayerMask.GetMask("Enemy"));
-        if (!_status.SightRay[0])
-            _status.Target = null;
-        else
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
+            _status.SightRayList.Add(_enemyHit);
+
+        SortSightRayList(_status.SightRayList);
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
+            _status.AllyRayList.Add(_allyHit);
+
+
+        if (_status.SightRayList.Count > 0)
         {
-            _status.Target = _status.SightRay[0].collider.gameObject;
+            TargetEnemy(_status.SightRayList[0].collider.gameObject);
+
+        }
+        for (int i = 0; i < _status.SightRayList.Count; i++)
+        {
+            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
+            {
+                if (_status.Target == _status.SightRayList[i])
+                {
+                    _status.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    _status.Target = null;
+                }
+                _status.SightRayList.Remove(_status.SightRayList[i]);
+            }
         }
     }
 
@@ -483,5 +515,6 @@ public class PlayerController : CharacterController
         base.AIDamaged(_status);
         StartCoroutine(Blink(_status));
     }
+    #endregion
 }
     

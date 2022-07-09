@@ -47,7 +47,6 @@ public class ExcelToJsonConverter
 
 		for (int i = 0; i < excelFiles.Count; i++)
 		{
-			Debug.Log("¿¢¼¿ ÆÄÀÏÀÇ ÀÌ¸§Àº " + excelFiles[i]);
 			if (!ConvertExcelFileToJson(excelFiles[i], outputPath))
 			{
 				succeeded = false;
