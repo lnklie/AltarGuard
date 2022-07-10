@@ -12,8 +12,7 @@ public class RushEnemyController : EnemyController
     private RushEnemyStatus rushEnemyStatus = null;
     public override void Awake()
     {
-        base.Awake();
-        rushEnemyStatus = this.GetComponent<RushEnemyStatus>();
+        rushEnemyStatus = GetComponent<RushEnemyStatus>();
     }
     
     public bool IsDelay(EnemyStatus _status)

@@ -303,7 +303,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
             else
             {
-                //Debug.Log("그런 아이템 없음");
+                Debug.Log("그런 아이템 없음");
             }
         }
         else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
