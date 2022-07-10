@@ -187,6 +187,7 @@ public class ExcelToJsonConverter
 		// Get the excel data reader with the excel data
 		IExcelDataReader excelReader = GetExcelDataReaderForFile(filePath);
 
+		Debug.Log("지점 영기기기기 " + GetExcelDataReaderForFile(filePath).Name);
 		if (excelReader == null)
 		{
 			return null;
@@ -226,6 +227,7 @@ public class ExcelToJsonConverter
 
 		// Ignore sheets which start with ~
 		Regex sheetNameRegex = new Regex(@"^~.*$");
+		Debug.Log("엑셀리더의 이름은 " + excelReader.Name + " 이건 뭘까?" + sheetNameRegex);
 		if (sheetNameRegex.IsMatch(excelReader.Name))
 		{
 			return null;

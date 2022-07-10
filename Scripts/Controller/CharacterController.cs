@@ -6,14 +6,13 @@ public class CharacterController : BaseController, IAIController
 {
     [SerializeField]
     protected SkillController skillController = null;
-    [SerializeField]
     protected CharacterStatus characterStatus = null;
 
 
     public override void Awake()
     {
         base.Awake();
-        characterStatus = this.GetComponent<CharacterStatus>();
+        characterStatus.GetComponent<CharacterStatus>();
     }
     public virtual void Update()
     {
