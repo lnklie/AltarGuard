@@ -154,7 +154,7 @@ public class InventoryPanelController : MonoBehaviour
         // 아이템 정보창 활성화 여부
         itemInfo.SetActive(_bool);
         if(!_bool)
-            SetActiveEquipCharacterBox(false);
+            SetActiveEquipCharacterBox( false);
     }
     public void SetActiveCheckDiscard(bool _bool)
     {

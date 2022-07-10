@@ -17,7 +17,7 @@ public class RushEnemyStatus : EnemyStatus
     public override void Awake()
     {
         base.Awake();
-        images = this.gameObject.transform.parent.GetComponentsInChildren<Image>();
+        images = this.GetComponentsInChildren<Image>();
         images[1].canvas.worldCamera = Camera.main;
     }
     public override void Update()

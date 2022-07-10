@@ -13,13 +13,15 @@ public class EnemyController : CharacterController
 {
     [SerializeField]
     private GameObject altar = null;
-    [SerializeField]
     protected EnemyStatus enemyStatus = null;
 
     public override void Awake()
     {
         base.Awake();
         enemyStatus = GetComponent<EnemyStatus>();
+    }
+    private void Start()
+    {
         FindAltar(enemyStatus);
     }
 
@@ -46,7 +48,7 @@ public class EnemyController : CharacterController
     }
     public bool IsAtkRange(CharacterStatus _status)
     {
-        if (GetDistance(_status.transform.position, _status.Target.transform.position) <= _status.AtkRange) 
+        if (GetDistance(_status.transform.position, _status.Target.transform.position) < _status.AtkRange)
             return true;
         else
             return false;
@@ -57,35 +59,33 @@ public class EnemyController : CharacterController
 
     public override void AIChangeState(CharacterStatus _status)
     {
-        if (_status.SightRayList[0])
+        if (IsDied(_status))
         {
-            _status.Distance = _status.Target.transform.position - this.transform.position;
-            _status.Dir = _status.Distance.normalized;
-        }
-        if (_status.CurHp < 0f)
-        {
-            _status.AIState = EAIState.Died;
+            SetState(_status, global::EAIState.Died);
         }
         else
         {
             if (_status.IsDamaged)
             {
-                _status.AIState = EAIState.Damaged;
+                SetState(_status, global::EAIState.Damaged);
             }
             else
             {
-                if (_status.Target == this)
+                if (IsAtkRange(_status))
                 {
-                    _status.AIState = EAIState.Idle;
+                    SetState(_status, global::EAIState.Attack);
                 }
                 else
                 {
-                    _status.AIState = EAIState.Walk;
+                    if (_status.Target == this.gameObject || FrontOtherEnemy(_status.HitRay, _status))
+                    {
+                        SetState(_status, global::EAIState.Idle);
+                    }
+                    else
+                    {
+                        SetState(_status, global::EAIState.Walk);
+                    }
                 }
-            }
-            if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
-            {
-                _status.AIState = EAIState.Attack;
             }
         }
     }
@@ -93,41 +93,20 @@ public class EnemyController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
-            _status.SightRayList.Add(_enemyHit);
-
-        SortSightRayList(_status.SightRayList);
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
-            _status.AllyRayList.Add(_allyHit);
+        _status.SightRay.AddRange(Physics2D.CircleCastAll(_status.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
+        SortSightRayList(_status.SightRay);
+        _status.HitRay = Physics2D.BoxCast(_status.transform.position, Vector2.one, 90f, _status.Dir, 1f, LayerMask.GetMask("Enemy"));
+        Debug.DrawRay(_status.transform.position, _status.Dir * 2f, Color.cyan);
 
         if (!altar)
-            _status.Target = this.gameObject;
+            _status.Target = null;
         else
         {
-            if (_status.SightRayList.Count > 0)
-            {
-                _status.Target = _status.SightRayList[0].collider.gameObject;
-            }
+            if (_status.SightRay[0])
+                _status.Target = _status.SightRay[0].collider.gameObject;
             else
-            {
                 _status.Target = altar;
-            }
         }
-
-
-
-        for (int i = 0; i < _status.SightRayList.Count; i++)
-        {
-            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
-            {
-                if (_status.Target == _status.SightRayList[i])
-                    _status.Target = null;
-                _status.SightRayList.Remove(_status.SightRayList[i]);
-            }
-        }
-
     }
 
     public override IEnumerator AIDied(CharacterStatus _status)

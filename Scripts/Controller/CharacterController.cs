@@ -6,33 +6,19 @@ public class CharacterController : BaseController, IAIController
 {
     [SerializeField]
     protected SkillController skillController = null;
-    [SerializeField]
     protected CharacterStatus characterStatus = null;
 
 
     public override void Awake()
     {
         base.Awake();
-        characterStatus = this.GetComponent<CharacterStatus>();
+        characterStatus.GetComponent<CharacterStatus>();
     }
     public virtual void Update()
     {
         AIPerception(characterStatus);
         AIChangeState(characterStatus);
         AIState(characterStatus);
-    }
-
-    public bool CheckRayList(RaycastHit2D _RayHit, List<RaycastHit2D> _RayList)
-    {
-        bool _bool = false;
-        for (int i = 0; i < _RayList.Count; i++)
-        {
-            if (_RayHit == _RayList[i])
-                _bool = true;
-            else
-                _bool = false;
-        }
-        return _bool;
     }
     public void SortSightRayList(List<RaycastHit2D> _sightRay)
     {

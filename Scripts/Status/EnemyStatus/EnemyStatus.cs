@@ -11,52 +11,60 @@ using UnityEngine.UI;
 */
 public class EnemyStatus : CharacterStatus
 {
+
+
     protected RaycastHit2D[] altarRay = default;
-    [SerializeField]
-    protected int defeatExp = 0;
-    protected EnemyType enemyType;
-    private bool isKnuckBack = false;
-    protected List<int> itemDropKey = new List<int>();
-    protected List<float> itemDropProb = new List<float>();
-    protected bool isEnemyChange;
-
-
-    #region Property
     public RaycastHit2D[] AltarRay
     {
         get { return altarRay; }
         set { altarRay = value; }
     }
+    [SerializeField]
+    protected int defeatExp = 0;
     public int DefeatExp
     {
         get { return defeatExp; }
         set { defeatExp = value; }
     }
+
+
+
+    protected EnemyType enemyType;
     public EnemyType EnemyType
     {
         get { return enemyType; }
     }
+
+
+    private bool isKnuckBack = false;
     public bool IsKnuckBack
     {
         get { return isKnuckBack; }
         set { isKnuckBack = value; }
     }
+
+    protected List<int> itemDropKey = new List<int>();
     public List<int> ItemDropKey
     {
         get { return itemDropKey; }
         set { itemDropKey = value; }
     }
+
+    protected List<float> itemDropProb = new List<float>();
     public List<float> ItemDropProb
     {
         get { return itemDropProb; }
         set { itemDropProb = value; }
     }
+
+    protected bool isEnemyChange;
     public bool IsEnemyChange
     {
         get { return isEnemyChange; }
         set { isEnemyChange = value; }
     }
-    #endregion
+
+
 
     [SerializeField]
     private TextMesh textMesh = null;
@@ -64,7 +72,7 @@ public class EnemyStatus : CharacterStatus
     public override void Awake()
     {
         base.Awake();
-        textMesh = this.gameObject.transform.parent.GetComponentInChildren<TextMesh>();
+        textMesh = this.GetComponentInChildren<TextMesh>();
     }
     public override void Update()
     {

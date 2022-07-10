@@ -10,11 +10,14 @@ using UnityEngine;
 */
 public class CharacterStatus : Status
 {
+
     protected bool isAtk = false;
+
+
     [SerializeField]
     protected GameObject target = null;
     [SerializeField]
-    protected float seeRange = 8f;
+    protected float seeRange = 0f;
     [SerializeField]
     protected float atkRange = 0f;
     [SerializeField]
@@ -54,9 +57,9 @@ public class CharacterStatus : Status
     protected float attackType = 0f;
     [SerializeField]
     protected RaycastHit2D hitRay = default;
-    protected List<RaycastHit2D> sightRayList = new List<RaycastHit2D>();
-
-    protected List<RaycastHit2D> allyRayList = new List<RaycastHit2D>();
+    [SerializeField]
+    protected List<RaycastHit2D> sightRay = new List<RaycastHit2D>();
+    protected List<RaycastHit2D> allyRay = new List<RaycastHit2D>();
     protected int hpRegenValue = 0;
     protected bool isHPRegen = false;
     protected int passiveStr = 0;
@@ -86,13 +89,11 @@ public class CharacterStatus : Status
     [SerializeField]
     private float stiffenTime = 0f;
 
-
     #region Properties
-
-    public List<RaycastHit2D> AllyRayList
+    public List<RaycastHit2D> AllyRay
     {
-        get { return allyRayList; }
-        set { allyRayList = value; }
+        get { return allyRay; }
+        set { allyRay = value; }
     }
     public bool IsAtk
     {
@@ -114,10 +115,10 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<RaycastHit2D> SightRayList
+    public List<RaycastHit2D> SightRay
     {
-        get { return sightRayList; }
-        set { sightRayList = value; }
+        get { return sightRay; }
+        set { sightRay = value; }
     }
     public float AttackType
     {
