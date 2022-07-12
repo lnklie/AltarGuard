@@ -10,14 +10,11 @@ using UnityEngine;
 */
 public class CharacterStatus : Status
 {
-
     protected bool isAtk = false;
-
-
     [SerializeField]
     protected GameObject target = null;
     [SerializeField]
-    protected float seeRange = 0f;
+    protected float seeRange = 8f;
     [SerializeField]
     protected float atkRange = 0f;
     [SerializeField]
@@ -39,9 +36,7 @@ public class CharacterStatus : Status
 
     [SerializeField]
     protected Vector2 distance = new Vector2(0, 0);
-
-    protected int curLevel = 100;
-
+    protected int curLevel = 10;
     [SerializeField]
     protected int totalStr = 5;
     [SerializeField]
@@ -57,9 +52,9 @@ public class CharacterStatus : Status
     protected float attackType = 0f;
     [SerializeField]
     protected RaycastHit2D hitRay = default;
+    protected List<RaycastHit2D> sightRayList = new List<RaycastHit2D>();
+    protected List<RaycastHit2D> allyRayList = new List<RaycastHit2D>();
     [SerializeField]
-    protected List<RaycastHit2D> sightRay = new List<RaycastHit2D>();
-    protected List<RaycastHit2D> allyRay = new List<RaycastHit2D>();
     protected int hpRegenValue = 0;
     protected bool isHPRegen = false;
     protected int passiveStr = 0;
@@ -68,7 +63,7 @@ public class CharacterStatus : Status
     protected int passiveLuck = 0;
     protected EAIState aiState = EAIState.Idle;
     [SerializeField]
-    protected Vector2 dir = Vector2.zero;
+    protected Vector2 targetDir = Vector2.zero;
     [SerializeField]
     protected EquipmentController equipmentController = null;
     [SerializeField]
@@ -80,8 +75,8 @@ public class CharacterStatus : Status
     protected int buffDefensivePower = 0;
     protected float buffSpeed = 0f;
     protected int buffHpRegenValue = 0;
+    [SerializeField]
     protected bool isStatusUpdate = false;
-
     private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     [SerializeField]
     protected float delayTime = 0f;
@@ -89,11 +84,18 @@ public class CharacterStatus : Status
     [SerializeField]
     private float stiffenTime = 0f;
 
+
     #region Properties
-    public List<RaycastHit2D> AllyRay
+    public bool IsHPRegen
     {
-        get { return allyRay; }
-        set { allyRay = value; }
+        get { return isHPRegen; }
+        set { isHPRegen = value; }
+    }
+
+    public List<RaycastHit2D> AllyRayList
+    {
+        get { return allyRayList; }
+        set { allyRayList = value; }
     }
     public bool IsAtk
     {
@@ -115,10 +117,10 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<RaycastHit2D> SightRay
+    public List<RaycastHit2D> SightRayList
     {
-        get { return sightRay; }
-        set { sightRay = value; }
+        get { return sightRayList; }
+        set { sightRayList = value; }
     }
     public float AttackType
     {
@@ -205,10 +207,10 @@ public class CharacterStatus : Status
         get { return arrowSpd; }
         set { arrowSpd = value; }
     }
-    public Vector2 Dir
+    public Vector2 TargetDir
     {
-        get { return dir; }
-        set { dir = value; }
+        get { return targetDir; }
+        set { targetDir = value; }
     }
     public float AtkSpeed
     {
@@ -318,56 +320,25 @@ public class CharacterStatus : Status
         base.Awake();
         equipmentController = this.GetComponent<EquipmentController>();
         UpdateAbility();
-
-    }
-    public virtual void Start()
-    {
         curHp = maxHp;
         curMp = maxMp;
     }
+
     public virtual void Update()
     {
-
-
         if(isStatusUpdate)
         {
-            UpdateAbility();
+            isStatusUpdate = false;
         }
 
         if (equipmentController.IsChangeItem)
         {
-            isStatusUpdate = true;
+            UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
             equipmentController.IsChangeItem = false;
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
-    }
-
-
-
-
-
-
-    public virtual void UpdateAbility()
-    {
-        // 능력 업데이트
-        UpdateBasicStatus();
-        maxHp = 100 + totalStr * 10;
-        maxMp = 100 + totalWiz * 10;
-
-        speed = 2 + totalDex * 0.1f + buffSpeed;
-        hpRegenValue = totalStr * 1 + buffHpRegenValue;
-        isStatusUpdate = false;
-    }
-    public void RemoveBuff()
-    {
-        buffPhysicalDamage = 0;
-        buffMagicalDamage = 0;
-        buffSpeed = 0;
-        buffDefensivePower = 0;
-        buffHpRegenValue = 0;
-        isStatusUpdate = true;
     }
 
     public void UpdateBasicStatus()
@@ -377,22 +348,49 @@ public class CharacterStatus : Status
         totalWiz = wiz + passiveWiz;
         totalLuck = luck + passiveLuck;
     }
+
+    public virtual void UpdateAbility()
+    {
+        // 능력 업데이트
+        UpdateBasicStatus();
+        maxHp = 100 + totalStr * 10;
+        maxMp = 100 + totalWiz * 10;
+        speed = 2 + totalDex * 0.1f + buffSpeed;
+        //hpRegenValue = totalStr * 1 + buffHpRegenValue;
+    }
+    public void RemoveBuff()
+    {
+        buffPhysicalDamage = 0;
+        buffMagicalDamage = 0;
+        buffSpeed = 0;
+        buffDefensivePower = 0;
+        buffHpRegenValue = 0;
+    }
+
     public IEnumerator HpRegenarate()
     {
         isHPRegen = true;
-        while (true)
+        while (isHPRegen)
         {
-            yield return new WaitForSeconds(1f);
-            if (curHp + hpRegenValue >= maxHp)
+            yield return new WaitForSeconds(2f);
+            if (curHp <= 0)
             {
-
-                curHp = maxHp;
                 yield return null;
             }
             else
             {
-                curHp += hpRegenValue;
+                if (curHp + hpRegenValue >= maxHp)
+                {
+
+                    curHp = maxHp;
+                    yield return null;
+                }
+                else
+                {
+                    curHp += hpRegenValue;
+                }
             }
+            isStatusUpdate = true;
         }
     }
 }

@@ -24,6 +24,8 @@ public class Status : MonoBehaviour
     protected CapsuleCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
+
+    
     #region Property
     public string ObjectName
     {
@@ -68,11 +70,13 @@ public class Status : MonoBehaviour
         get { return ani; }
     }
     #endregion
+
     public virtual void Awake()
     {
         col = this.GetComponent<CapsuleCollider2D>();
         rig = this.GetComponent<Rigidbody2D>();
         ani = this.GetComponent<Animator>();
+
     }
     public void ActiveLayer(LayerName layerName)
     {

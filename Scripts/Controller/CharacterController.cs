@@ -6,19 +6,41 @@ public class CharacterController : BaseController, IAIController
 {
     [SerializeField]
     protected SkillController skillController = null;
+    [SerializeField]
     protected CharacterStatus characterStatus = null;
 
 
-    public override void Awake()
+    public virtual void Awake()
     {
-        base.Awake();
-        characterStatus.GetComponent<CharacterStatus>();
+        characterStatus = this.GetComponent<CharacterStatus>();
     }
     public virtual void Update()
     {
         AIPerception(characterStatus);
         AIChangeState(characterStatus);
         AIState(characterStatus);
+    }
+
+
+    public bool IsAtkRange(CharacterStatus _status)
+    {
+        if (GetDistance(_status.transform.position, _status.Target.transform.position) <= _status.AtkRange)
+            return true;
+        else
+            return false;
+    }
+
+    public bool CheckRayList(RaycastHit2D _RayHit, List<RaycastHit2D> _RayList)
+    {
+        bool _bool = false;
+        for (int i = 0; i < _RayList.Count; i++)
+        {
+            if (_RayHit == _RayList[i])
+                _bool = true;
+            else
+                _bool = false;
+        }
+        return _bool;
     }
     public void SortSightRayList(List<RaycastHit2D> _sightRay)
     {
@@ -36,8 +58,8 @@ public class CharacterController : BaseController, IAIController
     {
         if (_status.AIState != EAIState.Died)
         {
-            if (_status.Dir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-            else if (_status.Dir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
+            if (_status.TargetDir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
+            else if (_status.TargetDir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
         }
     }
     public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj, CharacterStatus _status)
@@ -162,20 +184,20 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void AIIdle(CharacterStatus _status)
     {
-        ActiveLayer(_status.Ani, LayerName.IdleLayer);
+        _status.ActiveLayer(LayerName.IdleLayer);
         _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
     }
 
     public virtual void AIChase(CharacterStatus _status)
     {
-        ActiveLayer(_status.Ani, LayerName.WalkLayer);
+        _status.ActiveLayer(LayerName.WalkLayer);
         _status.IsStateChange = false;
-        _status.Rig.velocity = _status.Speed * _status.Dir;
+        _status.Rig.velocity = _status.Speed * _status.TargetDir;
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
-        ActiveLayer(_status.Ani, LayerName.AttackLayer);
+        _status.ActiveLayer(LayerName.AttackLayer);
         _status.Ani.SetFloat("AtkType", _status.AttackType);
         _status.Rig.velocity = Vector2.zero;
         _status.DelayTime += Time.deltaTime;
@@ -187,7 +209,7 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
-        ActiveLayer(_status.Ani, LayerName.IdleLayer);
+        _status.ActiveLayer(LayerName.IdleLayer);
         _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;

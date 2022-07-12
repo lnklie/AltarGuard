@@ -17,9 +17,8 @@ public class AltarController : BaseController
 
     [SerializeField]
     private List<AllyStatus> characters = new List<AllyStatus>();
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
         altar = this.GetComponent<AltarStatus>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
         images = this.GetComponentsInChildren<Image>();
@@ -90,8 +89,6 @@ public class AltarController : BaseController
     public void State()
     {
         // 상태별 행동 나타냄
-        if(altar.IsStateChange)
-            CheckState();
         switch (altar.AltarState)
         {
             case AltarState.Idle:
@@ -108,11 +105,7 @@ public class AltarController : BaseController
                 break;
         }
     }
-    public void CheckState()
-    {
-        // 상태 체크
-        txtMesh.text = altar.AltarState.ToString();
-    }
+
     private void Idle()
     {
         altar.IsStateChange = false;

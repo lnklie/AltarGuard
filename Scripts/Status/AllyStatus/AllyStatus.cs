@@ -11,7 +11,7 @@ public class AllyStatus : CharacterStatus
 
     private float dropProbability = 0;
     private float itemRarity = 0;
-    private int statusPoint = 0;
+    private int statusPoint = 10;
 
     private bool isAlterBuff = false;
     private float revivalTime = 5f;
@@ -68,9 +68,8 @@ public class AllyStatus : CharacterStatus
         set { graceDefensivePower = value; }
     }
     #endregion
-    public override void Start()
+    public void Start()
     {
-        base.Start();
         LvToExp();
     }
 
@@ -109,7 +108,7 @@ public class AllyStatus : CharacterStatus
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
-        isStatusUpdate = true;
+        UpdateAbility();
     }
 
     private void UpLevel()
@@ -119,7 +118,7 @@ public class AllyStatus : CharacterStatus
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
-        isStatusUpdate = true;
+        UpdateAbility();
     }
 
     private void LvToExp()
