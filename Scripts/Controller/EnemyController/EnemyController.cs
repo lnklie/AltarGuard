@@ -13,15 +13,13 @@ public class EnemyController : CharacterController
 {
     [SerializeField]
     private GameObject altar = null;
+    [SerializeField]
     protected EnemyStatus enemyStatus = null;
 
     public override void Awake()
     {
         base.Awake();
         enemyStatus = GetComponent<EnemyStatus>();
-    }
-    private void Start()
-    {
         FindAltar(enemyStatus);
     }
 
@@ -46,44 +44,40 @@ public class EnemyController : CharacterController
         else
             return false;
     }
-    public bool IsAtkRange(CharacterStatus _status)
-    {
-        if (GetDistance(_status.transform.position, _status.Target.transform.position) < _status.AtkRange)
-            return true;
-        else
-            return false;
-    }
+
 
 
 
 
     public override void AIChangeState(CharacterStatus _status)
     {
-        if (IsDied(_status))
+        if (_status.Target)
         {
-            SetState(_status, global::EAIState.Died);
+            _status.Distance = _status.Target.transform.position - this.transform.position;
+            _status.TargetDir = _status.Distance.normalized;
+        }
+        if (_status.CurHp < 0f)
+        {
+            _status.AIState = EAIState.Died;
         }
         else
         {
             if (_status.IsDamaged)
             {
-                SetState(_status, global::EAIState.Damaged);
+                _status.AIState = EAIState.Damaged;
             }
             else
             {
-                if (IsAtkRange(_status))
+                if (_status.Target == this)
                 {
-                    SetState(_status, global::EAIState.Attack);
+                    _status.AIState = EAIState.Idle;
                 }
                 else
                 {
-                    if (_status.Target == this.gameObject || FrontOtherEnemy(_status.HitRay, _status))
+                    _status.AIState = EAIState.Walk;
+                    if (IsAtkRange(_status))
                     {
-                        SetState(_status, global::EAIState.Idle);
-                    }
-                    else
-                    {
-                        SetState(_status, global::EAIState.Walk);
+                        _status.AIState = EAIState.Attack;
                     }
                 }
             }
@@ -93,20 +87,39 @@ public class EnemyController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        _status.SightRay.AddRange(Physics2D.CircleCastAll(_status.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
-        SortSightRayList(_status.SightRay);
-        _status.HitRay = Physics2D.BoxCast(_status.transform.position, Vector2.one, 90f, _status.Dir, 1f, LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(_status.transform.position, _status.Dir * 2f, Color.cyan);
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
+            _status.SightRayList.Add(_enemyHit);
+        SortSightRayList(_status.SightRayList);
+
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
+            _status.AllyRayList.Add(_allyHit);
 
         if (!altar)
-            _status.Target = null;
+            _status.Target = this.gameObject;
         else
         {
-            if (_status.SightRay[0])
-                _status.Target = _status.SightRay[0].collider.gameObject;
+            if (_status.SightRayList.Count > 0)
+            {
+                _status.Target = _status.SightRayList[0].collider.gameObject;
+            }
             else
+            {
                 _status.Target = altar;
+            }
         }
+
+
+
+        for (int i = 0; i < _status.SightRayList.Count; i++)
+        {
+            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
+            {
+                _status.SightRayList.Remove(_status.SightRayList[i]);
+            }
+        }
+
     }
 
     public override IEnumerator AIDied(CharacterStatus _status)
@@ -119,8 +132,8 @@ public class EnemyController : CharacterController
     }
     public override RaycastHit2D[] AttackRange(CharacterStatus _status)
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.Dir, 1f, LayerMask.GetMask("Ally"));
-        Debug.DrawRay(this.transform.position, _status.Dir, Color.red, 1f);
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
+        Debug.DrawRay(this.transform.position, _status.TargetDir, Color.red, 1f);
         if (hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
@@ -175,7 +188,7 @@ public class EnemyController : CharacterController
         base.AIDamaged(_status);
         _status.IsStateChange = false;
         _status.StiffenTime = 0f;
-        _status.IsDamaged = true;
+        _status.IsDamaged = false;
     }
 
 }

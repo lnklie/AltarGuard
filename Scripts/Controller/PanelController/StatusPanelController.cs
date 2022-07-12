@@ -84,7 +84,9 @@ public class StatusPanelController : MonoBehaviour
     {
         // 스텟 업
         selectAllyStatus.UpStatus(_index);
+        selectAllyStatus.UpdateAbility();
         UpdateStatusText();
+        Debug.Log("지점 3");
     }
     public void ActiveStatusPanel(bool _bool)
     {

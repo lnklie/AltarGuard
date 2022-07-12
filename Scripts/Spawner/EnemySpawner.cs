@@ -22,10 +22,6 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     private GameObject bossOrcPrefab = null;
 
 
-    [Header("Default Target")]
-    [SerializeField]
-    private GameObject altar = null;
-
     [Header("SpawnPosition")]
     [SerializeField]
     private Vector2[] spawnPos = null;
@@ -48,7 +44,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 
 
     [SerializeField]
-    private List<GameObject> bossOrcs = new List<GameObject>();
+    private GameObject bossOrcs = null;
 
     private void Start()
     {
@@ -83,9 +79,8 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     private void InitBossEnemy(GameObject _enemyPrefab)
     {
-        GameObject _enemy = Instantiate(_enemyPrefab, this.transform);
-        _enemy.SetActive(false);
-        bossOrcs.Add(_enemy);
+        bossOrcs = Instantiate(_enemyPrefab, this.transform);
+        bossOrcs.SetActive(false);
     }
     public void EnemySpawn(int _enemyKey, int _enemyNum = 0)
     {
@@ -95,9 +90,9 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         for (int i = 0; i < _enemyNum; i++)
         {
             _obj = rushOrcs.Dequeue();
-            _obj.transform.position = enemyPos.Dequeue();
             _obj.SetActive(true);
-            _rushEnemyStatus = _obj.GetComponent<RushEnemyStatus>();
+            _rushEnemyStatus = _obj.GetComponentInChildren<RushEnemyStatus>();
+            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
             _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
             _rushEnemyStatus.IsEnemyChange = true;
             enemyPos.Enqueue(_obj.transform.position);
@@ -105,11 +100,11 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     public void BossEnemySpawn(int _enemyKey)
     {
-        GameObject _obj = bossOrcs[DatabaseManager.Instance.SelectRushEnemy(_enemyKey).enemyType];
-        _obj.SetActive(true);
-        _obj.transform.position = new Vector2(0f, 18f);
-        BossEnemyStatus _bossEnemyStatus = _obj.GetComponent<BossEnemyStatus>();
+        bossOrcs.SetActive(true);
+        BossEnemyStatus _bossEnemyStatus = bossOrcs.GetComponentInChildren<BossEnemyStatus>();
         curBoss = _bossEnemyStatus;
+        _bossEnemyStatus.transform.position = new Vector2(0f, 18f);
+        _bossEnemyStatus.IsHPRegen = false;
         _bossEnemyStatus.BossEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
         _bossEnemyStatus.CustomEnemy();
         UIManager.Instance.SetBossEnemy();
@@ -122,8 +117,8 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         if (!_enemy.CompareTag("Boss"))
         {
             rushOrcs.Enqueue(_enemy);
-            _enemy.transform.localScale = new Vector3(1, 1, 1);
-            _enemy.SetActive(false);
+            _enemy.transform.parent.localScale = new Vector3(1, 1, 1);
+            _enemy.transform.parent.gameObject.SetActive(false);
         }
         else
         {
@@ -134,6 +129,6 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     {
         Debug.Log("보스 돌아오기");
         UIManager.Instance.SetBossInfo(false);
-        _enemy.SetActive(false);
+        _enemy.transform.parent.gameObject.SetActive(false);
     }
 }

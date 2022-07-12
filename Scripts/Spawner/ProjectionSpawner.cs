@@ -29,7 +29,7 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
         arrow.gameObject.SetActive(true);
         arrow.gameObject.transform.position = _gameObject.gameObject.transform.position;
         arrow.Archer = _gameObject.gameObject;
-        arrow.Dir = _gameObject.Dir;
+        arrow.Dir = _gameObject.TargetDir;
         arrow.Spd = _gameObject.ArrowSpd;
         arrow.Dmg = _damage;
     }

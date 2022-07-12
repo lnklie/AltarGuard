@@ -19,8 +19,16 @@ public class PlayerStatus : AllyStatus
 
     private int money = 100000;
     private bool isAutoMode = false;
+    private Vector2 dir;
 
-    #region
+    #region Property
+
+    public Vector2 Dir
+    {
+        get { return dir; }
+        set { dir = value; }
+
+    }
     public bool IsAutoMode
     {
         get { return isAutoMode; }

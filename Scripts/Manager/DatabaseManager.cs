@@ -43,7 +43,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Grace> graceList = new List<Grace>();
     private void Awake()
     {
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.persistentDataPath + "/ExcelFile", Application.persistentDataPath + "/JsonFile");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
         JsonLoad();
     }
     string fixJson(string value)
@@ -53,7 +53,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     }
     private string CombinePath(string _excelName)
     {
-        return Application.persistentDataPath + "/JsonFile/" + _excelName +".json";
+        return Application.dataPath + "/JsonFile/" + _excelName +".json";
     }
 
     public void JsonLoad()

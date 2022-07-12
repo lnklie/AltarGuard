@@ -37,8 +37,6 @@ public class InventorySlot : MonoBehaviour
     }
 
     [SerializeField]
-    private Sprite[] itemTargetingSprites = null;
-    [SerializeField]
     private Sprite uiMask = null;
     private void Awake()
     {
