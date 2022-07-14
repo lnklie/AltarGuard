@@ -14,6 +14,7 @@ public class CharacterController : BaseController, IAIController
     {
         characterStatus = this.GetComponent<CharacterStatus>();
     }
+
     public virtual void Update()
     {
         AIPerception(characterStatus);
@@ -21,7 +22,11 @@ public class CharacterController : BaseController, IAIController
         AIState(characterStatus);
     }
 
-
+    public WaitUntil WaitUntilAnimatorPoint(Animator _animator, int _index, string _aniName, float _point)
+    {
+        return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(_index).IsName(_aniName) &&
+            _animator.GetCurrentAnimatorStateInfo(_index).normalizedTime >= _point);
+    }
     public bool IsAtkRange(CharacterStatus _status)
     {
         if (GetDistance(_status.transform.position, _status.Target.transform.position) <= _status.AtkRange)
@@ -30,7 +35,7 @@ public class CharacterController : BaseController, IAIController
             return false;
     }
 
-    public bool CheckRayList(RaycastHit2D _RayHit, List<RaycastHit2D> _RayList)
+    public bool CheckRayList(Status _RayHit, List<Status> _RayList)
     {
         bool _bool = false;
         for (int i = 0; i < _RayList.Count; i++)
@@ -42,13 +47,13 @@ public class CharacterController : BaseController, IAIController
         }
         return _bool;
     }
-    public void SortSightRayList(List<RaycastHit2D> _sightRay)
+    public void SortSightRayList(List<Status> _sightRay)
     {
         // 리스트 정렬
-        _sightRay.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
+        _sightRay.Sort(delegate (Status a, Status b)
         {
-            if (GetDistance(this.transform.position, a.rigidbody.position) < GetDistance(this.transform.position, b.rigidbody.position)) return -1;
-            else if (GetDistance(this.transform.position, a.rigidbody.position) > GetDistance(this.transform.position, b.rigidbody.position)) return 1;
+            if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
+            else if (GetDistance(this.transform.position, a.transform.position) > GetDistance(this.transform.position, b.transform.position)) return 1;
             else return 0;
 
         });
@@ -78,13 +83,13 @@ public class CharacterController : BaseController, IAIController
     public bool IsDelay(CharacterStatus _status)
     {
         float atkSpeed = _status.AtkSpeed;
-        if (_status.DelayTime >= atkSpeed)
+        if (_status.DelayTime < atkSpeed)
         {
-            return false;
+            return true;
         }
         else
         {
-            return true;
+            return false;
         }
     }
     public int AttackTypeDamage(CharacterStatus _status)
@@ -100,7 +105,6 @@ public class CharacterController : BaseController, IAIController
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
-
         }
         else
             Debug.Log("화살 없음");
@@ -113,7 +117,7 @@ public class CharacterController : BaseController, IAIController
             return false;
     }
 
-    public virtual void AttackByAttackType(CharacterStatus _status)
+    public virtual IEnumerator AttackByAttackType(CharacterStatus _status)
     {
         if (!IsDelay(_status))
         {
@@ -127,10 +131,9 @@ public class CharacterController : BaseController, IAIController
             }
             else if (_status.AttackType == 0.5f)
             {
-                if (_status.Ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
-                {
+                yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.65f);
                     ShotArrow(_status);
-                }
+                
             }
             else
             {
@@ -159,6 +162,7 @@ public class CharacterController : BaseController, IAIController
     public virtual void AIState(CharacterStatus _status)
     {
         AnimationDirection(_status);
+        _status.DelayTime += Time.deltaTime;
         switch (_status.AIState)
         {
             case EAIState.Idle:
@@ -200,8 +204,7 @@ public class CharacterController : BaseController, IAIController
         _status.ActiveLayer(LayerName.AttackLayer);
         _status.Ani.SetFloat("AtkType", _status.AttackType);
         _status.Rig.velocity = Vector2.zero;
-        _status.DelayTime += Time.deltaTime;
-        AttackByAttackType(_status);
+        StartCoroutine(AttackByAttackType(_status));
     }
     public virtual void AIDamaged(CharacterStatus _status)
     {

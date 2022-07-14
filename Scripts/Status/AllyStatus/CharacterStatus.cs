@@ -10,9 +10,10 @@ using UnityEngine;
 */
 public class CharacterStatus : Status
 {
+    [SerializeField]
     protected bool isAtk = false;
     [SerializeField]
-    protected GameObject target = null;
+    protected Transform target = null;
     [SerializeField]
     protected float seeRange = 8f;
     [SerializeField]
@@ -25,15 +26,11 @@ public class CharacterStatus : Status
     protected int physicalDamage = 0;
     [SerializeField]
     protected int magicalDamage = 0;
-
     [SerializeField]
     protected float speed = 0f;
-
     [SerializeField]
     protected float atkSpeed = 2f;
-
     protected float arrowSpd = 2f;
-
     [SerializeField]
     protected Vector2 distance = new Vector2(0, 0);
     protected int curLevel = 10;
@@ -52,8 +49,8 @@ public class CharacterStatus : Status
     protected float attackType = 0f;
     [SerializeField]
     protected RaycastHit2D hitRay = default;
-    protected List<RaycastHit2D> sightRayList = new List<RaycastHit2D>();
-    protected List<RaycastHit2D> allyRayList = new List<RaycastHit2D>();
+    protected List<Status> sightRayList = new List<Status>();
+    protected List<Status> allyRayList = new List<Status>();
     [SerializeField]
     protected int hpRegenValue = 0;
     protected bool isHPRegen = false;
@@ -61,13 +58,14 @@ public class CharacterStatus : Status
     protected int passiveDex = 0;
     protected int passiveWiz = 0;
     protected int passiveLuck = 0;
+    [SerializeField]
     protected EAIState aiState = EAIState.Idle;
     [SerializeField]
     protected Vector2 targetDir = Vector2.zero;
     [SerializeField]
     protected EquipmentController equipmentController = null;
     [SerializeField]
-    protected GameObject allyTarget = null;
+    protected Transform allyTarget = null;
     protected int curExp = 0;
     protected int maxExp = 0;
     protected int buffPhysicalDamage = 0;
@@ -80,7 +78,6 @@ public class CharacterStatus : Status
     private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     [SerializeField]
     protected float delayTime = 0f;
-
     [SerializeField]
     private float stiffenTime = 0f;
 
@@ -92,7 +89,7 @@ public class CharacterStatus : Status
         set { isHPRegen = value; }
     }
 
-    public List<RaycastHit2D> AllyRayList
+    public List<Status> AllyRayList
     {
         get { return allyRayList; }
         set { allyRayList = value; }
@@ -117,7 +114,7 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<RaycastHit2D> SightRayList
+    public List<Status> SightRayList
     {
         get { return sightRayList; }
         set { sightRayList = value; }
@@ -249,7 +246,7 @@ public class CharacterStatus : Status
         get { return seeRange; }
         set { seeRange = value; }
     }
-    public GameObject Target
+    public Transform Target
     {
         get { return target; }
         set { target = value; }
@@ -259,7 +256,7 @@ public class CharacterStatus : Status
         get { return equipmentController; }
         set { equipmentController = value; }
     }
-    public GameObject AllyTarget
+    public Transform AllyTarget
     {
         get { return allyTarget; }
         set { allyTarget = value; }
@@ -302,8 +299,6 @@ public class CharacterStatus : Status
         set { buffHpRegenValue = value; }
     }
 
-
-
     public bool[] CheckEquipItems
     {
         get { return checkEquipItems; }
@@ -322,6 +317,7 @@ public class CharacterStatus : Status
         UpdateAbility();
         curHp = maxHp;
         curMp = maxMp;
+        delayTime = atkSpeed;
     }
 
     public virtual void Update()

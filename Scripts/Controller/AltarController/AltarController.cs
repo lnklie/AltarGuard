@@ -154,7 +154,7 @@ public class AltarController : BaseController
         // 닿은 캐릭터들을 리스트에 넣는 것
         for (int i = 0; i < _raycastHit2Ds.Length; i++)
         {
-            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
+            if (!_raycastHit2Ds[i].collider.CompareTag("Altar") && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>());
                 BuffUpdate();
