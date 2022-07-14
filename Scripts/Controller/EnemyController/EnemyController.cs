@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class EnemyController : CharacterController
 {
     [SerializeField]
-    private GameObject altar = null;
+    private Status altar = null;
     [SerializeField]
     protected EnemyStatus enemyStatus = null;
 
@@ -29,7 +29,7 @@ public class EnemyController : CharacterController
         for (int i = 0; i < _enemy.AltarRay.Length; i++)
         {
             if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = _enemy.AltarRay[i].collider.gameObject;
+                altar = _enemy.AltarRay[i].rigidbody.GetComponent<Status>();
         }
     }
     public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
@@ -53,7 +53,7 @@ public class EnemyController : CharacterController
     {
         if (_status.Target)
         {
-            _status.Distance = _status.Target.transform.position - this.transform.position;
+            _status.Distance = _status.Target.position - this.transform.position;
             _status.TargetDir = _status.Distance.normalized;
         }
         if (_status.CurHp < 0f)
@@ -88,25 +88,33 @@ public class EnemyController : CharacterController
     public override void AIPerception(CharacterStatus _status)
     {
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (_enemyHit && !CheckRayList(_enemyHit, _status.SightRayList))
-            _status.SightRayList.Add(_enemyHit);
-        SortSightRayList(_status.SightRayList);
+        if(_enemyHit)
+        {
+            Status _enemyHitStatus = _enemyHit.collider.GetComponent<Status>();
+            if (_enemyHit && !CheckRayList(_enemyHitStatus, _status.SightRayList))
+                _status.SightRayList.Add(_enemyHitStatus);
+            SortSightRayList(_status.SightRayList);
+        }
 
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if (_allyHit && !CheckRayList(_allyHit, _status.AllyRayList))
-            _status.AllyRayList.Add(_allyHit);
+        if(_allyHit)
+        {
+            Status _allyHitStatus = _allyHit.collider.GetComponent<Status>();
+            if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
+                _status.AllyRayList.Add(_allyHitStatus);
+        }
 
         if (!altar)
-            _status.Target = this.gameObject;
+            _status.Target = _status.TargetPos;
         else
         {
             if (_status.SightRayList.Count > 0)
             {
-                _status.Target = _status.SightRayList[0].collider.gameObject;
+                _status.Target = _status.SightRayList[0].TargetPos;
             }
             else
             {
-                _status.Target = altar;
+                _status.Target = altar.TargetPos;
             }
         }
 
@@ -154,35 +162,7 @@ public class EnemyController : CharacterController
             ally.CurHp -= ReviseDamage(AttackTypeDamage(_status), ally.DefensivePower);
         }
     }
-    public override void AttackByAttackType(CharacterStatus _status)
-    {
-        if (!IsDelay(_status))
-        {
-            _status.Ani.SetTrigger("AtkTrigger");
-            _status.DelayTime = 0f;
-            _status.IsAtk = true;
 
-            if (_status.AttackType == 0)
-            {
-                AttackDamage(AttackRange(_status), _status);
-            }
-            else if(_status.AttackType == 0.5f)
-            {
-                if (_status.Ani.GetCurrentAnimatorStateInfo(2).normalizedTime >= 0.35f)
-                {
-                    ShotArrow(_status);
-                }
-            }
-            else
-            {
-
-                
-            }
-        }
-        else
-            _status.IsAtk = false;
-
-    }
     public override void AIDamaged(CharacterStatus _status)
     {
         base.AIDamaged(_status);

@@ -78,7 +78,7 @@ public class SkillController : MonoBehaviour
             Debug.Log("없는 스킬");
     }
 
-    public void UseSkill(Skill _skill, GameObject _target)
+    public void UseSkill(Skill _skill, Transform _target)
     {
         if (activeSkills.IndexOf(_skill) != -1)
         {

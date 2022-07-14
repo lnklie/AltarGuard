@@ -24,9 +24,14 @@ public class Status : MonoBehaviour
     protected CapsuleCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
-
+    [SerializeField]
+    protected Transform targetPos = null;
     
     #region Property
+    public Transform TargetPos
+    {
+        get { return targetPos; }
+    }
     public string ObjectName
     {
         get { return objectName; }

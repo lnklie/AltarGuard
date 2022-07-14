@@ -63,7 +63,6 @@ public class Arrow : MonoBehaviour
     private void Shot()
     {
         // 화살 쏘기
-        Debug.Log("화살 간드아");
         rig.velocity = dir * spd;
         durationTime += Time.deltaTime;
         AngleModification();
@@ -71,8 +70,7 @@ public class Arrow : MonoBehaviour
         Debug.DrawRay(this.transform.position, dir);
         if(ray)
         {
-            Status hitObject = ray.collider.GetComponent<Status>();
-            Debug.Log(hitObject.ObjectName + " "+ ReviseDamage(dmg, hitObject.DefensivePower));
+            Status hitObject = ray.collider.transform.GetComponent<Status>();
             hitObject.CurHp -= ReviseDamage(dmg, hitObject.DefensivePower);
             hitObject.IsDamaged = true;
             if (archer.CompareTag("Mercenary"))

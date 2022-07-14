@@ -27,8 +27,8 @@ public class SkillObject : MonoBehaviour
     }
     private float durationTime = 0f;
 
-    private GameObject target = null;
-    public GameObject Target
+    private Transform target = null;
+    public Transform Target
     {
         get { return target; }
         set { target = value; }

@@ -16,10 +16,6 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private EnemySpawner enemySpawner = null;
 
-    [Header("StageManager")]
-    [SerializeField]
-    private StageManager stageManager = null;
-
     [Header("MercenaryManager")]
     [SerializeField]
     private MercenaryManager mercenaryManager = null;
