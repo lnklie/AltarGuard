@@ -8,7 +8,8 @@ public class CharacterController : BaseController, IAIController
     protected SkillController skillController = null;
     [SerializeField]
     protected CharacterStatus characterStatus = null;
-
+    [SerializeField]
+    protected PathFindController pathFindController = null;
 
     public virtual void Awake()
     {
@@ -197,8 +198,12 @@ public class CharacterController : BaseController, IAIController
     {
         _status.ActiveLayer(LayerName.WalkLayer);
         _status.IsStateChange = false;
-        _status.Rig.velocity = _status.Speed * _status.TargetDir;
-    }
+        Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
+        _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
+
+        if ((Vector2)(_status.transform.position) == _moveDir) pathFindController.FinalNodeList.RemoveAt(0);
+
+    } 
     public virtual void AIAttack(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.AttackLayer);
