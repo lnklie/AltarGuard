@@ -36,6 +36,11 @@ public class PlayerController : CharacterController
     }
     public override void Update()
     {
+        if (player.SightRayList.Count > 0)
+        {
+            player.Distance = player.Target.position - this.transform.position;
+            player.TargetDir = player.Distance.normalized;
+        }
         if (Input.GetKeyDown(KeyCode.F12))
             player.IsAutoMode = !player.IsAutoMode;
         if (!IsDelay(player))
@@ -368,21 +373,23 @@ public class PlayerController : CharacterController
 
     public void Perception(CharacterStatus _status)
     {
-        if (_status.SightRayList.Count > 0)
-        {
-            _status.Distance = _status.Target.position - this.transform.position;
-            _status.TargetDir = _status.Distance.normalized;
-        }
+
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
-        if (_enemyHit && !CheckRayList(_enemyHitStatus, _status.SightRayList))
-            _status.SightRayList.Add(_enemyHitStatus);
+        if(_enemyHit)
+        {
+            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
+            if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
+                _status.SightRayList.Add(_enemyHitStatus);
+        }
 
         SortSightRayList(_status.SightRayList);
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-        if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
-            _status.AllyRayList.Add(_allyHitStatus);
+        if(_allyHit)
+        {
+            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
+            if (!CheckRayList(_allyHitStatus, _status.AllyRayList))
+                _status.AllyRayList.Add(_allyHitStatus);
+        }
 
         
 
@@ -396,9 +403,9 @@ public class PlayerController : CharacterController
             if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange
                 || _status.SightRayList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
             {
-                if (_status.Target == _status.SightRayList[i])
+                if (_status.SightRayList[i].TargetPos == _status.Target)
                 {
-                    _status.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
+                    _status.Target.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     _status.Target = null;
                     _status.TargetDir = lookDir;
                     _status.AIState = EAIState.Idle;
