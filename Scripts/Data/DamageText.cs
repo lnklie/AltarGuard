@@ -5,15 +5,12 @@ using UnityEngine;
 public class DamageText : MonoBehaviour
 {
     private TextMesh textMesh;
+    [SerializeField]
     private float durationTime = 0f;
 
     private void Awake()
     {
         textMesh = this.GetComponent<TextMesh>();
-    }
-    private void Start()
-    {
-        SetDamageText(100);
     }
     void Update()
     {
@@ -23,8 +20,7 @@ public class DamageText : MonoBehaviour
     }
     public void MoveText()
     {
-        Vector2 dir = new Vector2(0.25f, 0.25f);
-        this.transform.position = Vector2.Lerp(this.transform.position, dir, Time.deltaTime);
+        this.transform.Translate(Vector2.up * 1f * Time.deltaTime);
     }
     public void SetDamageText(int _damage)
     {
@@ -36,8 +32,8 @@ public class DamageText : MonoBehaviour
         if (durationTime >= 2f)
         {
             durationTime = 0f;
+            this.transform.localPosition = Vector2.zero;
             this.transform.gameObject.SetActive(false);
-            this.transform.position = Vector2.zero;
         }
     }
 }

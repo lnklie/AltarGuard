@@ -16,10 +16,6 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private EnemySpawner enemySpawner = null;
 
-    [Header("StageManager")]
-    [SerializeField]
-    private StageManager stageManager = null;
-
     [Header("MercenaryManager")]
     [SerializeField]
     private MercenaryManager mercenaryManager = null;
@@ -101,14 +97,11 @@ public class UIManager : SingletonManager<UIManager>
         {
             Notice("Game Start");
         }
-        if(player.IsStatusUpdate)
-        {
+        if (player.IsStatusUpdate)
             UpdatePlayerProfile();
-            player.IsStatusUpdate = false;
-        }
         if(bossEnemy)
         {
-            if(bossEnemy.IsDamaged)
+            if(bossEnemy.IsDamaged || bossEnemy.IsStatusUpdate)
             {
                 UpdateBossInfo();
             }
@@ -124,10 +117,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetBossInfo(bool _bool)
     {
-        if (bossEnemy != null)
-        {
-            profilePanelController.SetBossProfile(_bool);
-        }
+        profilePanelController.SetBossProfile(_bool);
     }
     public void Notice(string _notice)
     {
@@ -280,6 +270,7 @@ public class UIManager : SingletonManager<UIManager>
     public void UpdateStatus()
     {
         statusPanelController.UpdateStatusText();
+
     }
     public void SelectCharacterInStatus(bool _isUp)
     {
@@ -335,6 +326,7 @@ public class UIManager : SingletonManager<UIManager>
         UpdateGracePanel();
     }
     #endregion
+
     #region MainUI
     public void ActiveUIBtn(int _index)
     {

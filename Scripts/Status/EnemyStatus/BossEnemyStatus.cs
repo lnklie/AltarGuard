@@ -11,25 +11,16 @@ public class BossEnemyStatus : EnemyStatus
         set { bossEnemy = value; }
     }
 
-
-
     public override void Awake()
     {
         base.Awake();
         equipmentController = this.GetComponent<EquipmentController>();
-        //if (equipmentController != null)
-        //{
-        //    Debug.Log("장비 컨트롤러 비어있지 않음 " + equipmentController.name);
-        //}
-        //else
-        //    Debug.Log("비어져있음");
     }
     public override void Update()
     {
         base.Update();
         if (isEnemyChange)
         {
-            Debug.Log("커스텀 에너미 1");
             CustomEnemy();
         }
     }
@@ -67,19 +58,20 @@ public class BossEnemyStatus : EnemyStatus
         itemDropProb.Add(bossEnemy.itemDropProb3);
         itemDropProb.Add(bossEnemy.itemDropProb4);
         itemDropProb.Add(bossEnemy.itemDropProb5);
-        //isEnemyChange = false;
+
+        curHp = maxHp;
+        isEnemyChange = false;
     }
 
-    //public void UpdateAbility()
-    //{
-    //    // 능력 업데이트
-    //    maxHp = rushEnemy.hp + str * 10;
-    //    maxMp = rushEnemy.mp + wiz * 10;
-    //    physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
-    //    magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
-    //    defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
-    //    speed = rushEnemy.speed + dex * 0.1f;
-    //    hpRegenValue = str * 1;
-    //    curHp = maxHp;
-    //}
+    public override void UpdateAbility()
+    {
+        // 능력 업데이트
+        maxHp = bossEnemy.hp + str * 10;
+        maxMp = bossEnemy.mp + wiz * 10;
+        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
+        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
+        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
+        speed = bossEnemy.speed + dex * 0.1f;
+        hpRegenValue = str * 1;
+    }
 }

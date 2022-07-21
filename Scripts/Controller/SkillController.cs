@@ -78,7 +78,7 @@ public class SkillController : MonoBehaviour
             Debug.Log("없는 스킬");
     }
 
-    public void UseSkill(Skill _skill, GameObject _target)
+    public void UseSkill(Skill _skill, Transform _target)
     {
         if (activeSkills.IndexOf(_skill) != -1)
         {
@@ -256,7 +256,6 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("올려주는 능력치는 " + _skillDamage);
         return _skillDamage;
     }
 }
