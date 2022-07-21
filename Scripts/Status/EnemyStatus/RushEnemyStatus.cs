@@ -17,7 +17,7 @@ public class RushEnemyStatus : EnemyStatus
     public override void Awake()
     {
         base.Awake();
-        images = this.GetComponentsInChildren<Image>();
+        images = this.gameObject.transform.parent.GetComponentsInChildren<Image>();
         images[1].canvas.worldCamera = Camera.main;
     }
     public override void Update()
@@ -27,8 +27,15 @@ public class RushEnemyStatus : EnemyStatus
         {
             CustomEnemy();
         }
-        if (isDamaged)
+        if (isStateChange)
+        {
             UpdateEnemyHp();
+        }
+    }
+    public override void Damaged(int _damage)
+    {
+        base.Damaged(_damage);
+        UpdateEnemyHp();
     }
     public void UpdateEnemyHp()
     {
@@ -62,16 +69,15 @@ public class RushEnemyStatus : EnemyStatus
         isEnemyChange = false;
     }
 
-//    public void UpdateAbility()
-//    {
-//        // 능력 업데이트
-//        maxHp = rushEnemy.hp + str * 10;
-//        maxMp = rushEnemy.mp + wiz * 10;
-//        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
-//        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
-//        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
-//        speed = rushEnemy.speed + dex * 0.1f;
-//        hpRegenValue = str * 1;
-//        curHp = maxHp;
-//    }
+    public override void UpdateAbility()
+    {
+        // 능력 업데이트
+        maxHp = rushEnemy.hp + str * 10;
+        maxMp = rushEnemy.mp + wiz * 10;
+        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
+        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
+        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
+        speed = rushEnemy.speed + dex * 0.1f;
+        hpRegenValue = str * 1;
+    }
 }

@@ -8,10 +8,20 @@ using UnityEngine;
  * 파일명 : BaseController.cs
 ==============================
 */
-public abstract class BaseController : MonoBehaviour
+public class BaseController : MonoBehaviour
 {
-    protected TextMesh txtMesh = null;
-    private DamageText[] damageTexts;
+
+    private Status status = null;
+    public virtual void Awake()
+    {
+        status = GetComponent<Status>();
+
+    }
+
+    public void SetIsDamaged(bool _bool)
+    {
+        status.IsDamaged = _bool;
+    }
     private Debuff debuff = Debuff.Not;
     public Debuff Debuff
     {
@@ -19,14 +29,7 @@ public abstract class BaseController : MonoBehaviour
         set { debuff = value; }
     }
 
-    public virtual void Awake()
-    {
-        txtMesh = this.GetComponentInChildren<TextMesh>();
-    }
-    public int ReviseDamage(int _damage, int _depensivePower)
-    {
-        return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
-    }
+
     public float GetDistance(Vector2 _start, Vector2 _end)
     {
         // 대상과의 거리 측정
@@ -46,14 +49,5 @@ public abstract class BaseController : MonoBehaviour
     {
         _status.AIState = _state;
         _status.IsStateChange = true;
-    }
-    public void ActiveLayer(Animator _ani, LayerName layerName)
-    {
-        // 애니메이션 레이어 가중치 조절
-        for (int i = 0; i < _ani.layerCount; i++)
-        {
-            _ani.SetLayerWeight(i, 0);
-        }
-        _ani.SetLayerWeight((int)layerName, 1);
     }
 }

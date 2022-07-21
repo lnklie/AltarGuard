@@ -19,7 +19,6 @@ public class AltarController : BaseController
     private List<AllyStatus> characters = new List<AllyStatus>();
     public override void Awake()
     {
-        base.Awake();
         altar = this.GetComponent<AltarStatus>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
         images = this.GetComponentsInChildren<Image>();
@@ -90,8 +89,6 @@ public class AltarController : BaseController
     public void State()
     {
         // 상태별 행동 나타냄
-        if(altar.IsStateChange)
-            CheckState();
         switch (altar.AltarState)
         {
             case AltarState.Idle:
@@ -108,11 +105,7 @@ public class AltarController : BaseController
                 break;
         }
     }
-    public void CheckState()
-    {
-        // 상태 체크
-        txtMesh.text = altar.AltarState.ToString();
-    }
+
     private void Idle()
     {
         altar.IsStateChange = false;
@@ -161,7 +154,7 @@ public class AltarController : BaseController
         // 닿은 캐릭터들을 리스트에 넣는 것
         for (int i = 0; i < _raycastHit2Ds.Length; i++)
         {
-            if (_raycastHit2Ds[i].collider.gameObject != this.gameObject && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
+            if (!_raycastHit2Ds[i].collider.CompareTag("Altar") && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>());
                 BuffUpdate();
