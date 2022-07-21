@@ -12,8 +12,6 @@ public class GraceManager : MonoBehaviour
     }
     [SerializeField]
     private PlayerStatus playerStatus = null;
-    [SerializeField]
-    private MercenaryManager mercenaryManager = null;
 
     private void Update()
     {

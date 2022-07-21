@@ -20,7 +20,6 @@ public enum EAIState
     Idle,
     Walk,
     Attack,
-    Damaged,
     Died
 }
 public enum ItemType

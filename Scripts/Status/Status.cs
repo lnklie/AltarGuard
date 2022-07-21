@@ -20,11 +20,28 @@ public class Status : MonoBehaviour
     protected int defensivePower = 0;
     [SerializeField]
     protected bool isDamaged = false;
+    [SerializeField]
     protected bool isStateChange = false;
     protected CapsuleCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
+    [SerializeField]
+    protected Transform targetPos = null;
+    [SerializeField]
+    private DamageTextController damageTextController;
+    [SerializeField]
+    protected int defeatExp = 0;
+    private SpriteRenderer bodySprites = null;
     #region Property
+    public int DefeatExp
+    {
+        get { return defeatExp; }
+        set { defeatExp = value; }
+    }
+    public Transform TargetPos
+    {
+        get { return targetPos; }
+    }
     public string ObjectName
     {
         get { return objectName; }
@@ -68,11 +85,48 @@ public class Status : MonoBehaviour
         get { return ani; }
     }
     #endregion
+
+
+
     public virtual void Awake()
     {
         col = this.GetComponent<CapsuleCollider2D>();
         rig = this.GetComponent<Rigidbody2D>();
         ani = this.GetComponent<Animator>();
+        bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
+    }
+    public virtual void Update()
+    {
+        if (isStateChange)
+            isStateChange = false;
+    }
+    public void SetDamageText(int _damage)
+    {
+        damageTextController.SetDamageText(_damage);
+    }
+    public int ReviseDamage(int _damage, int _depensivePower)
+    {
+        return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
+    }
+    public bool IsLastHit(CharacterStatus _character)
+    {
+        // 매개변수가 마지막 공격을 했는지 체크
+        if (_character.IsAtk == true && curHp <= 0f)
+            return true;
+        else
+            return false;
+    }
+    public virtual void Damaged(int _damage)
+    {
+        curHp -= ReviseDamage(_damage, defensivePower);
+        StartCoroutine(Blink());
+        SetDamageText(ReviseDamage(_damage, defensivePower));
+    }
+    private IEnumerator Blink()
+    {
+        bodySprites.color = new Color(1f, 1f, 1f, 155 / 255f);
+        yield return new WaitForSeconds(0.5f);
+        bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
     public void ActiveLayer(LayerName layerName)
     {

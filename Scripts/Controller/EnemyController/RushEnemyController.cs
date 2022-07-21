@@ -12,9 +12,9 @@ public class RushEnemyController : EnemyController
     private RushEnemyStatus rushEnemyStatus = null;
     public override void Awake()
     {
-        rushEnemyStatus = GetComponent<RushEnemyStatus>();
+        base.Awake();
+        rushEnemyStatus = this.GetComponent<RushEnemyStatus>();
     }
-    
     public bool IsDelay(EnemyStatus _status)
     {
         if (_status.DelayTime >= _status.AtkSpeed)
@@ -27,10 +27,6 @@ public class RushEnemyController : EnemyController
             return true;
         }
     }
-
-
-
-
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
@@ -45,5 +41,18 @@ public class RushEnemyController : EnemyController
         }
 
         yield return 0;
+    }
+
+    public override IEnumerator AIDied(CharacterStatus _status)
+    {
+        rushEnemyStatus.UpdateEnemyHp();
+        _status.ActiveLayer(LayerName.IdleLayer);
+        _status.IsStateChange = false;
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
+        yield return new WaitForSeconds(2f);
+        DropManager.Instance.DropItem(this.transform.position, enemyStatus.ItemDropKey, enemyStatus.ItemDropProb);
+        StageManager.Instance.SpawnedEneies--;
+        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 }

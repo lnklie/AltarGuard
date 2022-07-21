@@ -36,8 +36,8 @@ public class Arrow : MonoBehaviour
         set { dmg = value; }
     }
     [SerializeField]
-    private GameObject archer = null;
-    public GameObject Archer
+    private CharacterStatus archer = null;
+    public CharacterStatus Archer
     {
         get { return archer; }
         set { archer = value; }
@@ -63,28 +63,16 @@ public class Arrow : MonoBehaviour
     private void Shot()
     {
         // 화살 쏘기
-        Debug.Log("화살 간드아");
         rig.velocity = dir * spd;
         durationTime += Time.deltaTime;
         AngleModification();
-        RaycastHit2D ray = HitRay(archer);
+        RaycastHit2D ray = HitRay(archer.gameObject);
         Debug.DrawRay(this.transform.position, dir);
         if(ray)
         {
-            Status hitObject = ray.collider.GetComponent<Status>();
-            Debug.Log(hitObject.ObjectName + " "+ ReviseDamage(dmg, hitObject.DefensivePower));
-            hitObject.CurHp -= ReviseDamage(dmg, hitObject.DefensivePower);
-            hitObject.IsDamaged = true;
-            if (archer.CompareTag("Mercenary"))
-            {
-                MercenaryController mercenary = archer.GetComponent<MercenaryController>();
-                CharacterStatus mercenaryStatus = mercenary.GetComponent<CharacterStatus>();
-                mercenaryStatus.IsAtk = true;
-                if (mercenary.IsLastHit(ray.collider.GetComponent<EnemyStatus>(), mercenaryStatus))
-                {
-                    mercenaryStatus.CurExp += ray.collider.GetComponent<EnemyStatus>().DefeatExp;
-                }
-            }
+            Status hitObject = ray.collider.transform.GetComponent<Status>();
+            hitObject.Damaged(dmg);
+            archer.AquireExp(hitObject);
             durationTime = 0f;
             ProjectionSpawner.Instance.ReturnArrow(this);
 

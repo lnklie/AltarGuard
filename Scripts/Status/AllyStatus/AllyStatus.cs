@@ -11,7 +11,7 @@ public class AllyStatus : CharacterStatus
 
     private float dropProbability = 0;
     private float itemRarity = 0;
-    private int statusPoint = 0;
+    private int statusPoint = 10;
 
     private bool isAlterBuff = false;
     private float revivalTime = 5f;
@@ -68,9 +68,8 @@ public class AllyStatus : CharacterStatus
         set { graceDefensivePower = value; }
     }
     #endregion
-    public override void Start()
+    public void Start()
     {
-        base.Start();
         LvToExp();
     }
 
@@ -109,7 +108,7 @@ public class AllyStatus : CharacterStatus
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
-        isStatusUpdate = true;
+        UpdateAbility();
     }
 
     private void UpLevel()
@@ -119,7 +118,7 @@ public class AllyStatus : CharacterStatus
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
-        isStatusUpdate = true;
+        UpdateAbility();
     }
 
     private void LvToExp()
@@ -145,7 +144,7 @@ public class AllyStatus : CharacterStatus
         base.UpdateAbility();
         dropProbability = totalLuck * 0.001f;
         itemRarity = totalLuck * 0.001f;
-        atkSpeed = 3f - ((equipmentController.EquipItems[7].atkSpeed + (totalDex * 0.1f)) * graceAttackSpeed);
+        atkSpeed = 5f - ((equipmentController.EquipItems[7].atkSpeed + (totalDex * 0.1f)) * graceAttackSpeed);
         physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage) * gracePhysicalDamage);
         magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage) * graceMagicalDamage);
         defensivePower = Mathf.CeilToInt((totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower) * graceDefensivePower);
