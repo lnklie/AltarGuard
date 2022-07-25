@@ -100,6 +100,7 @@ public class EquipmentController : MonoBehaviour
         // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[7])
         {
+            status.AtkRange = equipItems[7].atkRange;
             int num = equipItems[7].itemKey / 1000;
             if (num == 7)
                 status.AttackType = 0f;

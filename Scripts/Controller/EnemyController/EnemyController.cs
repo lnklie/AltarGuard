@@ -46,9 +46,6 @@ public class EnemyController : CharacterController
     }
 
 
-
-
-
     public override void AIChangeState(CharacterStatus _status)
     {
         if (_status.Target)
@@ -62,25 +59,19 @@ public class EnemyController : CharacterController
         }
         else
         {
-            if (_status.IsDamaged)
+            if (_status.Target == null)
             {
-                _status.AIState = EAIState.Damaged;
+                _status.AIState = EAIState.Idle;
             }
             else
             {
-                if (_status.Target == this)
+                _status.AIState = EAIState.Walk;
+                if (IsAtkRange(_status))
                 {
-                    _status.AIState = EAIState.Idle;
-                }
-                else
-                {
-                    _status.AIState = EAIState.Walk;
-                    if (IsAtkRange(_status))
-                    {
-                        _status.AIState = EAIState.Attack;
-                    }
+                    _status.AIState = EAIState.Attack;
                 }
             }
+
         }
     }
 
@@ -138,37 +129,16 @@ public class EnemyController : CharacterController
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
-    public override RaycastHit2D[] AttackRange(CharacterStatus _status)
+
+    public override void AttackDamage(CharacterStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
-        Debug.DrawRay(this.transform.position, _status.TargetDir, Color.red, 1f);
-        if (hits.Length > 0)
-        {
-            for (int i = 0; i < hits.Length; i++)
-            {
-                hits[i].rigidbody.GetComponent<Status>().IsDamaged = true;
-            }
-        }
-        else
-            Debug.Log("아무것도 없음");
-        return hits;
-    }
-    public override void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
-    {
+
         for (int i = 0; i < hits.Length; i++)
         {
             Status ally = hits[i].collider.GetComponent<Status>();
-
-            ally.CurHp -= ReviseDamage(AttackTypeDamage(_status), ally.DefensivePower);
+            ally.Damaged(AttackTypeDamage(_status));
+            
         }
     }
-
-    public override void AIDamaged(CharacterStatus _status)
-    {
-        base.AIDamaged(_status);
-        _status.IsStateChange = false;
-        _status.StiffenTime = 0f;
-        _status.IsDamaged = false;
-    }
-
 }

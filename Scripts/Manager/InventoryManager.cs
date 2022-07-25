@@ -12,55 +12,62 @@ public class InventoryManager : SingletonManager<InventoryManager>
 {
     [SerializeField]
     private List<Item> inventroyWeaponItems = new List<Item>();
+
+    [SerializeField]
+    private List<Item> inventroyEquipmentItems = new List<Item>();
+
+    [SerializeField]
+    private List<Item> inventroyConsumableItems = new List<Item>();
+
+    [SerializeField]
+    private List<Item> inventroyMiscellaneousItems = new List<Item>();
+    [SerializeField]
+    private List<Item> inventroyDecorationItems = new List<Item>();
+
+    #region Property
     public List<Item> InventroyWeaponItems
     {
         get { return inventroyWeaponItems; }
     }
-
-    [SerializeField]
-    private List<Item> inventroyEquipmentItems = new List<Item>();
     public List<Item> InventroyEquipmentItems
     {
         get { return inventroyEquipmentItems; }
     }
-
-    [SerializeField]
-    private List<Item> inventroyConsumableItems = new List<Item>();
     public List<Item> InventroyConsumableItems
     {
         get { return inventroyConsumableItems; }
     }
-
-    [SerializeField]
-    private List<Item> inventroyMiscellaneousItems = new List<Item>();
     public List<Item> InventroyMiscellaneousItems
     {
         get { return inventroyMiscellaneousItems; }
     }
-
-    [SerializeField]
-    private List<Item> inventroyDecorationItems = new List<Item>();
     public List<Item> InventroyDecorationItems
     {
         get { return inventroyDecorationItems; }
     }
+    #endregion
 
-    public delegate void Del(string message);
-    public static void DelegateMethod(string message)
-    {
-        Debug.Log(message);
-    }
     private void Start()
     {
-        AcquireItem(DatabaseManager.Instance.SelectItem(7024), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(3), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(4), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(5), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(6), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(7), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(8), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(9), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(10), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(12), 1);
+
+        AcquireItem(DatabaseManager.Instance.SelectItem(1002), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(2003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(3002), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(4003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(5002), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(6003),1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7002), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(7003), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(9002), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(10002), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(11000), 3);
-        AcquireItem(DatabaseManager.Instance.SelectItem(11001),3);
-        AcquireItem(DatabaseManager.Instance.SelectItem(11002), 3);
-        AcquireItem(DatabaseManager.Instance.SelectItem(11003), 3);
+        AcquireItem(DatabaseManager.Instance.SelectItem(8003), 1);
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
@@ -315,7 +322,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
                     Debug.Log("아이템 버리기");
-                    if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
+                    if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
                         Debug.Log("아이템 비워짐");

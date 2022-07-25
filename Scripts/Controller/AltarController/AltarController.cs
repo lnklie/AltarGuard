@@ -12,20 +12,20 @@ using UnityEngine.UI;
 public class AltarController : BaseController
 {
     private AltarStatus altar = null;
-    private Image[] images = null;
+
     private SpriteRenderer[] spriteRenderers = null;
 
     [SerializeField]
     private List<AllyStatus> characters = new List<AllyStatus>();
-    public void Awake()
+    public override void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
-        images = this.GetComponentsInChildren<Image>();
+
     }
     private void Start()
     {
-        UpdateHp();
+        SetHp();
         UpdateBuffRange();
     }
     void Update()
@@ -39,7 +39,7 @@ public class AltarController : BaseController
             altar.IsAltarStatusChange = false;
         }
     }
-    public void UpdateHp()
+    public void SetHp()
     {
         if (altar != null)
         {
@@ -56,22 +56,13 @@ public class AltarController : BaseController
         }
         else
         {
-            if (altar.IsDamaged)
-            {
-                SetState(AltarState.Damaged);
-                UpdateEnemyHp();
-            }
-            else
-            {
-                SetState(AltarState.Idle);     
-            }
+
+            SetState(AltarState.Idle);     
+            
         }
 
     }
-    public void UpdateEnemyHp()
-    {
-        images[1].fillAmount = altar.CurHp / (float)altar.MaxHp;
-    }
+
     public bool IsDestroyed()
     {
         // 파괴되었는지 확인

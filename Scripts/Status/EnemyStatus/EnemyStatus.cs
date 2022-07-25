@@ -12,14 +12,15 @@ using UnityEngine.UI;
 public class EnemyStatus : CharacterStatus
 {
     protected RaycastHit2D[] altarRay = default;
-    [SerializeField]
-    protected int defeatExp = 0;
+
     protected EnemyType enemyType;
     private bool isKnuckBack = false;
     protected List<int> itemDropKey = new List<int>();
     protected List<float> itemDropProb = new List<float>();
     protected bool isEnemyChange;
 
+    [SerializeField]
+    private TextMesh textMesh = null;
 
     #region Property
     public RaycastHit2D[] AltarRay
@@ -27,11 +28,7 @@ public class EnemyStatus : CharacterStatus
         get { return altarRay; }
         set { altarRay = value; }
     }
-    public int DefeatExp
-    {
-        get { return defeatExp; }
-        set { defeatExp = value; }
-    }
+
     public EnemyType EnemyType
     {
         get { return enemyType; }
@@ -57,9 +54,6 @@ public class EnemyStatus : CharacterStatus
         set { isEnemyChange = value; }
     }
     #endregion
-
-    [SerializeField]
-    private TextMesh textMesh = null;
 
     public override void Awake()
     {

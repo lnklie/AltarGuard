@@ -33,7 +33,7 @@ public class CharacterStatus : Status
     protected float arrowSpd = 2f;
     [SerializeField]
     protected Vector2 distance = new Vector2(0, 0);
-    protected int curLevel = 10;
+    protected int curLevel = 30;
     [SerializeField]
     protected int totalStr = 5;
     [SerializeField]
@@ -320,23 +320,30 @@ public class CharacterStatus : Status
         delayTime = atkSpeed;
     }
 
-    public virtual void Update()
+    public override void Update()
     {
+        base.Update();
         if(isStatusUpdate)
         {
             isStatusUpdate = false;
         }
-
         if (equipmentController.IsChangeItem)
         {
+            equipmentController.IsChangeItem = false;
             UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
-            equipmentController.IsChangeItem = false;
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
     }
-
+    public void AquireExp(Status status)
+    {
+        // 마지막 공격을 했는지 체크
+        if (status.IsLastHit())
+        {
+            curExp += status.DefeatExp;
+        }
+    }
     public void UpdateBasicStatus()
     {
         totalStr = str + passiveStr;

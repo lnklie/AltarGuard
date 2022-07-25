@@ -8,8 +8,20 @@ using UnityEngine;
  * 파일명 : BaseController.cs
 ==============================
 */
-public abstract class BaseController : MonoBehaviour
+public class BaseController : MonoBehaviour
 {
+
+    private Status status = null;
+    public virtual void Awake()
+    {
+        status = GetComponent<Status>();
+
+    }
+
+    public void SetIsDamaged(bool _bool)
+    {
+        status.IsDamaged = _bool;
+    }
     private Debuff debuff = Debuff.Not;
     public Debuff Debuff
     {
@@ -17,10 +29,7 @@ public abstract class BaseController : MonoBehaviour
         set { debuff = value; }
     }
 
-    public int ReviseDamage(int _damage, int _depensivePower)
-    {
-        return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
-    }
+
     public float GetDistance(Vector2 _start, Vector2 _end)
     {
         // 대상과의 거리 측정
