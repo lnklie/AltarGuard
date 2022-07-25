@@ -11,5 +11,4 @@ public interface IAIController
     public void AIChase(CharacterStatus _status);
     public void AIAttack(CharacterStatus _status);
     public IEnumerator AIDied(CharacterStatus _status);
-    public void AIDamaged(CharacterStatus _status);
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : PlayerController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -46,15 +46,19 @@ public class PlayerController : CharacterController
         if (!IsDelay(player))
         {
             player.DelayTime = player.AtkSpeed;
+
         }
         else
         {
             player.DelayTime += Time.deltaTime;
+
         }
+
         if (player.IsAutoMode)
             base.Update();
         else
         {
+
             Perception(player);
             MouseTargeting(player);
             if (player.IsDamaged)
@@ -77,7 +81,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                     else if (skillController.ActiveSkills[0].skillType == 1)
                     {
@@ -86,11 +90,11 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("Ã¹ ¹øÂ° ½ºÅ³ ÄğÅ¸ÀÓ Áß");
+                    Debug.Log("ì²« ë²ˆì§¸ ìŠ¤í‚¬ ì¿¨íƒ€ì„ ì¤‘");
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
@@ -103,7 +107,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                     else if (skillController.ActiveSkills[1].skillType == 1)
                     {
@@ -112,11 +116,11 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("µÎ ¹øÂ° ½ºÅ³ ÄğÅ¸ÀÓ Áß");
+                    Debug.Log("ë‘ ë²ˆì§¸ ìŠ¤í‚¬ ì¿¨íƒ€ì„ ì¤‘");
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
@@ -130,7 +134,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                     else if (skillController.ActiveSkills[2].skillType == 1)
                     {
@@ -139,11 +143,11 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
                         }
                         else
-                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("¼¼ ¹øÂ° ½ºÅ³ ÄğÅ¸ÀÓ Áß");
+                    Debug.Log("ì„¸ ë²ˆì§¸ ìŠ¤í‚¬ ì¿¨íƒ€ì„ ì¤‘");
             }
         }
         AquireRay();
@@ -153,7 +157,7 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("¾Æ±º Å¬¸¯");
+            Debug.Log("ì•„êµ° í´ë¦­");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -165,11 +169,11 @@ public class PlayerController : CharacterController
                     {
                         _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("¾Æ±º Å¸°ÙÆÃ " + hit.rigidbody.gameObject.name);
+                    Debug.Log("ì•„êµ° íƒ€ê²ŸíŒ… " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("´ë»óÀÌ ³Ê¹« ¸Ö¸®ÀÖ½À´Ï´Ù.");
+                    Debug.Log("ëŒ€ìƒì´ ë„ˆë¬´ ë©€ë¦¬ìˆìŠµë‹ˆë‹¤.");
             }
             else
             {
@@ -197,14 +201,14 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove(PlayerStatus _status)
     {
-        // ¿òÁ÷ÀÓ ½ÇÇà
+        // ì›€ì§ì„ ì‹¤í–‰
         _status.ActiveLayer(LayerName.WalkLayer);
         _status.Rig.velocity = _status.Speed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
     {
-        // Å°ÀÔ·Â
+        // í‚¤ì…ë ¥
         _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -235,7 +239,7 @@ public class PlayerController : CharacterController
     }
     public bool IsMove(PlayerStatus _status)
     {
-        // ¿òÁ÷ÀÌ°í ÀÖ´ÂÁö È®ÀÎ
+        // ì›€ì§ì´ê³  ìˆëŠ”ì§€ í™•ì¸
         if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
@@ -246,91 +250,47 @@ public class PlayerController : CharacterController
     {
 
         if (!IsDelay(_status))
+
         {
             _status.ActiveLayer(LayerName.AttackLayer);
-            _status.Ani.SetTrigger("AtkTrigger");
+            _status.Ani.SetBool("IsAtk",true);
             _status.IsAtk = true;
             _status.Rig.velocity = Vector2.zero;
             _status.DelayTime = 0f;
             _status.Ani.SetFloat("AtkType", _status.AttackType);
-            
+
             if (_status.AttackType == 0f)
             {
-                DamageEnemy(_status, AttackRange(_status));
-
+                DamageEnemy(_status);
             }
             else if (_status.AttackType == 0.5f)
             {
                 yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.65f);
-                    ShotArrow(_status);
+                ShotArrow(_status);
             }
+
             yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.99f);
-            Debug.Log("1111");
+            _status.Ani.SetBool("IsAtk", false);
             _status.IsAtk = false;
         }
     }
 
-
-    public void SetFalseIsAtk(PlayerStatus _status)
+    public void DamageEnemy(PlayerStatus _status)
     {
-        _status.IsAtk = false;
-    }
-    private IEnumerator AttackState(PlayerStatus _status)
-    {
-        // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-
-        _status.IsAtk = true;
-        while (!_status.Ani.GetCurrentAnimatorStateInfo(2).IsName("PlayerAttack") )
-        {
-            //ÀüÈ¯ ÁßÀÏ ¶§ ½ÇÇàµÇ´Â ºÎºĞ
-            if(_status.IsAtk)
-                DamageEnemy(_status,AttackRange(_status));
-            yield return null;
-        }
-        //Debug.Log("¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á");
-        _status.IsAtk = false;
-    }
-
-    public void DamageEnemy(PlayerStatus _status, RaycastHit2D[] hits)
-    {
-        // ¹üÀ§¾È¿¡ ÀÖ´Â Àûµé¿¡°Ô µ¥¹ÌÁö
-        for (int i =0; i < hits.Length; i++)
-        {
-            EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-            enemy.CurHp -= ReviseDamage(AttackTypeDamage(_status), enemy.DefensivePower);
-            enemy.GetComponentInChildren<DamageTextController>().SetDamageText(ReviseDamage(AttackTypeDamage(_status), enemy.DefensivePower));
-            Debug.Log("ÇöÀç ÀûÀÇ Ã¼·ÂÀº " + enemy.CurHp); 
-            if (IsLastHit(enemy, _status))
-                _status.CurExp += enemy.DefeatExp;
-        }
-    }
-    public bool IsLastHit(EnemyStatus _enemy, CharacterStatus _status)
-    {
-        // ¸¶Áö¸· °ø°İÀ» Çß´ÂÁö Ã¼Å©
-        if (_status.IsAtk == true && _enemy.CurHp <= 0f)
-            return true;
-        else
-            return false;
-    }
-
-    public override RaycastHit2D[] AttackRange(CharacterStatus _status)
-    {
-        // È÷Æ®¹Ú½º¸¦ ¸¸µé¾î³»°í ¹üÀ§¾È¿¡ µé¾î¿Â ÀûµéÀ» ¹İÈ¯
-        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f,LayerMask.GetMask("Enemy"));
-        Debug.DrawRay(this.transform.position, lookDir, Color.red, 1f);
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
+        // ë²”ìœ„ì•ˆì— ìˆëŠ” ì ë“¤ì—ê²Œ ë°ë¯¸ì§€
         if (hits.Length > 0)
         {
-            for (int i = 0; i < hits.Length; i++)
+            for (int i =0; i < hits.Length; i++)
             {
-                EnemyStatus hitsEnemy = hits[i].rigidbody.GetComponent<EnemyStatus>();
-                UIManager.Instance.Notice(hitsEnemy.ObjectName);
-                hitsEnemy.IsDamaged = true;
+                Status enemy = hits[i].collider.GetComponent<Status>();
+                enemy.Damaged(AttackTypeDamage(_status));
+                _status.AquireExp(enemy);
             }
         }
-        else
-            Debug.Log("¾Æ¹«°Íµµ ¾øÀ½");
-        return hits;
     }
+
+
     private void AquireRay()
     {
         player.ItemSight = Physics2D.CircleCastAll(this.transform.position, 1f, Vector2.up, 0, LayerMask.GetMask("Item"));
@@ -348,9 +308,9 @@ public class PlayerController : CharacterController
     private IEnumerator Blink(CharacterStatus _status)
     {
         _status.IsDamaged = false;        
-        bodySprites.color = new Color(1f,1f,1f,155/255f);
+        //bodySprites.color = new Color(1f,1f,1f,155/255f);
         yield return new WaitForSeconds(0.5f);
-        bodySprites.color = new Color(1f, 1f, 1f, 1f);
+        //bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
 
     private IEnumerator Died(PlayerStatus _status)
@@ -429,7 +389,7 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("Å¸°ÙÆÃ");
+        Debug.Log("íƒ€ê²ŸíŒ…");
         if (_allyTarget)
         {
             if (player.AllyTarget)
@@ -454,25 +414,21 @@ public class PlayerController : CharacterController
         }
         else
         {
-            if (_status.IsDamaged)
+
+            if (_status.Target == null)
             {
-                _status.AIState = EAIState.Damaged;
+                _status.AIState = EAIState.Idle;
             }
             else
             {
-                if (_status.Target == null)
+                _status.AIState = EAIState.Walk;
+                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                 {
-                    _status.AIState = EAIState.Idle;
-                }
-                else
-                {
-                    _status.AIState = EAIState.Walk;
-                    if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
-                    {
-                        _status.AIState = EAIState.Attack;
-                    }
+
+                    _status.AIState = EAIState.Attack;
                 }
             }
+
         }
     }
 
@@ -496,49 +452,56 @@ public class PlayerController : CharacterController
     public override void AIPerception(CharacterStatus _status)
     {
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
-        if (_enemyHit && !CheckRayList(_enemyHitStatus, _status.SightRayList))
-            _status.SightRayList.Add(_enemyHitStatus);
 
-        SortSightRayList(_status.SightRayList);
+        if(_enemyHit)
+        {
+            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();  
+            if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
+                _status.SightRayList.Add(_enemyHitStatus);
+             SortSightRayList(_status.SightRayList);
+        }
+
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-        if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
-            _status.AllyRayList.Add(_allyHitStatus);
+        if(_allyHit)
+        {
+            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
+            if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
+                _status.AllyRayList.Add(_allyHitStatus);
+        }
 
 
         if (_status.SightRayList.Count > 0)
         {
             TargetEnemy(_status.SightRayList[0]);
 
-        }
-        for (int i = 0; i < _status.SightRayList.Count; i++)
-        {
-            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
+            for (int i = 0; i < _status.SightRayList.Count; i++)
             {
-                if (_status.Target == _status.SightRayList[i])
+                if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange ||
+                    _status.SightRayList[i].CurHp <= 0)
                 {
-                    _status.Target.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-                    _status.Target = null;
+                    _status.SightRayList.Remove(_status.SightRayList[i]);
                 }
-                _status.SightRayList.Remove(_status.SightRayList[i]);
             }
+        }
+        else
+        {
+            _status.Target = null;
         }
     }
 
 
-    public override void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
+    public override void AttackDamage(CharacterStatus _status)
     {
-        for (int i = 0; i < hits.Length; i++)
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
+        if(hits.Length > 0)
         {
-            EnemyStatus enemy = hits[i].collider.GetComponent<EnemyStatus>();
-
-            enemy.CurHp -= ReviseDamage(AttackTypeDamage(_status), enemy.DefensivePower);
-            _status.IsAtk = true;
-            if (IsLastHit(enemy, _status))
+            for (int i = 0; i < hits.Length; i++)
             {
-                Debug.Log("¸·Å¸ °æÇèÄ¡ È®µæ");
-                _status.CurExp += enemy.DefeatExp;
+                Status _enemy = hits[i].collider.GetComponent<Status>();
+
+                _status.IsAtk = true;
+                _enemy.Damaged(AttackTypeDamage(_status));
+                _status.AquireExp(_enemy);
             }
         }
     }
@@ -549,11 +512,6 @@ public class PlayerController : CharacterController
         Rivive(_status);
     }
 
-    public override void AIDamaged(CharacterStatus _status)
-    {
-        base.AIDamaged(_status);
-        StartCoroutine(Blink(_status));
-    }
     #endregion
 }
     

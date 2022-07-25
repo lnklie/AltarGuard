@@ -5,50 +5,57 @@ using UnityEngine;
 public class SkillObject : MonoBehaviour
 {
     private CircleCollider2D col = null;
-
     [SerializeField]
     private int damage = 0;
+    private int skillHitCount = 0;
+    private float maxDurationTime = 0f;
+    private float durationTime = 0f;
+
+    private Transform target = null;
+    [SerializeField]
+    private float maxCoolTime = 0f;
+    private bool isSkillUse = false;
+    private CharacterController castingController = null;
+    private CharacterStatus castingStatus = null;
+
+
+    #region Property
     public int Damage
     {
         get { return damage; }
         set { damage = value; }
     }
-    private int skillHitCount = 0;
     public int SkillHitCount
     {
         get { return skillHitCount; }
         set { skillHitCount = value; }
     }
-    private float maxDurationTime = 0f;
     public float MaxDuration
     {
         get { return maxDurationTime; }
         set { maxDurationTime = value; }
     }
-    private float durationTime = 0f;
-
-    private Transform target = null;
     public Transform Target
     {
         get { return target; }
         set { target = value; }
     }
-    [SerializeField]
-    private float maxCoolTime = 0f;
     public float MaxCoolTime
     {
         get { return maxCoolTime; }
         set { maxCoolTime = value; }
     }
-    private bool isSkillUse = false;
     public bool IsSkillUse
     {
         get { return isSkillUse; }
         set { isSkillUse = value; }
     }
+    #endregion
     public void Awake()
     {
         col = this.GetComponent<CircleCollider2D>();
+        castingController = this.transform.parent.parent.GetComponentInChildren<CharacterController>();
+        castingStatus = castingController.GetComponent<CharacterStatus>();
     }
     private void Start()
     {
@@ -70,36 +77,15 @@ public class SkillObject : MonoBehaviour
             if (_hitRay[i])
             {
                 Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
+                
                 for (int j = 0; j < skillHitCount; j++)
                 {
-                    _status.CurHp -= damage / skillHitCount;
-                    _status.IsDamaged = true;
-                    Debug.Log(_status.CurHp);
+                    _status.Damaged(damage / skillHitCount);
                     yield return new WaitForSeconds(durationTime / skillHitCount);
                 }
                 if (this.transform.parent.gameObject.layer == 8)
                 {
-                    if(this.gameObject.CompareTag("Mercenary"))
-                    {
-                        MercenaryController mercenary = this.transform.parent.parent.GetComponentInChildren<MercenaryController>();
-                        CharacterStatus mercenartStatus = mercenary.GetComponent<CharacterStatus>();
-                        mercenartStatus.IsAtk = true;
-                        if (mercenary.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>(), mercenartStatus))
-                        {
-                            mercenartStatus.CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
-                            // øÎ∫¥ æ˜µ•¿Ã∆Æ
-                        }
-                    }
-                    else
-                    {
-                        PlayerController player = this.transform.parent.parent.GetComponentInChildren<PlayerController>();
-                        CharacterStatus playerStatus = player.GetComponent<CharacterStatus>();
-                        playerStatus.IsAtk = true;
-                        if(player.IsLastHit(_hitRay[i].collider.GetComponent<EnemyStatus>(), playerStatus))
-                        {
-                            playerStatus.CurExp += _hitRay[i].collider.GetComponent<EnemyStatus>().DefeatExp;
-                        }
-                    }
+                    castingStatus.AquireExp(_status);
                 }
             }
         }
@@ -122,7 +108,7 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
-        // ∑π¿Ã∏¶ ΩÓ¥¬ ø™«“
+        // Î†àÏù¥Î•º ÏèòÎäî Ïó≠Ìï†
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : CharacterStatus.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -33,7 +33,9 @@ public class CharacterStatus : Status
     protected float arrowSpd = 2f;
     [SerializeField]
     protected Vector2 distance = new Vector2(0, 0);
-    protected int curLevel = 10;
+
+    protected int curLevel = 30;
+
     [SerializeField]
     protected int totalStr = 5;
     [SerializeField]
@@ -320,21 +322,30 @@ public class CharacterStatus : Status
         delayTime = atkSpeed;
     }
 
-    public virtual void Update()
+
+    public override void Update()
     {
+        base.Update();
+
         if(isStatusUpdate)
         {
             isStatusUpdate = false;
         }
-
         if (equipmentController.IsChangeItem)
         {
+            equipmentController.IsChangeItem = false;
             UpdateAbility();
             checkEquipItems = equipmentController.CheckEquipItems;
-            equipmentController.IsChangeItem = false;
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
+    }
+
+    public void AquireExp(Status status)
+    {
+        // ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
+        if (status.IsLastHit(this))
+            curExp += status.DefeatExp;
     }
 
     public void UpdateBasicStatus()
@@ -347,7 +358,7 @@ public class CharacterStatus : Status
 
     public virtual void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         UpdateBasicStatus();
         maxHp = 100 + totalStr * 10;
         maxMp = 100 + totalWiz * 10;

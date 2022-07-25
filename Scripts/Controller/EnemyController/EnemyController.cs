@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnemyAIController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EnemyAIController.cs
 ==============================
 */
 public class EnemyController : CharacterController
@@ -35,7 +35,7 @@ public class EnemyController : CharacterController
     public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
     {
 
-        // ¾Õ¿¡ ´Ù¸¥ ÀûÀÌ ÀÖ´Â Áö È®ÀÎ
+        // ì•ì— ë‹¤ë¥¸ ì ì´ ìˆëŠ” ì§€ í™•ì¸
 
         if (_enemyHit.collider.gameObject != _enemy.gameObject)
         {
@@ -45,42 +45,36 @@ public class EnemyController : CharacterController
             return false;
     }
 
-
-
-
-
     public override void AIChangeState(CharacterStatus _status)
     {
         if (_status.Target)
+
         {
             _status.Distance = _status.Target.position - this.transform.position;
             _status.TargetDir = _status.Distance.normalized;
         }
         if (_status.CurHp < 0f)
         {
+
             _status.AIState = EAIState.Died;
         }
         else
         {
-            if (_status.IsDamaged)
+            if (_status.Target == null)
             {
-                _status.AIState = EAIState.Damaged;
+
+                _status.AIState = EAIState.Idle;
             }
             else
             {
-                if (_status.Target == this)
+                _status.AIState = EAIState.Walk;
+                if (IsAtkRange(_status))
                 {
-                    _status.AIState = EAIState.Idle;
-                }
-                else
-                {
-                    _status.AIState = EAIState.Walk;
-                    if (IsAtkRange(_status))
-                    {
-                        _status.AIState = EAIState.Attack;
-                    }
+                    _status.AIState = EAIState.Attack;
+
                 }
             }
+
         }
     }
 
@@ -138,37 +132,18 @@ public class EnemyController : CharacterController
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
-    public override RaycastHit2D[] AttackRange(CharacterStatus _status)
+
+
+    public override void AttackDamage(CharacterStatus _status)
+
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
-        Debug.DrawRay(this.transform.position, _status.TargetDir, Color.red, 1f);
-        if (hits.Length > 0)
-        {
-            for (int i = 0; i < hits.Length; i++)
-            {
-                hits[i].rigidbody.GetComponent<Status>().IsDamaged = true;
-            }
-        }
-        else
-            Debug.Log("¾Æ¹«°Íµµ ¾øÀ½");
-        return hits;
-    }
-    public override void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
-    {
+
         for (int i = 0; i < hits.Length; i++)
         {
             Status ally = hits[i].collider.GetComponent<Status>();
-
-            ally.CurHp -= ReviseDamage(AttackTypeDamage(_status), ally.DefensivePower);
+            ally.Damaged(AttackTypeDamage(_status));
+            
         }
     }
-
-    public override void AIDamaged(CharacterStatus _status)
-    {
-        base.AIDamaged(_status);
-        _status.IsStateChange = false;
-        _status.StiffenTime = 0f;
-        _status.IsDamaged = false;
-    }
-
 }

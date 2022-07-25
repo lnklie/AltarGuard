@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-11
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Status.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-11
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Status.cs
 ==============================
 */
 public class Status : MonoBehaviour
@@ -20,14 +20,24 @@ public class Status : MonoBehaviour
     protected int defensivePower = 0;
     [SerializeField]
     protected bool isDamaged = false;
+    [SerializeField]
     protected bool isStateChange = false;
     protected CapsuleCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
     [SerializeField]
     protected Transform targetPos = null;
-    
+    [SerializeField]
+    private DamageTextController damageTextController;
+    [SerializeField]
+    protected int defeatExp = 0;
+    private SpriteRenderer bodySprites = null;
     #region Property
+    public int DefeatExp
+    {
+        get { return defeatExp; }
+        set { defeatExp = value; }
+    }
     public Transform TargetPos
     {
         get { return targetPos; }
@@ -81,11 +91,45 @@ public class Status : MonoBehaviour
         col = this.GetComponent<CapsuleCollider2D>();
         rig = this.GetComponent<Rigidbody2D>();
         ani = this.GetComponent<Animator>();
+        bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
+    }
+    public virtual void Update()
+    {
+        if (isStateChange)
+            isStateChange = false;
+    }
+    public void SetDamageText(int _damage)
+    {
+        damageTextController.SetDamageText(_damage);
+    }
+    public int ReviseDamage(int _damage, int _depensivePower)
+    {
+        return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
+    }
+    public bool IsLastHit(CharacterStatus _character)
+    {
+        // ë§¤ê°œë³€ìˆ˜ê°€ ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
+        if (_character.IsAtk == true && curHp <= 0f)
+            return true;
+        else
+            return false;
+    }
+    public virtual void Damaged(int _damage)
+    {
+        curHp -= ReviseDamage(_damage, defensivePower);
+        StartCoroutine(Blink());
+        SetDamageText(ReviseDamage(_damage, defensivePower));
+    }
+    private IEnumerator Blink()
+    {
+        bodySprites.color = new Color(1f, 1f, 1f, 155 / 255f);
+        yield return new WaitForSeconds(0.5f);
+        bodySprites.color = new Color(1f, 1f, 1f, 1f);
 
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ·¹ÀÌ¾î °¡ÁßÄ¡ Á¶Àı
+        // ì• ë‹ˆë©”ì´ì…˜ ë ˆì´ì–´ ê°€ì¤‘ì¹˜ ì¡°ì ˆ
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);

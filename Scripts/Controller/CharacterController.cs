@@ -11,13 +11,16 @@ public class CharacterController : BaseController, IAIController
     [SerializeField]
     protected PathFindController pathFindController = null;
 
-    public virtual void Awake()
+
+    public override void Awake()
     {
         characterStatus = this.GetComponent<CharacterStatus>();
     }
 
     public virtual void Update()
     {
+        if(characterStatus.Target)
+            pathFindController.PathFinding();
         AIPerception(characterStatus);
         AIChangeState(characterStatus);
         AIState(characterStatus);
@@ -50,7 +53,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -102,13 +105,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -122,37 +125,35 @@ public class CharacterController : BaseController, IAIController
     {
         if (!IsDelay(_status))
         {
-            _status.Ani.SetTrigger("AtkTrigger");
-            _status.DelayTime = 0f;
+            _status.ActiveLayer(LayerName.AttackLayer);
+            _status.Ani.SetBool("IsAtk", true);
             _status.IsAtk = true;
+            _status.Rig.velocity = Vector2.zero;
+            _status.DelayTime = 0f;
+            _status.Ani.SetFloat("AtkType", _status.AttackType);
 
-            if (_status.AttackType == 0)
+            if (_status.AttackType == 0f)
             {
-                AttackDamage(AttackRange(_status), _status);
+                AttackDamage(_status);
             }
             else if (_status.AttackType == 0.5f)
             {
                 yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.65f);
-                    ShotArrow(_status);
-                
-            }
-            else
-            {
 
+                ShotArrow(_status);
 
             }
-        }
-        else
+
+            yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.99f);
+            _status.Ani.SetBool("IsAtk", false);
             _status.IsAtk = false;
+        }
 
     }
-    public virtual RaycastHit2D[] AttackRange(CharacterStatus _status)
+
+    public virtual void AttackDamage(CharacterStatus _status)
     {
-        //
-        return null;
-    }
-    public virtual void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
-    {
+
         //
     }
     #region AI
@@ -175,9 +176,6 @@ public class CharacterController : BaseController, IAIController
             case EAIState.Attack:
                 AIAttack(_status);
                 break;
-            case EAIState.Damaged:
-                AIDamaged(_status);
-                break;
             case EAIState.Died:
                 StartCoroutine(AIDied(_status));
                 break;
@@ -190,35 +188,44 @@ public class CharacterController : BaseController, IAIController
     public virtual void AIIdle(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.IdleLayer);
-        _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
     }
-
+    //public Vector2 TargetPosByAtkRange(Node _targetNode, CharacterStatus _status)
+    //{
+    //    Vector2 _targetPos = Vector2.zero;
+    //    if(Mathf.Pow(_targetNode.x,2) + Mathf.Pow(_targetNode.y, 2) == Mathf.Pow(_status.AtkRange,2))
+    //        _targetPos = new Vector2(_targetNode.x, _targetNode.y);
+    //    return _targetPos; 
+    //}
     public virtual void AIChase(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.WalkLayer);
-        _status.IsStateChange = false;
-        Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
-        _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
 
-        if ((Vector2)(_status.transform.position) == _moveDir) pathFindController.FinalNodeList.RemoveAt(0);
+        if(pathFindController.FinalNodeList.Count > 1)
+        {
+            Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
+            _status.ActiveLayer(LayerName.WalkLayer);
+            _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
+            
+        }
+        else
+        {
+            //pathFindController.FinalNodeList.RemoveAt(0);
+        }
 
-    } 
+    }
+
     public virtual void AIAttack(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.AttackLayer);
         _status.Ani.SetFloat("AtkType", _status.AttackType);
         _status.Rig.velocity = Vector2.zero;
         StartCoroutine(AttackByAttackType(_status));
+
     }
-    public virtual void AIDamaged(CharacterStatus _status)
-    {
-        _status.IsStatusUpdate = true;
-    }
+
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.IdleLayer);
-        _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return null;
