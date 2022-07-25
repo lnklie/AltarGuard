@@ -43,6 +43,7 @@ public class MercenaryController : CharacterController
 
     public override void AttackDamage(CharacterStatus _status)
     {
+
         var hits = Physics2D.CircleCastAll(this.transform.position,_status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Enemy"));
         if(hits.Length > 0)
         {
@@ -53,6 +54,7 @@ public class MercenaryController : CharacterController
 
                 _enemy.Damaged(AttackTypeDamage(_status));
                 _status.AquireExp(_enemy);
+
             }
         }
     }
@@ -83,6 +85,7 @@ public class MercenaryController : CharacterController
                 if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                 {
                     _status.AIState = EAIState.Attack;
+
                 }
             }
 
@@ -106,12 +109,14 @@ public class MercenaryController : CharacterController
 
 
         if (_status.SightRayList.Count > 0)
+
         {
             _status.Target = _status.SightRayList[0].TargetPos;
         }
 
         for (int i = 0; i < _status.SightRayList.Count; i++)
         {
+
             if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
             {
                 if (_status.Target == _status.SightRayList[i])

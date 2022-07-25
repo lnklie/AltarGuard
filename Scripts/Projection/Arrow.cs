@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Arrow.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Arrow.cs
 ==============================
 */
 public class Arrow : MonoBehaviour
@@ -62,7 +62,7 @@ public class Arrow : MonoBehaviour
     }
     private void Shot()
     {
-        // È­»ì ½î±â
+        // í™”ì‚´ ì˜ê¸°
         rig.velocity = dir * spd;
         durationTime += Time.deltaTime;
         AngleModification();
@@ -71,8 +71,10 @@ public class Arrow : MonoBehaviour
         if(ray)
         {
             Status hitObject = ray.collider.transform.GetComponent<Status>();
+
             hitObject.Damaged(dmg);
             archer.AquireExp(hitObject);
+
             durationTime = 0f;
             ProjectionSpawner.Instance.ReturnArrow(this);
 
@@ -91,7 +93,7 @@ public class Arrow : MonoBehaviour
 
     private RaycastHit2D HitRay(GameObject _archer)
     {
-        // ·¹ÀÌ¸¦ ½î´Â ¿ªÇÒ
+        // ë ˆì´ë¥¼ ì˜ëŠ” ì—­í• 
         RaycastHit2D ray = default;
         if (_archer.layer == 3)
             ray = Physics2D.Raycast(this.transform.position, dir, 0.4f, LayerMask.GetMask("Ally"));
@@ -101,7 +103,7 @@ public class Arrow : MonoBehaviour
     }
     private void AngleModification()
     {
-        // °¢µµ ¼öÁ¤
+        // ê°ë„ ìˆ˜ì •
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }

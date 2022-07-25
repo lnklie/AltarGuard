@@ -12,15 +12,16 @@ using UnityEngine.UI;
 public class EnemyStatus : CharacterStatus
 {
     protected RaycastHit2D[] altarRay = default;
-
     protected EnemyType enemyType;
     private bool isKnuckBack = false;
     protected List<int> itemDropKey = new List<int>();
     protected List<float> itemDropProb = new List<float>();
     protected bool isEnemyChange;
 
+
     [SerializeField]
     private TextMesh textMesh = null;
+
 
     #region Property
     public RaycastHit2D[] AltarRay
@@ -28,7 +29,6 @@ public class EnemyStatus : CharacterStatus
         get { return altarRay; }
         set { altarRay = value; }
     }
-
     public EnemyType EnemyType
     {
         get { return enemyType; }

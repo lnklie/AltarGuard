@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : BaseController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : BaseController.cs
 ==============================
 */
 public class BaseController : MonoBehaviour
@@ -13,10 +13,12 @@ public class BaseController : MonoBehaviour
 
     private Status status = null;
     public virtual void Awake()
+
     {
         status = GetComponent<Status>();
 
     }
+
 
     public void SetIsDamaged(bool _bool)
     {
@@ -24,6 +26,7 @@ public class BaseController : MonoBehaviour
     }
     private Debuff debuff = Debuff.Not;
     public Debuff Debuff
+
     {
         get { return debuff; }
         set { debuff = value; }
@@ -32,7 +35,7 @@ public class BaseController : MonoBehaviour
 
     public float GetDistance(Vector2 _start, Vector2 _end)
     {
-        // ´ë»ó°úÀÇ °Å¸® ÃøÁ¤
+        // ëŒ€ìƒê³¼ì˜ ê±°ë¦¬ ì¸¡ì •
         float x1 = _start.x;
         float y1 = _start.y;
         float x2 = _end.x;

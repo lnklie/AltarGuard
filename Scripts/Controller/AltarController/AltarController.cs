@@ -17,7 +17,7 @@ public class AltarController : BaseController
 
     [SerializeField]
     private List<AllyStatus> characters = new List<AllyStatus>();
-    public override void Awake()
+    public void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
         spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();

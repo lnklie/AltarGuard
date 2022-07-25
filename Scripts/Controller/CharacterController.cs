@@ -11,6 +11,7 @@ public class CharacterController : BaseController, IAIController
     [SerializeField]
     protected PathFindController pathFindController = null;
 
+
     public override void Awake()
     {
         characterStatus = this.GetComponent<CharacterStatus>();
@@ -52,7 +53,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -104,13 +105,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -138,7 +139,9 @@ public class CharacterController : BaseController, IAIController
             else if (_status.AttackType == 0.5f)
             {
                 yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.65f);
+
                 ShotArrow(_status);
+
             }
 
             yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.99f);
@@ -196,6 +199,7 @@ public class CharacterController : BaseController, IAIController
     //}
     public virtual void AIChase(CharacterStatus _status)
     {
+
         if(pathFindController.FinalNodeList.Count > 1)
         {
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
@@ -209,12 +213,14 @@ public class CharacterController : BaseController, IAIController
         }
 
     }
+
     public virtual void AIAttack(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.AttackLayer);
         _status.Ani.SetFloat("AtkType", _status.AttackType);
         _status.Rig.velocity = Vector2.zero;
         StartCoroutine(AttackByAttackType(_status));
+
     }
 
     public virtual IEnumerator AIDied(CharacterStatus _status)

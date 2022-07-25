@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-11
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Status.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-11
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Status.cs
 ==============================
 */
 public class Status : MonoBehaviour
@@ -86,8 +86,6 @@ public class Status : MonoBehaviour
     }
     #endregion
 
-
-
     public virtual void Awake()
     {
         col = this.GetComponent<CapsuleCollider2D>();
@@ -110,7 +108,7 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit(CharacterStatus _character)
     {
-        // ¸Å°³º¯¼ö°¡ ¸¶Áö¸· °ø°İÀ» Çß´ÂÁö Ã¼Å©
+        // ë§¤ê°œë³€ìˆ˜ê°€ ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
         if (_character.IsAtk == true && curHp <= 0f)
             return true;
         else
@@ -127,10 +125,11 @@ public class Status : MonoBehaviour
         bodySprites.color = new Color(1f, 1f, 1f, 155 / 255f);
         yield return new WaitForSeconds(0.5f);
         bodySprites.color = new Color(1f, 1f, 1f, 1f);
+
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // ¾Ö´Ï¸ŞÀÌ¼Ç ·¹ÀÌ¾î °¡ÁßÄ¡ Á¶Àı
+        // ì• ë‹ˆë©”ì´ì…˜ ë ˆì´ì–´ ê°€ì¤‘ì¹˜ ì¡°ì ˆ
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);

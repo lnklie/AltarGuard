@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnemyAIController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EnemyAIController.cs
 ==============================
 */
 public class EnemyController : CharacterController
@@ -35,7 +35,7 @@ public class EnemyController : CharacterController
     public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
     {
 
-        // ¾Õ¿¡ ´Ù¸¥ ÀûÀÌ ÀÖ´Â Áö È®ÀÎ
+        // ì•ì— ë‹¤ë¥¸ ì ì´ ìˆëŠ” ì§€ í™•ì¸
 
         if (_enemyHit.collider.gameObject != _enemy.gameObject)
         {
@@ -45,22 +45,24 @@ public class EnemyController : CharacterController
             return false;
     }
 
-
     public override void AIChangeState(CharacterStatus _status)
     {
         if (_status.Target)
+
         {
             _status.Distance = _status.Target.position - this.transform.position;
             _status.TargetDir = _status.Distance.normalized;
         }
         if (_status.CurHp < 0f)
         {
+
             _status.AIState = EAIState.Died;
         }
         else
         {
             if (_status.Target == null)
             {
+
                 _status.AIState = EAIState.Idle;
             }
             else
@@ -69,6 +71,7 @@ public class EnemyController : CharacterController
                 if (IsAtkRange(_status))
                 {
                     _status.AIState = EAIState.Attack;
+
                 }
             }
 
@@ -130,7 +133,9 @@ public class EnemyController : CharacterController
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 
+
     public override void AttackDamage(CharacterStatus _status)
+
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
 
