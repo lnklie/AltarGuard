@@ -23,14 +23,14 @@ public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
             arrow.gameObject.SetActive(false);
         }
     }
-    public void ShotArrow(CharacterStatus _gameObject,int _damage)
+    public void ShotArrow(CharacterStatus _status,int _damage)
     {
         Arrow arrow = arrows.Dequeue();
         arrow.gameObject.SetActive(true);
-        arrow.gameObject.transform.position = _gameObject.gameObject.transform.position;
-        arrow.Archer = _gameObject.gameObject;
-        arrow.Dir = _gameObject.TargetDir;
-        arrow.Spd = _gameObject.ArrowSpd;
+        arrow.gameObject.transform.position = _status.gameObject.transform.position;
+        arrow.Archer = _status;
+        arrow.Dir = _status.TargetDir;
+        arrow.Spd = _status.ArrowSpd;
         arrow.Dmg = _damage;
     }
     public int ArrowCount()

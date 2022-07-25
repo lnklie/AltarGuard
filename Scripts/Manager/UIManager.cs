@@ -97,8 +97,10 @@ public class UIManager : SingletonManager<UIManager>
         {
             Notice("Game Start");
         }
-        if (player.IsStatusUpdate)
+        if (player.IsStatusUpdate || player.IsStateChange)
+        {
             UpdatePlayerProfile();
+        }
         if(bossEnemy)
         {
             if(bossEnemy.IsDamaged || bossEnemy.IsStatusUpdate)

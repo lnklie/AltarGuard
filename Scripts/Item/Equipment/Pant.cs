@@ -29,10 +29,10 @@ public class Pant : Equipment
                     switch (sprites[i].name)
                     {
                         case "Left":
-                            spList[i - 1] = (Sprite)sprites[i];
+                            spList[i] = (Sprite)sprites[i];
                             break;
                         case "Right":
-                            spList[i - 1] = (Sprite)sprites[i];
+                            spList[i] = (Sprite)sprites[i];
                             break;
                     }
                 }

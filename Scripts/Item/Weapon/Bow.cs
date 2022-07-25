@@ -26,7 +26,7 @@ public class Bow : Weapon
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-                    spList[i - 1] = (Sprite)sprites[i];
+                    spList[i] = (Sprite)sprites[i];
                 }
             }
         }

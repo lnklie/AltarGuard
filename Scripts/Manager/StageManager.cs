@@ -48,9 +48,9 @@ public class StageManager : SingletonManager<StageManager>
         {
             CheckStage();
             Debug.Log("스테이지 시작");
-            enemySpawner.BossEnemySpawn(curStage.bossKey);
-
-            //StageSpawn();
+            //enemySpawner.BossEnemySpawn(curStage.bossKey);
+            
+            StageSpawn();
             isStart = false;
         }
         //if (isStage)
