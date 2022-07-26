@@ -23,28 +23,29 @@ public class EquipmentController : MonoBehaviour
     private SubWeaponSpace subWeaponSpace = null;
 
     private bool isChangeItem = false;
+
+    [SerializeField]
+    private Item[] equipItems = new Item[9];
+
+    [SerializeField]
+    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
+    #region Property
     public bool IsChangeItem
     {
         get { return isChangeItem; }
         set { isChangeItem = value; }
     }
-
-    [SerializeField]
-    private Item[] equipItems = new Item[9];
     public Item[] EquipItems
     {
         get { return equipItems; }
         set { equipItems = value; }
     }
-
-    [SerializeField]
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
     public bool[] CheckEquipItems
     {
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
-
+    #endregion
     private void Awake()
     {
         status = GetComponent<CharacterStatus>();

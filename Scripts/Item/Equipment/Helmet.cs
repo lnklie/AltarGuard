@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Helmet.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Helmet.cs
 ==============================
 */
 [System.Serializable]
@@ -26,13 +26,13 @@ public class Helmet : Equipment
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-                    spList[i] = (Sprite)sprites[i];
+                    spList.Add((Sprite)sprites[i]);
                 }
             }
         }
         else
         {
-            for (var i = 0; i < spList.Length; i++)
+            for (var i = 0; i < spList.Count; i++)
             {
                 spList[i] = null;
             }

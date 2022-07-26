@@ -21,6 +21,10 @@ public class PlayerController : CharacterController
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
 
+    public override void Start()
+    {
+        return;
+    }
     private void FixedUpdate()
     {
         if(!player.IsAutoMode)
@@ -42,7 +46,10 @@ public class PlayerController : CharacterController
             player.TargetDir = player.Distance.normalized;
         }
         if (Input.GetKeyDown(KeyCode.F12))
+        {
             player.IsAutoMode = !player.IsAutoMode;
+            StartCoroutine(FindPath());
+        }
         if (!IsDelay(player))
         {
             player.DelayTime = player.AtkSpeed;

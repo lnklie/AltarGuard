@@ -80,9 +80,22 @@ public class CharacterStatus : Status
     protected float delayTime = 0f;
     [SerializeField]
     private float stiffenTime = 0f;
+    [SerializeField]
+    private GameObject flag = null;
+    private bool isFlag = false;
 
 
     #region Properties
+    public bool IsFlag
+    {
+        get { return isFlag; }
+        set { isFlag = value; }
+    }
+    public GameObject Flag
+    {
+        get { return flag; }
+    }
+
     public bool IsHPRegen
     {
         get { return isHPRegen; }

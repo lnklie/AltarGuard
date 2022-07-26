@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Armor.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Armor.cs
 ==============================
 */
 [System.Serializable]
@@ -25,24 +25,26 @@ public class Armor : Equipment
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-                    switch (sprites[i].name)
-                    {
-                        case "Left":
-                            spList[i] = (Sprite)sprites[i];
-                            break;
-                        case "Body":
-                            spList[i] = (Sprite)sprites[i];
-                            break;
-                        case "Right":
-                            spList[i] = (Sprite)sprites[i];
-                            break;
-                    }
+
+                    spList.Add((Sprite)sprites[i]);
+                    //switch (sprites[i].name)
+                    //{
+                    //    case "Left":
+                    //        spList[i] = (Sprite)sprites[i];
+                    //        break;
+                    //    case "Body":
+                    //        spList[i] = (Sprite)sprites[i];
+                    //        break;
+                    //    case "Right":
+                    //        spList[i] = (Sprite)sprites[i];
+                    //        break;
+                    //}
                 }
             }
         }
         else
         {
-            for (var i = 0; i < spList.Length; i++)
+            for (var i = 0; i < spList.Count; i++)
             {
                 spList[i] = null;
             }

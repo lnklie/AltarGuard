@@ -393,7 +393,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetEquipmentSlotImage(int _index)
     {
-        equipmentSlots[_index].CurItem = selectItem;
+        equipmentSlots[_index].CurItem = selectCharacterEqipment.EquipItems[_index];
         equipmentSlots[_index].ItemImages[1].sprite = selectCharacterEqipment.EquipItems[_index].singleSprite;
         equipmentSlots[_index].SlotSetting(selectCharacterEqipment.EquipItems[_index]);
     }

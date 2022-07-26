@@ -16,7 +16,8 @@ public class CharacterController : BaseController, IAIController
         characterStatus = this.GetComponent<CharacterStatus>();
 
     }
-    private void Start()
+
+    public virtual void Start()
     {
         StartCoroutine(FindPath());
     }
@@ -30,8 +31,7 @@ public class CharacterController : BaseController, IAIController
     {
         while(true)
         {
-            if (characterStatus.Target)
-                pathFindController.PathFinding();
+            pathFindController.PathFinding();
             yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
         }
     }
@@ -62,7 +62,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -114,13 +114,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -206,18 +206,22 @@ public class CharacterController : BaseController, IAIController
     //}
     public virtual void AIChase(CharacterStatus _status)
     {
-        if(pathFindController.FinalNodeList.Count > 1)
-        {
+
+        //if(pathFindController.FinalNodeList.Count > 1)
+        //{
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
             _status.ActiveLayer(LayerName.WalkLayer);
             _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
-            
-        }
-        else
-        {
-            //pathFindController.FinalNodeList.RemoveAt(0);
-        }
+            Debug.Log(pathFindController.startPos + " / " + pathFindController.targetPos);
+            //if (pathFindController.FinalNodeList.Count  < 1)
+            //{
+            //    pathFindController.FinalNodeList.RemoveAt(0);
+            //}
+        //}
+        //else
+        //{
 
+        //}
     }
     public virtual void AIAttack(CharacterStatus _status)
     {

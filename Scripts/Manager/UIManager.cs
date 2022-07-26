@@ -65,10 +65,7 @@ public class UIManager : SingletonManager<UIManager>
 
     [SerializeField]
     private Coroutine preNotice = null;
-    private void Awake()
-    {
-        characterList.Add(player.GetComponent<EquipmentController>());
-    }
+
     private void Start()
     {
         ChangePlayerUIItemImage();
@@ -79,7 +76,6 @@ public class UIManager : SingletonManager<UIManager>
             {
                 ChangeMercenaryUIItemImage(i);
                 UpdateMercenaryProfile(i);
-                AddMercenaryEquipmentController(mercenary[i]);
             }
         }
 

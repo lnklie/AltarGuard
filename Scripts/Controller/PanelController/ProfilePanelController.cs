@@ -164,8 +164,8 @@ public class ProfilePanelController : MonoBehaviour
         // °©¿Ê
         if (_characterList[0].CheckEquipItems[5])
         {
-            playerProfileImages[5].sprite = _characterList[0].EquipItems[5].spList[0];
-            playerProfileImages[3].sprite = _characterList[0].EquipItems[5].spList[1];
+            playerProfileImages[5].sprite = _characterList[0].EquipItems[5].spList[1];
+            playerProfileImages[3].sprite = _characterList[0].EquipItems[5].spList[0];
             playerProfileImages[1].sprite = _characterList[0].EquipItems[5].spList[2];
         }
         else
