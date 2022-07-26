@@ -86,7 +86,7 @@ public class SkillController : MonoBehaviour
             int index = activeSkills.IndexOf(_skill);
             isCoolTime[index] = true;
             coolTimes[index] = 0;
-
+            status.IsAtk = true;
             _skillObject.IsSkillUse = true;
             _skillObject.transform.position = _target.transform.position;
             _skillObject.gameObject.SetActive(true);

@@ -23,28 +23,29 @@ public class EquipmentController : MonoBehaviour
     private SubWeaponSpace subWeaponSpace = null;
 
     private bool isChangeItem = false;
+
+    [SerializeField]
+    private Item[] equipItems = new Item[9];
+
+    [SerializeField]
+    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
+    #region Property
     public bool IsChangeItem
     {
         get { return isChangeItem; }
         set { isChangeItem = value; }
     }
-
-    [SerializeField]
-    private Item[] equipItems = new Item[9];
     public Item[] EquipItems
     {
         get { return equipItems; }
         set { equipItems = value; }
     }
-
-    [SerializeField]
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
     public bool[] CheckEquipItems
     {
         get { return checkEquipItems; }
         set { checkEquipItems = value; }
     }
-
+    #endregion
     private void Awake()
     {
         status = GetComponent<CharacterStatus>();
@@ -100,6 +101,7 @@ public class EquipmentController : MonoBehaviour
         // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[7])
         {
+            status.AtkRange = equipItems[7].atkRange;
             int num = equipItems[7].itemKey / 1000;
             if (num == 7)
                 status.AttackType = 0f;

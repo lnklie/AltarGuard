@@ -27,8 +27,15 @@ public class RushEnemyStatus : EnemyStatus
         {
             CustomEnemy();
         }
-        if (isDamaged)
+        if (isStateChange)
+        {
             UpdateEnemyHp();
+        }
+    }
+    public override void Damaged(int _damage)
+    {
+        base.Damaged(_damage);
+        UpdateEnemyHp();
     }
     public void UpdateEnemyHp()
     {

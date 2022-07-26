@@ -11,18 +11,29 @@ public class CharacterController : BaseController, IAIController
     [SerializeField]
     protected PathFindController pathFindController = null;
 
-    public virtual void Awake()
+    public override void Awake()
     {
         characterStatus = this.GetComponent<CharacterStatus>();
-    }
 
+    }
+    public virtual void Start()
+    {
+        StartCoroutine(FindPath());
+    }
     public virtual void Update()
     {
         AIPerception(characterStatus);
         AIChangeState(characterStatus);
         AIState(characterStatus);
     }
-
+    public IEnumerator FindPath()
+    {
+        while(true)
+        {
+            pathFindController.PathFinding();
+            yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
+        }
+    }
     public WaitUntil WaitUntilAnimatorPoint(Animator _animator, int _index, string _aniName, float _point)
     {
         return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(_index).IsName(_aniName) &&
@@ -122,37 +133,33 @@ public class CharacterController : BaseController, IAIController
     {
         if (!IsDelay(_status))
         {
-            _status.Ani.SetTrigger("AtkTrigger");
-            _status.DelayTime = 0f;
+            _status.ActiveLayer(LayerName.AttackLayer);
+            _status.Ani.SetBool("IsAtk", true);
             _status.IsAtk = true;
+            _status.Rig.velocity = Vector2.zero;
+            _status.DelayTime = 0f;
+            _status.Ani.SetFloat("AtkType", _status.AttackType);
 
-            if (_status.AttackType == 0)
+            if (_status.AttackType == 0f)
             {
-                AttackDamage(AttackRange(_status), _status);
+                AttackDamage(_status);
             }
             else if (_status.AttackType == 0.5f)
             {
                 yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.65f);
-                    ShotArrow(_status);
-                
+                ShotArrow(_status);
             }
-            else
-            {
 
-
-            }
-        }
-        else
+            yield return WaitUntilAnimatorPoint(_status.Ani, 2, "PlayerAttack", 0.99f);
+            _status.Ani.SetBool("IsAtk", false);
             _status.IsAtk = false;
+        }
 
     }
-    public virtual RaycastHit2D[] AttackRange(CharacterStatus _status)
+
+    public virtual void AttackDamage(CharacterStatus _status)
     {
-        //
-        return null;
-    }
-    public virtual void AttackDamage(RaycastHit2D[] hits, CharacterStatus _status)
-    {
+
         //
     }
     #region AI
@@ -175,9 +182,6 @@ public class CharacterController : BaseController, IAIController
             case EAIState.Attack:
                 AIAttack(_status);
                 break;
-            case EAIState.Damaged:
-                AIDamaged(_status);
-                break;
             case EAIState.Died:
                 StartCoroutine(AIDied(_status));
                 break;
@@ -190,20 +194,34 @@ public class CharacterController : BaseController, IAIController
     public virtual void AIIdle(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.IdleLayer);
-        _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
     }
-
+    //public Vector2 TargetPosByAtkRange(Node _targetNode, CharacterStatus _status)
+    //{
+    //    Vector2 _targetPos = Vector2.zero;
+    //    if(Mathf.Pow(_targetNode.x,2) + Mathf.Pow(_targetNode.y, 2) == Mathf.Pow(_status.AtkRange,2))
+    //        _targetPos = new Vector2(_targetNode.x, _targetNode.y);
+    //    return _targetPos; 
+    //}
     public virtual void AIChase(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.WalkLayer);
-        _status.IsStateChange = false;
-        Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
-        _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
+        //if(pathFindController.FinalNodeList.Count > 1)
+        //{
+            Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
+            _status.ActiveLayer(LayerName.WalkLayer);
+            _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
+            Debug.Log(pathFindController.startPos + " / " + pathFindController.targetPos);
+            //if (pathFindController.FinalNodeList.Count  < 1)
+            //{
+            //    pathFindController.FinalNodeList.RemoveAt(0);
+            //}
+        //}
+        //else
+        //{
 
-        if ((Vector2)(_status.transform.position) == _moveDir) pathFindController.FinalNodeList.RemoveAt(0);
+        //}
 
-    } 
+    }
     public virtual void AIAttack(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.AttackLayer);
@@ -211,14 +229,10 @@ public class CharacterController : BaseController, IAIController
         _status.Rig.velocity = Vector2.zero;
         StartCoroutine(AttackByAttackType(_status));
     }
-    public virtual void AIDamaged(CharacterStatus _status)
-    {
-        _status.IsStatusUpdate = true;
-    }
+
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
         _status.ActiveLayer(LayerName.IdleLayer);
-        _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return null;

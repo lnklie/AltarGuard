@@ -127,20 +127,24 @@ public class ProfilePanelController : MonoBehaviour
         if (_characterList[0].CheckEquipItems[0])
         {
             playerProfileImages[7].sprite = _characterList[0].EquipItems[0].spList[0];
+            playerProfileImages[7].rectTransform.pivot = playerProfileImages[7].sprite.pivot / playerProfileImages[7].sprite.rect.size;
         }
         else
             playerProfileImages[7].sprite = UIMask;
 
         // ¾ó±¼Àå½Ä
         if (_characterList[0].CheckEquipItems[1])
+        {
             playerProfileImages[6].sprite = _characterList[0].EquipItems[1].spList[0];
+            playerProfileImages[6].rectTransform.pivot = playerProfileImages[6].sprite.pivot / playerProfileImages[6].sprite.rect.size;
+        }
         else
             playerProfileImages[6].sprite = UIMask;
         // À§¿Ê
         if (_characterList[0].CheckEquipItems[2])
         {
-            playerProfileImages[4].sprite = _characterList[0].EquipItems[2].spList[0];
-            playerProfileImages[2].sprite = _characterList[0].EquipItems[2].spList[1];
+            playerProfileImages[4].sprite = _characterList[0].EquipItems[2].spList[1];
+            playerProfileImages[2].sprite = _characterList[0].EquipItems[2].spList[0];
             playerProfileImages[0].sprite = _characterList[0].EquipItems[2].spList[2];
         }
         else
@@ -151,14 +155,17 @@ public class ProfilePanelController : MonoBehaviour
         }
         // Åõ±¸
         if (_characterList[0].CheckEquipItems[4])
+        {
             playerProfileImages[8].sprite = _characterList[0].EquipItems[4].spList[0];
+            playerProfileImages[8].rectTransform.pivot = playerProfileImages[8].sprite.pivot / playerProfileImages[8].sprite.rect.size;
+        }
         else
             playerProfileImages[8].sprite = UIMask;
         // °©¿Ê
         if (_characterList[0].CheckEquipItems[5])
         {
-            playerProfileImages[5].sprite = _characterList[0].EquipItems[5].spList[0];
-            playerProfileImages[3].sprite = _characterList[0].EquipItems[5].spList[1];
+            playerProfileImages[5].sprite = _characterList[0].EquipItems[5].spList[1];
+            playerProfileImages[3].sprite = _characterList[0].EquipItems[5].spList[0];
             playerProfileImages[1].sprite = _characterList[0].EquipItems[5].spList[2];
         }
         else

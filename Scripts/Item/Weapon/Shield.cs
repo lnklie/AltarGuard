@@ -28,13 +28,13 @@ public class Shield : Weapon
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-                    spList[i - 1] = (Sprite)sprites[i];
+                    spList.Add((Sprite)sprites[i]);
                 }
             }
         }
         else
         {
-            for (var i = 0; i < spList.Length; i++)
+            for (var i = 0; i < spList.Count; i++)
             {
                 spList[i] = null;
             }

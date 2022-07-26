@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PathFindController : MonoBehaviour
 {
+    [SerializeField]
     CharacterStatus status;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
     [SerializeField]
@@ -25,19 +26,17 @@ public class PathFindController : MonoBehaviour
         status = this.gameObject.transform.parent.GetComponentInChildren<CharacterStatus>();
     }
 
-    private void Update()
-    {
-        startPos = Vector2Int.RoundToInt(status.gameObject.transform.position);
-        targetPos = Vector2Int.RoundToInt(status.Target.position);
-        bottomLeft = Vector2Int.RoundToInt(status.gameObject.transform.position - new Vector3(10f, 10f));
-        topRight = Vector2Int.RoundToInt(status.gameObject.transform.position + new Vector3(10f, 10f));
-        PathFinding();
-
-
-    }
     public void PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입
+        startPos = Vector2Int.RoundToInt(status.transform.position);
+        if (status.Target)
+            targetPos = Vector2Int.RoundToInt(status.Target.position);
+        else
+            targetPos = Vector2Int.RoundToInt(status.Flag.transform.position);
+        bottomLeft = Vector2Int.RoundToInt(new Vector3(-25f, -25f));
+        topRight = Vector2Int.RoundToInt(new Vector3(25f, 25f));
+
         sizeX = topRight.x - bottomLeft.x + 1;
         sizeY = topRight.y - bottomLeft.y + 1;
         NodeArray = new Node[sizeX, sizeY];
@@ -48,7 +47,7 @@ public class PathFindController : MonoBehaviour
             {
                 bool isWall = false;
                 foreach (Collider2D col in Physics2D.OverlapCircleAll(new Vector2(i + bottomLeft.x, j + bottomLeft.y), 0.4f))
-                    if (col.gameObject.layer == LayerMask.NameToLayer("Wall")) isWall = true;
+                    if (col.gameObject.layer == 7)  isWall = true;
 
                 NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
             }
@@ -87,7 +86,7 @@ public class PathFindController : MonoBehaviour
                 finalNodeList.Add(StartNode);
                 finalNodeList.Reverse();
 
-                for (int i = 0; i < finalNodeList.Count; i++) print(i + "번째는 " + finalNodeList[i].x + ", " + finalNodeList[i].y);
+                //for (int i = 0; i < finalNodeList.Count; i++) print(i + "번째는 " + finalNodeList[i].x + ", " + finalNodeList[i].y);
                 return;
             }
 
@@ -112,7 +111,12 @@ public class PathFindController : MonoBehaviour
     void OpenListAdd(int checkX, int checkY)
     {
         // 상하좌우 범위를 벗어나지 않고, 벽이 아니면서, 닫힌리스트에 없다면
-        if (checkX >= bottomLeft.x && checkX < topRight.x + 1 && checkY >= bottomLeft.y && checkY < topRight.y + 1 && !NodeArray[checkX - bottomLeft.x, checkY - bottomLeft.y].isWall && !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkY - bottomLeft.y]))
+        if (checkX >= bottomLeft.x 
+            && checkX < topRight.x + 1
+            && checkY >= bottomLeft.y 
+            && checkY < topRight.y + 1 
+            && !NodeArray[checkX - bottomLeft.x, checkY - bottomLeft.y].isWall
+            && !ClosedList.Contains(NodeArray[checkX - bottomLeft.x, checkY - bottomLeft.y]))
         {
             // 대각선 허용시, 벽 사이로 통과 안됨
             if (allowDiagonal) if (NodeArray[CurNode.x - bottomLeft.x, checkY - bottomLeft.y].isWall && NodeArray[checkX - bottomLeft.x, CurNode.y - bottomLeft.y].isWall) return;

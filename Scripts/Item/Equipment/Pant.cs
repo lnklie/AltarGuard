@@ -26,21 +26,13 @@ public class Pant : Equipment
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-                    switch (sprites[i].name)
-                    {
-                        case "Left":
-                            spList[i - 1] = (Sprite)sprites[i];
-                            break;
-                        case "Right":
-                            spList[i - 1] = (Sprite)sprites[i];
-                            break;
-                    }
+                    spList.Add((Sprite)sprites[i]);
                 }
             }
         }
         else
         {
-            for (var i = 0; i < spList.Length; i++)
+            for (var i = 0; i < spList.Count; i++)
             {
                 spList[i] = null;
             }
