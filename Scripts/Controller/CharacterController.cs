@@ -16,6 +16,7 @@ public class CharacterController : BaseController, IAIController
         characterStatus = this.GetComponent<CharacterStatus>();
 
     }
+
     public virtual void Start()
     {
         StartCoroutine(FindPath());
@@ -61,7 +62,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -113,13 +114,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -205,6 +206,7 @@ public class CharacterController : BaseController, IAIController
     //}
     public virtual void AIChase(CharacterStatus _status)
     {
+
         //if(pathFindController.FinalNodeList.Count > 1)
         //{
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
@@ -220,7 +222,6 @@ public class CharacterController : BaseController, IAIController
         //{
 
         //}
-
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
