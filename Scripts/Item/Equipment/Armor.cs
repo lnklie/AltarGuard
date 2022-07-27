@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : Armor.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : Armor.cs
 ==============================
 */
 [System.Serializable]
@@ -25,7 +25,6 @@ public class Armor : Equipment
             {
                 if (sprites[i].GetType() == typeof(Sprite))
                 {
-
                     spList.Add((Sprite)sprites[i]);
                     //switch (sprites[i].name)
                     //{

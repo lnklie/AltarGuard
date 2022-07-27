@@ -20,9 +20,13 @@ public class PlayerStatus : AllyStatus
     private int money = 100000;
     private bool isAutoMode = false;
     private Vector2 dir;
-
+    private EPlayerState playerState = EPlayerState.Play;
     #region Property
-
+    public EPlayerState PlayerState
+    {
+        get { return playerState; }
+        set { playerState = value; }
+    }
     public Vector2 Dir
     {
         get { return dir; }

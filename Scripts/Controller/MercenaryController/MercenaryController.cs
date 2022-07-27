@@ -75,11 +75,15 @@ public class MercenaryController : CharacterController
         {
             if (_status.Target == null)
             {
-                _status.AIState = EAIState.Idle;
+              
+                if(pathFindController.FinalNodeList.Count == 0)
+                    _status.AIState = EAIState.Idle;
+                else
+                    _status.AIState = EAIState.Chase;
             }
             else
             {
-                _status.AIState = EAIState.Walk;
+                _status.AIState = EAIState.Chase;
                 if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                 {
                     _status.AIState = EAIState.Attack;

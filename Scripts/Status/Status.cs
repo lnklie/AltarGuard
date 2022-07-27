@@ -22,7 +22,7 @@ public class Status : MonoBehaviour
     protected bool isDamaged = false;
     [SerializeField]
     protected bool isStateChange = false;
-    protected CapsuleCollider2D col = null;
+    protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
     [SerializeField]
@@ -72,7 +72,7 @@ public class Status : MonoBehaviour
         get { return isStateChange; }
         set { isStateChange = value; }
     }
-    public CapsuleCollider2D Col
+    public BoxCollider2D Col
     {
         get { return col; }
     }
@@ -90,7 +90,7 @@ public class Status : MonoBehaviour
 
     public virtual void Awake()
     {
-        col = this.GetComponent<CapsuleCollider2D>();
+        col = this.GetComponent<BoxCollider2D>();
         rig = this.GetComponent<Rigidbody2D>();
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();

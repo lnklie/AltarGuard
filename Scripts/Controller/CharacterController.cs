@@ -16,7 +16,6 @@ public class CharacterController : BaseController, IAIController
         characterStatus = this.GetComponent<CharacterStatus>();
 
     }
-
     public virtual void Start()
     {
         StartCoroutine(FindPath());
@@ -62,7 +61,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
+        // ¸®½ºÆ® Á¤·Ä
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -76,8 +75,8 @@ public class CharacterController : BaseController, IAIController
     {
         if (_status.AIState != EAIState.Died)
         {
-            if (_status.TargetDir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
-            else if (_status.TargetDir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);
+            if (pathFindController.targetPos.x > this.transform.position.x) this.transform.localScale = new Vector3(-1, 1, 1);
+            else this.transform.localScale = new Vector3(1, 1, 1);
         }
     }
     public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj, CharacterStatus _status)
@@ -114,13 +113,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // í™œì˜ê¸°
+        // È°½î±â
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("í™”ì‚´ ì—†ìŒ");
+            Debug.Log("È­»ì ¾øÀ½");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -177,7 +176,7 @@ public class CharacterController : BaseController, IAIController
             case EAIState.Idle:
                 AIIdle(_status);
                 break;
-            case EAIState.Walk:
+            case EAIState.Chase:
                 AIChase(_status);
                 break;
             case EAIState.Attack:
@@ -206,22 +205,19 @@ public class CharacterController : BaseController, IAIController
     //}
     public virtual void AIChase(CharacterStatus _status)
     {
-
-        //if(pathFindController.FinalNodeList.Count > 1)
-        //{
+        if (pathFindController.FinalNodeList.Count > 1)
+        {
+            Debug.Log("¦i¾Æ°¡ " + (pathFindController.FinalNodeList.Count));
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
             _status.ActiveLayer(LayerName.WalkLayer);
             _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
-            Debug.Log(pathFindController.startPos + " / " + pathFindController.targetPos);
-            //if (pathFindController.FinalNodeList.Count  < 1)
-            //{
-            //    pathFindController.FinalNodeList.RemoveAt(0);
-            //}
-        //}
-        //else
-        //{
+        }
+        else if (pathFindController.FinalNodeList.Count == 1)
+        {
+            pathFindController.FinalNodeList.RemoveAt(0);
+        }
 
-        //}
+
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
