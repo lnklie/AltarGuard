@@ -25,19 +25,6 @@ public class PlayerController : CharacterController
     {
         return;
     }
-    private void FixedUpdate()
-    {
-        if(!player.IsAutoMode)
-        {
-            if(!player.IsAtk)
-            {
-                if (InputArrowKey(player))
-                    PlayerMove(player);
-                else
-                    PlayerIdle(player);
-            }
-        }
-    }
     public override void Update()
     {
         if (player.Target)
@@ -45,11 +32,7 @@ public class PlayerController : CharacterController
             player.Distance = player.Target.position - this.transform.position;
             player.TargetDir = player.Distance.normalized;
         }
-        if (Input.GetKeyDown(KeyCode.F12))
-        {
-            player.IsAutoMode = !player.IsAutoMode;
-            StartCoroutine(FindPath());
-        }
+
         if (!IsDelay(player))
         {
             player.DelayTime = player.AtkSpeed;
@@ -58,103 +41,154 @@ public class PlayerController : CharacterController
         {
             player.DelayTime += Time.deltaTime;
         }
-
-        if (player.IsAutoMode)
-            base.Update();
-        else
+        PlayerState();
+        PlayerStateCondition();
+        AquireRay();
+        DragFlag();
+    }
+    public void DragFlag()
+    {
+        RaycastHit2D hit = default;
+        Vector2 originPos = Vector2.zero;
+        if (Input.GetMouseButton(0))
         {
-            Perception(player);
-            MouseTargeting(player);
-            if (player.IsDamaged)
-            {
-                StartCoroutine(Blink(player));
-            }
-            if (Input.GetKeyDown(KeyCode.LeftControl))
-            {
-                StartCoroutine(PlayerAttack(player));
-            }
-
-            else if (Input.GetKeyDown(KeyCode.Z))
-            {
-                if (!skillController.IsCoolTime[0])
-                {
-                    if (skillController.ActiveSkills[0].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                    else if (skillController.ActiveSkills[0].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                }
-                else
-                    Debug.Log("첫 번째 스킬 쿨타임 중");
-            }
-            else if (Input.GetKeyDown(KeyCode.X))
-            {
-                if (!skillController.IsCoolTime[1])
-                {
-                    if (skillController.ActiveSkills[1].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                    else if (skillController.ActiveSkills[1].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                }
-                else
-                    Debug.Log("두 번째 스킬 쿨타임 중");
-            }
-            else if (Input.GetKeyDown(KeyCode.C))
+            hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
+            
+            if (hit)
             {
 
-                if (!skillController.IsCoolTime[2])
+                Vector2 _mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                hit.transform.position = _mousePoint;
+                if (_mousePoint.x > 12f || _mousePoint.x < -12f
+                    || _mousePoint.y > 12f || _mousePoint.y < -12f)
                 {
-                    if (skillController.ActiveSkills[2].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                    else if (skillController.ActiveSkills[2].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
+                    hit.transform.position = new Vector2(0f, -4f);
                 }
-                else
-                    Debug.Log("세 번째 스킬 쿨타임 중");
             }
         }
-        AquireRay();
+    }
+    public void PlayerState()
+    {
+        switch(player.PlayerState)
+        {
+            case EPlayerState.Play:
+                Perception(player);
+                //MouseTargeting(player);
+                if (player.IsDamaged)
+                {
+                    StartCoroutine(Blink(player));
+                }
+                if (Input.GetKeyDown(KeyCode.LeftControl))
+                {
+                    StartCoroutine(PlayerAttack(player));
+                }
+                if (!player.IsAtk)
+                {
+                    if (InputArrowKey(player))
+                        PlayerMove(player);
+                    else
+                        PlayerIdle(player);
+                }
+                else if (Input.GetKeyDown(KeyCode.Z))
+                {
+                    if (!skillController.IsCoolTime[0])
+                    {
+                        if (skillController.ActiveSkills[0].skillType == 0)
+                        {
+                            if (player.Target)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                        else if (skillController.ActiveSkills[0].skillType == 1)
+                        {
+                            if (player.AllyTarget)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                    }
+                    else
+                        Debug.Log("첫 번째 스킬 쿨타임 중");
+                }
+                else if (Input.GetKeyDown(KeyCode.X))
+                {
+                    if (!skillController.IsCoolTime[1])
+                    {
+                        if (skillController.ActiveSkills[1].skillType == 0)
+                        {
+                            if (player.Target)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                        else if (skillController.ActiveSkills[1].skillType == 1)
+                        {
+                            if (player.AllyTarget)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                    }
+                    else
+                        Debug.Log("두 번째 스킬 쿨타임 중");
+                }
+                else if (Input.GetKeyDown(KeyCode.C))
+                {
+
+                    if (!skillController.IsCoolTime[2])
+                    {
+                        if (skillController.ActiveSkills[2].skillType == 0)
+                        {
+                            if (player.Target)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                        else if (skillController.ActiveSkills[2].skillType == 1)
+                        {
+                            if (player.AllyTarget)
+                            {
+                                skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
+                            }
+                            else
+                                Debug.Log("타겟이 없음");
+                        }
+                    }
+                    else
+                        Debug.Log("세 번째 스킬 쿨타임 중");
+                }
+                break;
+            case EPlayerState.AutoPlay:
+                AIPerception(player);
+                AIChangeState(player);
+                AIState(player);
+                break;
+        }
+    }
+    public void PlayerStateCondition()
+    {
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            if (player.PlayerState == EPlayerState.Play)
+            {
+                player.PlayerState = EPlayerState.AutoPlay;
+                StartCoroutine(FindPath());
+            }
+            else if (player.PlayerState == EPlayerState.AutoPlay)
+                player.PlayerState = EPlayerState.Play;
+            
+        }
     }
 
     public void MouseTargeting(PlayerStatus _status)
@@ -354,8 +388,6 @@ public class PlayerController : CharacterController
                 _status.AllyRayList.Add(_allyHitStatus);
         }
 
-        
-
         if (_status.SightRayList.Count > 0)
         {
             TargetEnemy(_status.SightRayList[0]);
@@ -424,7 +456,7 @@ public class PlayerController : CharacterController
             }
             else
             {
-                _status.AIState = EAIState.Walk;
+                _status.AIState = EAIState.Chase;
                 if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
                 {
                     _status.AIState = EAIState.Attack;

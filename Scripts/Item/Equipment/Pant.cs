@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : Pant.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : Pant.cs
 ==============================
 */
 [System.Serializable]

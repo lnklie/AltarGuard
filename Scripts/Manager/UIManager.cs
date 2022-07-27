@@ -117,6 +117,12 @@ public class UIManager : SingletonManager<UIManager>
     {
         profilePanelController.SetBossProfile(_bool);
     }
+
+    public void NoticeMode(string _notice)
+    {
+        noticeText.gameObject.SetActive(true);
+        noticeText.text = _notice;
+    }
     public void Notice(string _notice)
     {
         if (isNotice)

@@ -15,10 +15,17 @@ public enum LayerName
     AttackLayer = 2,
     DieLayer = 3
 }
+
+public enum EPlayerState
+{
+    Play,
+    AutoPlay,
+    FlagDeployment
+}
 public enum EAIState
 {
     Idle,
-    Walk,
+    Chase,
     Attack,
     Died
 }

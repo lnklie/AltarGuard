@@ -82,14 +82,15 @@ public class CharacterStatus : Status
     private float stiffenTime = 0f;
     [SerializeField]
     private GameObject flag = null;
-    private bool isFlag = false;
+    [SerializeField]
+    private bool isFlagComeback = false;
 
 
     #region Properties
-    public bool IsFlag
+    public bool IsFlagComeBack
     {
-        get { return isFlag; }
-        set { isFlag = value; }
+        get { return isFlagComeback; }
+        set { isFlagComeback = value; }
     }
     public GameObject Flag
     {

@@ -59,7 +59,17 @@ public class EquipmentController : MonoBehaviour
         subWeaponSpace = this.GetComponentInChildren<SubWeaponSpace>();
         weaponSpace = this.GetComponentInChildren<WeaponSpace>();
     }
-
+    private void Start()
+    {
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(0));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(1000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(2000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(3000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(4000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(5000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(6000));
+        ChangeEquipment(DatabaseManager.Instance.SelectItem(7000));
+    }
     public int GetEquipmentDefensivePower()
     {
         // 장비에 방어력 출력

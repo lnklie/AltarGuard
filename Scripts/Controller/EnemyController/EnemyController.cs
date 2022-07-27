@@ -65,7 +65,7 @@ public class EnemyController : CharacterController
             }
             else
             {
-                _status.AIState = EAIState.Walk;
+                _status.AIState = EAIState.Chase;
                 if (IsAtkRange(_status))
                 {
                     _status.AIState = EAIState.Attack;
