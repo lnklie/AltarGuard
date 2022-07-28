@@ -123,13 +123,39 @@ public class EnemyController : CharacterController
 
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        base.AIDied(_status);
-        yield return new WaitForSeconds(2f);
-        DropManager.Instance.DropItem(this.transform.position, enemyStatus.ItemDropKey, enemyStatus.ItemDropProb);
-        StageManager.Instance.SpawnedEneies--;
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
+        yield return null;
     }
+    public Item DropItem(EnemyStatus _status)
+    {
+        // 아이템 드랍
+        int _ranIndex = RandomChoose(_status.ItemDropProb);
+        return DatabaseManager.Instance.SelectItem(_status.ItemDropKey[_ranIndex]);
+    }
+    private int RandomChoose(List<float> _probs)
+    {
+        // 무작위 선택
+        float total = 0;
 
+        foreach (float elem in _probs)
+        {
+            total += elem;
+        }
+
+        float randomPoint = Random.value * total;
+
+        for (int i = 0; i < _probs.Count; i++)
+        {
+            if (randomPoint < _probs[i])
+            {
+                return i;
+            }
+            else
+            {
+                randomPoint -= _probs[i];
+            }
+        }
+        return _probs.Count - 1;
+    }
     public override void AttackDamage(CharacterStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));

@@ -10,7 +10,7 @@ public class CharacterController : BaseController, IAIController
     protected CharacterStatus characterStatus = null;
     [SerializeField]
     protected PathFindController pathFindController = null;
-
+    
     public override void Awake()
     {
         characterStatus = this.GetComponent<CharacterStatus>();
@@ -67,7 +67,6 @@ public class CharacterController : BaseController, IAIController
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
             else if (GetDistance(this.transform.position, a.transform.position) > GetDistance(this.transform.position, b.transform.position)) return 1;
             else return 0;
-
         });
     }
 
@@ -156,7 +155,32 @@ public class CharacterController : BaseController, IAIController
         }
 
     }
-
+    public IEnumerator UseSkill(CharacterStatus _status)
+    {
+        skillController.IsSkillDelay = true;
+        Debug.Log("지점11");
+        if (skillController.ActiveSkills[0].skillType == 0)
+        {
+            if (_status.Target)
+            {
+                skillController.UseSkill(_status.Target);
+            }
+            else
+                Debug.Log("타겟이 없음");
+        }
+        else if (skillController.ActiveSkills[0].skillType == 1)
+        {
+            if (_status.AllyTarget)
+            {
+                skillController.UseSkill(_status.AllyTarget);
+            }
+            else
+                Debug.Log("타겟이 없음");
+        }
+        yield return new WaitForSeconds(1f);
+        Debug.Log("지점22");
+        skillController.IsSkillDelay = false;
+    }
     public virtual void AttackDamage(CharacterStatus _status)
     {
 
@@ -207,7 +231,6 @@ public class CharacterController : BaseController, IAIController
     {
         if (pathFindController.FinalNodeList.Count > 1)
         {
-            Debug.Log("쫒아가 " + (pathFindController.FinalNodeList.Count));
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
             _status.ActiveLayer(LayerName.WalkLayer);
             _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
@@ -221,10 +244,17 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.AttackLayer);
-        _status.Ani.SetFloat("AtkType", _status.AttackType);
-        _status.Rig.velocity = Vector2.zero;
-        StartCoroutine(AttackByAttackType(_status));
+        if(skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay)
+        {
+            StartCoroutine(UseSkill(_status));
+        }
+        else
+        { 
+            _status.ActiveLayer(LayerName.AttackLayer);
+            _status.Ani.SetFloat("AtkType", _status.AttackType);
+            _status.Rig.velocity = Vector2.zero;
+            StartCoroutine(AttackByAttackType(_status));
+        }
     }
 
     public virtual IEnumerator AIDied(CharacterStatus _status)

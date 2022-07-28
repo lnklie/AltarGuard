@@ -89,36 +89,31 @@ public class PlayerController : CharacterController
                     else
                         PlayerIdle(player);
                 }
-                else if (Input.GetKeyDown(KeyCode.Z))
+
+                if (Input.GetKeyDown(KeyCode.Z))
                 {
-                    if (!skillController.IsCoolTime[0])
+                    if (skillController.ActiveSkills[0].skillType == 0)
                     {
-                        if (skillController.ActiveSkills[0].skillType == 0)
+                        if (player.Target)
                         {
-                            if (player.Target)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
+                            skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
                         }
-                        else if (skillController.ActiveSkills[0].skillType == 1)
-                        {
-                            if (player.AllyTarget)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
-                        }
+                        else
+                            Debug.Log("타겟이 없음");
                     }
-                    else
-                        Debug.Log("첫 번째 스킬 쿨타임 중");
+                    else if (skillController.ActiveSkills[0].skillType == 1)
+                    {
+                        if (player.AllyTarget)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
                 }
                 else if (Input.GetKeyDown(KeyCode.X))
                 {
-                    if (!skillController.IsCoolTime[1])
-                    {
+
                         if (skillController.ActiveSkills[1].skillType == 0)
                         {
                             if (player.Target)
@@ -137,36 +132,29 @@ public class PlayerController : CharacterController
                             else
                                 Debug.Log("타겟이 없음");
                         }
-                    }
-                    else
-                        Debug.Log("두 번째 스킬 쿨타임 중");
                 }
                 else if (Input.GetKeyDown(KeyCode.C))
                 {
 
-                    if (!skillController.IsCoolTime[2])
+                    if (skillController.ActiveSkills[2].skillType == 0)
                     {
-                        if (skillController.ActiveSkills[2].skillType == 0)
+                        if (player.Target)
                         {
-                            if (player.Target)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
+                            skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
                         }
-                        else if (skillController.ActiveSkills[2].skillType == 1)
-                        {
-                            if (player.AllyTarget)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
-                        }
+                        else
+                            Debug.Log("타겟이 없음");
                     }
-                    else
-                        Debug.Log("세 번째 스킬 쿨타임 중");
+                    else if (skillController.ActiveSkills[2].skillType == 1)
+                    {
+                        if (player.AllyTarget)
+                        {
+                            skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
+                        }
+                        else
+                            Debug.Log("타겟이 없음");
+                    }
+
                 }
                 break;
             case EPlayerState.AutoPlay:
@@ -345,9 +333,9 @@ public class PlayerController : CharacterController
     private IEnumerator Blink(CharacterStatus _status)
     {
         _status.IsDamaged = false;        
-        //bodySprites.color = new Color(1f,1f,1f,155/255f);
+        bodySprites.color = new Color(1f,1f,1f,155/255f);
         yield return new WaitForSeconds(0.5f);
-        //bodySprites.color = new Color(1f, 1f, 1f, 1f);
+         bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
 
     private IEnumerator Died(PlayerStatus _status)
