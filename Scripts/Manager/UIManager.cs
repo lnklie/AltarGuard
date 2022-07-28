@@ -55,6 +55,8 @@ public class UIManager : SingletonManager<UIManager>
     private SkillInfoPanelController skillInfoPanelController = null;
     [SerializeField]
     private GracePanelController gracePanelController = null;
+    [SerializeField]
+    private LogPanelController logPanelController = null;
 
     [Header("NoticeText")]
     [SerializeField]
@@ -117,7 +119,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         profilePanelController.SetBossProfile(_bool);
     }
-
+    public void SetLog(string _log)
+    {
+        logPanelController.SetLog(_log);
+    }
     public void NoticeMode(string _notice)
     {
         noticeText.gameObject.SetActive(true);

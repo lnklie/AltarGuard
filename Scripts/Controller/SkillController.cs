@@ -16,9 +16,21 @@ public class SkillController : MonoBehaviour
     [SerializeField]
     private List<SkillObject> skillPrefabs = new List<SkillObject>();
     [SerializeField]
+    private List<Skill> skillQueue = new List<Skill>();
     private bool[] isCoolTime = { false, false, false };
+    [SerializeField]
+    private bool isSkillDelay = false;
 
+    public bool IsSkillDelay
+    {
+        get { return isSkillDelay; }
+        set { isSkillDelay = value; }
+    }
     #region Property
+    public List<Skill> SkillQueue
+    {
+        get { return skillQueue; }
+    }
     public List<Skill> ActiveSkills
     {
         get { return activeSkills; }
@@ -50,6 +62,7 @@ public class SkillController : MonoBehaviour
         {
             activeSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
             coolTimes.Add(DatabaseManager.Instance.SelectSkill(_skillKey).coolTime);
+            skillQueue.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
         }
         else
         {
@@ -80,22 +93,48 @@ public class SkillController : MonoBehaviour
 
     public void UseSkill(Skill _skill, Transform _target)
     {
-        if (activeSkills.IndexOf(_skill) != -1)
+        int index = activeSkills.IndexOf(_skill);
+        if (index != -1)
         {
-            SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-            int index = activeSkills.IndexOf(_skill);
+            if(!isCoolTime[index])
+            {
+                SkillObject _skillObject = skillPrefabs[_skill.skillKey];
+                isCoolTime[index] = true;
+                coolTimes[index] = 0;
+                status.IsAtk = true;
+                _skillObject.IsSkillUse = true;
+                _skillObject.transform.position = _target.transform.position;
+                _skillObject.gameObject.SetActive(true);
+                _skillObject.Target = _target;
+                _skillObject.Damage = SetSkillDamageByLevel(_skill);
+                _skillObject.SkillHitCount = _skill.skillHitCount;
+                skillQueue.RemoveAt(index);
+            }
+            else
+                Debug.Log("쿨타임 중");
+        }
+        else
+            Debug.Log("없는 스킬");
+    }
+    public void UseSkill(Transform _target)
+    {
+        int index = activeSkills.IndexOf(skillQueue[0]);
+        if (skillQueue.Count > 0)
+        {
+            SkillObject _skillObject = skillPrefabs[index];
             isCoolTime[index] = true;
             coolTimes[index] = 0;
-            status.IsAtk = true;
+            //status.IsAtk = true;
             _skillObject.IsSkillUse = true;
             _skillObject.transform.position = _target.transform.position;
             _skillObject.gameObject.SetActive(true);
             _skillObject.Target = _target;
-            _skillObject.Damage = SetSkillDamageByLevel(_skill);
-            _skillObject.SkillHitCount = _skill.skillHitCount;
+            _skillObject.Damage = SetSkillDamageByLevel(skillQueue[0]);
+            _skillObject.SkillHitCount = skillQueue[0].skillHitCount;
+            skillQueue.RemoveAt(0);
         }
         else
-            Debug.Log("없는 스킬");
+            Debug.Log("쿨타임 중");
     }
     public void CalculateSkillCoolTime()
     {
@@ -105,7 +144,10 @@ public class SkillController : MonoBehaviour
             {
                 coolTimes[i] += Time.deltaTime;
                 if (coolTimes[i] >= activeSkills[i].coolTime)
+                {
                     isCoolTime[i] = false;
+                    skillQueue.Add(activeSkills[i]);
+                }
             }
         }
     }

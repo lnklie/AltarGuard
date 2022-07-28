@@ -49,16 +49,16 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
     private void Start()
     {
-        AcquireItem(DatabaseManager.Instance.SelectItem(3), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(4), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(5), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(6), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(7), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(8), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(9), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(10), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(11), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(12), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(3), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(4), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(5), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(6), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(7), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(8), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(9), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(10), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(11), 1);
+        //AcquireItem(DatabaseManager.Instance.SelectItem(12), 1);
 
         AcquireItem(DatabaseManager.Instance.SelectItem(1002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(2003), 1);
@@ -179,6 +179,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 }
                 break;
         }
+        UIManager.Instance.SetLog(__item.itemName + " Aquired !!" );
         return __item;
     }
 

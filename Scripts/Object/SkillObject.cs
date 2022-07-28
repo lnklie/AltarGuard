@@ -14,8 +14,11 @@ public class SkillObject : MonoBehaviour
     private Transform target = null;
     [SerializeField]
     private float maxCoolTime = 0f;
+    [SerializeField]
     private bool isSkillUse = false;
+    [SerializeField]
     private CharacterController castingController = null;
+    [SerializeField]
     private CharacterStatus castingStatus = null;
 
 
@@ -66,11 +69,10 @@ public class SkillObject : MonoBehaviour
         if(isSkillUse)
             StartCoroutine(CastingSkill());
         RemoveSkill();
-    }
+    } 
     public IEnumerator CastingSkill()
     {
         isSkillUse = false;
-        
         RaycastHit2D[] _hitRay = HitRay();
         for(int i = 0; i < _hitRay.Length; i++)
         {
