@@ -1,16 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-==============================
- * 최종수정일 : 2022-06-07
- * 작성자 : Inklie
- * 파일명 : InventorySlot.cs
-==============================
-*/
-public class InventorySlot : MonoBehaviour
+
+public class ShopInventorySlot : MonoBehaviour
 {
     private Text itemCount = null;
     [SerializeField]
@@ -27,7 +20,7 @@ public class InventorySlot : MonoBehaviour
         set { itemImages = value; }
     }
     public Item CurItem
-    { 
+    {
         get { return curItem; }
         set { curItem = value; }
     }
@@ -83,7 +76,7 @@ public class InventorySlot : MonoBehaviour
     }
     public void SelectItem()
     {
-        if(curItem != null)
+        if (curItem != null)
             UIManager.Instance.SelectSlotItem(curItem);
     }
 }
