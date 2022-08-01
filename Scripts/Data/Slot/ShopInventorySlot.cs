@@ -38,7 +38,7 @@ public class ShopInventorySlot : MonoBehaviour
 
     public void SlotReset()
     {
-        // ½½·Ô ¸®¼Â
+        // ìŠ¬ë¡¯ ë¦¬ì…‹
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
@@ -46,7 +46,7 @@ public class ShopInventorySlot : MonoBehaviour
     }
     public void SlotSetting()
     {
-        // ½½·Ô ¼¼ÆÃ
+        // ìŠ¬ë¡¯ ì„¸íŒ…
         itemImages[1].sprite = curItem.singleSprite;
         itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
 
@@ -54,7 +54,7 @@ public class ShopInventorySlot : MonoBehaviour
     }
     private void ActiveItemCount()
     {
-        // ¼Ò¸ğÇ°ÀÌ³ª ½×ÀÌ´Â ¾ÆÀÌÅÛÀÌ¸é count ÅØ½ºÆ®¸¦ È°¼ºÈ­
+        // ì†Œëª¨í’ˆì´ë‚˜ ìŒ“ì´ëŠ” ì•„ì´í…œì´ë©´ count í…ìŠ¤íŠ¸ë¥¼ í™œì„±í™”
         if (curItem.itemKey / 1000 < 9)
         {
             EnableItemCount(false);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UnityEngine.UI;
 
 public class SellSlot : MonoBehaviour
@@ -40,7 +41,7 @@ public class SellSlot : MonoBehaviour
 
     public void SlotReset()
     {
-        // ½½·Ô ¸®¼Â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
@@ -48,7 +49,7 @@ public class SellSlot : MonoBehaviour
     }
     public void SlotSetting()
     {
-        // ½½·Ô ¼¼ÆÃ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         itemImages[1].sprite = curItem.singleSprite;
         itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
 
@@ -56,7 +57,7 @@ public class SellSlot : MonoBehaviour
     }
     private void ActiveItemCount()
     {
-        // ¼Ò¸ðÇ°ÀÌ³ª ½×ÀÌ´Â ¾ÆÀÌÅÛÀÌ¸é count ÅØ½ºÆ®¸¦ È°¼ºÈ­
+        // ï¿½Ò¸ï¿½Ç°ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ count ï¿½Ø½ï¿½Æ®ï¿½ï¿½ È°ï¿½ï¿½È­
         if (curItem.itemKey / 1000 < 9)
         {
             EnableItemCount(false);
