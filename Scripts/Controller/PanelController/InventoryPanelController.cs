@@ -39,11 +39,11 @@ public class InventoryPanelController : MonoBehaviour
 
     [Header("MoenyText")]
     [SerializeField]
-    private Text moenyText;
+    private Text moneyText = null;
 
     [Header("Default")]
     [SerializeField]
-    private Sprite UIMask;
+    private Sprite UIMask = null;
 
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
@@ -90,7 +90,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void MoneyUpdate()
     {
-        moenyText.text = playerStatus.Money.ToString("N0"); 
+        moneyText.text = playerStatus.Money.ToString("N0"); 
     }
     public void InventorySlotChange(int _index)
     {

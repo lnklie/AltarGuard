@@ -57,6 +57,10 @@ public class UIManager : SingletonManager<UIManager>
     private GracePanelController gracePanelController = null;
     [SerializeField]
     private LogPanelController logPanelController = null;
+    [SerializeField]
+    private GameObject shopSelectPanel = null;
+    [SerializeField]
+    private SellPanelController sellPanelController = null;
 
     [Header("NoticeText")]
     [SerializeField]
@@ -80,8 +84,6 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateMercenaryProfile(i);
             }
         }
-
-        
     }
 
     private void Update()
@@ -178,6 +180,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         // 슬롯에 선택한 아이템 
         inventoryPanelController.SelectSlotItem(_item);
+    }
+    public void SelectSlotSellItem(Item _item)
+    {
+        sellPanelController.SelectSlotSellItem(_item);
     }
     #region Profile
     public void UpdateBossInfo()
@@ -336,6 +342,28 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #region ShopPanel
+    public void ChangeSellInventorySlots(int _index)
+    {
+        sellPanelController.ChangeSellInventorySlot(_index);
+    }
+    public void RegisterSellItem()
+    {
+        sellPanelController.RegisterItem();
+    }
+    public void RegisterSellAmountItem()
+    {
+        sellPanelController.RegisterAmountItem();
+    }
+    public void SetActiveSellAmountItem(bool _bool)
+    {
+        sellPanelController.SetActiveSellItemAmount(_bool);
+    }
+    public void SellItem()
+    {
+        sellPanelController.SellItem();
+    }
+    #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
@@ -364,6 +392,18 @@ public class UIManager : SingletonManager<UIManager>
             gracePanelController.ActiveGracePanel(true);
             UpdateGracePanel();
         }
+        else if(_index == 5)
+        {
+            shopSelectPanel.SetActive(true);
+        }
+        else if (_index == 6)
+        {
+            shopSelectPanel.gameObject.SetActive(true);
+        }
+        else if (_index == 7)
+        {
+            sellPanelController.SetActiveSellPanel(true);
+        }
     }
 
     public void DeactiveUIBtn(int _index)
@@ -388,6 +428,18 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 4)
         {
             gracePanelController.ActiveGracePanel(false);
+        }
+        else if (_index == 5)
+        {
+            shopSelectPanel.SetActive(false);
+        }
+        else if (_index == 5)
+        {
+            shopSelectPanel.gameObject.SetActive(false);
+        }
+        else if (_index == 7)
+        {
+            sellPanelController.SetActiveSellPanel(false);
         }
     }
     #endregion
