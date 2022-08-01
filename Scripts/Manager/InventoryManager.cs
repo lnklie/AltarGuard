@@ -68,6 +68,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         AcquireItem(DatabaseManager.Instance.SelectItem(6003),1);
         AcquireItem(DatabaseManager.Instance.SelectItem(7002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(8003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(11001), 5);
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
@@ -81,70 +82,70 @@ public class InventoryManager : SingletonManager<InventoryManager>
         switch (_item.itemKey / 1000)
         {
             case 0:
-                Hair _hair = new Hair(_item.itemKey, _item.itemName);
+                Hair _hair = new Hair(_item.itemKey, _item.itemName,_item.buyPrice,_item.sellPrice);
                 _hair.count =+ _amount;
                 inventroyDecorationItems.Add(_hair);
                 __item  = _hair;
                 break;
             case 1:
-                FaceHair _faceHair = new FaceHair(_item.itemKey, _item.itemName);
+                FaceHair _faceHair = new FaceHair(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice);
                 _faceHair.count =+ _amount;
                 inventroyDecorationItems.Add(_faceHair);
                 __item = _faceHair;
                 break;
             case 2:
-                Cloth _cloth = new Cloth(_item.itemKey, _item.itemName,_item.defensivePower, _item.equipLevel);
+                Cloth _cloth = new Cloth(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
                 _cloth.count =+ _amount;
                 InventroyEquipmentItems.Add(_cloth);
                 __item = _cloth;
                 break;
             case 3:
-                Pant _pant = new Pant(_item.itemKey, _item.itemName, _item.defensivePower, _item.equipLevel);
+                Pant _pant = new Pant(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
                 _pant.count =+ _amount;
                 InventroyEquipmentItems.Add(_pant);
                 __item = _pant;
                 break;
             case 4:
-                Helmet _helmet = new Helmet(_item.itemKey, _item.itemName, _item.defensivePower, _item.equipLevel);
+                Helmet _helmet = new Helmet(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
                 _helmet.count =+ _amount;
                 InventroyEquipmentItems.Add(_helmet);
                 __item = _helmet;
                 break;
             case 5:
-                Armor _armor = new Armor(_item.itemKey, _item.itemName, _item.defensivePower, _item.equipLevel);
+                Armor _armor = new Armor(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
                 _armor.count =+ _amount;
                 InventroyEquipmentItems.Add(_armor);
                 __item = _armor;
                 break;
             case 6:
-                Back _back = new Back(_item.itemKey, _item.itemName, _item.defensivePower,_item.equipLevel);
+                Back _back = new Back(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower,_item.equipLevel);
                 _back.count =+ _amount;
                 InventroyEquipmentItems.Add(_back);
                 __item = _back;
                 break;
             case 7:
-                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
+                Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
                     _item.atkRange, _item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
                 _sword.count =+ _amount;
                 inventroyWeaponItems.Add(_sword);
                 __item = _sword;
                 break;
             case 8:
-                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
+                Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
                     _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
                 _shield.count =+ _amount;
                 inventroyWeaponItems.Add(_shield);
                 __item = _shield;
                 break;
             case 9:
-                Bow _bow = new Bow(_item.itemKey, _item.itemName,_item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage, 
+                Bow _bow = new Bow(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage, 
                     _item.atkRange,_item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
                 _bow.count =+ _amount;
                 inventroyWeaponItems.Add(_bow);
                 __item = _bow;
                 break;
             case 10:
-                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, 
+                Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, 
                     _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
                 _wand.count =+ _amount;
                 inventroyWeaponItems.Add(_wand);
@@ -159,9 +160,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 else
                 {
                     Debug.Log("없던 소비품");
-                    Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.useEffect, _item.target, _item.durationTime, _item.value);
+                    Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value);
                     _consumables.count =+ _amount;
                     inventroyConsumableItems.Add(_consumables);
+                    __item = _consumables;
                 }
                 break;
             case 12:
@@ -173,9 +175,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 else
                 {
                     Debug.Log("없던 퀘스트 아이템");
-                    Miscellaneous _miscellaneous = new Miscellaneous(_item.itemKey, _item.itemName, _item.purpose);
+                    Miscellaneous _miscellaneous = new Miscellaneous(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.purpose);
                     _miscellaneous.count =+ _amount;
                     inventroyMiscellaneousItems.Add(_miscellaneous);
+                    __item = _miscellaneous;
                 }
                 break;
         }
@@ -193,13 +196,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 index = inventroyDecorationItems.IndexOf(_item);
                 break;
             case 2:
-
             case 3:
-
             case 4:
-
             case 5:
-
             case 6:
                 index = inventroyEquipmentItems.IndexOf(_item);
                 break;
@@ -216,14 +215,14 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         return index;
     }
-    public Item SelectItem(List<Item> _inventory, Item _selectItem)
+    public Item SelectItem(List<Item> _inventory, Item _selectItem,int _Amount = 1)
     {
         // 인벤토리에서 해당 아이템 반환
         Item _item = null;
         if (IndexOfItem(_selectItem) != -1)
         {
             _item = _inventory[IndexOfItem(_selectItem)];
-        }
+        } 
         else
         {
             Debug.Log("아이템 없음");
@@ -263,8 +262,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             Debug.Log("버프");
         }
     }
-    public void DiscardItem(Item _item,int _amount = 1)
+    public Item DiscardItem(Item _item,int _amount = 1)
     {
+        Item __item = null;
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
 
@@ -274,6 +274,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (inventroyWeaponItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
+                    __item = AcquireItem(SelectItem(inventroyWeaponItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -299,6 +300,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
+                    __item = AcquireItem(SelectItem(inventroyEquipmentItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -322,6 +324,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
+                    __item = AcquireItem(SelectItem(inventroyDecorationItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -342,6 +345,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             if (IndexOfItem(_item) != -1)
             {
                 SelectItem(inventroyConsumableItems, _item).count -= _amount;
+                __item = AcquireItem(SelectItem(inventroyConsumableItems, _item), _amount);
                 if (SelectItem(inventroyConsumableItems, _item).count == 0)
                 {
                     inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _item));
@@ -358,6 +362,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             if (IndexOfItem(_item) != -1)
             {
                 SelectItem(inventroyMiscellaneousItems, _item).count -= _amount;
+                __item = AcquireItem(SelectItem(inventroyMiscellaneousItems, _item), _amount);
                 if (SelectItem(inventroyMiscellaneousItems, _item).count == 0)
                 {
                     inventroyMiscellaneousItems.Remove(SelectItem(inventroyMiscellaneousItems, _item));
@@ -369,6 +374,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 Debug.Log("아이템 없음");
             }
         }
+        return __item;
     }
 
     public void SortItemKeyInventory(List<Item> _inventory)

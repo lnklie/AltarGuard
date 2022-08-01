@@ -13,7 +13,7 @@ using UnityEditor;
 public class Pant : Equipment
 {
 
-    public Pant(int _itemKey, string _itemName, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _defensivePower, _equipLevel)
+    public Pant(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel)
     {
         itemType = (int)ItemType.Pant;
         singleSprite = Resources.Load("Sprites/3_Pant/" + itemName + "_Single", typeof(Sprite)) as Sprite;
