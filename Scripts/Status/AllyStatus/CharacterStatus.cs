@@ -75,7 +75,6 @@ public class CharacterStatus : Status
     protected int buffHpRegenValue = 0;
     [SerializeField]
     protected bool isStatusUpdate = false;
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     [SerializeField]
     protected float delayTime = 0f;
     [SerializeField]
@@ -313,11 +312,6 @@ public class CharacterStatus : Status
         set { buffHpRegenValue = value; }
     }
 
-    public bool[] CheckEquipItems
-    {
-        get { return checkEquipItems; }
-        set { checkEquipItems = value; }
-    }
     public bool IsStatusUpdate
     {
         get { return isStatusUpdate; }
@@ -345,7 +339,6 @@ public class CharacterStatus : Status
         {
             equipmentController.IsChangeItem = false;
             UpdateAbility();
-            checkEquipItems = equipmentController.CheckEquipItems;
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());

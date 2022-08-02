@@ -215,7 +215,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         return index;
     }
-    public Item SelectItem(List<Item> _inventory, Item _selectItem,int _Amount = 1)
+    public Item SelectItem(List<Item> _inventory, Item _selectItem)
     {
         // 인벤토리에서 해당 아이템 반환
         Item _item = null;
@@ -273,8 +273,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             {
                 if (inventroyWeaponItems[IndexOfItem(_item)].isEquip != true)
                 {
+                    __item = inventroyWeaponItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
-                    __item = AcquireItem(SelectItem(inventroyWeaponItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -299,8 +300,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             {
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
+                    __item = inventroyEquipmentItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
-                    __item = AcquireItem(SelectItem(inventroyEquipmentItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -323,8 +325,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             {
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
+                    __item = inventroyDecorationItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
-                    __item = AcquireItem(SelectItem(inventroyDecorationItems, _item));
                     Debug.Log("아이템 버리기");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
@@ -344,8 +347,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             if (IndexOfItem(_item) != -1)
             {
+                Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value);
+                __item = _consumables;
+                __item.count = _amount;
+               
+                Debug.Log("선택한 아이템의 수량은 " +  SelectItem(inventroyConsumableItems, _item).count);
                 SelectItem(inventroyConsumableItems, _item).count -= _amount;
-                __item = AcquireItem(SelectItem(inventroyConsumableItems, _item), _amount);
+                Debug.Log("1 "+ __item.count + " 2 " + SelectItem(inventroyConsumableItems, _item).count + " 팔려는 양은 " + _amount);
                 if (SelectItem(inventroyConsumableItems, _item).count == 0)
                 {
                     inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _item));
@@ -361,8 +369,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             if (IndexOfItem(_item) != -1)
             {
+                __item = SelectItem(inventroyMiscellaneousItems, _item);
+                __item.count = _amount;
                 SelectItem(inventroyMiscellaneousItems, _item).count -= _amount;
-                __item = AcquireItem(SelectItem(inventroyMiscellaneousItems, _item), _amount);
                 if (SelectItem(inventroyMiscellaneousItems, _item).count == 0)
                 {
                     inventroyMiscellaneousItems.Remove(SelectItem(inventroyMiscellaneousItems, _item));

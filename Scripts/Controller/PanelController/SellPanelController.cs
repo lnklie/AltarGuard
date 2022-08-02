@@ -9,10 +9,10 @@ public class SellPanelController : MonoBehaviour
     [SerializeField]
     private GameObject sellItemInfo = null;
 
-
     [Header("SellItemAmount")]
     [SerializeField]
     private GameObject sellItemAmount = null;
+
     [SerializeField]
     private SellSlot[] sellSlots = null;
 
@@ -38,7 +38,6 @@ public class SellPanelController : MonoBehaviour
     private InputField sellAmount = null;
     private int selectInventoryIndex = 0;
     private int sellMoney = 0;
-
     private void Awake()
     {
         sellItemInfoText = sellItemInfo.GetComponentsInChildren<Text>();
@@ -46,7 +45,6 @@ public class SellPanelController : MonoBehaviour
         shopInventorySlots = this.GetComponentsInChildren<ShopInventorySlot>();
 
     }
-
     private void Update()
     {
         if (isSellItemSelect)
@@ -60,15 +58,15 @@ public class SellPanelController : MonoBehaviour
 
     public void ResetSellInventory()
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
         for (int i = 0; i < shopInventorySlots.Length; i++)
         {
             shopInventorySlots[i].SlotReset();
         }
     }
-    public void ChangeSellInventorySlot(int _index)
+    public void UpdateSellInventorySlot(int _index)
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù±ï¿½ 
+        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
         ResetSellInventory();
         SetActiveSellItemInfo(false);
         MoneyUpdate();
@@ -127,7 +125,7 @@ public class SellPanelController : MonoBehaviour
 
     public string KeyToItemType(int _key)
     {
-        // Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -169,13 +167,13 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateItemInfo()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½Æ®
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
         isSellItemSelect = false;
         SetActiveSellItemInfo(true);
 
         sellItemInfoText[0].text = selectSellItem.itemName;
         sellItemInfoText[1].text = KeyToItemType(selectSellItem.itemKey);
-        sellItemInfoText[3].text = "ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½: " + selectSellItem.sellPrice.ToString();
+        sellItemInfoText[3].text = "ÆÇ¸Å °¡°Ý: " + selectSellItem.sellPrice.ToString();
         switch (selectSellItem.itemKey / 1000)
         {
             case 0:
@@ -248,7 +246,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SetActiveSellItemInfo(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¢ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         sellItemInfo.SetActive(_bool);
     }
     public void SetActiveSellPanel(bool _bool)
@@ -257,7 +255,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SelectSlotSellItem(Item _item)
     {
-        // ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         selectSellItem = _item;
         isSellItemSelect = true;
     }
@@ -269,12 +267,11 @@ public class SellPanelController : MonoBehaviour
         }   
         else
         {
-            InventoryManager.Instance.DiscardItem(selectSellItem);
-            sellItemList.Add(selectSellItem);
-            sellMoney += selectSellItem.sellPrice;
-            sellMoneyText.text = sellMoney.ToString();
-            ChangeSellInventorySlot(selectInventoryIndex);
-            UpdateSellISlot();
+            
+            AddSellMoney(selectSellItem.sellPrice);
+            sellItemList.Add(InventoryManager.Instance.DiscardItem(selectSellItem));
+            UpdateSellInventorySlot(selectInventoryIndex);
+            UpdateSellSlot();
         }
     }
     public void SetActiveSellItemAmount(bool _bool)
@@ -284,27 +281,32 @@ public class SellPanelController : MonoBehaviour
     public void RegisterAmountItem()
     {
         if (int.Parse(sellAmount.text) > selectSellItem.count)
-            Debug.Log("ï¿½ï¿½ ï¿½Ù¾ï¿½ ï¿½ï¿½ï¿½");
+            Debug.Log("¼ö·® ¶Ù¾î ³ÑÀ½");
         else
         {
-            sellMoney += selectSellItem.sellPrice * int.Parse(sellAmount.text);
+            AddSellMoney(selectSellItem.sellPrice * int.Parse(sellAmount.text));
             sellItemList.Add(InventoryManager.Instance.DiscardItem(selectSellItem, int.Parse(sellAmount.text)));
-            ChangeSellInventorySlot(selectInventoryIndex);
-            UpdateSellISlot();
+            UpdateSellInventorySlot(selectInventoryIndex);
+            UpdateSellSlot();
             SetActiveSellItemAmount(false);
         }
     }
+    public void AddSellMoney(int _money)
+    {
+        sellMoney += _money;
+        sellMoneyText.text = sellMoney.ToString();
+    }
     public void ResetSellList()
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
         for (int i = 0; i < shopInventorySlots.Length; i++)
         {
             sellSlots[i].SlotReset();
         }
     }
-    public void UpdateSellISlot()
+    public void UpdateSellSlot()
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù±ï¿½ 
+        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
         ResetSellList();
         for (int i = 0; i < sellItemList.Count; i++)
         {
@@ -321,5 +323,4 @@ public class SellPanelController : MonoBehaviour
         sellMoney = 0;
         sellMoneyText.text = sellMoney.ToString();
     }
-
 }

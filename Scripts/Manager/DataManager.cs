@@ -70,7 +70,7 @@ public class DataManager : MonoBehaviour
                 playerStatus.CurLevel = playerData.level;
                 playerStatus.Money = playerData.money;
                 playerStatus.Stage = playerData.stage;
-                playerStatus.CheckEquipItems = playerData.checkEquipItems;
+                playerStatus.EquipmentController.CheckEquipItems = playerData.checkEquipItems;
                 for (int i = 0; i < playerData.decoItems.Count; i++)
                 {
                     InventoryManager.Instance.AddItem(InventoryManager.Instance.InventroyDecorationItems,playerData.decoItems[i]);
@@ -169,7 +169,7 @@ public class DataManager : MonoBehaviour
         playerData.level = playerStatus.CurLevel;
         playerData.money = playerStatus.Money; ;
         playerData.stage = playerStatus.Stage;
-        playerData.checkEquipItems = playerStatus.CheckEquipItems;
+        playerData.checkEquipItems = playerStatus.EquipmentController.CheckEquipItems;
         AddItemList(playerData.decoItems, InventoryManager.Instance.InventroyDecorationItems);
         AddItemList(playerData.weaponItems, InventoryManager.Instance.InventroyWeaponItems);
         AddItemList(playerData.equipmentItems, InventoryManager.Instance.InventroyEquipmentItems);
@@ -204,7 +204,7 @@ public class DataManager : MonoBehaviour
             character.statusPoint = _mercenaryStatus.StatusPoint;
             character.exp = _mercenaryStatus.CurExp;
             character.level = _mercenaryStatus.CurLevel;
-            character.checkEquipItems = _mercenaryStatus.CheckEquipItems;
+            character.checkEquipItems = _mercenaryStatus.EquipmentController.CheckEquipItems;
             for (int j = 0; j < playerData.equipedItems.Length; j++)
             {
                 if(character.checkEquipItems[j])
