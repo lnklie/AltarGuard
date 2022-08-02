@@ -24,6 +24,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField]
     private GraceManager graceManager = null;
 
+
     [Header("Player")]
     [SerializeField]
     private PlayerStatus player = null;
@@ -59,6 +60,8 @@ public class UIManager : SingletonManager<UIManager>
     private LogPanelController logPanelController = null;
     [SerializeField]
     private GameObject shopSelectPanel = null;
+    [SerializeField]
+    private BuyPanelController buyPanelController = null;
     [SerializeField]
     private SellPanelController sellPanelController = null;
 
@@ -184,6 +187,10 @@ public class UIManager : SingletonManager<UIManager>
     public void SelectSlotSellItem(Item _item)
     {
         sellPanelController.SelectSlotSellItem(_item);
+    }
+    public void SelectSlotBuyItem(Item _item)
+    {
+        buyPanelController.SelectSlotBuyItem(_item);
     }
     #region Profile
     public void UpdateBossInfo()
@@ -343,9 +350,22 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region ShopPanel
+
+    public void UpdateBuyInventorySlots(int _index)
+    {
+        buyPanelController.UpdateBuyingInventorySlotChange(_index);
+    }
+    public void BuyItem()
+    {
+        buyPanelController.BuyItem();
+    }
+    public void UpdateBuyingMoneyText()
+    {
+        buyPanelController.UpdateBuyMoneyText();
+    }
     public void ChangeSellInventorySlots(int _index)
     {
-        sellPanelController.ChangeSellInventorySlot(_index);
+        sellPanelController.UpdateSellInventorySlot(_index);
     }
     public void RegisterSellItem()
     {
@@ -398,7 +418,8 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 6)
         {
-            shopSelectPanel.gameObject.SetActive(true);
+            buyPanelController.SetActivebuyPanel(true);
+            
         }
         else if (_index == 7)
         {
@@ -433,9 +454,9 @@ public class UIManager : SingletonManager<UIManager>
         {
             shopSelectPanel.SetActive(false);
         }
-        else if (_index == 5)
+        else if (_index == 6)
         {
-            shopSelectPanel.gameObject.SetActive(false);
+            buyPanelController.SetActivebuyPanel(false);
         }
         else if (_index == 7)
         {
