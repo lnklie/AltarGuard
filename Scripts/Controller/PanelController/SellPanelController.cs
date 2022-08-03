@@ -23,7 +23,6 @@ public class SellPanelController : MonoBehaviour
     private Text[] sellItemInfoText = null;
     [SerializeField]
     private List<Item> sellItemList = new List<Item>(); 
-
     [Header("PlayerMoenyText")]
     [SerializeField]
     private Text moneyText = null;
@@ -38,6 +37,10 @@ public class SellPanelController : MonoBehaviour
     private InputField sellAmount = null;
     private int selectInventoryIndex = 0;
     private int sellMoney = 0;
+    public List<Item> SellItemList
+    {
+        get { return sellItemList; }
+    }
     private void Awake()
     {
         sellItemInfoText = sellItemInfo.GetComponentsInChildren<Text>();
@@ -303,6 +306,7 @@ public class SellPanelController : MonoBehaviour
         {
             sellSlots[i].SlotReset();
         }
+
     }
     public void UpdateSellSlot()
     {
@@ -322,5 +326,23 @@ public class SellPanelController : MonoBehaviour
         sellItemList.Clear();
         sellMoney = 0;
         sellMoneyText.text = sellMoney.ToString();
+    }
+    public void CancelAllRegisteredItem()
+    {
+        for(int i = 0; i < sellItemList.Count; i++)
+        {
+            InventoryManager.Instance.AcquireItem(sellItemList[i]);
+        }
+        sellItemList.Clear();
+        sellMoney = 0;
+        ResetSellList();
+    }
+    public void CancelRegisteredItem(Item _item)
+    {
+        InventoryManager.Instance.AcquireItem(_item);
+        sellItemList.Remove(_item);
+        AddSellMoney(-_item.sellPrice);
+        UpdateSellSlot();
+        UpdateSellInventorySlot(selectInventoryIndex);
     }
 }

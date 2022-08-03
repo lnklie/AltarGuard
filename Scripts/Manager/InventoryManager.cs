@@ -155,7 +155,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (IndexOfItem(_item) != -1)
                 {
                     Debug.Log("있던 소비품");
-                    SelectItem(inventroyConsumableItems, _item).count =+ _amount;
+                    __item = SelectItem(inventroyConsumableItems, _item);
+                    __item.count += _amount;
                 }
                 else
                 {
@@ -170,7 +171,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (IndexOfItem(_item) != -1)
                 {
                     Debug.Log("있던 퀘스트 아이템");
-                    SelectItem(inventroyMiscellaneousItems, _item).count =+ _amount;
+                    __item = SelectItem(inventroyMiscellaneousItems, _item);
+                    __item.count += _amount;
                 }
                 else
                 {
@@ -182,7 +184,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 }
                 break;
         }
-        UIManager.Instance.SetLog(__item.itemName + " Aquired !!" );
+        UIManager.Instance.SetLog(__item.itemName +  " Aquired !!");
         return __item;
     }
 
@@ -207,13 +209,25 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 index = inventroyWeaponItems.IndexOf(_item);
                 break;
             case 9:
-                index = inventroyConsumableItems.IndexOf(_item);
+                index = CheckStackedItemIndex(_item, inventroyConsumableItems);
                 break;
             case 10:
-                index = inventroyMiscellaneousItems.IndexOf(_item);
+                index = CheckStackedItemIndex(_item, inventroyMiscellaneousItems);
                 break;
         }
         return index;
+    }
+    public int CheckStackedItemIndex(Item _stackedItem, List<Item> _inventory)
+    {
+        int _index = -1;
+        for(int i = 0; i< _inventory.Count; i++)
+        {
+            if (_stackedItem.itemKey == _inventory[i].itemKey)
+                _index = i;
+            else
+                _index = -1;
+        }
+        return _index;
     }
     public Item SelectItem(List<Item> _inventory, Item _selectItem)
     {
@@ -351,9 +365,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 __item = _consumables;
                 __item.count = _amount;
                
-                Debug.Log("선택한 아이템의 수량은 " +  SelectItem(inventroyConsumableItems, _item).count);
                 SelectItem(inventroyConsumableItems, _item).count -= _amount;
-                Debug.Log("1 "+ __item.count + " 2 " + SelectItem(inventroyConsumableItems, _item).count + " 팔려는 양은 " + _amount);
                 if (SelectItem(inventroyConsumableItems, _item).count == 0)
                 {
                     inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _item));

@@ -383,6 +383,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         sellPanelController.SellItem();
     }
+    public void CancelRegisteredItem(Item _item)
+    {
+        sellPanelController.CancelRegisteredItem(_item);
+    }
     #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
@@ -460,6 +464,9 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 7)
         {
+
+            sellPanelController.CancelAllRegisteredItem();
+            
             sellPanelController.SetActiveSellPanel(false);
         }
     }

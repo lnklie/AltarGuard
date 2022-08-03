@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SellSlot : MonoBehaviour
 {
+    [SerializeField]
     private Text itemCount = null;
     [SerializeField]
     private Image[] itemImages = null;
@@ -43,7 +44,7 @@ public class SellSlot : MonoBehaviour
         // 슬롯 리셋
         curItem = null;
         ItemImages[1].sprite = uiMask;
-        itemCount.text = "수량 입력";
+        itemCount.text = "00";
         EnableItemCount(true);
     }
     public void SlotSetting()
@@ -75,9 +76,10 @@ public class SellSlot : MonoBehaviour
     {
         itemCount.enabled = _bool;
     }
-    public void SelectSlotItem()
+    public void SelectSellSlotItem()
     {
         if (curItem != null)
-            UIManager.Instance.SelectSlotSellItem(curItem);
+            UIManager.Instance.CancelRegisteredItem(curItem);
     }
+    
 }

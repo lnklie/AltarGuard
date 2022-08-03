@@ -59,6 +59,30 @@ public class CharacterController : BaseController, IAIController
         }
         return _bool;
     }
+    public bool CheckRayList(EnemyStatus _RayHit, List<EnemyStatus> _RayList)
+    {
+        bool _bool = false;
+        
+        for (int i = 0; i < _RayList.Count; i++)
+        {
+            Debug.Log("닿은 적의 인덱스는 " + _RayHit.EnemyIndex + " 리스트의 인덱스는 " + _RayList[i].EnemyIndex);
+            if (_RayHit.EnemyIndex == _RayList[i].EnemyIndex)
+                _bool = true;
+            else
+                _bool = false;
+        }
+        return _bool;
+    }
+    public void SortSightRayList(List<EnemyStatus> _sightRay)
+    {
+        // 리스트 정렬
+        _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
+        {
+            if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
+            else if (GetDistance(this.transform.position, a.transform.position) > GetDistance(this.transform.position, b.transform.position)) return 1;
+            else return 0;
+        });
+    }
     public void SortSightRayList(List<Status> _sightRay)
     {
         // 리스트 정렬
@@ -158,7 +182,6 @@ public class CharacterController : BaseController, IAIController
     public IEnumerator UseSkill(CharacterStatus _status)
     {
         skillController.IsSkillDelay = true;
-        Debug.Log("지점11");
         if (skillController.ActiveSkills[0].skillType == 0)
         {
             if (_status.Target)
@@ -178,7 +201,6 @@ public class CharacterController : BaseController, IAIController
                 Debug.Log("타겟이 없음");
         }
         yield return new WaitForSeconds(1f);
-        Debug.Log("지점22");
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)

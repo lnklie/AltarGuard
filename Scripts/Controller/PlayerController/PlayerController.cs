@@ -49,7 +49,6 @@ public class PlayerController : CharacterController
     public void DragFlag()
     {
         RaycastHit2D hit = default;
-        Vector2 originPos = Vector2.zero;
         if (Input.GetMouseButton(0))
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
@@ -362,16 +361,19 @@ public class PlayerController : CharacterController
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if(_enemyHit)
         {
-            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
+            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();
+            SortSightRayList(_status.SightRayList);
             if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
+            {
+                Debug.Log("들어온 적은 " + _enemyHitStatus);
                 _status.SightRayList.Add(_enemyHitStatus);
+            }
         }
 
-        SortSightRayList(_status.SightRayList);
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if(_allyHit)
         {
-            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
+            EnemyStatus _allyHitStatus = _allyHit.collider.GetComponent<EnemyStatus>();
             if (!CheckRayList(_allyHitStatus, _status.AllyRayList))
                 _status.AllyRayList.Add(_allyHitStatus);
         }
@@ -383,6 +385,7 @@ public class PlayerController : CharacterController
 
         for (int i = 0; i < _status.SightRayList.Count; i++)
         {
+            //Debug.Log("타겟들과의 거리는 " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
             if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange
                 || _status.SightRayList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
             {
@@ -476,7 +479,7 @@ public class PlayerController : CharacterController
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if(_enemyHit)
         {
-            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();  
+            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();  
             if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
                 _status.SightRayList.Add(_enemyHitStatus);
              SortSightRayList(_status.SightRayList);

@@ -21,8 +21,14 @@ public class EnemyStatus : CharacterStatus
 
     [SerializeField]
     private TextMesh textMesh = null;
-
+    [SerializeField]
+    private int enemyIndex = -1;
     #region Property
+    public int EnemyIndex
+    {
+        get { return enemyIndex; }
+        set { enemyIndex = value; }
+    }
     public RaycastHit2D[] AltarRay
     {
         get { return altarRay; }
