@@ -100,7 +100,7 @@ public class MercenaryController : CharacterController
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if (_enemyHit)
         {
-            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
+            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();
             if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
                 _status.SightRayList.Add(_enemyHitStatus);
             SortSightRayList(_status.SightRayList);

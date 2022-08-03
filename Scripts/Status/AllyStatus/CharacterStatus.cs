@@ -49,7 +49,8 @@ public class CharacterStatus : Status
     protected float attackType = 0f;
     [SerializeField]
     protected RaycastHit2D hitRay = default;
-    protected List<Status> sightRayList = new List<Status>();
+    [SerializeField]
+    protected List<EnemyStatus> sightRayList = new List<EnemyStatus>();
     protected List<Status> allyRayList = new List<Status>();
     [SerializeField]
     protected int hpRegenValue = 0;
@@ -127,7 +128,7 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<Status> SightRayList
+    public List<EnemyStatus> SightRayList
     {
         get { return sightRayList; }
         set { sightRayList = value; }

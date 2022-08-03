@@ -312,10 +312,12 @@ public class BuyPanelController : MonoBehaviour
     {
         int _amount = 1;
         if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
+        {
             _amount = int.Parse(buyAmount.text);
+            buyAmount.text = "00";
+        }    
         InventoryManager.Instance.AcquireItem(selectBuyingItem, _amount);
         playerStatus.Money -= selectBuyingItem.buyPrice * _amount;
-        buyAmount.text = null;
         UpdateMoney();
     }
     public void UpdateMoney()
