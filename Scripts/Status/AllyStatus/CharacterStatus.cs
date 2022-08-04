@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : CharacterStatus.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -50,7 +50,8 @@ public class CharacterStatus : Status
     [SerializeField]
     protected RaycastHit2D hitRay = default;
     [SerializeField]
-    protected List<EnemyStatus> sightRayList = new List<EnemyStatus>();
+    protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
+    [SerializeField]
     protected List<Status> allyRayList = new List<Status>();
     [SerializeField]
     protected int hpRegenValue = 0;
@@ -85,8 +86,21 @@ public class CharacterStatus : Status
     [SerializeField]
     private bool isFlagComeback = false;
 
-
+    [SerializeField]
+    private bool[] isAllyTargeted = new bool[5];
+    [SerializeField]
+    private bool[] isEnemyTargeted = new bool[101];
     #region Properties
+    public bool[] IsAllyTargeted
+    {
+        get { return isAllyTargeted; }
+        set { isAllyTargeted = value; }
+    }
+    public bool[] IsEnemyTargeted
+    {
+        get { return isEnemyTargeted; }
+        set { isEnemyTargeted = value; }
+    }
     public bool IsFlagComeBack
     {
         get { return isFlagComeback; }
@@ -128,10 +142,10 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<EnemyStatus> SightRayList
+    public List<EnemyStatus> EnemyRayList
     {
-        get { return sightRayList; }
-        set { sightRayList = value; }
+        get { return enemyRayList; }
+        set { enemyRayList = value; }
     }
     public float AttackType
     {
@@ -346,7 +360,7 @@ public class CharacterStatus : Status
     }
     public void AquireExp(Status status)
     {
-        // ¸¶Áö¸· °ø°İÀ» Çß´ÂÁö Ã¼Å©
+        // ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
         if (status.IsLastHit())
         {
             curExp += status.DefeatExp;
@@ -362,7 +376,7 @@ public class CharacterStatus : Status
 
     public virtual void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         UpdateBasicStatus();
         maxHp = 100 + totalStr * 10;
         maxMp = 100 + totalWiz * 10;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-08
@@ -17,14 +18,14 @@ public class ProfilePanelController : MonoBehaviour
     [SerializeField]
     private Image bossStateImages = null;
     [SerializeField]
-    private Text[] playerTexts = null;
+    private TextMeshProUGUI[] playerTexts = null;
 
     [SerializeField]
     private Image[] mercenaryStateImages = null;
     [SerializeField]
-    private Text[] mercenaryTexts = null;
+    private TextMeshProUGUI[] mercenaryTexts = null;
     [SerializeField]
-    private Text[] bossTexts = null;
+    private TextMeshProUGUI[] bossTexts = null;
 
     [Header("ProfileImages")]
     [SerializeField]
@@ -80,14 +81,13 @@ public class ProfilePanelController : MonoBehaviour
             _player.CurMp.ToString() + " / " + _player.MaxMp.ToString(),
             _player.CurExp.ToString() + " / " + _player.MaxExp.ToString(),
             "Lv. " + _player.CurLevel.ToString(),
-            _player.ObjectName
         };
         float[] infoImage ={
             _player.CurHp / (float)_player.MaxHp ,
             _player.CurMp / (float)_player.MaxMp,
             _player.CurExp / (float)_player.MaxExp
         };
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             playerTexts[i].text = infoText[i];
         }

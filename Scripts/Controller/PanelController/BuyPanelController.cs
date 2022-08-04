@@ -15,7 +15,7 @@ public class BuyPanelController : MonoBehaviour
 
     [Header("MoneyText")]
     [SerializeField]
-    private Text moneyText = null;
+    private TextMesh moneyText = null;
 
     [SerializeField]
     private PlayerStatus playerStatus = null;
@@ -24,9 +24,9 @@ public class BuyPanelController : MonoBehaviour
     private int selectBuyShopPanelIndex = 0;
     private bool isBuyingItemSelect = false;
     [SerializeField]
-    private Text[] buyingiteminfoText = null;
+    private TextMesh[] buyingiteminfoText = null;
     [SerializeField]
-    private Text[] equipediteminfoText = null;
+    private TextMesh[] equipediteminfoText = null;
 
     [SerializeField]
     private InputField buyAmount = null;
@@ -34,8 +34,8 @@ public class BuyPanelController : MonoBehaviour
     private void Awake()
     {
         buySlots = this.GetComponentsInChildren<BuySlot>();
-        buyingiteminfoText = shopItemInfo.GetComponentsInChildren<Text>();
-        equipediteminfoText = equipedItemInfo.GetComponentsInChildren<Text>();
+        buyingiteminfoText = shopItemInfo.GetComponentsInChildren<TextMesh>();
+        equipediteminfoText = equipedItemInfo.GetComponentsInChildren<TextMesh>();
     }
     private void Update()
     {

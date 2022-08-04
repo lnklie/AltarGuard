@@ -11,7 +11,7 @@ using UnityEngine.UI;
 */
 public class EnemyStatus : CharacterStatus
 {
-    protected RaycastHit2D[] altarRay = default;
+    protected RaycastHit2D altarRay = default;
 
     protected EnemyType enemyType;
     private bool isKnuckBack = false;
@@ -29,7 +29,7 @@ public class EnemyStatus : CharacterStatus
         get { return enemyIndex; }
         set { enemyIndex = value; }
     }
-    public RaycastHit2D[] AltarRay
+    public RaycastHit2D AltarRay
     {
         get { return altarRay; }
         set { altarRay = value; }

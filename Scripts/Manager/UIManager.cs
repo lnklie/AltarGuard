@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-10
@@ -67,7 +67,7 @@ public class UIManager : SingletonManager<UIManager>
 
     [Header("NoticeText")]
     [SerializeField]
-    private Text noticeText = null;
+    private TextMeshProUGUI noticeText = null;
 
     [SerializeField]
     private bool isNotice = false;
