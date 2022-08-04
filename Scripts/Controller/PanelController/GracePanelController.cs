@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class GracePanelController : MonoBehaviour
 {
     [SerializeField]
@@ -11,13 +12,13 @@ public class GracePanelController : MonoBehaviour
     [SerializeField]
     private GameObject graceInfo = null;
     [SerializeField]
-    private Text graceName = null;
+    private TextMeshProUGUI graceName = null;
     [SerializeField]
-    private Text graceExplain = null;
+    private TextMeshProUGUI graceExplain = null;
     [SerializeField]
     private Button graceLearnButton = null;
     [SerializeField]
-    private Text graceLearnButtonText = null;
+    private TextMeshProUGUI graceLearnButtonText = null;
 
     private Grace selectGrace = null;
     public delegate bool CheckIsActiveGrace(int _key);

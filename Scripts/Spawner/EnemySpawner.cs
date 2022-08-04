@@ -73,6 +73,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         {
             GameObject obj = Instantiate(_enemy);
             _enemyQueue.Enqueue(obj);
+            obj.GetComponentInChildren<RushEnemyStatus>().EnemyIndex = i;
             obj.SetActive(false);
             obj.transform.SetParent(this.transform);
         }

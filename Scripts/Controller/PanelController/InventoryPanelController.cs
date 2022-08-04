@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-09
@@ -35,11 +36,11 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField]
     private Button[] equipCharactersBtn = null;
     [SerializeField]
-    private Text equipmentNameText = null;
+    private TextMeshProUGUI equipmentNameText = null;
 
     [Header("MoenyText")]
     [SerializeField]
-    private Text moneyText = null;
+    private TextMeshProUGUI moneyText = null;
 
     [Header("Default")]
     [SerializeField]
@@ -60,11 +61,11 @@ public class InventoryPanelController : MonoBehaviour
     private InventorySlot[] inventorySlots = null;
     [SerializeField]
     private EquipmentSlot[] equipmentSlots = null;
-    private Text[] iteminfoText = null;
+    private TextMeshProUGUI[] iteminfoText = null;
 
     private void Awake()
     {
-        iteminfoText = itemInfo.GetComponentsInChildren<Text>();
+        iteminfoText = itemInfo.GetComponentsInChildren<TextMeshProUGUI>();
         inventorySlots = this.GetComponentsInChildren<InventorySlot>();
         equipmentSlots = this.GetComponentsInChildren<EquipmentSlot>();
         

@@ -25,12 +25,8 @@ public class EnemyController : CharacterController
 
     public void FindAltar(EnemyStatus _enemy)
     {
-        _enemy.AltarRay = Physics2D.CircleCastAll(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        for (int i = 0; i < _enemy.AltarRay.Length; i++)
-        {
-            if (_enemy.AltarRay[i].collider.gameObject.CompareTag("Altar"))
-                altar = _enemy.AltarRay[i].rigidbody.GetComponent<Status>();
-        }
+        _enemy.AltarRay = Physics2D.CircleCast(_enemy.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Altar"));
+        altar = _enemy.AltarRay.rigidbody.GetComponent<Status>();
     }
     public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
     {
@@ -50,7 +46,7 @@ public class EnemyController : CharacterController
     {
         if (_status.Target)
         {
-            _status.Distance = _status.Target.position - this.transform.position;
+            _status.Distance = _status.Target.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
         }
         if (_status.CurHp < 0f)
@@ -78,47 +74,51 @@ public class EnemyController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if(_enemyHit)
-        {
-            Status _enemyHitStatus = _enemyHit.collider.GetComponent<Status>();
-            if (_enemyHit && !CheckRayList(_enemyHitStatus, _status.SightRayList))
-                _status.SightRayList.Add(_enemyHitStatus);
-            SortSightRayList(_status.SightRayList);
-        }
-
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if(_allyHit)
         {
-            Status _allyHitStatus = _allyHit.collider.GetComponent<Status>();
-            if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
+            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
+            if (!_allyHitStatus.IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex])
+            {
                 _status.AllyRayList.Add(_allyHitStatus);
+                _allyHitStatus.IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex] = true;
+            }
+        }
+
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if(_enemyHit)
+        {
+            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();
+            if (_enemyHitStatus.EnemyIndex != ((EnemyStatus)_status).EnemyIndex && !_enemyHitStatus.IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex])
+            {
+                _status.EnemyRayList.Add(_enemyHitStatus);
+                _enemyHitStatus.IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex] = true;
+            }
         }
 
         if (!altar)
-            _status.Target = _status.TargetPos;
+            _status.Target = null;
         else
         {
-            if (_status.SightRayList.Count > 0)
+            if (_status.AllyRayList.Count > 0)
             {
-                _status.Target = _status.SightRayList[0].TargetPos;
+                _status.Target = _status.AllyRayList[0].TargetPos;
+                SortSightRayList(_status.AllyRayList);
+                for (int i = 0; i < _status.AllyRayList.Count; i++)
+                {
+                    if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
+                        || _status.AllyRayList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
+                    {
+                        _status.AllyRayList[i].transform.GetComponent<CharacterStatus>().IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex] = false;
+                        _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                    }
+                } 
             }
             else
             {
                 _status.Target = altar.TargetPos;
             }
         }
-
-
-
-        for (int i = 0; i < _status.SightRayList.Count; i++)
-        {
-            if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange)
-            {
-                _status.SightRayList.Remove(_status.SightRayList[i]);
-            }
-        }
-
     }
 
     public override IEnumerator AIDied(CharacterStatus _status)

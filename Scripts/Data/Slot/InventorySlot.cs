@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-07
@@ -12,7 +13,7 @@ using UnityEngine.UI;
 */
 public class InventorySlot : MonoBehaviour
 {
-    private Text itemCount = null;
+    private TextMeshProUGUI itemCount = null;
     [SerializeField]
     private Image[] itemImages = null;
     [SerializeField]
@@ -40,7 +41,7 @@ public class InventorySlot : MonoBehaviour
     private void Awake()
     {
         itemImages = GetComponentsInChildren<Image>();
-        itemCount = GetComponentInChildren<Text>();
+        itemCount = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void SlotReset()
@@ -48,9 +49,8 @@ public class InventorySlot : MonoBehaviour
         // 슬롯 리셋
         curItem = null;
         ItemImages[1].sprite = uiMask;
-        ItemImages[2].sprite = uiMask;
         itemCount.text = "00";
-        EnableItemCount(true);
+        EnableItemCount(false);
     }
     public void SlotSetting()
     {
