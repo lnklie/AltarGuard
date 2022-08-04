@@ -23,7 +23,6 @@ public class EnemyStatus : CharacterStatus
     private TextMesh textMesh = null;
     [SerializeField]
     private int enemyIndex = -1;
-
     #region Property
     public int EnemyIndex
     {

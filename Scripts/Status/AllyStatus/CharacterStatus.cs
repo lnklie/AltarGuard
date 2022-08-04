@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : CharacterStatus.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -360,7 +360,7 @@ public class CharacterStatus : Status
     }
     public void AquireExp(Status status)
     {
-        // ¸¶Áö¸· °ø°İÀ» Çß´ÂÁö Ã¼Å©
+        // ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
         if (status.IsLastHit())
         {
             curExp += status.DefeatExp;
@@ -376,7 +376,7 @@ public class CharacterStatus : Status
 
     public virtual void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         UpdateBasicStatus();
         maxHp = 100 + totalStr * 10;
         maxMp = 100 + totalWiz * 10;
