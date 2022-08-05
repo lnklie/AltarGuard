@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class SellPanelController : MonoBehaviour
 {
     [Header("SellItemInfo")]
@@ -14,27 +14,26 @@ public class SellPanelController : MonoBehaviour
     private GameObject sellItemAmount = null;
 
     [SerializeField]
-    private SellSlot[] sellSlots = null;
+    private List<SellSlot> sellSlots = new List<SellSlot>();
 
     [SerializeField]
     private Item selectSellItem = null;
     [SerializeField]
-    private ShopInventorySlot[] shopInventorySlots = null;
-    private Text[] sellItemInfoText = null;
+    private List<ShopInventorySlot> shopInventorySlots = new List<ShopInventorySlot>();
+    private TextMeshProUGUI[] sellItemInfoText = null;
     [SerializeField]
     private List<Item> sellItemList = new List<Item>(); 
     [Header("PlayerMoenyText")]
     [SerializeField]
-    private Text moneyText = null;
+    private TextMeshProUGUI moneyText = null;
     [Header("SellMoenyText")]
     [SerializeField]
-    private Text sellMoneyText = null;
+    private TextMeshProUGUI sellMoneyText = null;
     [SerializeField]
     private PlayerStatus playerStatus = null;
     private bool isSellItemSelect = false;
-    private Button registerButton = null;
     [SerializeField]
-    private InputField sellAmount = null;
+    private TMP_InputField sellAmount = null;
     private int selectInventoryIndex = 0;
     private int sellMoney = 0;
     public List<Item> SellItemList
@@ -43,9 +42,9 @@ public class SellPanelController : MonoBehaviour
     }
     private void Awake()
     {
-        sellItemInfoText = sellItemInfo.GetComponentsInChildren<Text>();
-        sellSlots = this.GetComponentsInChildren<SellSlot>();
-        shopInventorySlots = this.GetComponentsInChildren<ShopInventorySlot>();
+        sellItemInfoText = sellItemInfo.GetComponentsInChildren<TextMeshProUGUI>();
+        sellSlots.AddRange(this.GetComponentsInChildren<SellSlot>());
+        shopInventorySlots.AddRange(GetComponentsInChildren<ShopInventorySlot>());
 
     }
     private void Update()
@@ -62,7 +61,7 @@ public class SellPanelController : MonoBehaviour
     public void ResetSellInventory()
     {
         // 인벤토리 슬롯 리셋
-        for (int i = 0; i < shopInventorySlots.Length; i++)
+        for (int i = 0; i < shopInventorySlots.Count; i++)
         {
             shopInventorySlots[i].SlotReset();
         }
@@ -81,6 +80,7 @@ public class SellPanelController : MonoBehaviour
                 shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
                 shopInventorySlots[i].SlotSetting();
                 shopInventorySlots[i].EnableItemCount(false);
+
             }
         }
         if (_index == 1)
@@ -270,11 +270,16 @@ public class SellPanelController : MonoBehaviour
         }   
         else
         {
-            
-            AddSellMoney(selectSellItem.sellPrice);
-            sellItemList.Add(InventoryManager.Instance.DiscardItem(selectSellItem));
-            UpdateSellInventorySlot(selectInventoryIndex);
-            UpdateSellSlot();
+            if (!CheckIsRegistered())
+            {
+                AddSellMoney(selectSellItem.sellPrice);
+                sellItemList.Add(selectSellItem);
+                UpdateSellInventorySlot(selectInventoryIndex);
+                UpdateSellSlot();
+            }
+            else
+                Debug.Log("이미 등록되어 있음");
+
         }
     }
     public void SetActiveSellItemAmount(bool _bool)
@@ -287,11 +292,18 @@ public class SellPanelController : MonoBehaviour
             Debug.Log("수량 뛰어 넘음");
         else
         {
-            AddSellMoney(selectSellItem.sellPrice * int.Parse(sellAmount.text));
-            sellItemList.Add(InventoryManager.Instance.DiscardItem(selectSellItem, int.Parse(sellAmount.text)));
-            UpdateSellInventorySlot(selectInventoryIndex);
-            UpdateSellSlot();
-            SetActiveSellItemAmount(false);
+            if (!CheckIsRegistered())
+            {
+                AddSellMoney(selectSellItem.sellPrice * int.Parse(sellAmount.text));
+                Debug.Log("파는 수량은" + int.Parse(sellAmount.text));
+                sellItemList.Add(InventoryManager.Instance.SelectItem(selectSellItem, int.Parse(sellAmount.text))); 
+                UpdateSellInventorySlot(selectInventoryIndex);
+                UpdateSellSlot();
+                SetActiveSellItemAmount(false);
+            }
+            else
+                Debug.Log("이미 등록되어 있음");
+
         }
     }
     public void AddSellMoney(int _money)
@@ -302,7 +314,7 @@ public class SellPanelController : MonoBehaviour
     public void ResetSellList()
     {
         // 인벤토리 슬롯 리셋
-        for (int i = 0; i < shopInventorySlots.Length; i++)
+        for (int i = 0; i < shopInventorySlots.Count; i++)
         {
             sellSlots[i].SlotReset();
         }
@@ -323,26 +335,39 @@ public class SellPanelController : MonoBehaviour
         playerStatus.Money += sellMoney;
         ResetSellList();
         MoneyUpdate();
+        for(int i = 0; i < sellItemList.Count; i++)
+        {
+            InventoryManager.Instance.DiscardItem(sellItemList[i], sellItemList[i].count);
+        }
+        UpdateSellInventorySlot(selectInventoryIndex);
         sellItemList.Clear();
         sellMoney = 0;
         sellMoneyText.text = sellMoney.ToString();
     }
     public void CancelAllRegisteredItem()
     {
-        for(int i = 0; i < sellItemList.Count; i++)
-        {
-            InventoryManager.Instance.AcquireItem(sellItemList[i]);
-        }
         sellItemList.Clear();
         sellMoney = 0;
         ResetSellList();
     }
     public void CancelRegisteredItem(Item _item)
     {
-        InventoryManager.Instance.AcquireItem(_item);
         sellItemList.Remove(_item);
         AddSellMoney(-_item.sellPrice);
         UpdateSellSlot();
         UpdateSellInventorySlot(selectInventoryIndex);
+    }
+
+    public bool CheckIsRegistered()
+    {
+        bool _bool = false;
+        for (int i = 0; i < sellItemList.Count; i++)
+        {
+            if (selectSellItem == sellItemList[i])
+                _bool = true;
+            else
+                _bool = false;
+        }
+        return _bool;
     }
 }

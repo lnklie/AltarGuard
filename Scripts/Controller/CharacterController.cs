@@ -86,30 +86,6 @@ public class CharacterController : BaseController, IAIController
             else return 0;
         });
     }
-    public bool CheckRayList(EnemyStatus _RayHit, List<EnemyStatus> _RayList)
-    {
-        bool _bool = false;
-        
-        for (int i = 0; i < _RayList.Count; i++)
-        {
-            Debug.Log("닿은 적의 인덱스는 " + _RayHit.EnemyIndex + " 리스트의 인덱스는 " + _RayList[i].EnemyIndex);
-            if (_RayHit.EnemyIndex == _RayList[i].EnemyIndex)
-                _bool = true;
-            else
-                _bool = false;
-        }
-        return _bool;
-    }
-    public void SortSightRayList(List<EnemyStatus> _sightRay)
-    {
-        // 리스트 정렬
-        _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
-        {
-            if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
-            else if (GetDistance(this.transform.position, a.transform.position) > GetDistance(this.transform.position, b.transform.position)) return 1;
-            else return 0;
-        });
-    }
     public void SortSightRayList(List<Status> _sightRay)
     {
         // 리스트 정렬

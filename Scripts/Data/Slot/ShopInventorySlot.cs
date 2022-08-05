@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class ShopInventorySlot : MonoBehaviour
 {
-    private Text itemCount = null;
+    private TextMeshProUGUI itemCount = null;
     [SerializeField]
     private Image[] itemImages = null;
     [SerializeField]
@@ -13,6 +13,7 @@ public class ShopInventorySlot : MonoBehaviour
     private bool isItemChange = false;
     [SerializeField]
     private Sprite uiMask = null;
+
     #region Property
     public Image[] ItemImages
     {
@@ -33,7 +34,7 @@ public class ShopInventorySlot : MonoBehaviour
     private void Awake()
     {
         itemImages = GetComponentsInChildren<Image>();
-        itemCount = GetComponentInChildren<Text>();
+        itemCount = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     public void SlotReset()

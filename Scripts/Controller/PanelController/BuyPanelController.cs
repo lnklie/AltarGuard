@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BuyPanelController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class BuyPanelController : MonoBehaviour
 
     [Header("MoneyText")]
     [SerializeField]
-    private TextMesh moneyText = null;
+    private TextMeshProUGUI moneyText = null;
 
     [SerializeField]
     private PlayerStatus playerStatus = null;
@@ -24,18 +25,18 @@ public class BuyPanelController : MonoBehaviour
     private int selectBuyShopPanelIndex = 0;
     private bool isBuyingItemSelect = false;
     [SerializeField]
-    private TextMesh[] buyingiteminfoText = null;
+    private TextMeshProUGUI[] buyingiteminfoText = null;
     [SerializeField]
-    private TextMesh[] equipediteminfoText = null;
+    private TextMeshProUGUI[] equipediteminfoText = null;
 
     [SerializeField]
-    private InputField buyAmount = null;
+    private TMP_InputField buyAmount = null;
 
     private void Awake()
     {
         buySlots = this.GetComponentsInChildren<BuySlot>();
-        buyingiteminfoText = shopItemInfo.GetComponentsInChildren<TextMesh>();
-        equipediteminfoText = equipedItemInfo.GetComponentsInChildren<TextMesh>();
+        buyingiteminfoText = shopItemInfo.GetComponentsInChildren<TextMeshProUGUI>();
+        equipediteminfoText = equipedItemInfo.GetComponentsInChildren<TextMeshProUGUI>();
     }
     private void Update()
     {
@@ -171,60 +172,60 @@ public class BuyPanelController : MonoBehaviour
                 buyingiteminfoText[2].text = "This is FaceHair";
                 break;
             case 2:
-                buyingiteminfoText[2].text = "DefensivePower : " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 3:
-                buyingiteminfoText[2].text = "DefensivePower : " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 4:
-                buyingiteminfoText[2].text = "DefensivePower : " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 5:
-                buyingiteminfoText[2].text = "DefensivePower : " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 6:
-                buyingiteminfoText[2].text = "DefensivePower : " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 7:
                 buyingiteminfoText[2].text =
-                    "PysicalDamage : " + selectBuyingItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectBuyingItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectBuyingItem).weaponType;
+                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 8:
                 buyingiteminfoText[2].text =
-                    "PysicalDamage : " + selectBuyingItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectBuyingItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectBuyingItem).weaponType +
-                    "DefensivePower : " + selectBuyingItem.defensivePower;
+                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType + "\n" +
+                    "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 9:
                 buyingiteminfoText[2].text =
-                    "PysicalDamage : " + selectBuyingItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectBuyingItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectBuyingItem).weaponType;
+                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 10:
                 buyingiteminfoText[2].text =
-                    "PysicalDamage : " + selectBuyingItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectBuyingItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectBuyingItem).weaponType;
+                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 11:
                 buyingiteminfoText[2].text =
-                    "Value : " + selectBuyingItem.value + "\n";
+                    "회복량 : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
                 buyingiteminfoText[2].text =
-                    "Value : " + selectBuyingItem.value + "\n";
+                     "이것은 퀘스트 아이템";
                 break;
         }
     }
@@ -243,64 +244,59 @@ public class BuyPanelController : MonoBehaviour
                 equipediteminfoText[2].text = "This is FaceHair";
                 break;
             case 2:
-                equipediteminfoText[2].text = "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 3:
-                equipediteminfoText[2].text = "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 4:
-                equipediteminfoText[2].text = "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 5:
-                equipediteminfoText[2].text = "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 6:
-                equipediteminfoText[2].text = "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 7:
                 equipediteminfoText[2].text =
-                    "PysicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "magicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 8:
                 equipediteminfoText[2].text =
-                    "PysicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "magicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType +
-                    "DefensivePower : " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType + "\n" +
+                    "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 9:
                 equipediteminfoText[2].text =
-                    "PysicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "magicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 10:
                 equipediteminfoText[2].text =
-                    "PysicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "magicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 11:
                 equipediteminfoText[2].text =
-                    "Value : " + selectBuyingItem.value + "\n";
+                    "회복량 : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
-                equipediteminfoText[2].text =
-                    "PysicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "magicalDamage : " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                equipediteminfoText[2].text = "이것은 퀘스트 아이템";
                 break;
         }
     }

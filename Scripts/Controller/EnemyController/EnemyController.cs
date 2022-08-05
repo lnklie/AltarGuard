@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : EnemyAIController.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : EnemyAIController.cs
 ==============================
 */
 public class EnemyController : CharacterController
@@ -31,7 +31,7 @@ public class EnemyController : CharacterController
     public bool FrontOtherEnemy(RaycastHit2D _enemyHit, Status _enemy)
     {
 
-        // ì•ì— ë‹¤ë¥¸ ì ì´ ìˆëŠ” ì§€ í™•ì¸
+        // ¾Õ¿¡ ´Ù¸¥ ÀûÀÌ ÀÖ´Â Áö È®ÀÎ
 
         if (_enemyHit.collider.gameObject != _enemy.gameObject)
         {
@@ -77,7 +77,6 @@ public class EnemyController : CharacterController
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if(_allyHit)
         {
-
             CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
             if (!_allyHitStatus.IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex])
             {
@@ -128,13 +127,13 @@ public class EnemyController : CharacterController
     }
     public Item DropItem(EnemyStatus _status)
     {
-        // ì•„ì´í…œ ë“œë
+        // ¾ÆÀÌÅÛ µå¶ø
         int _ranIndex = RandomChoose(_status.ItemDropProb);
         return DatabaseManager.Instance.SelectItem(_status.ItemDropKey[_ranIndex]);
     }
     private int RandomChoose(List<float> _probs)
     {
-        // ë¬´ì‘ìœ„ ì„ íƒ
+        // ¹«ÀÛÀ§ ¼±ÅÃ
         float total = 0;
 
         foreach (float elem in _probs)
