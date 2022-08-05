@@ -154,15 +154,16 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 11:
                 if (IndexOfItem(_item) != -1)
                 {
-                    Debug.Log("있던 소비품");
-                    __item = SelectItem(inventroyConsumableItems, _item);
+                    __item = SelectItem(_item);
+                    Debug.Log("있던 소비품 " + __item.count);
                     __item.count += _amount;
+                    Debug.Log("채워 진후 " + __item.count);
                 }
                 else
                 {
                     Debug.Log("없던 소비품");
                     Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value);
-                    _consumables.count =+ _amount;
+                    _consumables.count = _amount;
                     inventroyConsumableItems.Add(_consumables);
                     __item = _consumables;
                 }
@@ -171,14 +172,14 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (IndexOfItem(_item) != -1)
                 {
                     Debug.Log("있던 퀘스트 아이템");
-                    __item = SelectItem(inventroyMiscellaneousItems, _item);
+                    __item = SelectItem(_item);
                     __item.count += _amount;
                 }
                 else
                 {
                     Debug.Log("없던 퀘스트 아이템");
                     Miscellaneous _miscellaneous = new Miscellaneous(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.purpose);
-                    _miscellaneous.count =+ _amount;
+                    _miscellaneous.count = _amount;
                     inventroyMiscellaneousItems.Add(_miscellaneous);
                     __item = _miscellaneous;
                 }
@@ -229,13 +230,44 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         return _index;
     }
-    public Item SelectItem(List<Item> _inventory, Item _selectItem)
+    public Item SelectItem(Item _selectItem,int _amount =1)
     {
         // 인벤토리에서 해당 아이템 반환
         Item _item = null;
+
         if (IndexOfItem(_selectItem) != -1)
         {
-            _item = _inventory[IndexOfItem(_selectItem)];
+
+            switch (_selectItem.itemType)
+            {
+                case 0:
+                case 1:
+                    _item = inventroyDecorationItems[IndexOfItem(_selectItem)];
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    _item = inventroyEquipmentItems[IndexOfItem(_selectItem)];
+                    break;
+                case 7:
+                case 8:
+                    _item = inventroyWeaponItems[IndexOfItem(_selectItem)];
+                    break;
+                case 9:
+                    _selectItem.count -= _amount;
+                    Consumables _consumables = new Consumables(_selectItem.itemKey, _selectItem.itemName, _selectItem.buyPrice, _selectItem.sellPrice, _selectItem.useEffect, _selectItem.target, _selectItem.durationTime, _selectItem.value);
+                    _consumables.count = _amount;
+                    _item = _consumables;
+                    break;
+                case 10:
+                    _selectItem.count -= _amount;
+                    Miscellaneous _miscellaneous = new Miscellaneous(_selectItem.itemKey, _selectItem.itemName, _selectItem.buyPrice, _selectItem.sellPrice, _selectItem.purpose);
+                    _miscellaneous.count = _amount;
+                    _item = _miscellaneous;
+                    break;
+            }
         } 
         else
         {
@@ -249,12 +281,12 @@ public class InventoryManager : SingletonManager<InventoryManager>
         // 소모품만 가능 UI에서 소모품만 사용하기 UI나타나기
         if (IndexOfItem(_Item) != -1)
         {
-            SelectItem(inventroyConsumableItems, _Item).count--;
+            SelectItem(_Item).count--;
             UseEffect(_character, _Item);
             Debug.Log("아이템 사용");
-            if (SelectItem(inventroyConsumableItems, _Item).count == 0)
+            if (SelectItem(_Item).count == 0)
             {
-                inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _Item));
+                inventroyConsumableItems.Remove(SelectItem(_Item));
                 Debug.Log("아이템 비워짐");
             }
         }
@@ -365,10 +397,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 __item = _consumables;
                 __item.count = _amount;
                
-                SelectItem(inventroyConsumableItems, _item).count -= _amount;
-                if (SelectItem(inventroyConsumableItems, _item).count == 0)
+                SelectItem(_item).count -= _amount;
+                if ( _item.count == 0)
                 {
-                    inventroyConsumableItems.Remove(SelectItem(inventroyConsumableItems, _item));
+                    inventroyConsumableItems.Remove(SelectItem(_item));
                     Debug.Log("아이템 비워짐");
                 }
             }
@@ -381,12 +413,12 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             if (IndexOfItem(_item) != -1)
             {
-                __item = SelectItem(inventroyMiscellaneousItems, _item);
+                __item = SelectItem(_item);
                 __item.count = _amount;
-                SelectItem(inventroyMiscellaneousItems, _item).count -= _amount;
-                if (SelectItem(inventroyMiscellaneousItems, _item).count == 0)
+                SelectItem(_item).count -= _amount;
+                if (SelectItem(_item).count == 0)
                 {
-                    inventroyMiscellaneousItems.Remove(SelectItem(inventroyMiscellaneousItems, _item));
+                    inventroyMiscellaneousItems.Remove(SelectItem(_item));
                     Debug.Log("아이템 비워짐");
                 }
             }

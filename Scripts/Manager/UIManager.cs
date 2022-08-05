@@ -363,6 +363,14 @@ public class UIManager : SingletonManager<UIManager>
     {
         buyPanelController.UpdateBuyMoneyText();
     }
+    public void SetActiveBuyingItemInfo(bool _bool)
+    {
+        buyPanelController.SetActiveShopItemInfo(_bool);
+    }
+    public void SetActiveEquipedItemInfo(bool _bool)
+    {
+        buyPanelController.SetActiveEquipedItemInfo(_bool);
+    }
     public void ChangeSellInventorySlots(int _index)
     {
         sellPanelController.UpdateSellInventorySlot(_index);
@@ -386,6 +394,10 @@ public class UIManager : SingletonManager<UIManager>
     public void CancelRegisteredItem(Item _item)
     {
         sellPanelController.CancelRegisteredItem(_item);
+    }
+    public void SetActiveSellItemInfo(bool _bool)
+    {
+        sellPanelController.SetActiveSellItemInfo(_bool);
     }
     #endregion
     #region MainUI
@@ -465,9 +477,9 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 7)
         {
 
+            sellPanelController.SetActiveSellPanel(false);
             sellPanelController.CancelAllRegisteredItem();
             
-            sellPanelController.SetActiveSellPanel(false);
         }
     }
     #endregion
