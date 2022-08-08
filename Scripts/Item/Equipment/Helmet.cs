@@ -13,7 +13,7 @@ using UnityEditor;
 public class Helmet : Equipment
 {
 
-    public Helmet(int _itemKey, string _itemName, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _defensivePower, _equipLevel)
+    public Helmet(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel)
     {
         itemType = (int)ItemType.Helmet;
         singleSprite = Resources.Load("Sprites/4_Helmet/" + itemName, typeof(Sprite)) as Sprite;

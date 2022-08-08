@@ -12,7 +12,7 @@ using UnityEditor;
 [System.Serializable]
 public class Consumables : Item
 {
-    public Consumables(int _itemKey, string _itemName, string _useEffect, string _target, float _durationTime, int _value) : base(_itemKey,_itemName)
+    public Consumables(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, string _useEffect, string _target, float _durationTime, int _value) : base(_itemKey, _itemName,_buyPrice,_sellPrice)
     {
         useEffect = _useEffect;
         target = _target;

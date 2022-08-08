@@ -6,14 +6,16 @@ public class RushEnemyStatus : EnemyStatus
 {
     [SerializeField]
     protected Enemy rushEnemy = null;
-    public Enemy RushEnemy
-    {
-        set { rushEnemy = value; }
-    }
+
 
     private Image[] images = null;
 
 
+
+    public Enemy RushEnemy
+    {
+        set { rushEnemy = value; }
+    }
     public override void Awake()
     {
         base.Awake();

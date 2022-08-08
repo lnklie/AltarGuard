@@ -39,7 +39,6 @@ public class MercenaryManager : MonoBehaviour
         mercenarys.Add(_newCharacter);
         UIManager.Instance.AddMercenary(_mercenaryStatus);
         UIManager.Instance.SetActiveCharactersProfile(_mercenaryStatus.MercenaryNum + 1, true);
-        UIManager.Instance.ChangeMercenaryUIItemImage(_mercenaryStatus.MercenaryNum);
         UIManager.Instance.UpdateMercenaryProfile(_mercenaryStatus.MercenaryNum);
     }
 }

@@ -16,7 +16,15 @@ public class AllyStatus : CharacterStatus
     private bool isAlterBuff = false;
     private float revivalTime = 5f;
     private float knuckBackPower = 1;
+
+    [SerializeField]
+    private int allyNum = 0;
     #region Properties
+    public int AllyNum
+    {
+        get{ return allyNum; }
+        set{ allyNum = value; }
+    }
     public float KnuckBackPower
     {
         get { return knuckBackPower; }

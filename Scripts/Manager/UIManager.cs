@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-10
@@ -23,6 +23,7 @@ public class UIManager : SingletonManager<UIManager>
     [Header("GraceManager")]
     [SerializeField]
     private GraceManager graceManager = null;
+
 
     [Header("Player")]
     [SerializeField]
@@ -57,10 +58,20 @@ public class UIManager : SingletonManager<UIManager>
     private GracePanelController gracePanelController = null;
     [SerializeField]
     private LogPanelController logPanelController = null;
+    [SerializeField]
+    private GameObject shopSelectPanel = null;
+    [SerializeField]
+    private BuyPanelController buyPanelController = null;
+    [SerializeField]
+    private SellPanelController sellPanelController = null;
+    [SerializeField]
+    private GameObject forgeSelectPanel = null;
+    [SerializeField]
+    private CraftPanelController craftPanelController = null;
 
     [Header("NoticeText")]
     [SerializeField]
-    private Text noticeText = null;
+    private TextMeshProUGUI noticeText = null;
 
     [SerializeField]
     private bool isNotice = false;
@@ -70,18 +81,14 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Start()
     {
-        ChangePlayerUIItemImage();
         UpdatePlayerProfile();
         for (int i = 0; i < mercenary.Count; i++)
         {
             if(mercenary[i] != null)
             {
-                ChangeMercenaryUIItemImage(i);
                 UpdateMercenaryProfile(i);
             }
         }
-
-        
     }
 
     private void Update()
@@ -179,6 +186,14 @@ public class UIManager : SingletonManager<UIManager>
         // 슬롯에 선택한 아이템 
         inventoryPanelController.SelectSlotItem(_item);
     }
+    public void SelectSlotSellItem(Item _item)
+    {
+        sellPanelController.SelectSlotSellItem(_item);
+    }
+    public void SelectSlotBuyItem(Item _item)
+    {
+        buyPanelController.SelectSlotBuyItem(_item);
+    }
     #region Profile
     public void UpdateBossInfo()
     {
@@ -187,14 +202,14 @@ public class UIManager : SingletonManager<UIManager>
             profilePanelController.BossUpdate(bossEnemy);
         }
     }
-    public void ChangePlayerUIItemImage()
-    {
-        profilePanelController.ChangePlayerUIItemImage(characterList);
-    }
-    public void ChangeMercenaryUIItemImage(int _index)
-    {
-        profilePanelController.ChangeMercenaryUIItemImage(characterList, _index);
-    }
+    //public void ChangePlayerUIItemImage()
+    //{
+    //    profilePanelController.ChangePlayerUIItemImage(characterList);
+    //}
+    //public void ChangeMercenaryUIItemImage(int _index)
+    //{
+    //    profilePanelController.ChangeMercenaryUIItemImage(characterList, _index);
+    //}
     public void UpdatePlayerProfile()
     {
         profilePanelController.UpdatePlayerProfile(player);
@@ -336,6 +351,65 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #region ShopPanel
+
+    public void UpdateBuyInventorySlots(int _index)
+    {
+        buyPanelController.UpdateBuyingInventorySlotChange(_index);
+    }
+    public void BuyItem()
+    {
+        buyPanelController.BuyItem();
+    }
+    public void UpdateBuyingMoneyText()
+    {
+        buyPanelController.UpdateBuyMoneyText();
+    }
+    public void SetActiveBuyingItemInfo(bool _bool)
+    {
+        buyPanelController.SetActiveShopItemInfo(_bool);
+    }
+    public void SetActiveEquipedItemInfo(bool _bool)
+    {
+        buyPanelController.SetActiveEquipedItemInfo(_bool);
+    }
+    public void ChangeSellInventorySlots(int _index)
+    {
+        sellPanelController.UpdateSellInventorySlot(_index);
+    }
+    public void RegisterSellItem()
+    {
+        sellPanelController.RegisterItem();
+    }
+    public void RegisterSellAmountItem()
+    {
+        sellPanelController.RegisterAmountItem();
+    }
+    public void SetActiveSellAmountItem(bool _bool)
+    {
+        sellPanelController.SetActiveSellItemAmount(_bool);
+    }
+    public void SellItem()
+    {
+        sellPanelController.SellItem();
+    }
+    public void CancelRegisteredItem(Item _item)
+    {
+        sellPanelController.CancelRegisteredItem(_item);
+    }
+    public void SetActiveSellItemInfo(bool _bool)
+    {
+        sellPanelController.SetActiveSellItemInfo(_bool);
+    }
+    #endregion
+
+    #region CraftPanel
+    public void SelectCraftRecipe(CraftRecipe _craftRecipe)
+    {
+        craftPanelController.SelectCraftRecipe = _craftRecipe;
+        craftPanelController.IsSelected = true;
+    }
+    #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
@@ -364,6 +438,31 @@ public class UIManager : SingletonManager<UIManager>
             gracePanelController.ActiveGracePanel(true);
             UpdateGracePanel();
         }
+        else if(_index == 5)
+        {
+            shopSelectPanel.SetActive(true);
+        }
+        else if (_index == 6)
+        {
+            buyPanelController.SetActivebuyPanel(true);
+            
+        }
+        else if (_index == 7)
+        {
+            sellPanelController.SetActiveSellPanel(true);
+        }
+        else if (_index == 8)
+        {
+            forgeSelectPanel.SetActive(true);
+        }
+        else if (_index == 9)
+        {
+            craftPanelController.SetActiveCraftPanel(true);
+        }
+        else if (_index == 10)
+        {
+            sellPanelController.SetActiveSellPanel(true);
+        }
     }
 
     public void DeactiveUIBtn(int _index)
@@ -388,6 +487,38 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 4)
         {
             gracePanelController.ActiveGracePanel(false);
+        }
+        else if (_index == 5)
+        {
+            shopSelectPanel.SetActive(false);
+        }
+        else if (_index == 6)
+        {
+            buyPanelController.SetActivebuyPanel(false);
+        }
+        else if (_index == 7)
+        {
+
+            sellPanelController.SetActiveSellPanel(false);
+            sellPanelController.CancelAllRegisteredItem();
+            
+        }
+        else if (_index == 8)
+        {
+            forgeSelectPanel.SetActive(false);
+        }
+        else if (_index == 9)
+        {
+
+            craftPanelController.SetActiveCraftPanel(false);
+
+        }
+        else if (_index == 10)
+        {
+
+            sellPanelController.SetActiveSellPanel(false);
+            sellPanelController.CancelAllRegisteredItem();
+
         }
     }
     #endregion
