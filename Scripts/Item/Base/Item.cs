@@ -38,10 +38,14 @@ public class Item
     public int skillKey1 = -1;
     public int skillKey2 = -1;
     public int equipLevel = 0;
-    public Item(int _itemKey, string _itemName)
+    public int buyPrice = 0;
+    public int sellPrice = 0;
+    public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice)
     {
         itemKey = _itemKey;
         itemName = _itemName;
+        buyPrice = _buyPrice;
+        sellPrice = _sellPrice;
         count = 0;
     }
 }

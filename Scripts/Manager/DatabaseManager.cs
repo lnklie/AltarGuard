@@ -41,6 +41,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("Grace")]
     public List<Grace> graceList = new List<Grace>();
+
+    [Header("CraftRecipe")]
+    public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -68,7 +71,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                hairList.Add(new Hair(items[i].itemKey, items[i].itemName));
+                hairList.Add(new Hair(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice));
             }
 
         }
@@ -82,7 +85,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                faceHairList.Add(new FaceHair(items[i].itemKey, items[i].itemName));
+                faceHairList.Add(new FaceHair(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice));
             }
 
         }
@@ -96,7 +99,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
+                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -110,7 +113,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].defensivePower, items[i].equipLevel));
+                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -124,7 +127,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
+                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -138,7 +141,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                armorList.Add(new Armor(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
+                armorList.Add(new Armor(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -152,7 +155,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                backList.Add(new Back(items[i].itemKey, items[i].itemName,items[i].defensivePower, items[i].equipLevel));
+                backList.Add(new Back(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
             }
 
         }
@@ -166,7 +169,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                swordList.Add(new Sword(items[i].itemKey, items[i].itemName,items[i].attackType,items[i].weaponType, items[i].physicalDamage,
+                swordList.Add(new Sword(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType,items[i].weaponType, items[i].physicalDamage,
                     items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
@@ -181,7 +184,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
+                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
                     items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
@@ -196,7 +199,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
+                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
                     items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
@@ -211,7 +214,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
+                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
                     items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
             }
 
@@ -226,7 +229,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName,items[i].useEffect,items[i].target,items[i].durationTime,items[i].value));
+                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect,items[i].target,items[i].durationTime,items[i].value));
             }
 
         }
@@ -240,7 +243,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                miscellaneousList.Add(new Miscellaneous(items[i].itemKey, items[i].itemName,items[i].purpose));
+                miscellaneousList.Add(new Miscellaneous(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].purpose));
             }
 
         }
@@ -336,10 +339,38 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
             }
         }
+        if (!File.Exists(CombinePath("Grace")))
+        {
+            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Grace")));
+            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
+            }
+        }
+        if (!File.Exists(CombinePath("CraftRecipe")))
+        {
+            Debug.Log("경로에 제작 레시피 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("CraftRecipe")));
+            CraftRecipe[] craftRecipes = JsonHelper.FromJson<CraftRecipe>(loadJson);
+            for (var i = 0; i < craftRecipes.Length; i++)
+            {
+                craftRecipeList.Add(new CraftRecipe(craftRecipes[i].recipeKey, craftRecipes[i].recipeName, craftRecipes[i].completeItemKey, 
+                    craftRecipes[i].necessaryItemKey1, craftRecipes[i].necessaryItemKey2, craftRecipes[i].necessaryItemKey3, craftRecipes[i].necessaryItemKey4,
+                    craftRecipes[i].necessaryItemCount1, craftRecipes[i].necessaryItemCount2, craftRecipes[i].necessaryItemCount3, craftRecipes[i].necessaryItemCount4));
+            }
+        }
     }
     public Item SelectItem(int _key)
     {
-        Item _item = new Item(_key, null);
+        Item _item = new Item(_key, null, 0 , 0);
         switch(_key / 1000)
         {
             case 0:
@@ -482,5 +513,17 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 Debug.Log("해당 은총이 없습니다.");
         }
         return _grace;
+    }
+    public CraftRecipe SelectCraftRecipe(int _key)
+    {
+        CraftRecipe _craftRecipe = null;
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (craftRecipeList[i].recipeKey == _key)
+                _craftRecipe = craftRecipeList[i];
+            else
+                Debug.Log("해당 제작 레시피가 없습니다.");
+        }
+        return _craftRecipe;
     }
 }

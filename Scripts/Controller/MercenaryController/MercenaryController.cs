@@ -37,7 +37,7 @@ public class MercenaryController : CharacterController
 
     public EAIState CheckBossState(CharacterStatus _Status)
     {
-        return _Status.SightRayList[0].GetComponent<Rigidbody>().GetComponent<EnemyStatus>().AIState;
+        return _Status.EnemyRayList[0].GetComponent<Rigidbody>().GetComponent<EnemyStatus>().AIState;
     }
 
 
@@ -64,7 +64,7 @@ public class MercenaryController : CharacterController
     {
         if (_status.Target)
         {
-            _status.Distance = _status.Target.transform.position - this.transform.position;
+            _status.Distance = _status.Target.transform.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
         }
         if (_status.CurHp < 0f)
@@ -98,32 +98,37 @@ public class MercenaryController : CharacterController
     public override void AIPerception(CharacterStatus _status)
     {
         RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if (_enemyHit)
+        if(_enemyHit)
         {
-            CharacterStatus _enemyHitStatus = _enemyHit.collider.GetComponent<CharacterStatus>();
-            if (!CheckRayList(_enemyHitStatus, _status.SightRayList))
-                _status.SightRayList.Add(_enemyHitStatus);
-            SortSightRayList(_status.SightRayList);
+            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();  
+            if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            {
+                _status.EnemyRayList.Add(_enemyHitStatus);
+                _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+            }
         }
 
         RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (_allyHit)
+        if(_allyHit)
         {
             CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-            if (_allyHit && !CheckRayList(_allyHitStatus, _status.AllyRayList))
-                _status.AllyRayList.Add(_allyHitStatus);
-        }
-
-
-        if (_status.SightRayList.Count > 0)
-        {
-            _status.Target = _status.SightRayList[0].TargetPos;
-            for (int i = 0; i < _status.SightRayList.Count; i++)
+            if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
             {
-                if (GetDistance(this.transform.position, _status.SightRayList[i].transform.position) >= _status.SeeRange ||
-                    _status.SightRayList[i].CurHp <= 0)
+                _status.AllyRayList.Add(_allyHitStatus);
+                _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+            }
+        }
+        if (_status.EnemyRayList.Count > 0)
+        {
+            _status.Target = _status.EnemyRayList[0].TargetPos;
+            SortSightRayList(_status.EnemyRayList);
+            for (int i = 0; i < _status.EnemyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
-                    _status.SightRayList.Remove(_status.SightRayList[i]);
+                    _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.EnemyRayList.Remove(_status.EnemyRayList[i]);
                 }
             }
         }

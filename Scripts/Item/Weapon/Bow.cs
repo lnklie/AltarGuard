@@ -12,8 +12,8 @@ using UnityEditor;
 [System.Serializable]
 public class Bow : Weapon
 {
-    public Bow(int _itemKey, string _itemName, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
-        : base(_itemKey, _itemName, _attackType, _weaponType, _physicalDamage, _magicalDamage, _atkRange, _atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel)
+    public Bow(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
+        : base(_itemKey, _itemName, _buyPrice, _sellPrice, _attackType, _weaponType, _physicalDamage, _magicalDamage, _atkRange, _atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel)
     {
 
         singleSprite = Resources.Load("Sprites/9_Bow/" + itemName, typeof(Sprite)) as Sprite;

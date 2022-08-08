@@ -69,6 +69,11 @@ public class EquipmentController : MonoBehaviour
         ChangeEquipment(DatabaseManager.Instance.SelectItem(5000));
         ChangeEquipment(DatabaseManager.Instance.SelectItem(6000));
         ChangeEquipment(DatabaseManager.Instance.SelectItem(7000));
+
+    }
+    public void TestEquipment()
+    {
+
     }
     public int GetEquipmentDefensivePower()
     {
