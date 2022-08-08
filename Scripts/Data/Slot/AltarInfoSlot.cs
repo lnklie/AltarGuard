@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class AltarInfoSlot : MonoBehaviour
 {
     [SerializeField]
-    private Text[] altarInfoTexts = null;
+    private TextMeshProUGUI[] altarInfoTexts = null;
 
     private void Awake()
     {
-        altarInfoTexts = GetComponentsInChildren<Text>();
+        altarInfoTexts = GetComponentsInChildren<TextMeshProUGUI>();
     }
 
     public void SetAlterInfoLevel(int _lv)

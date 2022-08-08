@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-08
@@ -13,7 +14,7 @@ public class StatusPanelController : MonoBehaviour
 {
     [Header("Status")]
     [SerializeField]
-    private Text[] statusTexts = null;
+    private TextMeshProUGUI[] statusTexts = null;
 
     private int selectNum = 0;
     private AllyStatus selectAllyStatus = null;
@@ -25,22 +26,22 @@ public class StatusPanelController : MonoBehaviour
     {
         // 상태 텍스트 업데이트
         string[] status = {
-            "HP : " + selectAllyStatus.MaxHp.ToString(),
-            "MP : " + selectAllyStatus.MaxMp.ToString(),
-            "Physical Damage : " + selectAllyStatus.PhysicalDamage.ToString(),
-            "Magical Damage : " + selectAllyStatus.MagicalDamage.ToString(),
-            "Defensive : " + selectAllyStatus.DefensivePower.ToString(),
-            "Speed : " + selectAllyStatus.Speed.ToString(),
-            "Attack Speed : " + selectAllyStatus.AtkSpeed.ToString(),
-            "Drop Probability : " + selectAllyStatus.DropProbability.ToString(),
-            "ItemRarity : " + selectAllyStatus.ItemRarity.ToString(),
+            "체력: " + selectAllyStatus.MaxHp.ToString(),
+            "마력: " + selectAllyStatus.MaxMp.ToString(),
+            "물리 공격력: " + selectAllyStatus.PhysicalDamage.ToString(),
+            "마법 공격력: " + selectAllyStatus.MagicalDamage.ToString(),
+            "방어력: " + selectAllyStatus.DefensivePower.ToString(),
+            "이동 속도: " + selectAllyStatus.Speed.ToString(),
+            "공격 속도: " + selectAllyStatus.AtkSpeed.ToString(),
+            "드랍율: " + selectAllyStatus.DropProbability.ToString(),
+            "아이템 희귀도: " + selectAllyStatus.ItemRarity.ToString(),
             selectAllyStatus.ObjectName.ToString(),
-            "Str : " + selectAllyStatus.TotalStr.ToString(),
-            "Dex : " + selectAllyStatus.TotalDex.ToString(),
-            "wiz : " + selectAllyStatus.TotalWiz.ToString(),
-            "Luck : " + selectAllyStatus.TotalLuck.ToString(),
-            "Point : " + selectAllyStatus.StatusPoint.ToString(),
-            "Level : " + selectAllyStatus.CurLevel.ToString()
+            "힘: " + selectAllyStatus.TotalStr.ToString(),
+            "민첩: " + selectAllyStatus.TotalDex.ToString(),
+            "지력: " + selectAllyStatus.TotalWiz.ToString(),
+            "행운: " + selectAllyStatus.TotalLuck.ToString(),
+            "잔여 포인트: " + selectAllyStatus.StatusPoint.ToString(),
+            "LV: " + selectAllyStatus.CurLevel.ToString()
         };
 
         for (int i = 0; i < statusTexts.Length; i++)

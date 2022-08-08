@@ -49,7 +49,9 @@ public class CharacterStatus : Status
     protected float attackType = 0f;
     [SerializeField]
     protected RaycastHit2D hitRay = default;
-    protected List<Status> sightRayList = new List<Status>();
+    [SerializeField]
+    protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
+    [SerializeField]
     protected List<Status> allyRayList = new List<Status>();
     [SerializeField]
     protected int hpRegenValue = 0;
@@ -75,7 +77,6 @@ public class CharacterStatus : Status
     protected int buffHpRegenValue = 0;
     [SerializeField]
     protected bool isStatusUpdate = false;
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false };
     [SerializeField]
     protected float delayTime = 0f;
     [SerializeField]
@@ -85,8 +86,21 @@ public class CharacterStatus : Status
     [SerializeField]
     private bool isFlagComeback = false;
 
-
+    [SerializeField]
+    private bool[] isAllyTargeted = new bool[5];
+    [SerializeField]
+    private bool[] isEnemyTargeted = new bool[101];
     #region Properties
+    public bool[] IsAllyTargeted
+    {
+        get { return isAllyTargeted; }
+        set { isAllyTargeted = value; }
+    }
+    public bool[] IsEnemyTargeted
+    {
+        get { return isEnemyTargeted; }
+        set { isEnemyTargeted = value; }
+    }
     public bool IsFlagComeBack
     {
         get { return isFlagComeback; }
@@ -128,10 +142,10 @@ public class CharacterStatus : Status
         get { return delayTime; }
         set { delayTime = value; }
     }
-    public List<Status> SightRayList
+    public List<EnemyStatus> EnemyRayList
     {
-        get { return sightRayList; }
-        set { sightRayList = value; }
+        get { return enemyRayList; }
+        set { enemyRayList = value; }
     }
     public float AttackType
     {
@@ -313,11 +327,6 @@ public class CharacterStatus : Status
         set { buffHpRegenValue = value; }
     }
 
-    public bool[] CheckEquipItems
-    {
-        get { return checkEquipItems; }
-        set { checkEquipItems = value; }
-    }
     public bool IsStatusUpdate
     {
         get { return isStatusUpdate; }
@@ -345,7 +354,6 @@ public class CharacterStatus : Status
         {
             equipmentController.IsChangeItem = false;
             UpdateAbility();
-            checkEquipItems = equipmentController.CheckEquipItems;
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());

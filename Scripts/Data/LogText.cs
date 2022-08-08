@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 public class LogText : MonoBehaviour
 {
-    private Text logText;
+    private TextMeshProUGUI logText;
     private void Awake()
     {
-        logText = GetComponent<Text>();
+        logText = GetComponent<TextMeshProUGUI>();
     }
 
     public void SetText(string _log)

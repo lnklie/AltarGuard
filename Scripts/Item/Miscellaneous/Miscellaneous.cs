@@ -12,7 +12,7 @@ using UnityEditor;
 [System.Serializable]
 public class Miscellaneous: Item
 {
-    public Miscellaneous(int _itemKey, string _itemName, string _purpose) : base(_itemKey,_itemName)
+    public Miscellaneous(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _purpose) : base(_itemKey,_itemName, _buyPrice, _sellPrice)
     {
         purpose = _purpose;
         itemType = (int)ItemType.Miscellaneous;

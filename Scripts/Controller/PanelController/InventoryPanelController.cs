@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /*
 ==============================
  * 최종수정일 : 2022-06-09
@@ -35,15 +36,15 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField]
     private Button[] equipCharactersBtn = null;
     [SerializeField]
-    private Text equipmentNameText = null;
+    private TextMeshProUGUI equipmentNameText = null;
 
     [Header("MoenyText")]
     [SerializeField]
-    private Text moenyText;
+    private TextMeshProUGUI moneyText = null;
 
     [Header("Default")]
     [SerializeField]
-    private Sprite UIMask;
+    private Sprite UIMask = null;
 
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
@@ -60,11 +61,11 @@ public class InventoryPanelController : MonoBehaviour
     private InventorySlot[] inventorySlots = null;
     [SerializeField]
     private EquipmentSlot[] equipmentSlots = null;
-    private Text[] iteminfoText = null;
+    private TextMeshProUGUI[] iteminfoText = null;
 
     private void Awake()
     {
-        iteminfoText = itemInfo.GetComponentsInChildren<Text>();
+        iteminfoText = itemInfo.GetComponentsInChildren<TextMeshProUGUI>();
         inventorySlots = this.GetComponentsInChildren<InventorySlot>();
         equipmentSlots = this.GetComponentsInChildren<EquipmentSlot>();
         
@@ -90,7 +91,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void MoneyUpdate()
     {
-        moenyText.text = playerStatus.Money.ToString("N0"); 
+        moneyText.text = playerStatus.Money.ToString("N0"); 
     }
     public void InventorySlotChange(int _index)
     {
@@ -199,64 +200,59 @@ public class InventoryPanelController : MonoBehaviour
                 iteminfoText[2].text = "This is FaceHair";
                 break;
             case 2:
-                iteminfoText[2].text = "DefensivePower : " + selectItem.defensivePower;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 3:
-                iteminfoText[2].text = "DefensivePower : " + selectItem.defensivePower;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 4:
-                iteminfoText[2].text = "DefensivePower : " + selectItem.defensivePower;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 5:
-                iteminfoText[2].text = "DefensivePower : " + selectItem.defensivePower;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 6:
-                iteminfoText[2].text = "DefensivePower : " + selectItem.defensivePower;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 7:
                 iteminfoText[2].text =
-                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectItem).weaponType;
+                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectItem).weaponType;
                 break;
             case 8:
                 iteminfoText[2].text =
-                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectItem).weaponType +
-                    "DefensivePower : " + selectItem.defensivePower;
+                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectItem).weaponType + "\n" +
+                    "방어력: " + selectItem.defensivePower;
                 break;
             case 9:
                 iteminfoText[2].text =
-                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectItem).weaponType;
+                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectItem).weaponType;
                 break;
             case 10:
                 iteminfoText[2].text =
-                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectItem).weaponType;
+                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
+                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
+                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
+                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "무기 종류: " + ((Weapon)selectItem).weaponType;
                 break;
             case 11:
                 iteminfoText[2].text =
-                    "Value : " + selectItem.value + "\n";
+                    "회복량 : " + selectItem.value + "\n";
                 break;
             case 12:
-                iteminfoText[2].text =
-                    "PysicalDamage : " + selectItem.physicalDamage + "\n" +
-                    "magicalDamage : " + selectItem.magicalDamage + "\n" +
-                    "AttackRange : " + ((Weapon)selectItem).atkRange + "\n" +
-                    "AttackDistance : " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "WeaponType : " + ((Weapon)selectItem).weaponType;
+                iteminfoText[2].text = "이것은 퀘스트 아이템";
                 break;
         }
     }
