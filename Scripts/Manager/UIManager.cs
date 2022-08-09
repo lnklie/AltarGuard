@@ -409,6 +409,15 @@ public class UIManager : SingletonManager<UIManager>
         craftPanelController.SelectCraftRecipe = _craftRecipe;
         craftPanelController.IsSelected = true;
     }
+    public void SelectNecessaryItem(Item _item)
+    {
+        craftPanelController.SelectNeedItem = _item;
+        craftPanelController.IsNeedItemSelected = true;
+    }
+    public void SetActivenecessaryIteminfoPanel(bool _bool)
+    {
+        craftPanelController.SetActiveNecessaryItemInfoPanel(_bool);
+    }
     #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
