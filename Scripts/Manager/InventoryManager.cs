@@ -60,8 +60,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
         //AcquireItem(DatabaseManager.Instance.SelectItem(11), 1);
         //AcquireItem(DatabaseManager.Instance.SelectItem(12), 1);
 
-        AcquireItem(DatabaseManager.Instance.SelectItem(1002), 1);
-        AcquireItem(DatabaseManager.Instance.SelectItem(2003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(1003), 1);
+        AcquireItem(DatabaseManager.Instance.SelectItem(2001), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(3002), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(4003), 1);
         AcquireItem(DatabaseManager.Instance.SelectItem(5002), 1);
@@ -270,7 +270,65 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         return _item;
     }
+    public Item KeyToItem(int _selectItemKey)
+    {
+        // 인벤토리에서 해당 아이템 반환
+        Item _item = null;
 
+        switch (_selectItemKey / 1000)
+        {
+            case 0:
+            case 1:
+                for(int i = 0; i< inventroyDecorationItems.Count; i++)
+                {
+                    if(_selectItemKey == inventroyDecorationItems[i].itemKey);
+                    _item = inventroyDecorationItems[i];
+                }
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                for (int i = 0; i < inventroyEquipmentItems.Count; i++)
+                {
+                    if (_selectItemKey == inventroyEquipmentItems[i].itemKey) ;
+                    _item = inventroyEquipmentItems[i];
+                }
+                break;
+            case 7:
+            case 8:
+
+                break;
+            case 9:
+
+                break;
+            case 10:
+                for (int i = 0; i < inventroyWeaponItems.Count; i++)
+                {
+                    if (_selectItemKey == inventroyWeaponItems[i].itemKey) ;
+                    _item = inventroyWeaponItems[i];
+                }
+                break;
+            case 11:
+                for (int i = 0; i < inventroyConsumableItems.Count; i++)
+                {
+                    if (_selectItemKey == inventroyConsumableItems[i].itemKey) ;
+                    _item = inventroyConsumableItems[i];
+                }
+                break;
+            case 12:
+                for (int i = 0; i < inventroyMiscellaneousItems.Count; i++)
+                {
+                    if (_selectItemKey == inventroyMiscellaneousItems[i].itemKey) ;
+                    _item = inventroyMiscellaneousItems[i];
+                }
+                break;
+
+        }
+
+        return _item;
+    }
     public void UseItem(CharacterStatus _character, Item _Item)
     {
         // 소모품만 가능 UI에서 소모품만 사용하기 UI나타나기
@@ -374,7 +432,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
             else
             {
-                Debug.Log("그런 아이템 없음");
+                //Debug.Log("그런 아이템 없음");
             }
         }
         else if(_item.itemType == (int)ItemType.Consumables)
@@ -392,7 +450,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
             else
             {
-                Debug.Log("아이템 없음");
+                //Debug.Log("아이템 없음");
             }
         }
         else
@@ -408,7 +466,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
             else
             {
-                Debug.Log("아이템 없음");
+                //Debug.Log("아이템 없음");
             }
         }
     }
