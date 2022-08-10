@@ -1,19 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 public class CraftPanelController : MonoBehaviour
 {
     [SerializeField]
     private GameObject craftInfo = null;
     [SerializeField]
+    private GameObject necessaryItemRegisterInventory = null; 
+    [SerializeField]
+    private GameObject necessaryIteminfoPanel = null;
+    [SerializeField]
+    private GameObject necessaryItemRegiterPanel = null;
+
+
+    [SerializeField]
     private TextMeshProUGUI craftItemName = null;
     [SerializeField]
     private TextMeshProUGUI craftItemInfo = null;
 
-    [SerializeField]
-    private GameObject necessaryIteminfoPanel = null;
     [SerializeField]
     private TextMeshProUGUI necessaryItemName = null;
     [SerializeField]
@@ -26,51 +29,94 @@ public class CraftPanelController : MonoBehaviour
     [SerializeField]
     private CraftRecipe selectCraftRecipe = null;
     [SerializeField]
-    private Item selectNeedItem = null;
+
+    private Item selectNeedItemInfo = null;
+    [SerializeField]
+    private Item selectRegisterItem = null;
+    [SerializeField]
+    private Item selectRegisterInventoryItem = null;
 
     [SerializeField]
     private GameObject needsItems = null;
     private CraftNecessaryItemSlot[] craftNecessaryItemSlots = null;
-    private TextMeshProUGUI[] needsItemTexts = null;
+    private CraftNecessaryItemInventorySlot[] craftNecessaryItemInventorySlots = null;
+
+    //[SerializeField]
+    //private TextMeshProUGUI[] needsItemCountTexts = null;
     private bool isSelected = false;
-    private bool isNeedItemSelected = false;
+    private bool isNeedItemInfoSelected = false;
+    private bool isRegisterNecessaryItemSelect = false;
+    private bool isRegisterInventoryItemSelect = false;
+    [SerializeField]
     private bool[] isAbleCraft = new bool[4];
+    [SerializeField]
+    private Item[] craftResources = new Item[4];
 
     [SerializeField]
-    private Sprite defalutSprite = null;
+    private int selectNecessaryItemIndex = -1; 
+
+    public int SelectNecessaryItemIndex
+    {
+        get { return selectNecessaryItemIndex; }
+        set { selectNecessaryItemIndex = value; }
+    }
     public CraftRecipe SelectCraftRecipe
     {
         get { return selectCraftRecipe; }
         set { selectCraftRecipe = value; }
     }
-    public Item SelectNeedItem
+
+    public Item SelectNeedItemInfo
     {
-        get { return selectNeedItem; }
-        set { selectNeedItem = value; }
+        get { return selectNeedItemInfo; }
+        set { selectNeedItemInfo = value; }
     }
-    public bool IsNeedItemSelected
+    public Item SelectRegisterItem
     {
-        get { return isNeedItemSelected; }
-        set { isNeedItemSelected = value; }
+        get { return selectRegisterItem; } 
+        set{ selectRegisterItem = value; }
+            
+    }
+    public Item SelectRegisterInventoryItem
+    {
+        get { return selectRegisterInventoryItem; }
+        set { selectRegisterInventoryItem = value;}
+    }
+    public bool IsNeedItemInfoSelected
+    {
+        get { return isNeedItemInfoSelected; }
+        set { isNeedItemInfoSelected = value; }
     }
     public bool IsSelected
     {
         get { return isSelected; }
         set { isSelected = value; }
     }
+    public bool IsRegisterNecessaryItemSelect
+    {
+        get { return isRegisterNecessaryItemSelect; }
+        set { isRegisterNecessaryItemSelect = value; }
+    }
+    public bool IsRegisterInventoryItemSelect
+    {
+        get { return isRegisterInventoryItemSelect; }
+        set { isRegisterInventoryItemSelect = value; }
+    }
     private void Awake()
     {
         craftNecessaryItemSlots = needsItems.GetComponentsInChildren<CraftNecessaryItemSlot>();
-        needsItemTexts = needsItems.GetComponentsInChildren<TextMeshProUGUI>();
-        //texts = craftInfo.GetComponentsInChildren<TextMeshProUGUI>();
+        craftNecessaryItemInventorySlots = GetComponentsInChildren<CraftNecessaryItemInventorySlot>();
     }
     private void Update()
     {
         if (isSelected)
             UpdateCraftRecipe();
 
-        if (isNeedItemSelected)
+        if (isNeedItemInfoSelected)
             UpdateNecessaryItemInfo();
+
+        if (IsRegisterNecessaryItemSelect)
+            UpdateNecessaryItemInventory();
 
     }
     public void UpdateCraftRecipe()
@@ -91,69 +137,66 @@ public class CraftPanelController : MonoBehaviour
                 craftItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                craftItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                craftItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 3:
-                craftItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                craftItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 4:
-                craftItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                craftItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 5:
-                craftItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                craftItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 6:
-                craftItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                craftItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 7:
                 craftItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 craftItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType + "\n" +
-                    "πÊæÓ∑¬: " + _item.defensivePower;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType + "\n" +
+                    "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 9:
                 craftItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 craftItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 craftItemInfo.text =
-                    "»∏∫π∑Æ : " + _item.value + "\n";
+                    "ÌöåÎ≥µÎüâ : " + _item.value + "\n";
                 break;
             case 12:
-                craftItemInfo.text = "¿Ã∞Õ¿∫ ƒ˘Ω∫∆Æ æ∆¿Ã≈€";
+                craftItemInfo.text = "Ïù¥Í≤ÉÏùÄ ÌÄòÏä§Ìä∏ ÏïÑÏù¥ÌÖú";
                 break;
         }
-        SetNecessaryItem(selectCraftRecipe.necessaryItemKey1,0);
-        SetNecessaryItemCount(selectCraftRecipe.necessaryItemCount1, 0);
-        SetNecessaryItem(selectCraftRecipe.necessaryItemKey2, 1);
-        SetNecessaryItemCount(selectCraftRecipe.necessaryItemCount2, 1);
-        SetNecessaryItem(selectCraftRecipe.necessaryItemKey3, 2);
-        SetNecessaryItemCount(selectCraftRecipe.necessaryItemCount3, 2);
-        SetNecessaryItem(selectCraftRecipe.necessaryItemKey4, 3);
-        SetNecessaryItemCount(selectCraftRecipe.necessaryItemCount4, 3);
+        for(int i = 0; i < 4; i++)
+        {
+            SetNecessaryItem(selectCraftRecipe.necessaryItemKeies[i],i);
+            //SetNecessaryItemCount(selectCraftRecipe.necessaryItemCounts[i], i);
+        }
     }
     public bool CheckPossessedItem(Item _Item, int _amount = 1)
     {
@@ -206,11 +249,21 @@ public class CraftPanelController : MonoBehaviour
         }
         return _bool;
     }
+    public bool CheckRegisteredItem(int _index)
+    {
+        bool _bool = false;
+        if (isAbleCraft[_index])
+        {
+            _bool = true;
+        }
+        return _bool;
+    }
     public void UpdateNecessaryItemInfo()
     {
-        isNeedItemSelected = false;
+        isNeedItemInfoSelected = false;
+        
         SetActiveNecessaryItemInfoPanel(true);
-        Item _item = selectNeedItem;
+        Item _item = selectNeedItemInfo;
         necessaryItemName.text = _item.itemName;
         necessaryItemType.text = KeyToItemType(_item.itemKey);
         switch (_item.itemKey / 1000)
@@ -222,70 +275,106 @@ public class CraftPanelController : MonoBehaviour
                 necessaryItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                necessaryItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                necessaryItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 3:
-                necessaryItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                necessaryItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 4:
-                necessaryItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                necessaryItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 5:
-                necessaryItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                necessaryItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 6:
-                necessaryItemInfo.text = "πÊæÓ∑¬: " + _item.defensivePower;
+                necessaryItemInfo.text = "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 7:
                 necessaryItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 necessaryItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType + "\n" +
-                    "πÊæÓ∑¬: " + _item.defensivePower;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType + "\n" +
+                    "Î∞©Ïñ¥Î†•: " + _item.defensivePower;
                 break;
             case 9:
                 necessaryItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 necessaryItemInfo.text =
-                    "π∞∏Æ ∞¯∞›∑¬: " + _item.physicalDamage + "\n" +
-                    "∏∂π˝ ∞¯∞›∑¬: " + _item.magicalDamage + "\n" +
-                    "∞¯∞› π¸¿ß: " + ((Weapon)_item).atkRange + "\n" +
-                    "∞¯∞› ∞≈∏Æ: " + ((Weapon)_item).atkDistance + "\n" +
-                    "π´±‚ ¡æ∑˘: " + ((Weapon)_item).weaponType;
+                    "Î¨ºÎ¶¨ Í≥µÍ≤©Î†•: " + _item.physicalDamage + "\n" +
+                    "ÎßàÎ≤ï Í≥µÍ≤©Î†•: " + _item.magicalDamage + "\n" +
+                    "Í≥µÍ≤© Î≤îÏúÑ: " + ((Weapon)_item).atkRange + "\n" +
+                    "Í≥µÍ≤© Í±∞Î¶¨: " + ((Weapon)_item).atkDistance + "\n" +
+                    "Î¨¥Í∏∞ Ï¢ÖÎ•ò: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 necessaryItemInfo.text =
-                    "»∏∫π∑Æ : " + _item.value + "\n";
+                    "ÌöåÎ≥µÎüâ : " + _item.value + "\n";
                 break;
             case 12:
-                necessaryItemInfo.text = "¿Ã∞Õ¿∫ ƒ˘Ω∫∆Æ æ∆¿Ã≈€";
+                necessaryItemInfo.text = "Ïù¥Í≤ÉÏùÄ ÌÄòÏä§Ìä∏ ÏïÑÏù¥ÌÖú";
                 break;
         }
 
     }
+    public void UpdateNecessaryItemInventory()
+    {
+        if (!isAbleCraft[selectNecessaryItemIndex])
+        {
+            SetActiveCraftNecessaryItemInventoryPanel(true);
+            isRegisterNecessaryItemSelect = false;
+            if(InventoryManager.Instance.KeyToItems(selectRegisterItem.itemKey).Count <= 0)
+            {
+                InitcraftNecessaryItemInventorySlots();
+            }
+            else
+            {
+                for (int i = 0; i < InventoryManager.Instance.KeyToItems(selectRegisterItem.itemKey).Count;i++)
+                {
+                    craftNecessaryItemInventorySlots[i].InitSlot();
+                    craftNecessaryItemInventorySlots[i].SetSlot(InventoryManager.Instance.KeyToItems(selectRegisterItem.itemKey)[i]);
+                }
+            }
+        }
+        else
+        {
+            isRegisterNecessaryItemSelect = false;
+            if (necessaryItemRegisterInventory.activeSelf)
+                necessaryItemRegisterInventory.SetActive(false);
+            Debug.Log("Ïù¥ÎØ∏ Îì±Î°ùÎêú Î¨ºÌíàÏûÖÎãàÎã§.");
+        }
+    }
+    public void InitcraftNecessaryItemInventorySlots()
+    {
+        for (int i = 0; i < craftNecessaryItemInventorySlots.Length; i++)
+        {
+            craftNecessaryItemInventorySlots[i].InitSlot();
+        }
+    }
     public void SetActiveNecessaryItemInfoPanel(bool _bool)
     {
         necessaryIteminfoPanel.SetActive(_bool);
+        if (necessaryItemRegisterInventory.activeSelf)
+            necessaryItemRegisterInventory.SetActive(false);
     }
     public string KeyToItemType(int _key)
     {
-        // ≈∞∏¶ æ∆¿Ã≈€ ≈∏¿‘¿∏∑Œ ∫Ø∞Ê
+        // ÌÇ§Î•º ÏïÑÏù¥ÌÖú ÌÉÄÏûÖÏúºÎ°ú Î≥ÄÍ≤Ω
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -329,37 +418,43 @@ public class CraftPanelController : MonoBehaviour
     {
         if (_itemKey != -1)
         {
-            craftNecessaryItemSlots[_Index].IsNecessaryItem = true;
-            craftNecessaryItemSlots[_Index].NecessaryItem = DatabaseManager.Instance.SelectItem(_itemKey);
-            craftNecessaryItemSlots[_Index].GetComponentsInChildren<Image>()[1].sprite = DatabaseManager.Instance.SelectItem(_itemKey).singleSprite;
+            craftNecessaryItemSlots[_Index].SetNecessaryItem(_itemKey);
         }
     }
     public void InitNecessaryItem()
     {
         for(int i = 0; i < craftNecessaryItemSlots.Length; i++)
         {
-            craftNecessaryItemSlots[i].IsNecessaryItem = false;
-            craftNecessaryItemSlots[i].NecessaryItem = null;
-            craftNecessaryItemSlots[i].GetComponentsInChildren<Image>()[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
-            craftNecessaryItemSlots[i].GetComponentsInChildren<Image>()[1].sprite = defalutSprite;
+            craftNecessaryItemSlots[i].InitNecessaryItem();
+            craftResources[i] = null;
+            isAbleCraft[i] = false;
         }
     }
     public void SetNecessaryItemCount(int _itemCount, int _textIndex)
     {
         if (_itemCount != -1)
         {
-            needsItemTexts[_textIndex].text = _itemCount.ToString();
-            Debug.Log("_itemCount¥¬ " + _itemCount);
-            if (CheckPossessedItem(craftNecessaryItemSlots[_textIndex].NecessaryItem, _itemCount))
+            craftNecessaryItemSlots[_textIndex].SetNecessaryItemCount(_itemCount);
+            if (CheckRegisteredItem(_textIndex))
             {
-                needsItemTexts[_textIndex].color = new Color(0f, 0f, 255f);
-                isAbleCraft[_textIndex] = true;
+                craftNecessaryItemSlots[_textIndex].SetNecessaryItemCountColor(true);
             }
             else
             {
-                needsItemTexts[_textIndex].color = new Color(255f, 0f, 0f);
-                isAbleCraft[_textIndex] = false; 
+                craftNecessaryItemSlots[_textIndex].SetNecessaryItemCountColor(false);
             }
+        }
+        else
+        {
+            craftNecessaryItemSlots[_textIndex].SetNecessaryItemCountColor(false);
+        }
+    }
+    public void InitNecessaryItemCount()
+    {
+        for (int i = 0; i < craftNecessaryItemSlots.Length; i++)
+        {
+            craftNecessaryItemSlots[i].InitNecessaryItemCount();
+            SetNecessaryItemCount(selectCraftRecipe.necessaryItemCounts[i], i);
         }
         else
         {
@@ -379,12 +474,22 @@ public class CraftPanelController : MonoBehaviour
     {
         this.gameObject.SetActive(_bool);
     }
+    public void SetActiveRegisterNecessaryItemPanel(bool _bool)
+    {
+        necessaryItemRegiterPanel.SetActive(_bool);
+    }
+    public void SetActiveCraftNecessaryItemInventoryPanel(bool _bool)
+    {
+        necessaryItemRegisterInventory.SetActive(_bool);
+        if(necessaryIteminfoPanel.activeSelf)
+            necessaryIteminfoPanel.SetActive(false);
+    }
     public bool IsAbleCraft()
     {
         bool _bool = false;
         for (int i = 0; i < isAbleCraft.Length; i++)
         {
-            if (isAbleCraft[i])
+            if (isAbleCraft[i] || selectCraftRecipe.necessaryItemKeies[i] == -1)
             {
                 _bool = true;
             }
@@ -396,18 +501,39 @@ public class CraftPanelController : MonoBehaviour
         }
         return _bool;
     }
+    public void Register()
+    {
+        for(int i = 0; i < selectCraftRecipe.necessaryItemKeies.Length; i++)
+        {
+            if(selectRegisterInventoryItem.itemKey == selectCraftRecipe.necessaryItemKeies[i])
+            {
+                craftResources[i] = selectRegisterInventoryItem;
+                isAbleCraft[i] = true; 
+            }
+        }
+        SetActiveRegisterNecessaryItemPanel(false);
+        SetActiveCraftNecessaryItemInventoryPanel(false);
+        InitNecessaryItemCount();
+
+
+    }
     public void Craft()
     {
         if(IsAbleCraft())
         {
-            //if (craftNecessaryItemSlots[1].IsNecessaryItem)
-            //{
-            //    InventoryManager.Instance.DiscardItem( )
-            //}
+            for(int i = 0; i < craftResources.Length; i++)
+            {
+                InventoryManager.Instance.DiscardItem(craftResources[i], craftResources[i].count);
+                craftResources[i] = null;
+                isAbleCraft[i] = false;
+            }
+            InitNecessaryItemCount();
+            InitcraftNecessaryItemInventorySlots();
+            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(selectCraftRecipe.completeItemKey));
         }
         else
         {
-
+            Debug.Log("Ï†úÏûë Î∂àÍ∞Ä");
         }
     }
 }
