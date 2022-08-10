@@ -29,6 +29,7 @@ public class CraftPanelController : MonoBehaviour
     [SerializeField]
     private CraftRecipe selectCraftRecipe = null;
     [SerializeField]
+
     private Item selectNeedItemInfo = null;
     [SerializeField]
     private Item selectRegisterItem = null;
@@ -64,6 +65,7 @@ public class CraftPanelController : MonoBehaviour
         get { return selectCraftRecipe; }
         set { selectCraftRecipe = value; }
     }
+
     public Item SelectNeedItemInfo
     {
         get { return selectNeedItemInfo; }
@@ -116,7 +118,6 @@ public class CraftPanelController : MonoBehaviour
         if (IsRegisterNecessaryItemSelect)
             UpdateNecessaryItemInventory();
 
-            
     }
     public void UpdateCraftRecipe()
     {
@@ -136,59 +137,59 @@ public class CraftPanelController : MonoBehaviour
                 craftItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                craftItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                craftItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 3:
-                craftItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                craftItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 4:
-                craftItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                craftItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 5:
-                craftItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                craftItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 6:
-                craftItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                craftItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 7:
                 craftItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 craftItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType + "\n" +
-                    "¹æ¾î·Â: " + _item.defensivePower;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType + "\n" +
+                    "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 9:
                 craftItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 craftItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 craftItemInfo.text =
-                    "È¸º¹·® : " + _item.value + "\n";
+                    "íšŒë³µëŸ‰ : " + _item.value + "\n";
                 break;
             case 12:
-                craftItemInfo.text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
+                craftItemInfo.text = "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
                 break;
         }
         for(int i = 0; i < 4; i++)
@@ -274,59 +275,59 @@ public class CraftPanelController : MonoBehaviour
                 necessaryItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                necessaryItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                necessaryItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 3:
-                necessaryItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                necessaryItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 4:
-                necessaryItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                necessaryItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 5:
-                necessaryItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                necessaryItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 6:
-                necessaryItemInfo.text = "¹æ¾î·Â: " + _item.defensivePower;
+                necessaryItemInfo.text = "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 7:
                 necessaryItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 necessaryItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType + "\n" +
-                    "¹æ¾î·Â: " + _item.defensivePower;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType + "\n" +
+                    "ë°©ì–´ë ¥: " + _item.defensivePower;
                 break;
             case 9:
                 necessaryItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 necessaryItemInfo.text =
-                    "¹°¸® °ø°İ·Â: " + _item.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + _item.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)_item).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)_item).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)_item).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + _item.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + _item.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)_item).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)_item).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 necessaryItemInfo.text =
-                    "È¸º¹·® : " + _item.value + "\n";
+                    "íšŒë³µëŸ‰ : " + _item.value + "\n";
                 break;
             case 12:
-                necessaryItemInfo.text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
+                necessaryItemInfo.text = "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
                 break;
         }
 
@@ -355,7 +356,7 @@ public class CraftPanelController : MonoBehaviour
             isRegisterNecessaryItemSelect = false;
             if (necessaryItemRegisterInventory.activeSelf)
                 necessaryItemRegisterInventory.SetActive(false);
-            Debug.Log("ÀÌ¹Ì µî·ÏµÈ ¹°Ç°ÀÔ´Ï´Ù.");
+            Debug.Log("ì´ë¯¸ ë“±ë¡ëœ ë¬¼í’ˆì…ë‹ˆë‹¤.");
         }
     }
     public void InitcraftNecessaryItemInventorySlots()
@@ -373,7 +374,7 @@ public class CraftPanelController : MonoBehaviour
     }
     public string KeyToItemType(int _key)
     {
-        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
+        // í‚¤ë¥¼ ì•„ì´í…œ íƒ€ì…ìœ¼ë¡œ ë³€ê²½
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -455,6 +456,19 @@ public class CraftPanelController : MonoBehaviour
             craftNecessaryItemSlots[i].InitNecessaryItemCount();
             SetNecessaryItemCount(selectCraftRecipe.necessaryItemCounts[i], i);
         }
+        else
+        {
+            needsItemTexts[_textIndex].color = new Color(255f, 0f, 0f);
+            isAbleCraft[_textIndex] = true;
+        }
+    }
+    public void InitNecessaryItemCount()
+    {
+        for (int i = 0; i < needsItemTexts.Length; i++)
+        {
+            needsItemTexts[i].text = 00.ToString();
+        }
+        
     }
     public void SetActiveCraftPanel(bool _bool)
     {
@@ -519,7 +533,7 @@ public class CraftPanelController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Á¦ÀÛ ºÒ°¡");
+            Debug.Log("ì œì‘ ë¶ˆê°€");
         }
     }
 }

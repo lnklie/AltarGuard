@@ -79,7 +79,7 @@ public class CraftNecessaryItemSlot : MonoBehaviour
         }
         else
         {
-            Debug.Log("ºñ¾îÀÖ´Â ¾ÆÀÌÅÛ");
+            Debug.Log("ÅŸÅ„Å¾Ã®Å”Ã–Â´Ã‚ Å¾Ä†Å”ÄšÄ¹Å°");
         }
     }
     public void SelectNecessaryItemInfo()
@@ -90,7 +90,7 @@ public class CraftNecessaryItemSlot : MonoBehaviour
         }
         else
         {
-            Debug.Log("ºñ¾îÀÖ´Â ¾ÆÀÌÅÛ");
+            Debug.Log("ÅŸÅ„Å¾Ã®Å”Ã–Â´Ã‚ Å¾Ä†Å”ÄšÄ¹Å°");
         }
     }
 }
