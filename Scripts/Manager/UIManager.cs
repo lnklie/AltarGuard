@@ -409,6 +409,42 @@ public class UIManager : SingletonManager<UIManager>
         craftPanelController.SelectCraftRecipe = _craftRecipe;
         craftPanelController.IsSelected = true;
     }
+    public void SelectNecessaryItemInfo(Item _item)
+    {
+        craftPanelController.SelectNeedItemInfo = _item;
+        craftPanelController.IsNeedItemInfoSelected = true;
+    }
+    public void SelectRegisterNecessaryItem(Item _item, int _index)
+    {
+        craftPanelController.SelectRegisterItem = _item;
+        craftPanelController.IsRegisterNecessaryItemSelect = true;
+        craftPanelController.SelectNecessaryItemIndex = _index;
+    }
+    public void SelectRegisterNecessaryItemPanel(Item _item)
+    {
+        SetActiveRegisterNecessaryItemPanel(true);
+        craftPanelController.SelectRegisterInventoryItem = _item;
+    }
+    public void SetActiveRegisterNecessaryItemPanel(bool _bool)
+    {
+        craftPanelController.SetActiveRegisterNecessaryItemPanel(_bool);
+    }
+    public void SetActivenecessaryIteminfoPanel(bool _bool)
+    {
+        craftPanelController.SetActiveNecessaryItemInfoPanel(_bool);
+    }
+    public void SetActiveNecessaryItemInventoryPanel(bool _bool)
+    {
+        craftPanelController.SetActiveCraftNecessaryItemInventoryPanel(_bool);
+    }
+    public void Register()
+    {
+        craftPanelController.Register();
+    }
+    public void Craft()
+    {
+        craftPanelController.Craft();
+    }
     #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
