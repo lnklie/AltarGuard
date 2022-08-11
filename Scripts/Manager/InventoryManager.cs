@@ -94,59 +94,59 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 __item = _faceHair;
                 break;
             case 2:
-                Cloth _cloth = new Cloth(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
+                Cloth _cloth = new Cloth(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel,_item.disassembleItemKey, _item.disassembleItemAmount);
                 _cloth.count =+ _amount;
                 InventroyEquipmentItems.Add(_cloth);
                 __item = _cloth;
                 break;
             case 3:
-                Pant _pant = new Pant(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
+                Pant _pant = new Pant(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _pant.count =+ _amount;
                 InventroyEquipmentItems.Add(_pant);
                 __item = _pant;
                 break;
             case 4:
-                Helmet _helmet = new Helmet(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
+                Helmet _helmet = new Helmet(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _helmet.count =+ _amount;
                 InventroyEquipmentItems.Add(_helmet);
                 __item = _helmet;
                 break;
             case 5:
-                Armor _armor = new Armor(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel);
+                Armor _armor = new Armor(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _armor.count =+ _amount;
                 InventroyEquipmentItems.Add(_armor);
                 __item = _armor;
                 break;
             case 6:
-                Back _back = new Back(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower,_item.equipLevel);
+                Back _back = new Back(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.defensivePower,_item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _back.count =+ _amount;
                 InventroyEquipmentItems.Add(_back);
                 __item = _back;
                 break;
             case 7:
                 Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
+                    _item.atkRange, _item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _sword.count =+ _amount;
                 inventroyWeaponItems.Add(_sword);
                 __item = _sword;
                 break;
             case 8:
                 Shield _shield = new Shield(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
+                    _item.atkRange, _item.atkDistance,_item.defensivePower,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _shield.count =+ _amount;
                 inventroyWeaponItems.Add(_shield);
                 __item = _shield;
                 break;
             case 9:
                 Bow _bow = new Bow(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType,_item.weaponType,_item.physicalDamage,_item.magicalDamage, 
-                    _item.atkRange,_item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
+                    _item.atkRange,_item.atkDistance,_item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _bow.count =+ _amount;
                 inventroyWeaponItems.Add(_bow);
                 __item = _bow;
                 break;
             case 10:
                 Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage, 
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount);
                 _wand.count =+ _amount;
                 inventroyWeaponItems.Add(_wand);
                 __item = _wand;
@@ -270,10 +270,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         return _item;
     }
-    public Item KeyToItem(int _selectItemKey)
+    public List<Item> KeyToItems(int _selectItemKey)
     {
         // 인벤토리에서 해당 아이템 반환
-        Item _item = null;
+        List<Item> _items = new List<Item>();
 
         switch (_selectItemKey / 1000)
         {
@@ -281,8 +281,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 1:
                 for(int i = 0; i< inventroyDecorationItems.Count; i++)
                 {
-                    if(_selectItemKey == inventroyDecorationItems[i].itemKey);
-                    _item = inventroyDecorationItems[i];
+                    if(_selectItemKey == inventroyDecorationItems[i].itemKey)
+                    {
+                        _items.Add(inventroyDecorationItems[i]);
+                    }
                 }
                 break;
             case 2:
@@ -292,42 +294,40 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 6:
                 for (int i = 0; i < inventroyEquipmentItems.Count; i++)
                 {
-                    if (_selectItemKey == inventroyEquipmentItems[i].itemKey) ;
-                    _item = inventroyEquipmentItems[i];
+                    if (_selectItemKey == inventroyEquipmentItems[i].itemKey)
+                    _items.Add(inventroyEquipmentItems[i]);
                 }
                 break;
             case 7:
             case 8:
-
                 break;
             case 9:
-
                 break;
             case 10:
                 for (int i = 0; i < inventroyWeaponItems.Count; i++)
                 {
-                    if (_selectItemKey == inventroyWeaponItems[i].itemKey) ;
-                    _item = inventroyWeaponItems[i];
+                    if (_selectItemKey == inventroyWeaponItems[i].itemKey)
+                    _items.Add(inventroyWeaponItems[i]);
                 }
                 break;
             case 11:
                 for (int i = 0; i < inventroyConsumableItems.Count; i++)
                 {
-                    if (_selectItemKey == inventroyConsumableItems[i].itemKey) ;
-                    _item = inventroyConsumableItems[i];
+                    if (_selectItemKey == inventroyConsumableItems[i].itemKey)
+                    _items.Add(inventroyConsumableItems[i]);
                 }
                 break;
             case 12:
                 for (int i = 0; i < inventroyMiscellaneousItems.Count; i++)
                 {
-                    if (_selectItemKey == inventroyMiscellaneousItems[i].itemKey) ;
-                    _item = inventroyMiscellaneousItems[i];
+                    if (_selectItemKey == inventroyMiscellaneousItems[i].itemKey)
+                    _items.Add(inventroyMiscellaneousItems[i]);
                 }
                 break;
 
         }
 
-        return _item;
+        return _items;
     }
     public void UseItem(CharacterStatus _character, Item _Item)
     {

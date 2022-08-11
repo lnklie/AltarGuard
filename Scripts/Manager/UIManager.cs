@@ -68,6 +68,9 @@ public class UIManager : SingletonManager<UIManager>
     private GameObject forgeSelectPanel = null;
     [SerializeField]
     private CraftPanelController craftPanelController = null;
+    [SerializeField]
+    private DisassemblePanelController disassemblePanelController = null;
+
 
     [Header("NoticeText")]
     [SerializeField]
@@ -409,14 +412,77 @@ public class UIManager : SingletonManager<UIManager>
         craftPanelController.SelectCraftRecipe = _craftRecipe;
         craftPanelController.IsSelected = true;
     }
-    public void SelectNecessaryItem(Item _item)
+    public void SelectNecessaryItemInfo(Item _item)
     {
-        craftPanelController.SelectNeedItem = _item;
-        craftPanelController.IsNeedItemSelected = true;
+        craftPanelController.SelectNeedItemInfo = _item;
+        craftPanelController.IsNeedItemInfoSelected = true;
+    }
+    public void SelectRegisterNecessaryItem(Item _item, int _index)
+    {
+        craftPanelController.SelectRegisterItem = _item;
+        craftPanelController.IsRegisterNecessaryItemSelect = true;
+        craftPanelController.SelectNecessaryItemIndex = _index;
+    }
+    public void SelectRegisterNecessaryItemPanel(Item _item)
+    {
+        SetActiveRegisterNecessaryItemPanel(true);
+        craftPanelController.SelectRegisterInventoryItem = _item;
+    }
+    public void SetActiveRegisterNecessaryItemPanel(bool _bool)
+    {
+        craftPanelController.SetActiveRegisterNecessaryItemPanel(_bool);
     }
     public void SetActivenecessaryIteminfoPanel(bool _bool)
     {
         craftPanelController.SetActiveNecessaryItemInfoPanel(_bool);
+    }
+    public void SetActiveNecessaryItemInventoryPanel(bool _bool)
+    {
+        craftPanelController.SetActiveCraftNecessaryItemInventoryPanel(_bool);
+    }
+    public void Register()
+    {
+        craftPanelController.Register();
+    }
+    public void Craft()
+    {
+        craftPanelController.Craft();
+    }
+    #endregion
+    
+    #region DisassemblePanel
+    public void SelectDisassembleItem(Item _item)
+    {
+        disassemblePanelController.SelectDisassembleItem = _item;
+        disassemblePanelController.IsDisassembleItemSelect = true;
+    }
+    public void SetActiveDisassembleItemInfo()
+    {
+        disassemblePanelController.SetActiveDisassembleItemInfo(true);
+    }
+    public void UpdateDisassembleInventory(int _index)
+    {
+        disassemblePanelController.UpdateDisassembleInventorySlot(_index);
+    }
+    public void Disassemble()
+    {
+        disassemblePanelController.DisassembleItem();
+    }
+    public void UpdateDisassembleCheckBox()
+    {
+        disassemblePanelController.UpdateDisassembleCheckBox();
+    }
+    public void RegisterDisassembleItem()
+    {
+        disassemblePanelController.RegisterItem();
+    }
+    public void SetActiveDisassembleItemCheckBox(bool _bool)
+    {
+        disassemblePanelController.SetActiveDisassembleItemCheckBox(_bool);
+    }
+    public void SelectDisassembleRegisteredSlot(Item _item)
+    {
+        disassemblePanelController.CancelRegisteredItem(_item);
     }
     #endregion
     #region MainUI
@@ -470,7 +536,8 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 10)
         {
-            sellPanelController.SetActiveSellPanel(true);
+            disassemblePanelController.SetActiveDisassemblePanel(true);
+            disassemblePanelController.UpdateDisassembleInventorySlot(0);
         }
     }
 
@@ -525,8 +592,8 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 10)
         {
 
-            sellPanelController.SetActiveSellPanel(false);
-            sellPanelController.CancelAllRegisteredItem();
+            disassemblePanelController.SetActiveDisassemblePanel(false);
+            disassemblePanelController.CancelAllRegisteredItem();
 
         }
     }

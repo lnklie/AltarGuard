@@ -40,6 +40,8 @@ public class Item
     public int equipLevel = 0;
     public int buyPrice = 0;
     public int sellPrice = 0;
+    public int disassembleItemKey = -1;
+    public int disassembleItemAmount = -1;
     public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice)
     {
         itemKey = _itemKey;
