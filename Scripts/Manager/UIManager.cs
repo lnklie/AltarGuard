@@ -62,6 +62,9 @@ public class UIManager : SingletonManager<UIManager>
     private GameObject forgeSelectPanel = null;
     [SerializeField]
     private CraftPanelController craftPanelController = null;
+    [SerializeField]
+    private DisassemblePanelController disassemblePanelController = null;
+
 
     [Header("NoticeText")]
     [SerializeField]
@@ -440,6 +443,42 @@ public class UIManager : SingletonManager<UIManager>
         craftPanelController.Craft();
     }
     #endregion
+    
+    #region DisassemblePanel
+    public void SelectDisassembleItem(Item _item)
+    {
+        disassemblePanelController.SelectDisassembleItem = _item;
+        disassemblePanelController.IsDisassembleItemSelect = true;
+    }
+    public void SetActiveDisassembleItemInfo()
+    {
+        disassemblePanelController.SetActiveDisassembleItemInfo(true);
+    }
+    public void UpdateDisassembleInventory(int _index)
+    {
+        disassemblePanelController.UpdateDisassembleInventorySlot(_index);
+    }
+    public void Disassemble()
+    {
+        disassemblePanelController.DisassembleItem();
+    }
+    public void UpdateDisassembleCheckBox()
+    {
+        disassemblePanelController.UpdateDisassembleCheckBox();
+    }
+    public void RegisterDisassembleItem()
+    {
+        disassemblePanelController.RegisterItem();
+    }
+    public void SetActiveDisassembleItemCheckBox(bool _bool)
+    {
+        disassemblePanelController.SetActiveDisassembleItemCheckBox(_bool);
+    }
+    public void SelectDisassembleRegisteredSlot(Item _item)
+    {
+        disassemblePanelController.CancelRegisteredItem(_item);
+    }
+    #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
@@ -491,7 +530,8 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 10)
         {
-            sellPanelController.SetActiveSellPanel(true);
+            disassemblePanelController.SetActiveDisassemblePanel(true);
+            disassemblePanelController.UpdateDisassembleInventorySlot(0);
         }
     }
 
@@ -546,8 +586,8 @@ public class UIManager : SingletonManager<UIManager>
         else if (_index == 10)
         {
 
-            sellPanelController.SetActiveSellPanel(false);
-            sellPanelController.CancelAllRegisteredItem();
+            disassemblePanelController.SetActiveDisassemblePanel(false);
+            disassemblePanelController.CancelAllRegisteredItem();
 
         }
     }

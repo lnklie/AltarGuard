@@ -29,7 +29,6 @@ public class CraftPanelController : MonoBehaviour
     [SerializeField]
     private CraftRecipe selectCraftRecipe = null;
     [SerializeField]
-
     private Item selectNeedItemInfo = null;
     [SerializeField]
     private Item selectRegisterItem = null;
@@ -38,6 +37,7 @@ public class CraftPanelController : MonoBehaviour
 
     [SerializeField]
     private GameObject needsItems = null;
+    [SerializeField]
     private CraftNecessaryItemSlot[] craftNecessaryItemSlots = null;
     private CraftNecessaryItemInventorySlot[] craftNecessaryItemInventorySlots = null;
 
@@ -65,7 +65,6 @@ public class CraftPanelController : MonoBehaviour
         get { return selectCraftRecipe; }
         set { selectCraftRecipe = value; }
     }
-
     public Item SelectNeedItemInfo
     {
         get { return selectNeedItemInfo; }
@@ -102,11 +101,7 @@ public class CraftPanelController : MonoBehaviour
         get { return isRegisterInventoryItemSelect; }
         set { isRegisterInventoryItemSelect = value; }
     }
-    private void Awake()
-    {
-        craftNecessaryItemSlots = needsItems.GetComponentsInChildren<CraftNecessaryItemSlot>();
-        craftNecessaryItemInventorySlots = GetComponentsInChildren<CraftNecessaryItemInventorySlot>();
-    }
+
     private void Update()
     {
         if (isSelected)
@@ -356,7 +351,6 @@ public class CraftPanelController : MonoBehaviour
             isRegisterNecessaryItemSelect = false;
             if (necessaryItemRegisterInventory.activeSelf)
                 necessaryItemRegisterInventory.SetActive(false);
-            Debug.Log("이미 등록된 물품입니다.");
         }
     }
     public void InitcraftNecessaryItemInventorySlots()
@@ -456,19 +450,6 @@ public class CraftPanelController : MonoBehaviour
             craftNecessaryItemSlots[i].InitNecessaryItemCount();
             SetNecessaryItemCount(selectCraftRecipe.necessaryItemCounts[i], i);
         }
-        else
-        {
-            needsItemTexts[_textIndex].color = new Color(255f, 0f, 0f);
-            isAbleCraft[_textIndex] = true;
-        }
-    }
-    public void InitNecessaryItemCount()
-    {
-        for (int i = 0; i < needsItemTexts.Length; i++)
-        {
-            needsItemTexts[i].text = 00.ToString();
-        }
-        
     }
     public void SetActiveCraftPanel(bool _bool)
     {
@@ -503,14 +484,13 @@ public class CraftPanelController : MonoBehaviour
     }
     public void Register()
     {
-        for(int i = 0; i < selectCraftRecipe.necessaryItemKeies.Length; i++)
+
+        if (selectRegisterInventoryItem.itemKey == selectCraftRecipe.necessaryItemKeies[selectNecessaryItemIndex])
         {
-            if(selectRegisterInventoryItem.itemKey == selectCraftRecipe.necessaryItemKeies[i])
-            {
-                craftResources[i] = selectRegisterInventoryItem;
-                isAbleCraft[i] = true; 
-            }
+            craftResources[selectNecessaryItemIndex] = selectRegisterInventoryItem;
+            isAbleCraft[selectNecessaryItemIndex] = true;
         }
+
         SetActiveRegisterNecessaryItemPanel(false);
         SetActiveCraftNecessaryItemInventoryPanel(false);
         InitNecessaryItemCount();
@@ -533,7 +513,6 @@ public class CraftPanelController : MonoBehaviour
         }
         else
         {
-            Debug.Log("제작 불가");
         }
     }
 }

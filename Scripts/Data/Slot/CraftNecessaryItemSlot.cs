@@ -79,7 +79,6 @@ public class CraftNecessaryItemSlot : MonoBehaviour
         }
         else
         {
-            Debug.Log("şńžîŔÖ´Â žĆŔĚĹŰ");
         }
     }
     public void SelectNecessaryItemInfo()

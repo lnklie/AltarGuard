@@ -367,9 +367,16 @@ public class SellPanelController : MonoBehaviour
         for (int i = 0; i < sellItemList.Count; i++)
         {
             if (selectSellItem == sellItemList[i])
+            {
                 _bool = true;
+                Debug.Log("등록되어 있뜸!");
+                break;
+            }
             else
+            {
                 _bool = false;
+                Debug.Log("등록되어 있지않아요!");
+            }
         }
         return _bool;
     }
@@ -379,7 +386,10 @@ public class SellPanelController : MonoBehaviour
         for (int i = 0; i < sellItemList.Count; i++)
         {
             if (selectSellItem.itemKey == sellItemList[i].itemKey)
+            {
                 _bool = true;
+                break;
+            }
             else
                 _bool = false;
         }
