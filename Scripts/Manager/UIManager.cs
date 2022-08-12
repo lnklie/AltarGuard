@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
-
+/*
+==============================
+ * �������� : 2022-06-10
+ * �ۼ��� : Inklie
+ * ���ϸ� : UIManager.cs
+==============================
+*/
 public class UIManager : SingletonManager<UIManager>
 {
     [Header("EnemySpawner")]
@@ -64,7 +70,8 @@ public class UIManager : SingletonManager<UIManager>
     private CraftPanelController craftPanelController = null;
     [SerializeField]
     private DisassemblePanelController disassemblePanelController = null;
-
+    [SerializeField]
+    private BattleSupportPanelController battleSupportPanel = null;
 
     [Header("NoticeText")]
     [SerializeField]
@@ -158,7 +165,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        Debug.Log("그레이스 업데이트");
+        Debug.Log("�׷��̽� ����Ʈ");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
@@ -180,7 +187,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectSlotItem(Item _item)
     {
-        // 슬롯에 선택한 아이템 
+        // ���Կ� ������ ������ 
         inventoryPanelController.SelectSlotItem(_item);
     }
     public void SelectSlotSellItem(Item _item)
@@ -226,65 +233,74 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
+        // ������ ���â Ȱ��ȭ ����
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // 인벤토리 슬롯 변경
+        // �κ��丮 ���� ����
         inventoryPanelController.InventorySlotChange(_index);
     }
     public void EquipBtn(int _character)
     {
-        // 아이템 장착
+        // ������ ����
         inventoryPanelController.Equip(characterList, _character);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // 아이템 장착 캐릭터 선택 활성화 여부 
+        // ������ ���� ĳ���� ���� Ȱ��ȭ ���� 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // 선택한 아이템 해제
+        // ������ ������ ���
         inventoryPanelController.TakeOff(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // 아이템 사용
+        // ������ ���
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // 아이템 버리기
+        // ������ ���
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // 아이템 수량으로 버리기
+        // ������ ����� ���
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // 아이템 버리기 확인창 활성화 여부
+        // ������ ��� Ȯ��â Ȱ��ȭ ����
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // 아이템 수량 버리기 확인창 활성화 여부
+        // ������ �� ��� Ȯ��â Ȱ��ȭ ����
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // 장비창에서 캐릭터 선택
+        // ���â���� ĳ���� ����
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // 장비창 캐릭터 이름 업데이트
+        // ���â ĳ���� �̸� ����Ʈ
         inventoryPanelController.UpdateEquipmentName();
     }
-
+    public void SetItemQuickSlot(int _index)
+    {
+        inventoryPanelController.SetItemQuickSlot(_index);
+        battleSupportPanel.SetQuickSlots(_index);
+    }
+    public void SetActiveQuickSlotSelectButtons()
+    {
+        
+        inventoryPanelController.SetActiveQuickSlotSelectButtons();
+    }
     #endregion
 
     #region Status Panel
@@ -299,7 +315,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // 스텟 업
+        // ���� ��
         statusPanelController.StatusUp(_index);
     }
     #endregion
@@ -479,10 +495,17 @@ public class UIManager : SingletonManager<UIManager>
         disassemblePanelController.CancelRegisteredItem(_item);
     }
     #endregion
+
+    #region BattleSupportPanel
+    public void UseQuickSlotItem(Item _item, int _slotIndex)
+    {
+        battleSupportPanel.UseQuickSlotItem(_item, _slotIndex);
+    }
+    #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI 활성화 
+        // UI Ȱ��ȭ 
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
@@ -537,7 +560,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI 비활성화
+        // UI ��Ȱ��ȭ
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);

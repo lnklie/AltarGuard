@@ -229,7 +229,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect,items[i].target,items[i].durationTime,items[i].value));
+                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect, items[i].target, items[i].durationTime, items[i].value, items[i].coolTime));
             }
 
         }
@@ -377,6 +377,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 for(int i = 0; i < hairList.Count; i++)
                 {
                     if (_key == hairList[i].itemKey)
+
                         _item = hairList[i];
                 }
                 break;

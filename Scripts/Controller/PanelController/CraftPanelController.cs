@@ -39,6 +39,7 @@ public class CraftPanelController : MonoBehaviour
     private GameObject needsItems = null;
     [SerializeField]
     private CraftNecessaryItemSlot[] craftNecessaryItemSlots = null;
+    [SerializeField]
     private CraftNecessaryItemInventorySlot[] craftNecessaryItemInventorySlots = null;
 
     //[SerializeField]
@@ -113,6 +114,7 @@ public class CraftPanelController : MonoBehaviour
         if (IsRegisterNecessaryItemSelect)
             UpdateNecessaryItemInventory();
 
+            
     }
     public void UpdateCraftRecipe()
     {
@@ -132,59 +134,59 @@ public class CraftPanelController : MonoBehaviour
                 craftItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                craftItemInfo.text = "방어력: " + _item.defensivePower;
+                craftItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 3:
-                craftItemInfo.text = "방어력: " + _item.defensivePower;
+                craftItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 4:
-                craftItemInfo.text = "방어력: " + _item.defensivePower;
+                craftItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 5:
-                craftItemInfo.text = "방어력: " + _item.defensivePower;
+                craftItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 6:
-                craftItemInfo.text = "방어력: " + _item.defensivePower;
+                craftItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 7:
                 craftItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 craftItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType + "\n" +
-                    "방어력: " + _item.defensivePower;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType + "\n" +
+                    "����: " + _item.defensivePower;
                 break;
             case 9:
                 craftItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 craftItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 craftItemInfo.text =
-                    "회복량 : " + _item.value + "\n";
+                    "ȸ���� : " + _item.value + "\n";
                 break;
             case 12:
-                craftItemInfo.text = "이것은 퀘스트 아이템";
+                craftItemInfo.text = "�̰�� ��Ʈ ������";
                 break;
         }
         for(int i = 0; i < 4; i++)
@@ -270,59 +272,59 @@ public class CraftPanelController : MonoBehaviour
                 necessaryItemInfo.text = "This is FaceHair";
                 break;
             case 2:
-                necessaryItemInfo.text = "방어력: " + _item.defensivePower;
+                necessaryItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 3:
-                necessaryItemInfo.text = "방어력: " + _item.defensivePower;
+                necessaryItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 4:
-                necessaryItemInfo.text = "방어력: " + _item.defensivePower;
+                necessaryItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 5:
-                necessaryItemInfo.text = "방어력: " + _item.defensivePower;
+                necessaryItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 6:
-                necessaryItemInfo.text = "방어력: " + _item.defensivePower;
+                necessaryItemInfo.text = "����: " + _item.defensivePower;
                 break;
             case 7:
                 necessaryItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 8:
                 necessaryItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType + "\n" +
-                    "방어력: " + _item.defensivePower;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType + "\n" +
+                    "����: " + _item.defensivePower;
                 break;
             case 9:
                 necessaryItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 10:
                 necessaryItemInfo.text =
-                    "물리 공격력: " + _item.physicalDamage + "\n" +
-                    "마법 공격력: " + _item.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)_item).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)_item).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)_item).weaponType;
+                    "���� ��ݷ�: " + _item.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + _item.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)_item).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)_item).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)_item).weaponType;
                 break;
             case 11:
                 necessaryItemInfo.text =
-                    "회복량 : " + _item.value + "\n";
+                    "ȸ���� : " + _item.value + "\n";
                 break;
             case 12:
-                necessaryItemInfo.text = "이것은 퀘스트 아이템";
+                necessaryItemInfo.text = "�̰�� ��Ʈ ������";
                 break;
         }
 
@@ -368,7 +370,7 @@ public class CraftPanelController : MonoBehaviour
     }
     public string KeyToItemType(int _key)
     {
-        // 키를 아이템 타입으로 변경
+        // Ű�� ������ Ÿ����� ����
         string _itemtype = null;
         switch (_key / 1000)
         {

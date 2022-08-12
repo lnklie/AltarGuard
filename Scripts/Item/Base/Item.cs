@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Item.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Item.cs
 ==============================
 */
 [System.Serializable]
@@ -42,6 +42,8 @@ public class Item
     public int sellPrice = 0;
     public int disassembleItemKey = -1;
     public int disassembleItemAmount = -1;
+    public int coolTime = 1;
+
     public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice)
     {
         itemKey = _itemKey;
