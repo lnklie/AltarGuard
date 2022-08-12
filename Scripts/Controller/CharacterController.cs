@@ -31,7 +31,7 @@ public class CharacterController : BaseController, IAIController
         while(true)
         {
             pathFindController.PathFinding();
-            yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
+            yield return new WaitForSeconds(Random.Range(0.3f,0.4f));
         }
     }
     public WaitUntil WaitUntilAnimatorPoint(Animator _animator, int _index, string _aniName, float _point)

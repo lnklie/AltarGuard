@@ -48,6 +48,7 @@ public class InventoryPanelController : MonoBehaviour
 
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
+    private bool isQuickSlotsOpen = false;
     [SerializeField]
     private int selectCharNum = 0;
     private int selectInventoryIndex = 0;
@@ -62,7 +63,9 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField]
     private EquipmentSlot[] equipmentSlots = null;
     private TextMeshProUGUI[] iteminfoText = null;
-
+    [SerializeField]
+    private GameObject quickSlotSelectButtons = null;
+    
     private void Awake()
     {
         iteminfoText = itemInfo.GetComponentsInChildren<TextMeshProUGUI>();
@@ -99,6 +102,7 @@ public class InventoryPanelController : MonoBehaviour
         InventoryReset();
         SetActiveItemInfo(false);
         MoneyUpdate();
+        SetActiveFalseQuickSlotSelectButtons();
         if (_index == 0)
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
@@ -180,7 +184,7 @@ public class InventoryPanelController : MonoBehaviour
         }
         else
         {
-            if (selectItem.equipCharNum != -1)
+            if (selectItem.isEquip)
             {
                 inventoryButtons[1].gameObject.SetActive(true);
             }
@@ -315,10 +319,9 @@ public class InventoryPanelController : MonoBehaviour
             {
                 _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
             }
-            selectItem.equipCharNum = _character;
             SelectCharacter(_characterList);
             SetActiveEquipCharacterBox(false);
-            _characterList[_character].ChangeEquipment(selectItem);
+            _characterList[_character].ChangeEquipment(selectItem, _character);
             InventorySlotChange(selectInventoryIndex);
             UpdateEquipmentName();
             ChangeAllEquipmentImage();
@@ -332,9 +335,9 @@ public class InventoryPanelController : MonoBehaviour
     public void TakeOff(List<EquipmentController> _characterList)
     {
         // ÀåÂøÇØÁ¦
-        if (selectItem.equipCharNum != -1)
+        if (selectItem.isEquip)
         {
-            Debug.Log("¹¹ÀÓ>");
+            Debug.Log("1111");
             _characterList[selectCharNum].TakeOffEquipment(selectItem);
         }
         else
@@ -463,6 +466,20 @@ public class InventoryPanelController : MonoBehaviour
         SetActiveItemInfo(false);
         InventorySlotChange(2);
     }
+    public void SetItemQuickSlot(int _index)
+    {
+        playerStatus.QuickSlotItems[_index] = selectItem;
+    }
+    public void SetActiveQuickSlotSelectButtons()
+    {
+        isQuickSlotsOpen = !isQuickSlotsOpen;
+        quickSlotSelectButtons.SetActive(isQuickSlotsOpen);
+    }
+    public void SetActiveFalseQuickSlotSelectButtons()
+    {
+        isQuickSlotsOpen = false;
+        quickSlotSelectButtons.SetActive(false);
+    }
     public void ActiveInventoryPanel(bool _bool)
     {
         // UI È°¼ºÈ­ 
@@ -470,6 +487,9 @@ public class InventoryPanelController : MonoBehaviour
         if(_bool)
             ChangeAllEquipmentImage();
         else
+        {
             SetActiveItemInfo(_bool);
+            SetActiveFalseQuickSlotSelectButtons();
+        }
     }
 }
