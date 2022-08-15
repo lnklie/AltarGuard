@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * �������� : 2022-06-09
- * �ۼ��� : Inklie
- * ���ϸ� : InventoryManager.cs
+ * 占쏙옙占쏙옙占쏙옙占쏙옙 : 2022-06-09
+ * 占쌜쇽옙占쏙옙 : Inklie
+ * 占쏙옙占싹몌옙 : InventoryManager.cs
 ==============================
 */
 public class InventoryManager : SingletonManager<InventoryManager>
@@ -73,13 +73,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
-        // ����Ʈ�� ������ �߰� 
+        // 占쏙옙占쏙옙트占쏙옙 占쏙옙占쏙옙占쏙옙 占쌩곤옙 
         _itemList.Add(_item);    
     }
     public Item AcquireItem(Item _item, int _amount = 1)
     {
         Item __item = null;
-        // ������ ���
+        // 占쏙옙占쏙옙占쏙옙 占쏙옙占
         switch (_item.itemKey / 1000)
         {
             case 0:
@@ -156,13 +156,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (IndexOfItem(_item) != -1)
                 {
                     __item = SelectItem(_item);
-                    Debug.Log("�ִ� �Һ�ǰ " + __item.count);
+                    Debug.Log("占쌍댐옙 占쌀븝옙품 " + __item.count);
                     __item.count += _amount;
-                    Debug.Log("ä�� ���� " + __item.count);
+                    Debug.Log("채占쏙옙 占쏙옙占쏙옙 " + __item.count);
                 }
                 else
                 {
-                    Debug.Log("��� �Һ�ǰ");
+                    Debug.Log("占쏙옙占 占쌀븝옙품");
                     Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value,_item.coolTime);
                     _consumables.count = _amount;
                     inventroyConsumableItems.Add(_consumables);
@@ -172,13 +172,12 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 12:
                 if (IndexOfItem(_item) != -1)
                 {
-                    Debug.Log("�ִ� ��Ʈ ������");
+                    Debug.Log("占쌍댐옙 占쏙옙트 占쏙옙占쏙옙占쏙옙");
                     __item = SelectItem(_item);
                     __item.count += _amount;
                 }
                 else
                 {
-                    Debug.Log("��� ��Ʈ ������");
                     Miscellaneous _miscellaneous = new Miscellaneous(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.purpose);
                     _miscellaneous.count = _amount;
                     inventroyMiscellaneousItems.Add(_miscellaneous);
@@ -233,7 +232,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public Item SelectItem(Item _selectItem)
     {
-        // �κ��丮���� �ش� ������ ��ȯ
+        // 占싸븝옙占썰리占쏙옙占쏙옙 占쌔댐옙 占쏙옙占쏙옙占쏙옙 占쏙옙환
         Item _item = null;
 
         if (IndexOfItem(_selectItem) != -1)
@@ -267,7 +266,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         } 
         else
         {
-            Debug.Log("������ ���");
+            Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
         }
         return _item;
     }
@@ -331,26 +330,26 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void UseItem(CharacterStatus _character, Item _Item)
     {
-        // �Ҹ�ǰ�� ���� UI���� �Ҹ�ǰ�� ����ϱ� UI��Ÿ����
+        // 占쌀몌옙품占쏙옙 占쏙옙占쏙옙 UI占쏙옙占쏙옙 占쌀몌옙품占쏙옙 占쏙옙占쏙옙歐占 UI占쏙옙타占쏙옙占쏙옙
         if (IndexOfItem(_Item) != -1)
         {
             SelectItem(_Item).count--;
             UseEffect(_character, _Item);
-            Debug.Log("������ ���");
+            Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
             if (SelectItem(_Item).count == 0)
             {
                 inventroyConsumableItems.Remove(SelectItem(_Item));
-                Debug.Log("������ �����");
+                Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
             }
         }
         else
         {
-            Debug.Log("������ ���");
+            Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
         }
     }
     public void UseEffect(CharacterStatus _character , Item _item)
     {
-        // ������ ���
+        // 占쏙옙占쏙옙占쏙옙 占쏙옙占
         Consumables consumables = ((Consumables)inventroyConsumableItems[IndexOfItem( _item)]);
         if (consumables.useEffect == "Cure")
         {
@@ -358,99 +357,106 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         else if (consumables.useEffect == "Buff")
         {
-            Debug.Log("����");
+            Debug.Log("占쏙옙占쏙옙");
         }
     }
-    public void DiscardItem(Item _item,int _amount = 1)
+    public Item DiscardItem(Item _item,int _amount = 1)
     {
+        Item __item = null;
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
 
-            // ������ ���
+            // 占쏙옙占쏙옙占쏙옙 占쏙옙占
             if (IndexOfItem(_item) != -1)
             {
                 if (!inventroyWeaponItems[IndexOfItem(_item)].isEquip)
                 {
+                    __item = inventroyWeaponItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
-                    Debug.Log("������ ���");
+                    Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
-                        Debug.Log("������ �����");
+                        Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
                     }
                 }
                 else
-                    Debug.Log("���� ���� ������ �Դϴ�.");
+                    Debug.Log("占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌉니댐옙.");
             }
             else
             {
-                //Debug.Log("�׷� ������ ���");
+                //Debug.Log("占쌓뤄옙 占쏙옙占쏙옙占쏙옙 占쏙옙占");
             }
         }
         else if (_item.itemType == (int)ItemType.Armor ||
             _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
             _item.itemType == (int)ItemType.Cloth)
         {
-            // ������ ���
+            // 占쏙옙占쏙옙占쏙옙 占쏙옙占
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
+                    __item = inventroyEquipmentItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
-                    Debug.Log("������ ���");
+                    Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
-                        Debug.Log("������ �����");
+                        Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
                     }
                 }
                 else
-                    Debug.Log("���� ���� ������ �Դϴ�.");
+                    Debug.Log("占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌉니댐옙.");
             }
             else
             {
-                //Debug.Log("�׷� ������ ���");
+                //Debug.Log("占쌓뤄옙 占쏙옙占쏙옙占쏙옙 占쏙옙占");
             }
         }
         else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
         {
-            // ������ ���
+            // 占쏙옙占쏙옙占쏙옙 占쏙옙占
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
+                    __item = inventroyDecorationItems[IndexOfItem(_item)];
+                    __item.count = _amount;
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
-                    Debug.Log("������ ���");
+                    Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
-                        Debug.Log("������ �����");
+                        Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
                     }
                 }
                 else
-                    Debug.Log("���� ���� ������ �Դϴ�.");
+                    Debug.Log("占쏙옙占쏙옙 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쌉니댐옙.");
             }
             else
             {
-                //Debug.Log("�׷� ������ ���");
+                //Debug.Log("占쌓뤄옙 占쏙옙占쏙옙占쏙옙 占쏙옙占");
             }
         }
         else if(_item.itemType == (int)ItemType.Consumables)
         {
             if (IndexOfItem(_item) != -1)
             {
-                Debug.Log("�ķ�� �������� ��� " + _item.count);
+                Debug.Log("占식뤄옙占 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占 " + _item.count);
                 _item.count -= _amount;
-                Debug.Log("��� �������� ��� " + _item.count);
+                Debug.Log("占쏙옙占 占쏙옙占쏙옙占쏙옙占쏙옙 占쏙옙占 " + _item.count);
                 if ( _item.count <= 0)
                 {
                     inventroyConsumableItems.Remove(_item);
-                    Debug.Log("������ �����");
+                    Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
                 }
             }
             else
             {
-                //Debug.Log("������ ���");
+                //Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
             }
         }
         else
@@ -461,19 +467,20 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (_item.count == 0)
                 {
                     inventroyMiscellaneousItems.Remove(_item);
-                    Debug.Log("������ �����");
+                    Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙占");
                 }
             }
             else
             {
-                //Debug.Log("������ ���");
+                //Debug.Log("占쏙옙占쏙옙占쏙옙 占쏙옙占");
             }
         }
+        return __item;
     }
 
     public void SortItemKeyInventory(List<Item> _inventory)
     {
-        // ����Ʈ ���
+        // 占쏙옙占쏙옙트 占쏙옙占
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;

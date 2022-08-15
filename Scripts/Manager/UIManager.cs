@@ -415,7 +415,6 @@ public class UIManager : SingletonManager<UIManager>
         sellPanelController.SetActiveSellItemInfo(_bool);
     }
     #endregion
-
     #region CraftPanel
     public void SelectCraftRecipe(CraftRecipe _craftRecipe)
     {
