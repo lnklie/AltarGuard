@@ -311,8 +311,9 @@ public class BuyPanelController : MonoBehaviour
         {
             _amount = int.Parse(buyAmount.text);
             buyAmount.text = "00";
-        }    
-        InventoryManager.Instance.AcquireItem(selectBuyingItem, _amount);
+        }
+        selectBuyingItem.count = _amount;
+        InventoryManager.Instance.AcquireItem(selectBuyingItem);
         playerStatus.Money -= selectBuyingItem.buyPrice * _amount;
         UpdateMoney();
     }

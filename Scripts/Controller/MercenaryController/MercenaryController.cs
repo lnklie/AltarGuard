@@ -48,11 +48,19 @@ public class MercenaryController : CharacterController
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                Status _enemy = hits[i].collider.GetComponent<Status>();
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
                 _status.IsAtk = true;
 
                 _enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(_enemy);
+                if(_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+                    for(int j = 0; j < _enemy.DropItem(_status.TotalLuck).Length; j++)
+                    {
+                        InventoryManager.Instance.AcquireItem(_enemy.DropItem(_status.TotalLuck)[j]);
+
+                    }
+                }
             }
         }
     }

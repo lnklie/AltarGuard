@@ -51,11 +51,7 @@ public class RushEnemyController : EnemyController
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return new WaitForSeconds(2f);
-        if (Random.Range(1, 101) <= 50)
-        {
-            InventoryManager.Instance.AcquireItem(DropItem(rushEnemyStatus));
-            Debug.Log("È¹µæ");
-        }
+
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
