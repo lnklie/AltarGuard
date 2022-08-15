@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : DatabaseManager.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : DatabaseManager.cs
 ==============================
 */
 
@@ -63,7 +63,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -77,7 +77,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("ê²½ë¡œì— ì–¼êµ´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¾ó±¼ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -91,7 +91,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("ê²½ë¡œì— ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -105,7 +105,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("ê²½ë¡œì— ë°”ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹ÙÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -119,7 +119,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -133,7 +133,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("ê²½ë¡œì— ê°‘ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °©¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -147,7 +147,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("ê²½ë¡œì— ë§í†  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸ÁÅä µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -161,7 +161,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("7_Sword")))
         {
-            Debug.Log("ê²½ë¡œì— ê²€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °Ë µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -176,7 +176,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("8_Shield")))
         {
-            Debug.Log("ê²½ë¡œì— ë°©íŒ¨ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹æÆĞ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -191,7 +191,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("9_Bow")))
         {
-            Debug.Log("ê²½ë¡œì— í™œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ È° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -206,7 +206,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("10_Wand")))
         {
-            Debug.Log("ê²½ë¡œì— ì§€íŒ¡ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÁöÆÎÀÌ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -221,7 +221,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("11_Consumables")))
         {
-            Debug.Log("ê²½ë¡œì— ì†Œë¹„í’ˆ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¼ÒºñÇ° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -235,7 +235,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("12_Miscellaneous")))
         {
-            Debug.Log("ê²½ë¡œì— ê¸°íƒ€í…œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ±âÅ¸ÅÛ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -249,7 +249,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("ê²½ë¡œì— ì  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Àû µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -268,7 +268,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("ê²½ë¡œì— ê²½í—˜ì¹˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °æÇèÄ¡ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -281,7 +281,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("ê²½ë¡œì— ìŠ¤í…Œì´ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ½ºÅ×ÀÌÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -294,7 +294,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ActiveSkill")))
         {
-            Debug.Log("ê²½ë¡œì— ì•¡í‹°ë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¾×Æ¼ºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -311,7 +311,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("PassiveSkill")))
         {
-            Debug.Log("ê²½ë¡œì— íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÆĞ½Ãºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -328,7 +328,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Grace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -341,7 +341,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Grace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -354,7 +354,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
         {
-            Debug.Log("ê²½ë¡œì— ì œì‘ ë ˆì‹œí”¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¦ÀÛ ·¹½ÃÇÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -368,105 +368,159 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             }
         }
     }
-    public Item SelectItem(int _key)
+    public Item SelectItem(int _key, int _amount = 1)
     {
-        Item _item = new Item(_key, null, 0 , 0);
-        switch(_key / 1000)
+        if(_key == -1)
+            return null;
+        else
         {
-            case 0:
-                for(int i = 0; i < hairList.Count; i++)
-                {
-                    if (_key == hairList[i].itemKey)
-
-                        _item = hairList[i];
-                }
-                break;
-            case 1:
-                for (int i = 0; i < faceHairList.Count; i++)
-                {
-                    if (_key == faceHairList[i].itemKey)
-                        _item = faceHairList[i];
-                }
-                break;
-            case 2:
-                for (int i = 0; i < clothList.Count; i++)
-                {
-                    if (_key == clothList[i].itemKey)
-                        _item = clothList[i];
-                }
-                break;
-            case 3:
-                for (int i = 0; i < pantList.Count; i++)
-                {
-                    if (_key == pantList[i].itemKey)
-                        _item = pantList[i];
-                }
-                break;
-            case 4:
-                for (int i = 0; i < helmetList.Count; i++)
-                {
-                    if (_key == helmetList[i].itemKey)
-                        _item = helmetList[i];
-                }
-                break;
-            case 5:
-                for (int i = 0; i < armorList.Count; i++)
-                {
-                    if (_key == armorList[i].itemKey)
-                        _item = armorList[i];
-                }
-                break;
-            case 6:
-                for (int i = 0; i < backList.Count; i++)
-                {
-                    if (_key == backList[i].itemKey)
-                        _item = backList[i];
-                }
-                break;
-            case 7:
-                for (int i = 0; i < swordList.Count; i++)
-                {
-                    if (_key == swordList[i].itemKey)
-                        _item = swordList[i];
-                }
-                break;
-            case 8:
-                for (int i = 0; i < shieldList.Count; i++)
-                {
-                    if (_key == shieldList[i].itemKey)
-                        _item = shieldList[i];
-                }
-                break;
-            case 9:
-                for (int i = 0; i < bowList.Count; i++)
-                {
-                    if (_key == bowList[i].itemKey)
-                        _item = bowList[i];
-                }
-                break;
-            case 10:
-                for (int i = 0; i < wandList.Count; i++)
-                {
-                    if (_key == wandList[i].itemKey)
-                        _item = wandList[i];
-                }
-                break;
-            case 11:
-                for (int i = 0; i < consumablesList.Count; i++)
-                {
-                    if (_key == consumablesList[i].itemKey)
-                        _item = consumablesList[i];
-                }
-                break;
-            case 12:
-                for (int i = 0; i < miscellaneousList.Count; i++)
-                {
-                    if (_key == miscellaneousList[i].itemKey)
-                        _item = miscellaneousList[i];
-                }
-                break;
+            Item _item = new Item(_key, null, 0 , 0);
+            switch(_key / 1000)
+            {
+                case 0:
+                    for(int i = 0; i < hairList.Count; i++)
+                    {
+                        if (_key == hairList[i].itemKey)
+                        {
+                            Hair _hair = new Hair(hairList[i].itemKey, hairList[i].itemName, hairList[i].buyPrice, hairList[i].sellPrice);
+                            _item = _hair;
+                        }
+                    }
+                    break;
+                case 1:
+                    for (int i = 0; i < faceHairList.Count; i++)
+                    {
+                        if (_key == faceHairList[i].itemKey)
+                        {
+                            FaceHair _faceHair = new FaceHair(faceHairList[i].itemKey, faceHairList[i].itemName, faceHairList[i].buyPrice, faceHairList[i].sellPrice);
+                            _item = _faceHair;
+                        }
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < clothList.Count; i++)
+                    {
+                        if (_key == clothList[i].itemKey)
+                        {
+                            Cloth _cloth = new Cloth(clothList[i].itemKey, clothList[i].itemName, clothList[i].buyPrice, clothList[i].sellPrice, clothList[i].defensivePower, clothList[i].equipLevel, clothList[i].disassembleItemKey, clothList[i].disassembleItemAmount);
+                            _item = _cloth;
+                        }
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < pantList.Count; i++)
+                    {
+                        if (_key == pantList[i].itemKey)
+                        {
+                            Pant _pant = new Pant(pantList[i].itemKey, pantList[i].itemName, pantList[i].buyPrice, pantList[i].sellPrice, pantList[i].defensivePower, pantList[i].equipLevel, pantList[i].disassembleItemKey, pantList[i].disassembleItemAmount);
+                            _item = _pant;
+                        }
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < helmetList.Count; i++)
+                    {
+                        if (_key == helmetList[i].itemKey)
+                        {
+                            Helmet _helmet = new Helmet(helmetList[i].itemKey, helmetList[i].itemName, helmetList[i].buyPrice, helmetList[i].sellPrice, helmetList[i].defensivePower, helmetList[i].equipLevel, helmetList[i].disassembleItemKey, helmetList[i].disassembleItemAmount);
+                            _item = _helmet;
+                        }
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < armorList.Count; i++)
+                    {
+                        if (_key == armorList[i].itemKey)
+                        {
+                            Armor _armor = new Armor(armorList[i].itemKey, armorList[i].itemName, armorList[i].buyPrice, armorList[i].sellPrice, armorList[i].defensivePower, armorList[i].equipLevel, armorList[i].disassembleItemKey, armorList[i].disassembleItemAmount);
+                            _item = _armor;
+                        }
+                    }
+                    break;
+                case 6:
+                    for (int i = 0; i < backList.Count; i++)
+                    {
+                        if (_key == backList[i].itemKey)
+                        {
+                            Back _back = new Back(backList[i].itemKey, backList[i].itemName, backList[i].buyPrice, backList[i].sellPrice, backList[i].defensivePower, backList[i].equipLevel, backList[i].disassembleItemKey, backList[i].disassembleItemAmount);
+                            _item = _back;
+                        }
+                    }
+                    break;
+                case 7:
+                    for (int i = 0; i < swordList.Count; i++)
+                    {
+                        if (_key == swordList[i].itemKey)
+                        {
+                            Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
+                        swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].skillKey1, swordList[i].skillKey2, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount);
+                            _item = _sword;
+                        }
+                    }
+                    break;
+                case 8:
+                    for (int i = 0; i < shieldList.Count; i++)
+                    {
+                        if (_key == shieldList[i].itemKey)
+                        {
+                            Shield _shield = new Shield(shieldList[i].itemKey, shieldList[i].itemName, shieldList[i].buyPrice, shieldList[i].sellPrice, shieldList[i].attackType, shieldList[i].weaponType, shieldList[i].physicalDamage, shieldList[i].magicalDamage,
+                        shieldList[i].atkRange, shieldList[i].atkDistance, shieldList[i].defensivePower, shieldList[i].atkSpeed, shieldList[i].skillKey1, shieldList[i].skillKey2, shieldList[i].equipLevel, shieldList[i].disassembleItemKey, shieldList[i].disassembleItemAmount);
+                            _item = _shield;
+                        }
+                    }
+                    break;
+                case 9:
+                    for (int i = 0; i < bowList.Count; i++)
+                    {
+                        if (_key == bowList[i].itemKey)
+                        {
+                            Bow _bow = new Bow(
+                                bowList[i].itemKey, bowList[i].itemName, bowList[i].buyPrice, bowList[i].sellPrice, bowList[i].attackType, bowList[i].weaponType, bowList[i].physicalDamage, bowList[i].magicalDamage,
+                                bowList[i].atkRange, bowList[i].atkDistance, bowList[i].atkSpeed, bowList[i].skillKey1, bowList[i].skillKey2, bowList[i].equipLevel, bowList[i].disassembleItemKey, bowList[i].disassembleItemAmount);
+                            _item = _bow;
+                        }
+                    }
+                    break;
+                case 10:
+                    for (int i = 0; i < wandList.Count; i++)
+                    {
+                        if (_key == wandList[i].itemKey)
+                        {
+                            Wand _wand = new Wand(
+                                wandList[i].itemKey, wandList[i].itemName, wandList[i].buyPrice, wandList[i].sellPrice, wandList[i].attackType, wandList[i].weaponType, wandList[i].physicalDamage, wandList[i].magicalDamage,
+                                wandList[i].atkRange, wandList[i].atkDistance, wandList[i].atkSpeed, wandList[i].skillKey1, wandList[i].skillKey2, wandList[i].equipLevel, wandList[i].disassembleItemKey, wandList[i].disassembleItemAmount);
+                            _item = _wand;
+                        }
+                    }
+                    break;
+                case 11:
+                    for (int i = 0; i < consumablesList.Count; i++)
+                    {
+                        if (_key == consumablesList[i].itemKey)
+                        {
+                            Consumables _consumables = new Consumables(
+                                consumablesList[i].itemKey, consumablesList[i].itemName, consumablesList[i].buyPrice, consumablesList[i].sellPrice,
+                                consumablesList[i].useEffect, consumablesList[i].target, consumablesList[i].durationTime, consumablesList[i].value, consumablesList[i].coolTime);
+                            _consumables.count = _amount;
+                            _item = _consumables;
+                        }
+                    }
+                    break;
+                case 12:
+                    for (int i = 0; i < miscellaneousList.Count; i++)
+                    {
+                        if (_key == miscellaneousList[i].itemKey)
+                        {
+                            Miscellaneous _miscellaneous = new Miscellaneous(
+                                miscellaneousList[i].itemKey, miscellaneousList[i].itemName, miscellaneousList[i].buyPrice, miscellaneousList[i].sellPrice, miscellaneousList[i].purpose);
+                            _miscellaneous.count = _amount;
+                            _item = _miscellaneous;
+                        }
+                    }
+                    break;
+            }
+            return _item;
         }
-        return _item;
     }
 
     public Enemy SelectRushEnemy(int _key)
@@ -511,7 +565,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (graceList[i].graceKey == _key)
                 _grace = graceList[i];
             else
-                Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+                Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
         }
         return _grace;
     }
@@ -523,7 +577,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
         }
         return _craftRecipe;
     }

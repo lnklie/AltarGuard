@@ -53,6 +53,7 @@ public class Enemy : Elements
         itemDropKey3 = _itemDropKey3;
         itemDropKey4 = _itemDropKey4;
         itemDropKey5 = _itemDropKey5;
+
         itemDropProb1 = _itemDropProb1;
         itemDropProb2 = _itemDropProb2;
         itemDropProb3 = _itemDropProb3;

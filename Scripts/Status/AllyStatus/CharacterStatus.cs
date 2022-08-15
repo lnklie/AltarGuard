@@ -360,11 +360,8 @@ public class CharacterStatus : Status
     }
     public void AquireExp(Status status)
     {
-        // 마지막 공격을 했는지 체크
-        if (status.IsLastHit())
-        {
-            curExp += status.DefeatExp;
-        }
+        curExp += status.DefeatExp;
+        
     }
     public void UpdateBasicStatus()
     {

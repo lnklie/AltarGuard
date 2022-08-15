@@ -16,22 +16,26 @@ public class MercenaryManager : MonoBehaviour
         get { return mercenarys; }
         set { mercenarys = value; }
     }
-    public void AddNewMercenary()
-    {
-        GameObject _newCharacter = Instantiate(characterPrefab, this.transform);
-        EquipmentController _equipmentController = _newCharacter.GetComponentInChildren<EquipmentController>();
-        MercenaryStatus _mercenaryStatus = _newCharacter.GetComponentInChildren<MercenaryStatus>();
-        _mercenaryStatus.gameObject.transform.position = revialZone.transform.position;
-        _mercenaryStatus.MercenaryNum = mercenarys.Count;
 
-        for(int i = 0; i < _equipmentController.EquipItems.Length; i ++)
+    private void Start()
+    {
+        EquipMercenaryItem();
+    }
+    public void EquipMercenaryItem()
+    {
+        for(int i = 0; i < mercenarys.Count; i++)
         {
-            if (_equipmentController.CheckEquipItems[i])
-                _equipmentController.EquipItems[i].equipCharNum = _mercenaryStatus.MercenaryNum;
+
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(1003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(2003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(3003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(4003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(5003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(6003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(7003)));
+            mercenarys[i].GetComponent<EquipmentController>().ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8003)));
+            for (int j = 0; j < mercenarys[i].GetComponent<EquipmentController>().EquipItems.Length; j++)
+                mercenarys[i].GetComponent<EquipmentController>().EquipItems[j].equipCharNum = mercenarys[i].GetComponent<AllyStatus>().AllyNum;
         }
-        mercenarys.Add(_newCharacter);
-        UIManager.Instance.AddMercenary(_mercenaryStatus);
-        UIManager.Instance.SetActiveCharactersProfile(_mercenaryStatus.MercenaryNum + 1, true);
-        UIManager.Instance.UpdateMercenaryProfile(_mercenaryStatus.MercenaryNum);
     }
 }
