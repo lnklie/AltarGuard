@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : DatabaseManager.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : DatabaseManager.cs
 ==============================
 */
 
@@ -41,6 +41,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("Grace")]
     public List<Grace> graceList = new List<Grace>();
+
+    [Header("CraftRecipe")]
+    public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -60,7 +63,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -74,7 +77,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("°æ·Î¿¡ ¾ó±¼ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì–¼êµ´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -88,7 +91,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("°æ·Î¿¡ ¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -96,13 +99,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
+                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("°æ·Î¿¡ ¹ÙÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë°”ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -110,13 +113,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
+                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -124,13 +127,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
+                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("°æ·Î¿¡ °©¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê°‘ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -138,13 +141,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                armorList.Add(new Armor(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
+                armorList.Add(new Armor(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("°æ·Î¿¡ ¸ÁÅä µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë§í†  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -152,13 +155,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                backList.Add(new Back(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel));
+                backList.Add(new Back(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("7_Sword")))
         {
-            Debug.Log("°æ·Î¿¡ °Ë µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê²€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -167,13 +170,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 swordList.Add(new Sword(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType,items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("8_Shield")))
         {
-            Debug.Log("°æ·Î¿¡ ¹æÆĞ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë°©íŒ¨ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -182,13 +185,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("9_Bow")))
         {
-            Debug.Log("°æ·Î¿¡ È° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— í™œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -197,13 +200,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("10_Wand")))
         {
-            Debug.Log("°æ·Î¿¡ ÁöÆÎÀÌ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì§€íŒ¡ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -212,13 +215,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount));
             }
 
         }
         if (!File.Exists(CombinePath("11_Consumables")))
         {
-            Debug.Log("°æ·Î¿¡ ¼ÒºñÇ° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì†Œë¹„í’ˆ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -226,13 +229,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect,items[i].target,items[i].durationTime,items[i].value));
+                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect, items[i].target, items[i].durationTime, items[i].value, items[i].coolTime));
             }
 
         }
         if (!File.Exists(CombinePath("12_Miscellaneous")))
         {
-            Debug.Log("°æ·Î¿¡ ±âÅ¸ÅÛ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê¸°íƒ€í…œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -246,7 +249,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("°æ·Î¿¡ Àû µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -265,7 +268,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("°æ·Î¿¡ °æÇèÄ¡ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê²½í—˜ì¹˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -278,7 +281,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("°æ·Î¿¡ ½ºÅ×ÀÌÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ìŠ¤í…Œì´ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -291,7 +294,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ActiveSkill")))
         {
-            Debug.Log("°æ·Î¿¡ ¾×Æ¼ºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì•¡í‹°ë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -308,7 +311,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("PassiveSkill")))
         {
-            Debug.Log("°æ·Î¿¡ ÆĞ½Ãºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -325,7 +328,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Grace")))
         {
-            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -334,6 +337,34 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
                 graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
+            }
+        }
+        if (!File.Exists(CombinePath("Grace")))
+        {
+            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Grace")));
+            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey));
+            }
+        }
+        if (!File.Exists(CombinePath("CraftRecipe")))
+        {
+            Debug.Log("ê²½ë¡œì— ì œì‘ ë ˆì‹œí”¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("CraftRecipe")));
+            CraftRecipe[] craftRecipes = JsonHelper.FromJson<CraftRecipe>(loadJson);
+            for (var i = 0; i < craftRecipes.Length; i++)
+            {
+                craftRecipeList.Add(new CraftRecipe(craftRecipes[i].recipeKey, craftRecipes[i].recipeName, craftRecipes[i].completeItemKey, 
+                    craftRecipes[i].necessaryItemKey1, craftRecipes[i].necessaryItemKey2, craftRecipes[i].necessaryItemKey3, craftRecipes[i].necessaryItemKey4,
+                    craftRecipes[i].necessaryItemCount1, craftRecipes[i].necessaryItemCount2, craftRecipes[i].necessaryItemCount3, craftRecipes[i].necessaryItemCount4));
             }
         }
     }
@@ -346,6 +377,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 for(int i = 0; i < hairList.Count; i++)
                 {
                     if (_key == hairList[i].itemKey)
+
                         _item = hairList[i];
                 }
                 break;
@@ -479,8 +511,20 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (graceList[i].graceKey == _key)
                 _grace = graceList[i];
             else
-                Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
         }
         return _grace;
+    }
+    public CraftRecipe SelectCraftRecipe(int _key)
+    {
+        CraftRecipe _craftRecipe = null;
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (craftRecipeList[i].recipeKey == _key)
+                _craftRecipe = craftRecipeList[i];
+            else
+                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
+        }
+        return _craftRecipe;
     }
 }

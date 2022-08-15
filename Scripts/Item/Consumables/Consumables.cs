@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Consumables.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Consumables.cs
 ==============================
 */
 [System.Serializable]
 public class Consumables : Item
 {
-    public Consumables(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, string _useEffect, string _target, float _durationTime, int _value) : base(_itemKey, _itemName,_buyPrice,_sellPrice)
+    public Consumables(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, string _useEffect, string _target, float _durationTime, int _value, int _coolTime) : base(_itemKey, _itemName,_buyPrice,_sellPrice)
     {
         useEffect = _useEffect;
         target = _target;
         durationTime = _durationTime;
         value = _value;
+        coolTime = _coolTime;
         itemType = (int)ItemType.Consumables;
         singleSprite = Resources.Load("Sprites/11_Consumable/" + itemName, typeof(Sprite)) as Sprite;
         texture2D = Resources.Load("Sprites/11_Consumable/" + itemName, typeof(Texture2D)) as Texture2D;

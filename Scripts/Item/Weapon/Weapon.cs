@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Weapon.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Weapon.cs
 ==============================
 */
 [System.Serializable]
 public class Weapon :Item 
 {
     public Weapon(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, 
-        float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
+        float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount) 
         : base(_itemKey, _itemName, _buyPrice, _sellPrice)
     {
         itemType = (int)ItemType.Weapon;
@@ -27,5 +27,7 @@ public class Weapon :Item
         skillKey1 = _skillKey1;
         skillKey2 = _skillKey2;
         equipLevel = _equipLevel;
+        disassembleItemKey = _disassembleItemKey;
+        disassembleItemAmount = _disassembleItemAmount;
     }
 }

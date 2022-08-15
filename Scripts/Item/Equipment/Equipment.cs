@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Equipment.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Equipment.cs
 ==============================
 */
 public class Equipment : Item
 {
-    public Equipment(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel) :base(_itemKey,_itemName, _buyPrice, _sellPrice)
+    public Equipment(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount) :base(_itemKey,_itemName, _buyPrice, _sellPrice)
     {
         defensivePower = _defensivePower;
         equipLevel = _equipLevel;
+        disassembleItemKey = _disassembleItemKey;
+        disassembleItemAmount = _disassembleItemAmount;
     }
 }

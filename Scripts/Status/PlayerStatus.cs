@@ -21,6 +21,10 @@ public class PlayerStatus : AllyStatus
     private bool isAutoMode = false;
     private Vector2 dir;
     private EPlayerState playerState = EPlayerState.Play;
+    [SerializeField]
+    private Item[] quickSlotItems = new Item[4];
+    [SerializeField]
+    private bool isQuickSlotRegister = false;
     #region Property
     public EPlayerState PlayerState
     {
@@ -57,6 +61,16 @@ public class PlayerStatus : AllyStatus
     {
         get { return money; }
         set { money = value; }
+    }
+    public Item[] QuickSlotItems
+    {
+        get { return quickSlotItems; }
+        set { quickSlotItems = value; }
+    }
+    public bool IsQuickSlotRegister
+    {
+        get { return isQuickSlotRegister; }
+        set { isQuickSlotRegister = value; }
     }
     #endregion
 }

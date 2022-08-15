@@ -61,15 +61,10 @@ public class EquipmentController : MonoBehaviour
     }
     private void Start()
     {
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(0));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(1000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(2000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(3000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(4000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(5000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(6000));
-        ChangeEquipment(DatabaseManager.Instance.SelectItem(7000));
+
+
     }
+
     public int GetEquipmentDefensivePower()
     {
         // 장비에 방어력 출력
@@ -124,57 +119,65 @@ public class EquipmentController : MonoBehaviour
             status.AttackType = 0f;
     }
 
-    public void ChangeEquipment(Item _item)
+    public void ChangeEquipment(Item _item, int _charIndex = -1)
     {
-        InventoryManager.Instance.DiscardItem(_item);
-        equipItems[_item.itemType] = _item;
-        equipItems[_item.itemType].isEquip = true;
-        checkEquipItems[_item.itemType] = true;
-        switch (_item.itemType)
+        if(!_item.isEquip)
         {
-            case 0:
-                hairSpace.ChangeItemSprite(equipItems[0].spList[0]);
-                break;
-            case 1:
-                faceHairSpace.ChangeItemSprite(equipItems[1].spList[0]);
-                break;
-            case 2:
-                for (int i = 0; i < clothSpaces.Length; i++)
-                {
-                    clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
-                }
-                break;
-            case 3:
-                for (int i = 0; i < pantSpaces.Length; i++)
-                {
-                    pantSpaces[i].ChangeItemSprite(equipItems[3].spList[i]);
-                }
-                break;
-            case 4:
-                helmetSpace.ChangeItemSprite(equipItems[4].spList[0]);
-                break;
-            case 5:
-                for (int i = 0; i < armorSpaces.Length; i++)
-                {
-                    armorSpaces[i].ChangeItemSprite(equipItems[5].spList[i]);
-                }
-                break;
-            case 6:
-                backSpace.ChangeItemSprite(equipItems[6].spList[0]);
-                break;
-            case 7:
-                weaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
-                ChangeAttackType();
-                break;
-            case 8:
-                subWeaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
-                break;
+            Debug.Log("장착!");
+
+            equipItems[_item.itemType] = _item;
+            equipItems[_item.itemType].isEquip = true;
+            equipItems[_item.itemType].equipCharNum = _charIndex;
+            checkEquipItems[_item.itemType] = true;
+            switch (_item.itemType)
+            {
+                case 0:
+                    hairSpace.ChangeItemSprite(equipItems[0].spList[0]);
+                    break;
+                case 1:
+                    faceHairSpace.ChangeItemSprite(equipItems[1].spList[0]);
+                    break;
+                case 2:
+                    for (int i = 0; i < clothSpaces.Length; i++)
+                    {
+                        clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < pantSpaces.Length; i++)
+                    {
+                        pantSpaces[i].ChangeItemSprite(equipItems[3].spList[i]);
+                    }
+                    break;
+                case 4:
+                    helmetSpace.ChangeItemSprite(equipItems[4].spList[0]);
+                    break;
+                case 5:
+                    for (int i = 0; i < armorSpaces.Length; i++)
+                    {
+                        armorSpaces[i].ChangeItemSprite(equipItems[5].spList[i]);
+                    }
+                    break;
+                case 6:
+                    backSpace.ChangeItemSprite(equipItems[6].spList[0]);
+                    break;
+                case 7:
+                    weaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
+                    ChangeAttackType();
+                    break;
+                case 8:
+                    subWeaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                    break;
+            }
+            isChangeItem = true;
         }
-        isChangeItem = true;
+        else
+        {
+            Debug.Log("장착 중입니다.");
+        }
     }
     public void TakeOffEquipment(Item _item)
     {
-        InventoryManager.Instance.AcquireItem(equipItems[_item.itemType]);
         // 장착해제
         switch (_item.itemType)
         {
@@ -202,6 +205,7 @@ public class EquipmentController : MonoBehaviour
                 if (checkEquipItems[2])
                 {
                     equipItems[2].isEquip = false;
+                    Debug.Log("요깅 "  + equipItems[2].equipCharNum);
                     equipItems[2].equipCharNum = -1;
                     equipItems[2] = null;
                     checkEquipItems[2] = false;

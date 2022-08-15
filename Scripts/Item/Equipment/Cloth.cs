@@ -5,15 +5,16 @@ using UnityEditor;
 
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Cloth.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Cloth.cs
 ==============================
 */
 [System.Serializable]
 public class Cloth : Equipment
 {
-    public Cloth(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel) : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel)
+
+    public Cloth(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel, int _disassembleItemKey, int _disassembleItemAmount) : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel, _disassembleItemKey, _disassembleItemAmount)
     {
         itemType = (int)ItemType.Cloth;
         singleSprite = Resources.Load("Sprites/2_Cloth/" + itemName + "_Single", typeof(Sprite)) as Sprite;

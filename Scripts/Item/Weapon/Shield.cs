@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Shield.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Shield.cs
 ==============================
 */
 [System.Serializable]
 public class Shield : Weapon
 {
-    public Shield(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance, int _defensivePower, float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
-        : base(_itemKey,_itemName, _buyPrice, _sellPrice, _attackType,_weaponType, _physicalDamage, _magicalDamage, _atkRange,_atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel) 
+    public Shield(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance, int _defensivePower, float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel, int _disassembleItemKey, int _disassembleItemAmount) 
+        : base(_itemKey,_itemName, _buyPrice, _sellPrice, _attackType,_weaponType, _physicalDamage, _magicalDamage, _atkRange,_atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel, _disassembleItemKey, _disassembleItemAmount) 
     {
 
         defensivePower = (int)_defensivePower;

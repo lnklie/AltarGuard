@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Bow.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Bow.cs
 ==============================
 */
 [System.Serializable]
 public class Bow : Weapon
 {
-    public Bow(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance,float _atkSpeed, int _skillKey1, int _skillKey2, int _equipLevel) 
-        : base(_itemKey, _itemName, _buyPrice, _sellPrice, _attackType, _weaponType, _physicalDamage, _magicalDamage, _atkRange, _atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel)
+    public Bow(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, 
+        string _attackType, string _weaponType, int _physicalDamage, int _magicalDamage, float _atkRange, float _atkDistance,float _atkSpeed,
+        int _skillKey1, int _skillKey2, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount) 
+        : base(_itemKey, _itemName, _buyPrice, _sellPrice, _attackType, _weaponType, _physicalDamage, _magicalDamage, _atkRange, _atkDistance, _atkSpeed, _skillKey1, _skillKey2, _equipLevel, _disassembleItemKey, _disassembleItemAmount)
     {
 
         singleSprite = Resources.Load("Sprites/9_Bow/" + itemName, typeof(Sprite)) as Sprite;
