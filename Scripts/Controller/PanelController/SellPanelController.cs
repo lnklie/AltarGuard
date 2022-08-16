@@ -68,7 +68,7 @@ public class SellPanelController : MonoBehaviour
 
     public void ResetSellInventory()
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
         for (int i = 0; i < shopInventorySlots.Count; i++)
         {
             shopInventorySlots[i].SlotReset();
@@ -76,7 +76,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateSellInventorySlot(int _index)
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
         ResetSellInventory();
         SetActiveSellItemInfo(false);
         MoneyUpdate();
@@ -136,7 +136,7 @@ public class SellPanelController : MonoBehaviour
 
     public string KeyToItemType(int _key)
     {
-        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
+        // í‚¤ë¥¼ ì•„ì´í…œ íƒ€ì…ìœ¼ë¡œ ë³€ê²½
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -178,13 +178,13 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateItemInfo()
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
+        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
         isSellItemSelect = false;
         SetActiveSellItemInfo(true);
 
         sellItemInfoText[0].text = selectSellItem.itemName;
         sellItemInfoText[1].text = KeyToItemType(selectSellItem.itemKey);
-        sellItemInfoText[3].text = "ÆÇ¸Å °¡°İ: " + selectSellItem.sellPrice.ToString();
+        sellItemInfoText[3].text = "íŒë§¤ ê°€ê²©: " + selectSellItem.sellPrice.ToString();
         switch (selectSellItem.itemKey / 1000)
         {
             case 0:
@@ -257,7 +257,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SetActiveSellItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         sellItemInfo.SetActive(_bool);
     }
     public void SetActiveSellPanel(bool _bool)
@@ -270,7 +270,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SelectSlotSellItem(Item _item)
     {
-        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
+        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
         selectSellItem = _item;
         isSellItemSelect = true;
     }
@@ -290,7 +290,7 @@ public class SellPanelController : MonoBehaviour
                 UpdateSellSlot();
             }
             else
-                Debug.Log("ÀÌ¹Ì µî·ÏµÇ¾î ÀÖÀ½");
+                Debug.Log("ì´ë¯¸ ë“±ë¡ë˜ì–´ ìˆìŒ");
 
         }
     }
@@ -617,13 +617,13 @@ public class SellPanelController : MonoBehaviour
     public void RegisterAmountItem()
     {
         if (int.Parse(sellAmount.text) > selectSellItem.count)
-            Debug.Log("¼ö·® ¶Ù¾î ³ÑÀ½");
+            Debug.Log("ìˆ˜ëŸ‰ ë›°ì–´ ë„˜ìŒ");
         else
         {
             if (!CheckAmountIsRegistered())
             {
                 AddSellMoney(selectSellItem.sellPrice * int.Parse(sellAmount.text));
-                Debug.Log("ÆÄ´Â ¼ö·®Àº" + int.Parse(sellAmount.text));
+                Debug.Log("íŒŒëŠ” ìˆ˜ëŸ‰ì€" + int.Parse(sellAmount.text));
                 Item item = DatabaseManager.Instance.SelectItem(selectSellItem.itemKey);
                 item.count = int.Parse(sellAmount.text);
                 sellItemList.Add(item);
@@ -632,7 +632,7 @@ public class SellPanelController : MonoBehaviour
                 SetActiveSellItemAmount(false);
             }
             else
-                Debug.Log("ÀÌ¹Ì µî·ÏµÇ¾î ÀÖÀ½");
+                Debug.Log("ì´ë¯¸ ë“±ë¡ë˜ì–´ ìˆìŒ");
 
         }
     }
@@ -643,7 +643,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void ResetSellList()
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
         for (int i = 0; i < sellSlots.Count; i++)
         {
             sellSlots[i].SlotReset();
@@ -652,7 +652,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateSellSlot()
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
         ResetSellList();
         for (int i = 0; i < sellItemList.Count; i++)
         {
@@ -700,13 +700,13 @@ public class SellPanelController : MonoBehaviour
             if (selectSellItem == sellItemList[i])
             {
                 _bool = true;
-                Debug.Log("µî·ÏµÇ¾î ÀÖ¶ä!");
+                Debug.Log("ë“±ë¡ë˜ì–´ ìˆëœ¸!");
                 break;
             }
             else
             {
                 _bool = false;
-                Debug.Log("µî·ÏµÇ¾î ÀÖÁö¾Ê¾Æ¿ä!");
+                Debug.Log("ë“±ë¡ë˜ì–´ ìˆì§€ì•Šì•„ìš”!");
             }
         }
         return _bool;
