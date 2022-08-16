@@ -397,6 +397,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         sellPanelController.SetActiveSellItemAmount(_bool);
     }
+    public void SetActiveRegisterEasyPanel(bool _bool)
+    {
+        sellPanelController.SetActiveRegisterEasyPanel(_bool);
+    }
     public void SellItem()
     {
         sellPanelController.SellItem();
@@ -405,10 +409,15 @@ public class UIManager : SingletonManager<UIManager>
     {
         sellPanelController.CancelRegisteredItem(_item);
     }
+    public void RegisterItemEasy()
+    {
+        sellPanelController.RegisterItemEasy();
+    }
     public void SetActiveSellItemInfo(bool _bool)
     {
         sellPanelController.SetActiveSellItemInfo(_bool);
     }
+    
     #endregion
 
     #region CraftPanel
@@ -495,6 +504,10 @@ public class UIManager : SingletonManager<UIManager>
     public void UseQuickSlotItem(Item _item, int _slotIndex)
     {
         battleSupportPanel.UseQuickSlotItem(_item, _slotIndex);
+    }
+    public void SetPlayerAutoPlay()
+    {
+        battleSupportPanel.SetAutoPlay();
     }
     #endregion
     #region MainUI

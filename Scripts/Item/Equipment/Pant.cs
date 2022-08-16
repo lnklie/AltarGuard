@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Pant.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : Pant.cs
 ==============================
 */
 [System.Serializable]
 public class Pant : Equipment
 {
-
-    public Pant(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount) : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel, _disassembleItemKey, _disassembleItemAmount)
+    public Pant(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _defensivePower, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount,int _itemRank) 
+        : base(_itemKey, _itemName, _buyPrice, _sellPrice, _defensivePower, _equipLevel, _disassembleItemKey, _disassembleItemAmount, _itemRank)
     {
         itemType = (int)ItemType.Pant;
         singleSprite = Resources.Load("Sprites/3_Pant/" + itemName + "_Single", typeof(Sprite)) as Sprite;

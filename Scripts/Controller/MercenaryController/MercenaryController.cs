@@ -55,10 +55,16 @@ public class MercenaryController : CharacterController
                 if(_enemy.IsLastHit())
                 {
                     _status.AquireExp(_enemy);
-                    for(int j = 0; j < _enemy.DropItem(_status.TotalLuck).Length; j++)
-                    {
-                        InventoryManager.Instance.AcquireItem(_enemy.DropItem(_status.TotalLuck)[j]);
 
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[j])
+                        {
+                            
+                            Debug.Log("얻다! " + _isDrops[j]);
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
                     }
                 }
             }
@@ -77,6 +83,7 @@ public class MercenaryController : CharacterController
         }
         if (_status.CurHp < 0f)
         {
+            _status.IsDied = true;
             _status.AIState = EAIState.Died;
         }
         else
@@ -151,7 +158,9 @@ public class MercenaryController : CharacterController
 
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        base.AIDied(_status);
+        _status.ActiveLayer(LayerName.DieLayer);
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
         yield return new WaitForSeconds(mercenary.RevivalTime);
         Rivive(_status);
     }

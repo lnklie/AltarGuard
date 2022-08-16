@@ -90,7 +90,15 @@ public class CharacterStatus : Status
     private bool[] isAllyTargeted = new bool[5];
     [SerializeField]
     private bool[] isEnemyTargeted = new bool[101];
+    [SerializeField]
+    private bool isDied = false;
+
     #region Properties
+    public bool IsDied
+    {
+        get { return isDied; }
+        set { isDied = value; }
+    }
     public bool[] IsAllyTargeted
     {
         get { return isAllyTargeted; }
@@ -109,6 +117,7 @@ public class CharacterStatus : Status
     public GameObject Flag
     {
         get { return flag; }
+        set { flag = value; }
     }
 
     public bool IsHPRegen

@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-13
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : RushEnemyAIController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-13
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : RushEnemyAIController.cs
 ==============================
 */
 public class RushEnemyController : EnemyController
@@ -30,7 +30,7 @@ public class RushEnemyController : EnemyController
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
-        // ³Ë¹é È¿°ú
+        // ë„‰ë°± íš¨ê³¼
         float timer = 0;
 
         while(_knockbackDuration > timer)
@@ -46,12 +46,15 @@ public class RushEnemyController : EnemyController
     public override IEnumerator AIDied(CharacterStatus _status)
     {
         rushEnemyStatus.UpdateEnemyHp();
-        _status.ActiveLayer(LayerName.IdleLayer);
+        _status.ActiveLayer(LayerName.DieLayer);
         _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
+        Debug.Log("ì£½ìŒ");
         yield return new WaitForSeconds(2f);
-
+        _status.transform.parent.localScale = new Vector3(1, 1, 1);
+        _status.transform.parent.gameObject.SetActive(false);
+        Debug.Log("ì—†ì–´ì§");
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }

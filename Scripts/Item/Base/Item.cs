@@ -43,13 +43,14 @@ public class Item
     public int disassembleItemKey = -1;
     public int disassembleItemAmount = -1;
     public int coolTime = 1;
-
-    public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice)
+    public int itemRank = -1;
+    public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, int _itemRank)
     {
         itemKey = _itemKey;
         itemName = _itemName;
         buyPrice = _buyPrice;
         sellPrice = _sellPrice;
         count = 0;
+        itemRank = _itemRank;
     }
 }

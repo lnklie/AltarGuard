@@ -9,7 +9,9 @@ public class AllyStatus : CharacterStatus
     private float graceAttackSpeed = 1f;
     private float graceDefensivePower = 1f;
 
+    [SerializeField]
     private float dropProbability = 0;
+    [SerializeField]
     private float itemRarity = 0;
     private int statusPoint = 10;
 

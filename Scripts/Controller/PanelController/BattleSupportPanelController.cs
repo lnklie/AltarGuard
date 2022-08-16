@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class BattleSupportPanelController : MonoBehaviour
 {
     [SerializeField]
@@ -12,13 +12,30 @@ public class BattleSupportPanelController : MonoBehaviour
     private PlayerStatus player = null;
     [SerializeField]
     private EquipmentController playerEquipmentController = null;
-
+    [SerializeField]
+    private Image autoPlayTextImage = null;
 
     private void Update()
     {
         if(player.CurHp / player.MaxHp * 1f <= 1.0f)
         {
             AutoUse();
+        }
+    }
+
+    public void SetAutoPlay()
+    {
+        if(player.PlayerState != EPlayerState.AutoPlay)
+        {
+            player.IsAutoMode = true;
+            player.PlayerState = EPlayerState.AutoPlay;
+            autoPlayTextImage.color = Color.red;
+        }
+        else
+        {
+            player.IsPlayMode = true;
+            player.PlayerState = EPlayerState.Play;
+            autoPlayTextImage.color = Color.white;
         }
     }
     public void SetQuickSlots(int _index)
@@ -40,7 +57,7 @@ public class BattleSupportPanelController : MonoBehaviour
     }
     public void UseQuickSlotItem(Item _item, int _slotIndex)
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ì•„ì´í…œ ì‚¬ìš©
         if (_item.itemType == (int)ItemType.Consumables)
         {
             InventoryManager.Instance.UseItem(player, _item);
@@ -58,11 +75,11 @@ public class BattleSupportPanelController : MonoBehaviour
                 _item.equipCharNum = 0;
             }
             else
-                Debug.Log("ÀÌ¹Ì ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
+                Debug.Log("ì´ë¯¸ ìž¥ì°© ì¤‘ì¸ ì•„ì´í…œìž…ë‹ˆë‹¤.");
         }
         else
         {
-            Debug.Log("»ç¿ëÇÏ½Ç ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
+            Debug.Log("ì‚¬ìš©í•˜ì‹¤ ìˆ˜ ì—†ëŠ” ì•„ì´í…œìž…ë‹ˆë‹¤.");
         }
 
         if (quickSlots[_slotIndex].CurItem.count <= 0)
