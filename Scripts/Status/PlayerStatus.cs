@@ -18,7 +18,10 @@ public class PlayerStatus : AllyStatus
     private int stage = 1;
 
     private int money = 100000;
+    [SerializeField]
     private bool isAutoMode = false;
+    [SerializeField]
+    private bool isPlayMode = false;
     private Vector2 dir;
     private EPlayerState playerState = EPlayerState.Play;
     [SerializeField]
@@ -41,6 +44,11 @@ public class PlayerStatus : AllyStatus
     {
         get { return isAutoMode; }
         set { isAutoMode = value; }
+    }
+    public bool IsPlayMode
+    {
+        get { return isPlayMode; }
+        set { isPlayMode = value; }
     }
     public RaycastHit2D[] ItemSight
     {
@@ -73,4 +81,5 @@ public class PlayerStatus : AllyStatus
         set { isQuickSlotRegister = value; }
     }
     #endregion
+
 }

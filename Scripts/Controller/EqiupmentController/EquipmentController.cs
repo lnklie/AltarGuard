@@ -61,7 +61,22 @@ public class EquipmentController : MonoBehaviour
     }
     private void Start()
     {
-
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(1003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(2003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(3003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(4003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(5003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(6003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(7003)));
+        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8003)));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(2001));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(3002));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(4003));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(5002));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(6003));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(7002));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(8003));
+        //ChangeEquipment(DatabaseManager.Instance.SelectItem(11001));
 
     }
 
@@ -119,7 +134,7 @@ public class EquipmentController : MonoBehaviour
             status.AttackType = 0f;
     }
 
-    public void ChangeEquipment(Item _item, int _charIndex = -1)
+    public void ChangeEquipment(Item _item)
     {
         if(!_item.isEquip)
         {
@@ -127,7 +142,6 @@ public class EquipmentController : MonoBehaviour
 
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
-            equipItems[_item.itemType].equipCharNum = _charIndex;
             checkEquipItems[_item.itemType] = true;
             switch (_item.itemType)
             {
@@ -205,7 +219,6 @@ public class EquipmentController : MonoBehaviour
                 if (checkEquipItems[2])
                 {
                     equipItems[2].isEquip = false;
-                    Debug.Log("¿ä±ë "  + equipItems[2].equipCharNum);
                     equipItems[2].equipCharNum = -1;
                     equipItems[2] = null;
                     checkEquipItems[2] = false;

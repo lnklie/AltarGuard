@@ -21,10 +21,10 @@ public class PlayerController : CharacterController
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
 
-    public override void Start()
-    {
-        return;
-    }
+    //public override void Start()
+    //{
+    //    return;
+    //}
     public override void Update()
     {
         if (player.Target)
@@ -43,8 +43,21 @@ public class PlayerController : CharacterController
         }
         PlayerState();
         PlayerStateCondition();
-        AquireRay();
         DragFlag();
+        if(player.IsAutoMode)
+        {
+            Debug.Log("오토모드 시작");
+            player.Flag.transform.position = this.transform.position;
+            //StartCoroutine(FindPath());
+            player.IsAutoMode = false;
+        }
+
+        if(player.IsPlayMode)
+        {
+            Debug.Log("플레이모드 시작");
+            //StopCoroutine(FindPath());
+            player.IsPlayMode = false;
+        }
     }
     public void DragFlag()
     {
@@ -170,7 +183,7 @@ public class PlayerController : CharacterController
             if (player.PlayerState == EPlayerState.Play)
             {
                 player.PlayerState = EPlayerState.AutoPlay;
-                StartCoroutine(FindPath());
+                
             }
             else if (player.PlayerState == EPlayerState.AutoPlay)
                 player.PlayerState = EPlayerState.Play;
@@ -307,9 +320,20 @@ public class PlayerController : CharacterController
         {
             for (int i =0; i < hits.Length; i++)
             {
-                Status enemy = hits[i].collider.GetComponent<Status>();
-                enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(enemy);
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
+                _enemy.Damaged(AttackTypeDamage(_status));
+                if (_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[i])
+                        {
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
+                    }
+                }
             }
         }
     }
@@ -441,6 +465,7 @@ public class PlayerController : CharacterController
         }
         if (_status.CurHp < 0f)
         {
+            _status.IsDied = true;
             _status.AIState = EAIState.Died;
         }
         else
@@ -448,7 +473,10 @@ public class PlayerController : CharacterController
 
             if (_status.Target == null)
             {
-                _status.AIState = EAIState.Idle;
+                if (pathFindController.FinalNodeList.Count == 0)
+                    _status.AIState = EAIState.Idle;
+                else
+                    _status.AIState = EAIState.Chase;
             }
             else
             {
@@ -537,11 +565,22 @@ public class PlayerController : CharacterController
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                Status _enemy = hits[i].collider.GetComponent<Status>();
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
 
                 _status.IsAtk = true;
                 _enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(_enemy);
+                if (_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[i])
+                        {
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
+                    }
+                }
             }
         }
     }

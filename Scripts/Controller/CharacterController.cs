@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : BaseController, IAIController
+public class CharacterController : BaseController
 {
     [SerializeField]
     protected SkillController skillController = null;
@@ -220,6 +220,12 @@ public class CharacterController : BaseController, IAIController
     {
         AnimationDirection(_status);
         _status.DelayTime += Time.deltaTime;
+        if(_status.IsDied)
+        {
+            Debug.Log("Á×À½");
+            _status.IsDied = false;
+            StartCoroutine(AIDied(_status));
+        }
         switch (_status.AIState)
         {
             case EAIState.Idle:
@@ -230,9 +236,6 @@ public class CharacterController : BaseController, IAIController
                 break;
             case EAIState.Attack:
                 AIAttack(_status);
-                break;
-            case EAIState.Died:
-                StartCoroutine(AIDied(_status));
                 break;
         }
     }
@@ -245,13 +248,7 @@ public class CharacterController : BaseController, IAIController
         _status.ActiveLayer(LayerName.IdleLayer);
         _status.Rig.velocity = Vector2.zero;
     }
-    //public Vector2 TargetPosByAtkRange(Node _targetNode, CharacterStatus _status)
-    //{
-    //    Vector2 _targetPos = Vector2.zero;
-    //    if(Mathf.Pow(_targetNode.x,2) + Mathf.Pow(_targetNode.y, 2) == Mathf.Pow(_status.AtkRange,2))
-    //        _targetPos = new Vector2(_targetNode.x, _targetNode.y);
-    //    return _targetPos; 
-    //}
+
     public virtual void AIChase(CharacterStatus _status)
     {
         if (pathFindController.FinalNodeList.Count > 1)
@@ -284,7 +281,7 @@ public class CharacterController : BaseController, IAIController
 
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.IdleLayer);
+        _status.ActiveLayer(LayerName.DieLayer);
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return null;

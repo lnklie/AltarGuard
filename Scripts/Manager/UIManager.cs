@@ -5,9 +5,9 @@ using System;
 using TMPro;
 /*
 ==============================
- * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : 2022-06-10
- * ï¿½Û¼ï¿½ï¿½ï¿½ : Inklie
- * ï¿½ï¿½ï¿½Ï¸ï¿½ : UIManager.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-10
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : UIManager.cs
 ==============================
 */
 public class UIManager : SingletonManager<UIManager>
@@ -97,11 +97,6 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            if(mercenaryManager.Mercenarys.Count < 4)
-                mercenaryManager.AddNewMercenary();
-        }
         if(Input.GetKeyDown(KeyCode.F4))
         {
             Notice("Game Start");
@@ -165,7 +160,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        Debug.Log("ï¿½×·ï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®");
+        Debug.Log("±×·¹ÀÌ½º ¾÷µ¥ÀÌÆ®");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
@@ -187,7 +182,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectSlotItem(Item _item)
     {
-        // ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         inventoryPanelController.SelectSlotItem(_item);
     }
     public void SelectSlotSellItem(Item _item)
@@ -233,62 +228,62 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¢ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
         inventoryPanelController.InventorySlotChange(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-        inventoryPanelController.Equip(characterList, _character);
+        // ¾ÆÀÌÅÛ ÀåÂø
+        inventoryPanelController.EquipInventoryItem(characterList, _character);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ 
+        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
-        inventoryPanelController.TakeOff(characterList);
+        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
+        inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ »ç¿ë
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ ¹ö¸®±â
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È®ï¿½ï¿½Ã¢ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ È®ï¿½ï¿½Ã¢ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ï¿½ï¿½ï¿½Ã¢ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ï¿½ï¿½ï¿½Ã¢ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
         inventoryPanelController.UpdateEquipmentName();
     }
     public void SetItemQuickSlot(int _index)
@@ -315,7 +310,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        // ½ºÅÝ ¾÷
         statusPanelController.StatusUp(_index);
     }
     #endregion
@@ -402,6 +397,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         sellPanelController.SetActiveSellItemAmount(_bool);
     }
+    public void SetActiveRegisterEasyPanel(bool _bool)
+    {
+        sellPanelController.SetActiveRegisterEasyPanel(_bool);
+    }
     public void SellItem()
     {
         sellPanelController.SellItem();
@@ -410,11 +409,17 @@ public class UIManager : SingletonManager<UIManager>
     {
         sellPanelController.CancelRegisteredItem(_item);
     }
+    public void RegisterItemEasy()
+    {
+        sellPanelController.RegisterItemEasy();
+    }
     public void SetActiveSellItemInfo(bool _bool)
     {
         sellPanelController.SetActiveSellItemInfo(_bool);
     }
+    
     #endregion
+
     #region CraftPanel
     public void SelectCraftRecipe(CraftRecipe _craftRecipe)
     {
@@ -500,11 +505,15 @@ public class UIManager : SingletonManager<UIManager>
     {
         battleSupportPanel.UseQuickSlotItem(_item, _slotIndex);
     }
+    public void SetPlayerAutoPlay()
+    {
+        battleSupportPanel.SetAutoPlay();
+    }
     #endregion
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI È°ï¿½ï¿½È­ 
+        // UI È°¼ºÈ­ 
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
@@ -559,7 +568,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ï¿½ï¿½È°ï¿½ï¿½È­
+        // UI ºñÈ°¼ºÈ­
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);
