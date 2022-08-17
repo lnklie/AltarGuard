@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : BaseController
+public class CharacterController : BaseController, IAIController
 {
     [SerializeField]
     protected SkillController skillController = null;
@@ -47,35 +47,6 @@ public class CharacterController : BaseController
             return false;
     }
 
-    //public bool CheckRayList(Status _RayHit, List<Status> _RayList)
-    //{
-    //    bool _bool = false;
-    //    for (int i = 0; i < _RayList.Count; i++)
-    //    {
-    //        if (_RayHit == _RayList[i])
-    //            _bool = true;
-    //        else
-    //            _bool = false;
-    //    }
-    //    return _bool;
-    //}
-    //public bool CheckRayList(EnemyStatus _RayHit, List<EnemyStatus> _RayList)
-    //{
-    //    bool _bool = false;
-        
-    //    for (int i = 0; i < _RayList.Count; i++)
-    //    {
-    //        Debug.Log("닿은 적의 인덱스는 " + _RayHit.EnemyIndex + " 리스트의 인덱스는 " + _RayList[i].EnemyIndex);
-    //        if (_RayHit.EnemyIndex == _RayList[i].EnemyIndex)
-    //        {
-    //            _bool = true;
-    //            break;
-    //        }
-    //        else
-    //            _bool = false;
-    //    }
-    //    return _bool;
-    //}
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
         // 리스트 정렬
@@ -220,12 +191,6 @@ public class CharacterController : BaseController
     {
         AnimationDirection(_status);
         _status.DelayTime += Time.deltaTime;
-        if(_status.IsDied)
-        {
-            Debug.Log("죽음");
-            _status.IsDied = false;
-            StartCoroutine(AIDied(_status));
-        }
         switch (_status.AIState)
         {
             case EAIState.Idle:
@@ -281,9 +246,6 @@ public class CharacterController : BaseController
 
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.DieLayer);
-        _status.Rig.velocity = Vector2.zero;
-        _status.Col.enabled = false;
         yield return null;
     }
     #endregion
