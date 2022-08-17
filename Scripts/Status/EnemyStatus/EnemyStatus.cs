@@ -86,7 +86,6 @@ public class EnemyStatus : CharacterStatus
             if (_probs[i] + _characterAquireProb > _prob)
             {
                 float _we = _probs[i] + _characterAquireProb;
-                Debug.Log("_probs[i] + _characterAquireProb은 " + _we + "구리고 확률은 " + _prob);
                 itemIndexs[i] = true;
             }
             else
@@ -94,10 +93,7 @@ public class EnemyStatus : CharacterStatus
                 itemIndexs[i] = false;
             }
         }
-        for(int i = 0; i < itemIndexs.Length; i++)
-        {
-            Debug.Log("아이템 드랍 여부 " + itemIndexs[i]);
-        }
+
         return itemIndexs;
     }
 }

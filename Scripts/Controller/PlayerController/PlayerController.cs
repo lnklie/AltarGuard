@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : PlayerController.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -14,6 +14,7 @@ public class PlayerController : CharacterController
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
     [SerializeField]
+    private GameObject rivivePoint = null;
     public override void Awake()
     {
         base.Awake();
@@ -27,6 +28,16 @@ public class PlayerController : CharacterController
     //}
     public override void Update()
     {
+        if(player.CurHp < 0f && !player.IsDied )
+        {
+            StartCoroutine(Died(player));
+        }
+        
+        if(!player.IsDied)
+        {
+            PlayerState();
+        }
+
         if (player.Target)
         {
             player.Distance = player.Target.position - this.transform.position;
@@ -41,21 +52,15 @@ public class PlayerController : CharacterController
         {
             player.DelayTime += Time.deltaTime;
         }
-        PlayerState();
-        PlayerStateCondition();
         DragFlag();
         if(player.IsAutoMode)
         {
-            Debug.Log("ì˜¤í† ëª¨ë“œ ì‹œì‘");
             player.Flag.transform.position = this.transform.position;
-            //StartCoroutine(FindPath());
             player.IsAutoMode = false;
         }
 
         if(player.IsPlayMode)
         {
-            Debug.Log("í”Œë ˆì´ëª¨ë“œ ì‹œì‘");
-            //StopCoroutine(FindPath());
             player.IsPlayMode = false;
         }
     }
@@ -85,7 +90,6 @@ public class PlayerController : CharacterController
         {
             case EPlayerState.Play:
                 Perception(player);
-                //MouseTargeting(player);
                 if (player.IsDamaged)
                 {
                     StartCoroutine(Blink(player));
@@ -111,7 +115,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
                         }
                         else
-                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                     }
                     else if (skillController.ActiveSkills[0].skillType == 1)
                     {
@@ -120,7 +124,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
                         }
                         else
-                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                     }
                 }
                 else if (Input.GetKeyDown(KeyCode.X))
@@ -133,7 +137,7 @@ public class PlayerController : CharacterController
                                 skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
                             }
                             else
-                                Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                                Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                         }
                         else if (skillController.ActiveSkills[1].skillType == 1)
                         {
@@ -142,7 +146,7 @@ public class PlayerController : CharacterController
                                 skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
                             }
                             else
-                                Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                                Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                         }
                 }
                 else if (Input.GetKeyDown(KeyCode.C))
@@ -155,7 +159,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
                         }
                         else
-                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                     }
                     else if (skillController.ActiveSkills[2].skillType == 1)
                     {
@@ -164,7 +168,7 @@ public class PlayerController : CharacterController
                             skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
                         }
                         else
-                            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+                            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
                     }
 
                 }
@@ -176,26 +180,12 @@ public class PlayerController : CharacterController
                 break;
         }
     }
-    public void PlayerStateCondition()
-    {
-        if (Input.GetKeyDown(KeyCode.F12))
-        {
-            if (player.PlayerState == EPlayerState.Play)
-            {
-                player.PlayerState = EPlayerState.AutoPlay;
-                
-            }
-            else if (player.PlayerState == EPlayerState.AutoPlay)
-                player.PlayerState = EPlayerState.Play;
-            
-        }
-    }
 
     public void MouseTargeting(PlayerStatus _status)
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("ì•„êµ° í´ë¦­");
+            Debug.Log("¾Æ±º Å¬¸¯");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -207,11 +197,11 @@ public class PlayerController : CharacterController
                     {
                         _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("ì•„êµ° íƒ€ê²ŸíŒ… " + hit.rigidbody.gameObject.name);
+                    Debug.Log("¾Æ±º Å¸°ÙÆÃ " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("ëŒ€ìƒì´ ë„ˆë¬´ ë©€ë¦¬ìˆìŠµë‹ˆë‹¤.");
+                    Debug.Log("´ë»óÀÌ ³Ê¹« ¸Ö¸®ÀÖ½À´Ï´Ù.");
             }
             else
             {
@@ -239,14 +229,14 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove(PlayerStatus _status)
     {
-        // ì›€ì§ì„ ì‹¤í–‰
+        // ¿òÁ÷ÀÓ ½ÇÇà
         _status.ActiveLayer(LayerName.WalkLayer);
         _status.Rig.velocity = _status.Speed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
     {
-        // í‚¤ì…ë ¥
+        // Å°ÀÔ·Â
         _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -277,7 +267,7 @@ public class PlayerController : CharacterController
     }
     public bool IsMove(PlayerStatus _status)
     {
-        // ì›€ì§ì´ê³  ìˆëŠ”ì§€ í™•ì¸
+        // ¿òÁ÷ÀÌ°í ÀÖ´ÂÁö È®ÀÎ
         if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
@@ -315,7 +305,7 @@ public class PlayerController : CharacterController
     public void DamageEnemy(PlayerStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // ë²”ìœ„ì•ˆì— ìˆëŠ” ì ë“¤ì—ê²Œ ë°ë¯¸ì§€
+        // ¹üÀ§¾È¿¡ ÀÖ´Â Àûµé¿¡°Ô µ¥¹ÌÁö
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -328,7 +318,7 @@ public class PlayerController : CharacterController
                     bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.DropProbability);
                     for (int j = 0; j < 5; j++)
                     {
-                        if (_isDrops[i])
+                        if (_isDrops[j])
                         {
                             InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
                         }
@@ -363,16 +353,20 @@ public class PlayerController : CharacterController
 
     private IEnumerator Died(PlayerStatus _status)
     {
+        _status.AIState = EAIState.Died;
+        _status.IsDied = true;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         _status.Dir = Vector2.zero;
         _status.ActiveLayer(LayerName.DieLayer); 
         yield return new WaitForSeconds(player.RevivalTime);
         Rivive(_status);
+        _status.IsDied = false;
     }
 
     private void Rivive(CharacterStatus _status)
     {
+        this.gameObject.transform.position = rivivePoint.transform.position;
         _status.Rig.isKinematic = false;
         _status.Col.enabled = true;
         _status.CurHp = _status.MaxHp;
@@ -409,7 +403,7 @@ public class PlayerController : CharacterController
             SortSightRayList(_status.EnemyRayList);
             for (int i = 0; i < _status.EnemyRayList.Count; i++)
             {
-                //Debug.Log("íƒ€ê²Ÿë“¤ê³¼ì˜ ê±°ë¦¬ëŠ” " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
+                //Debug.Log("Å¸°Ùµé°úÀÇ °Å¸®´Â " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
                 if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
                     || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
@@ -444,7 +438,7 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("íƒ€ê²ŸíŒ…");
+        Debug.Log("Å¸°ÙÆÃ");
         if (_allyTarget)
         {
             if (player.AllyTarget)
@@ -586,9 +580,14 @@ public class PlayerController : CharacterController
     }
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        base.AIDied(_status);
+        _status.AIState = EAIState.Died;
+        _status.IsDied = true;
+        _status.ActiveLayer(LayerName.DieLayer);
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
         yield return new WaitForSeconds(player.RevivalTime);
         Rivive(_status);
+        _status.IsDied = false;
     }
 
     #endregion

@@ -93,6 +93,11 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateMercenaryProfile(i);
             }
         }
+
+        Debug.Log("999999은 " + BigIntegerManager.GetUnit(999999));
+        Debug.Log("999.5A는 " + BigIntegerManager.UnitToValue("999.5B"));
+        
+        Debug.Log("합친거는 " + BigIntegerManager.UnitToValue("999.5B") + BigIntegerManager.UnitToValue("999.5B"));  
     }
 
     private void Update()

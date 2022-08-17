@@ -2,14 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class AltarInfoPanelController : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerStatus player = null;
     private AltarStatus altar = null;
     [SerializeField]
     private AltarInfoSlot[] altarInfoSlots = null;
+    [SerializeField]
+    private TextMeshProUGUI moneyText = null;
     private void Awake()
     {
         altarInfoSlots = GetComponentsInChildren<AltarInfoSlot>();
+    }
+
+    public void UpdateMoney()
+    {
+        moneyText.text = player.Money.ToString("N0");
     }
 
     public void UpdateAltarInfo()
@@ -37,6 +47,7 @@ public class AltarInfoPanelController : MonoBehaviour
         altar.UpgradeAltar((AltarAbility)_index);
         UpdateAltarInfo();
         altar.IsAltarStatusChange = true;
+        UpdateMoney();
     }
     public void SetAltar(AltarStatus _altar)
     {
@@ -46,6 +57,7 @@ public class AltarInfoPanelController : MonoBehaviour
     {
         // UI È°¼ºÈ­ 
         this.gameObject.SetActive(_bool);
+        UpdateMoney();
 
     }
 }

@@ -57,7 +57,7 @@ public class BattleSupportPanelController : MonoBehaviour
     }
     public void UseQuickSlotItem(Item _item, int _slotIndex)
     {
-        // ì•„ì´í…œ ì‚¬ìš©
+        // ¾ÆÀÌÅÛ »ç¿ë
         if (_item.itemType == (int)ItemType.Consumables)
         {
             InventoryManager.Instance.UseItem(player, _item);
@@ -75,11 +75,11 @@ public class BattleSupportPanelController : MonoBehaviour
                 _item.equipCharNum = 0;
             }
             else
-                Debug.Log("ì´ë¯¸ ì¥ì°© ì¤‘ì¸ ì•„ì´í…œì…ë‹ˆë‹¤.");
+                Debug.Log("ÀÌ¹Ì ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
         }
         else
         {
-            Debug.Log("ì‚¬ìš©í•˜ì‹¤ ìˆ˜ ì—†ëŠ” ì•„ì´í…œì…ë‹ˆë‹¤.");
+            Debug.Log("»ç¿ëÇÏ½Ç ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
         }
 
         if (quickSlots[_slotIndex].CurItem.count <= 0)
