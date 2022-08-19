@@ -93,6 +93,7 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateMercenaryProfile(i);
             }
         }
+
     }
 
     private void Update()
@@ -320,7 +321,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         altarInfoPanelController.UpdateAltarInfo();
     }
-    public void UpgradeAltar(int _index)
+    public void LevelUpAltarProperty(int _index)
     {
         altarInfoPanelController.UpgradeAltarStatus(_index);
     }

@@ -48,25 +48,30 @@ public class EnemyController : CharacterController
         {
             _status.Distance = _status.Target.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
-        }
-        if (_status.CurHp < 0f)
+        } 
+        
+        if(!_status.IsDied)
         {
-            _status.AIState = EAIState.Died;
-        }
-        else
-        {
-            if (_status.Target == null)
+            if(_status.CurHp < 0f)
             {
-                _status.AIState = EAIState.Idle;
+                StartCoroutine(AIDied(_status));
             }
             else
             {
-                _status.AIState = EAIState.Chase;
-                if (IsAtkRange(_status))
+                if (_status.Target == null)
                 {
-                    _status.AIState = EAIState.Attack;
+                    _status.AIState = EAIState.Idle;
+                }
+                else
+                {
+                    _status.AIState = EAIState.Chase;
+                    if (IsAtkRange(_status))
+                    {
+                        _status.AIState = EAIState.Attack;
+                    }
                 }
             }
+
 
         }
     }
