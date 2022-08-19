@@ -16,6 +16,22 @@ public class AltarInfoPanelController : MonoBehaviour
     {
         altarInfoSlots = GetComponentsInChildren<AltarInfoSlot>();
     }
+    private void Start()
+    {
+        int _propertyLength = DatabaseManager.Instance.altarPropertyList.Count;
+        for (int i = 0; i < _propertyLength; i++)
+        {
+            if (altarInfoSlots[i] != null)
+            {
+                altarInfoSlots[i].SetAlterProperty(DatabaseManager.Instance.altarPropertyList[i]);
+            }
+        }
+    }
+
+    public void UpdateMoney()
+    {
+        moneyText.text = player.Money.ToString("N0");
+    }
 
     public void UpdateMoney()
     {
@@ -24,28 +40,53 @@ public class AltarInfoPanelController : MonoBehaviour
 
     public void UpdateAltarInfo()
     {
-        int[] altarStatusLevel = { 
-            altar.HpLevel, altar.DefensivePowerLevel,altar.BuffRangeLevel,
-            altar.BuffDamageLevel, altar.BuffDefensivePowerLevel,
-            altar.BuffSpeedLevel, altar.BuffHpRegenLevel };
-        float[] altarStatusValue = {
-            altar.HpLevel * 100, altar.DefensivePowerLevel * 10,altar.BuffRangeLevel * 1,
-            altar.BuffDamageLevel * 10, altar.BuffDefensivePowerLevel * 10,
-            altar.BuffSpeedLevel * 0.01f, altar.BuffHpRegenLevel * 10};
         for (int i =0; i < altarInfoSlots.Length; i++)
         {
             if(altarInfoSlots[i] != null)
             {
-                altarInfoSlots[i].SetAlterInfoLevel(altarStatusLevel[i]);
-                altarInfoSlots[i].SetAlterInfoValue(altarStatusValue[i]);
+                altarInfoSlots[i].SetAltarInfoLevel();
+                altarInfoSlots[i].SetAltarPropertyCurrentValue();
+                altarInfoSlots[i].SetAltarPropertyNextValue();
+                altarInfoSlots[i].SetAltarLevelUpNecessaryMoney();
+
+                if (player.Money >= altarInfoSlots[i].GetNecessaryMoneyByLevel())
+                {
+                    altarInfoSlots[i].EnableButton(true);
+                }
+                else
+                {
+                    altarInfoSlots[i].EnableButton(false);
+                }
             }    
         }
 
     }
+
+    public void UpdateAltarInfo(int index)
+    {
+        if (altarInfoSlots[index] != null)
+        {
+            altarInfoSlots[index].SetAltarInfoLevel();
+            altarInfoSlots[index].SetAltarPropertyCurrentValue();
+            altarInfoSlots[index].SetAltarPropertyNextValue();
+            altarInfoSlots[index].SetAltarLevelUpNecessaryMoney();
+            
+            if(player.Money >= altarInfoSlots[index].GetNecessaryMoneyByLevel())
+            {
+                altarInfoSlots[index].EnableButton(true);
+            }
+            else
+            {
+                altarInfoSlots[index].EnableButton(false);
+            }
+        }
+    }
+    
     public void UpgradeAltarStatus(int _index)
     {
-        altar.UpgradeAltar((AltarAbility)_index);
-        UpdateAltarInfo();
+        altarInfoSlots[_index].LevelUp();
+        UpdateAltarInfo(_index);
+        UpdateMoney();
         altar.IsAltarStatusChange = true;
         UpdateMoney();
     }

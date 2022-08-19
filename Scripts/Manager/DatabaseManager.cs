@@ -44,6 +44,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("CraftRecipe")]
     public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
+
+    [Header("AltarProperty")]
+    public List<AltarProperty> altarPropertyList = new List<AltarProperty>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -367,6 +370,24 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     craftRecipes[i].necessaryItemCount1, craftRecipes[i].necessaryItemCount2, craftRecipes[i].necessaryItemCount3, craftRecipes[i].necessaryItemCount4));
             }
         }
+        if (!File.Exists(CombinePath("AltarProperty")))
+        {
+            Debug.Log("경로에 제단 특성 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("AltarProperty")));
+            AltarProperty[] altarProperties = JsonHelper.FromJson<AltarProperty>(loadJson);
+            for (var i = 0; i < altarProperties.Length; i++)
+            {
+                altarPropertyList.Add(new AltarProperty(altarProperties[i].propertyKey, altarProperties[i].propertyName,
+                    altarProperties[i].rateOfMoneyIncreaseBySection_1, altarProperties[i].rateOfMoneyIncreaseBySection_2, altarProperties[i].rateOfMoneyIncreaseBySection_3,
+                    altarProperties[i].rateOfMoneyIncreaseBySection_4, altarProperties[i].rateOfMoneyIncreaseBySection_5, altarProperties[i].rateOfMoneyIncreaseBySection_6, altarProperties[i].rateOfMoneyIncreaseBySection_7
+                    , altarProperties[i].rateOfMoneyIncreaseBySection_8, altarProperties[i].rateOfMoneyIncreaseBySection_9, altarProperties[i].rateOfMoneyIncreaseBySection_10, altarProperties[i].rateOfValueIncreaseBySection_1, altarProperties[i].rateOfValueIncreaseBySection_2
+                    , altarProperties[i].rateOfValueIncreaseBySection_3, altarProperties[i].rateOfValueIncreaseBySection_4, altarProperties[i].rateOfValueIncreaseBySection_5
+                    , altarProperties[i].rateOfValueIncreaseBySection_6, altarProperties[i].rateOfValueIncreaseBySection_7, altarProperties[i].rateOfValueIncreaseBySection_8, altarProperties[i].rateOfValueIncreaseBySection_9, altarProperties[i].rateOfValueIncreaseBySection_10));
+            }
+        }
     }
     public Item SelectItem(int _key, int _amount = 1)
     {
@@ -580,5 +601,17 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 Debug.Log("해당 제작 레시피가 없습니다.");
         }
         return _craftRecipe;
+    }
+    public AltarProperty SelectAltarProperty(int _key)
+    {
+        AltarProperty _altarProperty = null;
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (altarPropertyList[i].propertyKey == _key)
+                _altarProperty = altarPropertyList[i];
+            else
+                Debug.Log("해당 제작 레시피가 없습니다.");
+        }
+        return _altarProperty;
     }
 }
