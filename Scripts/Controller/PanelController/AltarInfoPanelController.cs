@@ -33,6 +33,11 @@ public class AltarInfoPanelController : MonoBehaviour
         moneyText.text = player.Money.ToString("N0");
     }
 
+    public void UpdateMoney()
+    {
+        moneyText.text = player.Money.ToString("N0");
+    }
+
     public void UpdateAltarInfo()
     {
         for (int i =0; i < altarInfoSlots.Length; i++)
@@ -83,6 +88,7 @@ public class AltarInfoPanelController : MonoBehaviour
         UpdateAltarInfo(_index);
         UpdateMoney();
         altar.IsAltarStatusChange = true;
+        UpdateMoney();
     }
     public void SetAltar(AltarStatus _altar)
     {

@@ -18,7 +18,7 @@ public static class BigIntegerManager
     {
         unitCapacity += _capacity;
 
-        // 0 ~ 999»çÀÌ¸¦ ÃÊ±âÈ­ ½ÃÅ´
+        // 0 ~ 999ì‚¬ì´ë¥¼ ì´ˆê¸°í™” ì‹œí‚´
         units.Clear();
         unitsMap.Clear();
         idxMap.Clear();
@@ -26,9 +26,9 @@ public static class BigIntegerManager
         unitsMap.Add("", 0);
         idxMap.Add("", 0);
 
-        // capacity¸¸Å­ ¹Ì¸® »ı¼º ÇÏ´Â °Í
-        // capacity°¡ 1ÀÏ °æ¿ì¿¡´Â A ~ Z, 2ÀÏ °æ¿ì¿¡´Â AA ~ AZ
-        // capacity 1¸¶´Ù ¾Æ½ºÅ° ÄÚµåÀÇ ¾ËÆÄºªÀÌ 26°³ »ı¼ºµÊ
+        // capacityë§Œí¼ ë¯¸ë¦¬ ìƒì„± í•˜ëŠ” ê²ƒ
+        // capacityê°€ 1ì¼ ê²½ìš°ì—ëŠ” A ~ Z, 2ì¼ ê²½ìš°ì—ëŠ” AA ~ AZ
+        // capacity 1ë§ˆë‹¤ ì•„ìŠ¤í‚¤ ì½”ë“œì˜ ì•ŒíŒŒë²³ì´ 26ê°œ ìƒì„±ë¨
 
         for(int i = 0; i <= unitCapacity; i++)
         {
@@ -59,12 +59,12 @@ public static class BigIntegerManager
 
     private static (int value, int idx, int Point) GetSize(BigInteger _value)
     {
-        // ´ÜÀ§¸¦ ±¸ÇÏ±â À§ÇÑ °ªÀ¸·Î º¹»ç
+        // ë‹¨ìœ„ë¥¼ êµ¬í•˜ê¸° ìœ„í•œ ê°’ìœ¼ë¡œ ë³µì‚¬
         var _currentValue = _value;
         var _current = (_value / unitSize) % unitSize;
         var _idx = 0;
         var _lastValue = 0;
-        // ÇöÀç °ªÀÌ 999(unitSize) ÀÌ»óÀÏ °æ¿ì ³ª´®
+        // í˜„ì¬ ê°’ì´ 999(unitSize) ì´ìƒì¼ ê²½ìš° ë‚˜ëˆ”
         while(_currentValue > unitSize - 1)
         {
             var _predCurrentValue = _currentValue / unitSize;
@@ -81,7 +81,7 @@ public static class BigIntegerManager
     }
 
 
-    // ¼ıÀÚ¸¦ ´ÜÀ§·Î ¸®ÅÏÇÏ±â
+    // ìˆ«ìë¥¼ ë‹¨ìœ„ë¡œ ë¦¬í„´í•˜ê¸°
     public static string GetUnit(BigInteger _value)
     {
         if (!isInitialize)
@@ -91,14 +91,14 @@ public static class BigIntegerManager
         return $"{_sizeStruct.value}.{_sizeStruct.Point}{units[_sizeStruct.idx]}";
     }
 
-    // ´ÜÀ§¸¦ ¼ıÀÚ·Î º¯°æ½ÃÅ°±â
+    // ë‹¨ìœ„ë¥¼ ìˆ«ìë¡œ ë³€ê²½ì‹œí‚¤ê¸°
     public static BigInteger UnitToValue(string _unit)
     {
         if (isInitialize == false)
             UnitInitialize(5);
 
         var _split = _unit.Split('.');
-        // ¼Ò¼ıÁ¡¿¡ ´ëÇÑ ¿¬»ê
+        // ì†Œìˆ«ì ì— ëŒ€í•œ ì—°ì‚°
         if(_split.Length >= 2)
         {
             var _value = BigInteger.Parse(_split[0]);
@@ -113,7 +113,7 @@ public static class BigIntegerManager
                 return (_unitValue * _value) + (_unitValue / 10) * _point;
             }
         }
-        // ºñ¼Ò¼ö ¿¬»ê
+        // ë¹„ì†Œìˆ˜ ì—°ì‚°
         else
         {
             var _value = BigInteger.Parse((Regex.Replace(_unit, "[^0-9]", "")));
