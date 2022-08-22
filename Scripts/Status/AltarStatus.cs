@@ -44,7 +44,7 @@ public class AltarStatus : Status
         get { return altarState; }
         set { altarState = value; }
     }
-    public int HpLevel
+    public int Hp
     {
         get { return hpLevel; }
         set { hpLevel = value; }
@@ -54,27 +54,27 @@ public class AltarStatus : Status
         get { return defensivePowerLevel; }
         set { defensivePowerLevel = value; }
     }
-    public int BuffRangeLevel
+    public int BuffRange
     {
         get { return buffRangeLevel; }
         set { buffRangeLevel = value; }
     }
-    public int BuffDamageLevel
+    public int BuffDamage
     {
         get { return buffDamageLevel; }
         set { buffDamageLevel = value; }
     }
-    public int BuffDefensivePowerLevel
+    public int BuffDefensivePower
     {
         get { return buffDefensivePowerLevel; }
         set { buffDefensivePowerLevel = value; }
     }
-    public int BuffSpeedLevel
+    public int BuffSpeed
     {
         get { return buffSpeedLevel; }
         set { buffSpeedLevel = value; }
     }
-    public int BuffHpRegenLevel
+    public int BuffHpRegen
     {
         get { return buffHpRegenLevel; }
         set { buffHpRegenLevel = value; }

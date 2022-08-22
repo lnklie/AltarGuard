@@ -46,16 +46,14 @@ public class RushEnemyController : EnemyController
     public override IEnumerator AIDied(CharacterStatus _status)
     {
         rushEnemyStatus.UpdateEnemyHp();
-        _status.ActiveLayer(LayerName.IdleLayer);
+        _status.AIState = EAIState.Died;
+        _status.ActiveLayer(LayerName.DieLayer);
         _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return new WaitForSeconds(2f);
-        if (Random.Range(1, 101) <= 50)
-        {
-            InventoryManager.Instance.AcquireItem(DropItem(rushEnemyStatus));
-            Debug.Log("È¹µæ");
-        }
+        _status.transform.parent.localScale = new Vector3(1, 1, 1);
+        _status.transform.parent.gameObject.SetActive(false);
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }

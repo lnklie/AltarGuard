@@ -114,3 +114,10 @@ public enum EgraceType
     Wizard = 2000,
     Commander = 3000
 }
+public enum EItemRank
+{
+    Common,
+    UnCommon,
+    Rare,
+    Unique
+}

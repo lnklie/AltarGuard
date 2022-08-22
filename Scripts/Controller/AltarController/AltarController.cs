@@ -43,10 +43,11 @@ public class AltarController : BaseController
     {
         if (altar != null)
         {
-            altar.MaxHp = altar.HpLevel * 100;
+            altar.MaxHp = altar.Hp;
             altar.CurHp = altar.MaxHp;
         }
     }
+
     public void ChangeState()
     {
         // 조건에 맞게 상태변경
@@ -116,11 +117,11 @@ public class AltarController : BaseController
         for (int i = 0; i < characters.Count; i++)
         {
             characters[i].IsAlterBuff = true;
-            characters[i].BuffPhysicalDamage = altar.BuffDamageLevel * 10;
-            characters[i].BuffMagicalDamage = altar.BuffDamageLevel * 10;
-            characters[i].BuffDefensivePower = altar.BuffDefensivePowerLevel * 10;
-            characters[i].BuffSpeed = altar.BuffSpeedLevel * 0.1f;
-            characters[i].BuffHpRegenValue = altar.BuffHpRegenLevel * 5;
+            characters[i].BuffPhysicalDamage = altar.BuffDamage;
+            characters[i].BuffMagicalDamage = altar.BuffDamage;
+            characters[i].BuffDefensivePower = altar.BuffDefensivePower;
+            characters[i].BuffSpeed = altar.BuffSpeed;
+            characters[i].BuffHpRegenValue = altar.BuffHpRegen;
             characters[i].UpdateAbility();
             UpdateBuffRange();
         }
@@ -130,12 +131,12 @@ public class AltarController : BaseController
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
-        spriteRenderers[2].transform.localScale = new Vector2(altar.BuffRangeLevel * 1f / 10, altar.BuffRangeLevel * 1f / 10);
+        spriteRenderers[2].transform.localScale = new Vector2(altar.BuffRange * 1f / 10, altar.BuffRange * 1f / 10);
     }
     public void FindInBuffRangeAlly()
     {
         // 동맹 찾기
-        var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRangeLevel * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRange * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
         if(hits != null)
             AddBuffCharacterList(hits);
         RemoveBuffCharacterList(hits);
@@ -156,7 +157,7 @@ public class AltarController : BaseController
     {
         for (int i = 0; i < characters.Count; i++)
         {
-            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRangeLevel * 1f)
+            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRange * 1f)
             {
                 characters[i].IsAlterBuff = false;
                 characters.Remove(characters[i]);

@@ -61,7 +61,6 @@ public class EnemyStatus : CharacterStatus
         set { isEnemyChange = value; }
     }
     #endregion
-
     public override void Awake()
     {
         base.Awake();
@@ -71,5 +70,30 @@ public class EnemyStatus : CharacterStatus
     {
         base.Update();
     }
+    public bool[] RandomChoose(List<float> _probs, float _characterAquireProb)
+    {
+        // 무작위 선택
+        bool[] itemIndexs = new bool[5];
+        float _total = 0f;
+        foreach (var itemProb in _probs)
+        {
+            _total += itemProb;
+        }
 
+        for (int i = 0; i < _probs.Count; i++)
+        {
+            float _prob = Random.Range(0f, 100f);
+            if (_probs[i] + _characterAquireProb > _prob)
+            {
+                float _we = _probs[i] + _characterAquireProb;
+                itemIndexs[i] = true;
+            }
+            else
+            {
+                itemIndexs[i] = false;
+            }
+        }
+
+        return itemIndexs;
+    }
 }

@@ -14,6 +14,7 @@ public class PlayerController : CharacterController
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
     [SerializeField]
+    private GameObject rivivePoint = null;
     public override void Awake()
     {
         base.Awake();
@@ -21,12 +22,22 @@ public class PlayerController : CharacterController
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
 
-    public override void Start()
-    {
-        return;
-    }
+    //public override void Start()
+    //{
+    //    return;
+    //}
     public override void Update()
     {
+        if(player.CurHp < 0f && !player.IsDied )
+        {
+            StartCoroutine(Died(player));
+        }
+        
+        if(!player.IsDied)
+        {
+            PlayerState();
+        }
+
         if (player.Target)
         {
             player.Distance = player.Target.position - this.transform.position;
@@ -41,10 +52,17 @@ public class PlayerController : CharacterController
         {
             player.DelayTime += Time.deltaTime;
         }
-        PlayerState();
-        PlayerStateCondition();
-        AquireRay();
         DragFlag();
+        if(player.IsAutoMode)
+        {
+            player.Flag.transform.position = this.transform.position;
+            player.IsAutoMode = false;
+        }
+
+        if(player.IsPlayMode)
+        {
+            player.IsPlayMode = false;
+        }
     }
     public void DragFlag()
     {
@@ -72,7 +90,6 @@ public class PlayerController : CharacterController
         {
             case EPlayerState.Play:
                 Perception(player);
-                //MouseTargeting(player);
                 if (player.IsDamaged)
                 {
                     StartCoroutine(Blink(player));
@@ -161,20 +178,6 @@ public class PlayerController : CharacterController
                 AIChangeState(player);
                 AIState(player);
                 break;
-        }
-    }
-    public void PlayerStateCondition()
-    {
-        if (Input.GetKeyDown(KeyCode.F12))
-        {
-            if (player.PlayerState == EPlayerState.Play)
-            {
-                player.PlayerState = EPlayerState.AutoPlay;
-                StartCoroutine(FindPath());
-            }
-            else if (player.PlayerState == EPlayerState.AutoPlay)
-                player.PlayerState = EPlayerState.Play;
-            
         }
     }
 
@@ -307,9 +310,20 @@ public class PlayerController : CharacterController
         {
             for (int i =0; i < hits.Length; i++)
             {
-                Status enemy = hits[i].collider.GetComponent<Status>();
-                enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(enemy);
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
+                _enemy.Damaged(AttackTypeDamage(_status));
+                if (_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[j])
+                        {
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
+                    }
+                }
             }
         }
     }
@@ -339,16 +353,20 @@ public class PlayerController : CharacterController
 
     private IEnumerator Died(PlayerStatus _status)
     {
+        _status.AIState = EAIState.Died;
+        _status.IsDied = true;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         _status.Dir = Vector2.zero;
         _status.ActiveLayer(LayerName.DieLayer); 
         yield return new WaitForSeconds(player.RevivalTime);
         Rivive(_status);
+        _status.IsDied = false;
     }
 
     private void Rivive(CharacterStatus _status)
     {
+        this.gameObject.transform.position = rivivePoint.transform.position;
         _status.Rig.isKinematic = false;
         _status.Col.enabled = true;
         _status.CurHp = _status.MaxHp;
@@ -441,6 +459,7 @@ public class PlayerController : CharacterController
         }
         if (_status.CurHp < 0f)
         {
+            _status.IsDied = true;
             _status.AIState = EAIState.Died;
         }
         else
@@ -448,7 +467,10 @@ public class PlayerController : CharacterController
 
             if (_status.Target == null)
             {
-                _status.AIState = EAIState.Idle;
+                if (pathFindController.FinalNodeList.Count == 0)
+                    _status.AIState = EAIState.Idle;
+                else
+                    _status.AIState = EAIState.Chase;
             }
             else
             {
@@ -537,19 +559,35 @@ public class PlayerController : CharacterController
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                Status _enemy = hits[i].collider.GetComponent<Status>();
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
 
                 _status.IsAtk = true;
                 _enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(_enemy);
+                if (_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[i])
+                        {
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
+                    }
+                }
             }
         }
     }
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        base.AIDied(_status);
+        _status.AIState = EAIState.Died;
+        _status.IsDied = true;
+        _status.ActiveLayer(LayerName.DieLayer);
+        _status.Rig.velocity = Vector2.zero;
+        _status.Col.enabled = false;
         yield return new WaitForSeconds(player.RevivalTime);
         Rivive(_status);
+        _status.IsDied = false;
     }
 
     #endregion
