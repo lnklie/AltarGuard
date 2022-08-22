@@ -16,6 +16,14 @@ public class SellPanelController : MonoBehaviour
     [SerializeField]
     private List<SellSlot> sellSlots = new List<SellSlot>();
 
+    [Header("EasyRegister")]
+    [SerializeField]
+    private GameObject easyRegister = null;
+    [SerializeField]
+    private Toggle[] topToggleList = null;
+    [SerializeField]
+    private Toggle[] lowToggleList = null;
+
     [SerializeField]
     private Item selectSellItem = null;
     [SerializeField]
@@ -60,7 +68,7 @@ public class SellPanelController : MonoBehaviour
 
     public void ResetSellInventory()
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
+        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
         for (int i = 0; i < shopInventorySlots.Count; i++)
         {
             shopInventorySlots[i].SlotReset();
@@ -68,7 +76,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateSellInventorySlot(int _index)
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
+        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
         ResetSellInventory();
         SetActiveSellItemInfo(false);
         MoneyUpdate();
@@ -128,7 +136,7 @@ public class SellPanelController : MonoBehaviour
 
     public string KeyToItemType(int _key)
     {
-        // í‚¤ë¥¼ ì•„ì´í…œ íƒ€ì…ìœ¼ë¡œ ë³€ê²½
+        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -170,13 +178,13 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateItemInfo()
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
         isSellItemSelect = false;
         SetActiveSellItemInfo(true);
 
         sellItemInfoText[0].text = selectSellItem.itemName;
         sellItemInfoText[1].text = KeyToItemType(selectSellItem.itemKey);
-        sellItemInfoText[3].text = "íŒë§¤ ê°€ê²©: " + selectSellItem.sellPrice.ToString();
+        sellItemInfoText[3].text = "ÆÇ¸Å °¡°İ: " + selectSellItem.sellPrice.ToString();
         switch (selectSellItem.itemKey / 1000)
         {
             case 0:
@@ -249,16 +257,20 @@ public class SellPanelController : MonoBehaviour
     }
     public void SetActiveSellItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         sellItemInfo.SetActive(_bool);
     }
     public void SetActiveSellPanel(bool _bool)
     {
         this.gameObject.SetActive(_bool);
     }
+    public void SetActiveRegisterEasyPanel(bool _bool)
+    {
+        easyRegister.SetActive(_bool);
+    }
     public void SelectSlotSellItem(Item _item)
     {
-        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         selectSellItem = _item;
         isSellItemSelect = true;
     }
@@ -278,9 +290,325 @@ public class SellPanelController : MonoBehaviour
                 UpdateSellSlot();
             }
             else
-                Debug.Log("ì´ë¯¸ ë“±ë¡ë˜ì–´ ìˆìŒ");
+                Debug.Log("ÀÌ¹Ì µî·ÏµÇ¾î ÀÖÀ½");
 
         }
+    }
+    public void RegisterItemEasy()
+    {
+        if (topToggleList[0].isOn)
+        {
+            int _inventoryLength = InventoryManager.Instance.InventroyWeaponItems.Count;
+            List<Item> itemList = InventoryManager.Instance.InventroyWeaponItems;
+            if (lowToggleList[0].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Common)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+
+                }
+                
+            }
+            else if (lowToggleList[1].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.UnCommon)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[2].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Rare)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if(lowToggleList[3].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Unique)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        else if (topToggleList[1].isOn)
+        {
+            int _inventoryLength = InventoryManager.Instance.InventroyEquipmentItems.Count;
+            List<Item> itemList = InventoryManager.Instance.InventroyEquipmentItems;
+            if (lowToggleList[0].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Common)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+
+            }
+            else if (lowToggleList[1].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.UnCommon)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[2].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Rare)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[3].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Unique)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        else if (topToggleList[2].isOn)
+        {
+            int _inventoryLength = InventoryManager.Instance.InventroyConsumableItems.Count;
+            List<Item> itemList = InventoryManager.Instance.InventroyConsumableItems;
+            if (lowToggleList[0].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Common)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+
+            }
+            else if (lowToggleList[1].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.UnCommon)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[2].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Rare)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[3].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Unique)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        else if (topToggleList[3].isOn)
+        {
+            int _inventoryLength = InventoryManager.Instance.InventroyMiscellaneousItems.Count;
+            List<Item> itemList = InventoryManager.Instance.InventroyMiscellaneousItems;
+            if (lowToggleList[0].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Common)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+
+            }
+            else if (lowToggleList[1].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.UnCommon)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[2].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Rare)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[3].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Unique)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice * itemList[i].count);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        else if(topToggleList[4].isOn)
+        {
+            int _inventoryLength = InventoryManager.Instance.InventroyDecorationItems.Count;
+            List<Item> itemList = InventoryManager.Instance.InventroyDecorationItems;
+            if (lowToggleList[0].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Common)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+
+            }
+            else if (lowToggleList[1].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.UnCommon)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[2].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Rare)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+            else if (lowToggleList[3].isOn)
+            {
+                for (int i = 0; i < _inventoryLength; i++)
+                {
+                    if (itemList[i].itemRank == (int)EItemRank.Unique)
+                    {
+                        if (!itemList[i].isEquip)
+                        {
+                            AddSellMoney(itemList[i].sellPrice);
+                            sellItemList.Add(itemList[i]);
+                        }
+                    }
+                }
+            }
+        }
+        UpdateSellInventorySlot(selectInventoryIndex);
+        UpdateSellSlot();
     }
     public void SetActiveSellItemAmount(bool _bool)
     {
@@ -289,13 +617,13 @@ public class SellPanelController : MonoBehaviour
     public void RegisterAmountItem()
     {
         if (int.Parse(sellAmount.text) > selectSellItem.count)
-            Debug.Log("ìˆ˜ëŸ‰ ë›°ì–´ ë„˜ìŒ");
+            Debug.Log("¼ö·® ¶Ù¾î ³ÑÀ½");
         else
         {
             if (!CheckAmountIsRegistered())
             {
                 AddSellMoney(selectSellItem.sellPrice * int.Parse(sellAmount.text));
-                Debug.Log("íŒŒëŠ” ìˆ˜ëŸ‰ì€" + int.Parse(sellAmount.text));
+                Debug.Log("ÆÄ´Â ¼ö·®Àº" + int.Parse(sellAmount.text));
                 Item item = DatabaseManager.Instance.SelectItem(selectSellItem.itemKey);
                 item.count = int.Parse(sellAmount.text);
                 sellItemList.Add(item);
@@ -304,7 +632,7 @@ public class SellPanelController : MonoBehaviour
                 SetActiveSellItemAmount(false);
             }
             else
-                Debug.Log("ì´ë¯¸ ë“±ë¡ë˜ì–´ ìˆìŒ");
+                Debug.Log("ÀÌ¹Ì µî·ÏµÇ¾î ÀÖÀ½");
 
         }
     }
@@ -315,8 +643,8 @@ public class SellPanelController : MonoBehaviour
     }
     public void ResetSellList()
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
-        for (int i = 0; i < shopInventorySlots.Count; i++)
+        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
+        for (int i = 0; i < sellSlots.Count; i++)
         {
             sellSlots[i].SlotReset();
         }
@@ -324,7 +652,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void UpdateSellSlot()
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
+        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
         ResetSellList();
         for (int i = 0; i < sellItemList.Count; i++)
         {
@@ -349,9 +677,12 @@ public class SellPanelController : MonoBehaviour
     }
     public void CancelAllRegisteredItem()
     {
-        sellItemList.Clear();
-        sellMoney = 0;
-        ResetSellList();
+        if(sellItemList.Count > 0)
+        {
+            sellItemList.Clear();
+            sellMoney = 0;
+            ResetSellList();
+        }
     }
     public void CancelRegisteredItem(Item _item)
     {
@@ -369,13 +700,13 @@ public class SellPanelController : MonoBehaviour
             if (selectSellItem == sellItemList[i])
             {
                 _bool = true;
-                Debug.Log("ë“±ë¡ë˜ì–´ ìˆëœ¸!");
+                Debug.Log("µî·ÏµÇ¾î ÀÖ¶ä!");
                 break;
             }
             else
             {
                 _bool = false;
-                Debug.Log("ë“±ë¡ë˜ì–´ ìˆì§€ì•Šì•„ìš”!");
+                Debug.Log("µî·ÏµÇ¾î ÀÖÁö¾Ê¾Æ¿ä!");
             }
         }
         return _bool;

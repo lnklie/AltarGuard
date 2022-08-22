@@ -90,7 +90,15 @@ public class CharacterStatus : Status
     private bool[] isAllyTargeted = new bool[5];
     [SerializeField]
     private bool[] isEnemyTargeted = new bool[101];
+    [SerializeField]
+    private bool isDied = false;
+
     #region Properties
+    public bool IsDied
+    {
+        get { return isDied; }
+        set { isDied = value; }
+    }
     public bool[] IsAllyTargeted
     {
         get { return isAllyTargeted; }
@@ -109,6 +117,7 @@ public class CharacterStatus : Status
     public GameObject Flag
     {
         get { return flag; }
+        set { flag = value; }
     }
 
     public bool IsHPRegen
@@ -360,11 +369,8 @@ public class CharacterStatus : Status
     }
     public void AquireExp(Status status)
     {
-        // 마지막 공격을 했는지 체크
-        if (status.IsLastHit())
-        {
-            curExp += status.DefeatExp;
-        }
+        curExp += status.DefeatExp;
+        
     }
     public void UpdateBasicStatus()
     {

@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,25 +48,30 @@ public class EnemyController : CharacterController
         {
             _status.Distance = _status.Target.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
-        }
-        if (_status.CurHp < 0f)
+        } 
+        
+        if(!_status.IsDied)
         {
-            _status.AIState = EAIState.Died;
-        }
-        else
-        {
-            if (_status.Target == null)
+            if(_status.CurHp < 0f)
             {
-                _status.AIState = EAIState.Idle;
+                StartCoroutine(AIDied(_status));
             }
             else
             {
-                _status.AIState = EAIState.Chase;
-                if (IsAtkRange(_status))
+                if (_status.Target == null)
                 {
-                    _status.AIState = EAIState.Attack;
+                    _status.AIState = EAIState.Idle;
+                }
+                else
+                {
+                    _status.AIState = EAIState.Chase;
+                    if (IsAtkRange(_status))
+                    {
+                        _status.AIState = EAIState.Attack;
+                    }
                 }
             }
+
 
         }
     }
@@ -106,7 +111,7 @@ public class EnemyController : CharacterController
                 SortSightRayList(_status.AllyRayList);
                 for (int i = 0; i < _status.AllyRayList.Count; i++)
                 {
-                    if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
+                    if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
                         || _status.AllyRayList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
                     {
                         _status.AllyRayList[i].transform.GetComponent<CharacterStatus>().IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex] = false;
@@ -125,37 +130,8 @@ public class EnemyController : CharacterController
     {
         yield return null;
     }
-    public Item DropItem(EnemyStatus _status)
-    {
-        // 아이템 드랍
-        int _ranIndex = RandomChoose(_status.ItemDropProb);
-        return DatabaseManager.Instance.SelectItem(_status.ItemDropKey[_ranIndex]);
-    }
-    private int RandomChoose(List<float> _probs)
-    {
-        // 무작위 선택
-        float total = 0;
 
-        foreach (float elem in _probs)
-        {
-            total += elem;
-        }
 
-        float randomPoint = Random.value * total;
-
-        for (int i = 0; i < _probs.Count; i++)
-        {
-            if (randomPoint < _probs[i])
-            {
-                return i;
-            }
-            else
-            {
-                randomPoint -= _probs[i];
-            }
-        }
-        return _probs.Count - 1;
-    }
     public override void AttackDamage(CharacterStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));

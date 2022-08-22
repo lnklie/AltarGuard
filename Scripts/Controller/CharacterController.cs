@@ -47,35 +47,6 @@ public class CharacterController : BaseController, IAIController
             return false;
     }
 
-    //public bool CheckRayList(Status _RayHit, List<Status> _RayList)
-    //{
-    //    bool _bool = false;
-    //    for (int i = 0; i < _RayList.Count; i++)
-    //    {
-    //        if (_RayHit == _RayList[i])
-    //            _bool = true;
-    //        else
-    //            _bool = false;
-    //    }
-    //    return _bool;
-    //}
-    //public bool CheckRayList(EnemyStatus _RayHit, List<EnemyStatus> _RayList)
-    //{
-    //    bool _bool = false;
-        
-    //    for (int i = 0; i < _RayList.Count; i++)
-    //    {
-    //        Debug.Log("닿은 적의 인덱스는 " + _RayHit.EnemyIndex + " 리스트의 인덱스는 " + _RayList[i].EnemyIndex);
-    //        if (_RayHit.EnemyIndex == _RayList[i].EnemyIndex)
-    //        {
-    //            _bool = true;
-    //            break;
-    //        }
-    //        else
-    //            _bool = false;
-    //    }
-    //    return _bool;
-    //}
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
         // 리스트 정렬
@@ -231,9 +202,6 @@ public class CharacterController : BaseController, IAIController
             case EAIState.Attack:
                 AIAttack(_status);
                 break;
-            case EAIState.Died:
-                StartCoroutine(AIDied(_status));
-                break;
         }
     }
     public virtual void AIPerception(CharacterStatus _status)
@@ -245,13 +213,7 @@ public class CharacterController : BaseController, IAIController
         _status.ActiveLayer(LayerName.IdleLayer);
         _status.Rig.velocity = Vector2.zero;
     }
-    //public Vector2 TargetPosByAtkRange(Node _targetNode, CharacterStatus _status)
-    //{
-    //    Vector2 _targetPos = Vector2.zero;
-    //    if(Mathf.Pow(_targetNode.x,2) + Mathf.Pow(_targetNode.y, 2) == Mathf.Pow(_status.AtkRange,2))
-    //        _targetPos = new Vector2(_targetNode.x, _targetNode.y);
-    //    return _targetPos; 
-    //}
+
     public virtual void AIChase(CharacterStatus _status)
     {
         if (pathFindController.FinalNodeList.Count > 1)
@@ -284,9 +246,6 @@ public class CharacterController : BaseController, IAIController
 
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
-        _status.ActiveLayer(LayerName.IdleLayer);
-        _status.Rig.velocity = Vector2.zero;
-        _status.Col.enabled = false;
         yield return null;
     }
     #endregion

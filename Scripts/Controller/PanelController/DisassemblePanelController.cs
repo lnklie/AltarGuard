@@ -300,7 +300,7 @@ public class DisassemblePanelController : MonoBehaviour
         for(int i = 0; i < disassembleItemResourcesList.Count; i++)
         {
             Item _item = disassembleItemResourcesList[i];
-            InventoryManager.Instance.AcquireItem(_item, _item.count);
+            InventoryManager.Instance.AcquireItem(_item);
         }
         UpdateDisassembleInventorySlot(selectInventoryIndex);
         disassembleItemList.Clear();

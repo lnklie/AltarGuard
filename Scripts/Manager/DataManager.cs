@@ -114,13 +114,13 @@ public class DataManager : MonoBehaviour
                         playerStatus.EquipmentController.RemoveEquipment(i);
                 }
 
-                altarState.HpLevel = playerData.altar.hpLevel;
+                altarState.Hp = playerData.altar.hpLevel;
                 altarState.DefensivePowerLevel = playerData.altar.defensivePowerLevel;
-                altarState.BuffRangeLevel = playerData.altar.buffRangeLevel;
-                altarState.BuffDamageLevel = playerData.altar.buffDamageLevel;
-                altarState.BuffDefensivePowerLevel = playerData.altar.buffDefensivePowerLevel;
-                altarState.BuffSpeedLevel = playerData.altar.buffSpeedLevel;
-                altarState.BuffHpRegenLevel = playerData.altar.buffHealingLevel;
+                altarState.BuffRange = playerData.altar.buffRangeLevel;
+                altarState.BuffDamage = playerData.altar.buffDamageLevel;
+                altarState.BuffDefensivePower = playerData.altar.buffDefensivePowerLevel;
+                altarState.BuffSpeed = playerData.altar.buffSpeedLevel;
+                altarState.BuffHpRegen = playerData.altar.buffHealingLevel;
 
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
@@ -182,15 +182,15 @@ public class DataManager : MonoBehaviour
                 playerData.equipedItems[i] = playerStatus.EquipmentController.EquipItems[i];
         
         }
-        Debug.Log("1 " + altarState.HpLevel + " "+playerData.altar.hpLevel);
+        Debug.Log("1 " + altarState.Hp + " "+playerData.altar.hpLevel);
         Debug.Log("2" + altarState.DefensivePowerLevel);
-        playerData.altar.hpLevel = altarState.HpLevel;
+        playerData.altar.hpLevel = altarState.Hp;
         playerData.altar.defensivePowerLevel = altarState.DefensivePowerLevel;
-        playerData.altar.buffRangeLevel = altarState.BuffRangeLevel;
-        playerData.altar.buffDamageLevel = altarState.BuffDamageLevel;
-        playerData.altar.buffDefensivePowerLevel = altarState.BuffDefensivePowerLevel;
-        playerData.altar.buffSpeedLevel = altarState.BuffSpeedLevel;
-        playerData.altar.buffHealingLevel = altarState.BuffHpRegenLevel;
+        playerData.altar.buffRangeLevel = altarState.BuffRange;
+        playerData.altar.buffDamageLevel = altarState.BuffDamage;
+        playerData.altar.buffDefensivePowerLevel = altarState.BuffDefensivePower;
+        playerData.altar.buffSpeedLevel = altarState.BuffSpeed;
+        playerData.altar.buffHealingLevel = altarState.BuffHpRegen;
         playerData.mercenaries = new Character[mercenaryManager.Mercenarys.Count];
         for (int i = 0; i < mercenaryManager.Mercenarys.Count; i++)
         {
