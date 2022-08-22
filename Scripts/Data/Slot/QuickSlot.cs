@@ -21,7 +21,17 @@ public class QuickSlot : MonoBehaviour
     private bool isCoolTime = false;
     [SerializeField]
     private float coolTime = 0f;
+    [SerializeField]
+    private Button autoUseButton = null;
+    [SerializeField]
+    private bool isAutoUse = false;
+
     #region Property
+    public bool IsAutoUse
+    {
+        get { return isAutoUse; }
+        set { isAutoUse = value; }
+    }
     public Image[] ItemImages
     {
         get { return itemImages; }
@@ -43,6 +53,10 @@ public class QuickSlot : MonoBehaviour
         itemImages = GetComponentsInChildren<Image>();
         itemCount = GetComponentInChildren<TextMeshProUGUI>();
     }
+    private void Start()
+    {
+        ResetSlot();
+    }
     private void Update()
     {
         
@@ -57,15 +71,17 @@ public class QuickSlot : MonoBehaviour
             }
         }
     }
-    public void SlotReset()
+    public void ResetSlot()
     {
         // 슬롯 리셋
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
+        isAutoUse = false;
+        SetActiveAutoUseButton(false);
         EnableItemCount(false);
     }
-    public void SlotSetting()
+    public void SetSlot()
     {
         // 슬롯 세팅
         itemImages[1].sprite = curItem.singleSprite;
@@ -82,6 +98,7 @@ public class QuickSlot : MonoBehaviour
         }
         else
         {
+            SetActiveAutoUseButton(true);
             EnableItemCount(true);
             UpdateItemCount();
         }
@@ -91,7 +108,7 @@ public class QuickSlot : MonoBehaviour
         UpdateItemCount();
         if (curItem.count <= 0)
         {
-            SlotReset();
+            ResetSlot();
             isItemRegistered = false;
         }
         else
@@ -105,11 +122,26 @@ public class QuickSlot : MonoBehaviour
     {
         itemCount.enabled = _bool;
     }
+    public void SetIsAutoUseButton()
+    {
+        isAutoUse = !isAutoUse;
+        SetAutoUseButtonText();
+    }
+    public void SetAutoUseButtonText()
+    {
+        if (isAutoUse)
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "사용중";
+        else
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "자동 사용";
+    }
+    public void SetActiveAutoUseButton(bool _bool)
+    {
+        autoUseButton.gameObject.SetActive(_bool);
+    }
     public void UseItem()
     {
         if (isItemRegistered && !isCoolTime)
         {
-            Debug.Log("냥냥");
             isCoolTime = true;
             coolTime = curItem.coolTime * 1f;
             UIManager.Instance.UseQuickSlotItem(curItem,index);

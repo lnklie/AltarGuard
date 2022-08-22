@@ -118,8 +118,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
         if (!_enemy.CompareTag("Boss"))
         {
             rushOrcs.Enqueue(_enemy);
-            _enemy.transform.parent.localScale = new Vector3(1, 1, 1);
-            _enemy.transform.parent.gameObject.SetActive(false);
+
         }
         else
         {

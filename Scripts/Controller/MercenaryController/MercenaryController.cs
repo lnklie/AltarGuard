@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+
 /*
 ==============================
  * ���������� : 2022-06-05
@@ -10,21 +11,22 @@ using UnityEngine;
 public class MercenaryController : CharacterController
 {
     protected MercenaryStatus mercenary = null;
-
+    [SerializeField]
+    private GameObject rivivePoint = null;
 
     public override  void Awake()
     {
         base.Awake();
         mercenary = this.GetComponent<MercenaryStatus>();
-
     }
 
     private void Rivive(CharacterStatus _Status)
     {
+        this.gameObject.transform.position = rivivePoint.transform.position;
         _Status.Rig.isKinematic = false;
         _Status.Col.enabled = true;
         _Status.CurHp = mercenary.MaxHp;
-        _Status.AIState = global::EAIState.Idle;
+        _Status.AIState = EAIState.Idle;
     }
 
     public bool IsLastHit(EnemyStatus _enemy, CharacterStatus _Status)
@@ -48,11 +50,25 @@ public class MercenaryController : CharacterController
         {
             for (int i = 0; i < hits.Length; i++)
             {
-                Status _enemy = hits[i].collider.GetComponent<Status>();
+                EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
                 _status.IsAtk = true;
 
                 _enemy.Damaged(AttackTypeDamage(_status));
-                _status.AquireExp(_enemy);
+                if(_enemy.IsLastHit())
+                {
+                    _status.AquireExp(_enemy);
+
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.DropProbability);
+                    for (int j = 0; j < 5; j++)
+                    {
+                        if (_isDrops[j])
+                        {
+                            
+                            Debug.Log("얻다! " + _isDrops[j]);
+                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
+                        }
+                    }
+                }
             }
         }
     }
@@ -67,11 +83,12 @@ public class MercenaryController : CharacterController
             _status.Distance = _status.Target.transform.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
         }
-        if (_status.CurHp < 0f)
+        if (_status.CurHp < 0f && !_status.IsDied)
         {
-            _status.AIState = EAIState.Died;
+            StartCoroutine(AIDied(_status));
         }
-        else
+
+        if(!_status.IsDied)
         {
             if (_status.Target == null)
             {
@@ -97,7 +114,7 @@ public class MercenaryController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, UnityEngine.Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if(_enemyHit)
         {
             EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();  
@@ -108,7 +125,7 @@ public class MercenaryController : CharacterController
             }
         }
 
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, UnityEngine.Vector2.up, 0, LayerMask.GetMask("Ally"));
         if(_allyHit)
         {
             CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
@@ -143,9 +160,16 @@ public class MercenaryController : CharacterController
 
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        base.AIDied(_status);
+        Debug.Log("죽음 용병");
+        _status.AIState = EAIState.Died;
+        _status.IsDied = true;
+        _status.ActiveLayer(LayerName.DieLayer);
+        _status.Rig.velocity = UnityEngine.Vector2.zero;
+        _status.Col.enabled = false;
         yield return new WaitForSeconds(mercenary.RevivalTime);
         Rivive(_status);
+        _status.IsDied = false;
+        Debug.Log("죽음 용병 해제");
     }
 
 }
