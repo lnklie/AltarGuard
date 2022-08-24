@@ -21,7 +21,12 @@ public class InventorySlot : MonoBehaviour
     private bool isItemChange = false;
     [SerializeField]
     private Sprite uiMask = null;
+
+
+    [SerializeField]
+    private bool isItem = false;
     #region Property
+
     public Image[] ItemImages
     {
         get { return itemImages; }
@@ -43,13 +48,21 @@ public class InventorySlot : MonoBehaviour
         itemImages = GetComponentsInChildren<Image>();
         itemCount = GetComponentInChildren<TextMeshProUGUI>();
     }
-
+    private void Update()
+    {
+        if (isItem && curItem.isCoolTime)
+        {
+            itemImages[2].fillAmount = curItem.coolTime / curItem.maxCoolTime;
+        }
+    }
     public void SlotReset()
     {
         // ½½·Ô ¸®¼Â
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
+        itemImages[2].fillAmount = 0f;
+        isItem = false;
         EnableItemCount(false);
     }
     public void SlotSetting()
@@ -57,7 +70,8 @@ public class InventorySlot : MonoBehaviour
         // ½½·Ô ¼¼ÆÃ
         itemImages[1].sprite = curItem.singleSprite;
         itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
-
+        isItem = true;
+        SetItemCoolTime();
         ActiveItemCount();
     }
     private void ActiveItemCount()
@@ -84,6 +98,13 @@ public class InventorySlot : MonoBehaviour
     public void SelectItem()
     {
         if(curItem != null)
-            UIManager.Instance.SelectSlotItem(curItem);
+            UIManager.Instance.SelectSlotItem(curItem, this);
+    }
+    public void SetItemCoolTime()
+    {
+        if (isItem && !curItem.isCoolTime)
+        {
+            curItem.coolTime = curItem.maxCoolTime * 1f;
+        }
     }
 }

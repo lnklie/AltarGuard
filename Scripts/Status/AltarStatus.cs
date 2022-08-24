@@ -36,9 +36,13 @@ public class AltarStatus : Status
 
     private bool isAltarStatusChange = false;
     private Image[] images = null;
-
+    [SerializeField]
+    private SpriteRenderer buffRangeSprite = null;
     #region Property
-
+    public SpriteRenderer BuffRangeSprite
+    {
+        get { return buffRangeSprite; }
+    }
     public AltarState AltarState
     {
         get { return altarState; }
@@ -99,7 +103,10 @@ public class AltarStatus : Status
     {
         images[1].fillAmount = curHp / (float)maxHp;
     }
-
+    public void SetActiveBuffRange(bool _bool)
+    {
+        buffRangeSprite.gameObject.SetActive(_bool);
+    }
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
         // 제단 업그레이드

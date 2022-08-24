@@ -61,6 +61,9 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField]
     private InventorySlot[] inventorySlots = null;
     [SerializeField]
+    private InventorySlot selectInventorySlot = null;
+
+    [SerializeField]
     private EquipmentSlot[] equipmentSlots = null;
     private TextMeshProUGUI[] iteminfoText = null;
     [SerializeField]
@@ -363,11 +366,12 @@ public class InventoryPanelController : MonoBehaviour
             equipCharactersBtn[i + 1].gameObject.SetActive(_bool);
     }
 
-    public void SelectSlotItem(Item _item)
+    public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
         // 슬롯에 선택한 아이템 
         selectItem = _item;
         isItemSelect = true;
+        selectInventorySlot = _slot;
     }
     public void ChangeAllEquipmentImage()
     { 
@@ -464,9 +468,15 @@ public class InventoryPanelController : MonoBehaviour
     public void UseSelectItem(PlayerStatus _player)
     {
         // 아이템 사용
-        InventoryManager.Instance.UseItem(_player, selectItem);
-        SetActiveItemInfo(false);
-        InventorySlotChange(2);
+        if (!selectItem.isCoolTime)
+        {
+            InventoryManager.Instance.UseItem(_player, selectItem);
+            SetActiveItemInfo(false);
+            InventorySlotChange(2);
+            selectItem.isCoolTime = true;
+        }
+        else
+            Debug.Log("쿨타임 중");
     }
     public void SetItemQuickSlot(int _index)
     {

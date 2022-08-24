@@ -181,10 +181,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         return mercenary.Count;
     }
-    public void SelectSlotItem(Item _item)
+    public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
         // 슬롯에 선택한 아이템 
-        inventoryPanelController.SelectSlotItem(_item);
+        inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectSlotSellItem(Item _item)
     {
@@ -527,7 +527,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if(_index == 2)
         {
-            altarInfoPanelController.ActiveAltarInfo(true);
+            altarInfoPanelController.SetActiveAltarInfo(true);
         }
         else if(_index == 3)
         {
@@ -579,7 +579,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 2)
         {
-            altarInfoPanelController.ActiveAltarInfo(false);
+            altarInfoPanelController.SetActiveAltarInfo(false);
         }
         else if (_index == 3)
         {

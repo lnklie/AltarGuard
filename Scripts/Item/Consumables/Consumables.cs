@@ -18,7 +18,7 @@ public class Consumables : Item
         target = _target;
         durationTime = _durationTime;
         value = _value;
-        coolTime = _coolTime;
+        maxCoolTime = _coolTime;
         itemType = (int)ItemType.Consumables;
         singleSprite = Resources.Load("Sprites/11_Consumable/" + itemName, typeof(Sprite)) as Sprite;
         texture2D = Resources.Load("Sprites/11_Consumable/" + itemName, typeof(Texture2D)) as Texture2D;

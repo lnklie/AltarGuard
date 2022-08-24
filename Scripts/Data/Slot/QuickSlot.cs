@@ -17,10 +17,7 @@ public class QuickSlot : MonoBehaviour
     private Sprite uiMask = null;
     [SerializeField]
     private int index = 0;
-    [SerializeField]
-    private bool isCoolTime = false;
-    [SerializeField]
-    private float coolTime = 0f;
+
     [SerializeField]
     private Button autoUseButton = null;
     [SerializeField]
@@ -60,14 +57,14 @@ public class QuickSlot : MonoBehaviour
     private void Update()
     {
         
-        if(isItemRegistered && isCoolTime)
+        if(isItemRegistered && CurItem.isCoolTime)
         {
-            coolTime -= Time.deltaTime;
-            itemImages[2].fillAmount = coolTime / curItem.coolTime;
-            if (coolTime <= 0f)
+            CurItem.coolTime -= Time.deltaTime;
+            itemImages[2].fillAmount = CurItem.coolTime / curItem.maxCoolTime;
+            if (CurItem.coolTime <= 0f)
             {
-                coolTime = 0f;
-                isCoolTime = false;
+                CurItem.coolTime = 0f;
+                CurItem.isCoolTime = false;
             }
         }
     }
@@ -140,10 +137,10 @@ public class QuickSlot : MonoBehaviour
     }
     public void UseItem()
     {
-        if (isItemRegistered && !isCoolTime)
+        if (isItemRegistered && !CurItem.isCoolTime)
         {
-            isCoolTime = true;
-            coolTime = curItem.coolTime * 1f;
+            CurItem.isCoolTime = true;
+            CurItem.coolTime = curItem.maxCoolTime * 1f;
             UIManager.Instance.UseQuickSlotItem(curItem,index);
         }
     }
