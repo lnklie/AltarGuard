@@ -13,14 +13,14 @@ public class AltarController : BaseController
 {
     private AltarStatus altar = null;
 
-    private SpriteRenderer[] spriteRenderers = null;
+
 
     [SerializeField]
     private List<AllyStatus> characters = new List<AllyStatus>();
     public override void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
-        spriteRenderers = this.GetComponentsInChildren<SpriteRenderer>();
+        
 
     }
     private void Start()
@@ -35,7 +35,7 @@ public class AltarController : BaseController
         State();
         if (altar.IsAltarStatusChange)
         {
-            BuffUpdate();
+            UpdateBuff();
             altar.IsAltarStatusChange = false;
         }
     }
@@ -47,7 +47,7 @@ public class AltarController : BaseController
             altar.CurHp = altar.MaxHp;
         }
     }
-
+ 
     public void ChangeState()
     {
         // 조건에 맞게 상태변경
@@ -112,7 +112,7 @@ public class AltarController : BaseController
         altar.IsStateChange = false;
     }
 
-    public void BuffUpdate()
+    public void UpdateBuff()
     {
         for (int i = 0; i < characters.Count; i++)
         {
@@ -125,21 +125,33 @@ public class AltarController : BaseController
             characters[i].UpdateAbility();
             UpdateBuffRange();
         }
-
     }
-
+    public void RemoveBuff(AllyStatus _ally)
+    {
+        _ally.IsAlterBuff = false;
+        _ally.BuffPhysicalDamage = 0;
+        _ally.BuffMagicalDamage = 0;
+        _ally.BuffDefensivePower = 0;
+        _ally.BuffSpeed = 0;
+        _ally.BuffHpRegenValue = 0;
+        _ally.UpdateAbility();
+    }
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
-        spriteRenderers[2].transform.localScale = new Vector2(altar.BuffRange * 1f / 10, altar.BuffRange * 1f / 10);
+        altar.BuffRangeSprite.transform.localScale = new Vector2(altar.BuffRange * 1f / 10, altar.BuffRange * 1f / 10);
     }
+
     public void FindInBuffRangeAlly()
     {
         // 동맹 찾기
         var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRange * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
-        if(hits != null)
+        if (hits.Length > 0)
+        {
+            
             AddBuffCharacterList(hits);
-        RemoveBuffCharacterList(hits);
+        }
+        RemoveBuffCharacterList();
     }
     public void AddBuffCharacterList(RaycastHit2D[] _raycastHit2Ds)
     {
@@ -148,19 +160,21 @@ public class AltarController : BaseController
         {
             if (!_raycastHit2Ds[i].collider.CompareTag("Altar") && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
+                Debug.Log(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>() + "들어옴");
                 characters.Add(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>());
-                BuffUpdate();
+                UpdateBuff();
             }
         }
     }
-    public void RemoveBuffCharacterList(RaycastHit2D[] _raycastHit2Ds)
+    public void RemoveBuffCharacterList()
     {
         for (int i = 0; i < characters.Count; i++)
         {
-            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRange * 1f)
+            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRange * 1f && characters[i].IsAlterBuff)
             {
-                characters[i].IsAlterBuff = false;
+                RemoveBuff(characters[i]);
                 characters.Remove(characters[i]);
+                Debug.Log("빠짐");
             }
         }
     }

@@ -117,10 +117,12 @@ public class AltarInfoPanelController : MonoBehaviour
     //{
     //    altar = _altar;
     //}
-    public void ActiveAltarInfo(bool _bool)
+    public void SetActiveAltarInfo(bool _bool)
     {
         // UI È°¼ºÈ­ 
+
         this.gameObject.SetActive(_bool);
+        altar.SetActiveBuffRange(_bool);
         UpdateMoney();
 
     }

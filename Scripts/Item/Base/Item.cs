@@ -42,7 +42,9 @@ public class Item
     public int sellPrice = 0;
     public int disassembleItemKey = -1;
     public int disassembleItemAmount = -1;
-    public int coolTime = 1;
+    public int maxCoolTime = 1;
+    public float coolTime = 0;
+    public bool isCoolTime = false;
     public int itemRank = -1;
     public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, int _itemRank)
     {
