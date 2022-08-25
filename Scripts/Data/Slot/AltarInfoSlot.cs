@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Globalization;
 public class AltarInfoSlot : MonoBehaviour
 {
     [SerializeField]
@@ -52,7 +52,8 @@ public class AltarInfoSlot : MonoBehaviour
     }
     public void SetAltarLevelUpNecessaryMoney()
     {
-        altarPropertyNecessaryMoney.text = "\\ " + GetNecessaryMoneyByLevel();
+        NumberFormatInfo numberFormat = new CultureInfo("ko-KR", false).NumberFormat;
+        altarPropertyNecessaryMoney.text = GetNecessaryMoneyByLevel().ToString("c",numberFormat);
     }
 
     public int GetCurrentValueByLevel()

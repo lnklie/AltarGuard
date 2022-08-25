@@ -121,3 +121,85 @@ public enum EItemRank
     Rare,
     Unique
 }
+
+public enum EGraceConditionWho
+{
+    Player,
+    Mercenary1,
+    Mercenary2,
+    Mercenary3,
+    Mercenary4,
+    AllMercenary,
+    All
+}
+public enum EGraceConditionWhat
+{
+    Sword,
+    OnlySword,
+    Spear,
+    Exe,
+    Shield,
+    Bow,
+    Wand,
+    OnlyWand,
+    SpearOrExe,
+    SwordAndShield,
+    WandAndShiled,
+    HpPortion,
+    MpPortion,
+    Skill
+}
+public enum EGraceConditionHow
+{
+    Equip,
+    Use,
+    SkillUse,
+}
+public enum EGraceResultWho
+{
+    Player,
+    Mercenary1,
+    Mercenary2,
+    Mercenary3,
+    Mercenary4,
+    AllMercenary,
+    All
+}
+public enum EGraceResultTarget
+{
+    PlayerStr,
+    PlayerDex,
+    PlayerWiz,
+    PlayerLuck,
+    PlayerHpRegen,
+    PlayerDamage,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    PhysicalDamageAndDefensivePower,
+    MagicalDamageAndDefensivePower,
+    Speed,
+    AtkSpeed
+}
+public enum EGraceResultWhat
+{
+    Str,
+    Dex,
+    Wiz,
+    Luck,
+    HpRegen,
+    Damage,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    PhysicalDamageAndDefensivePower,
+    MagicalDamageAndDefensivePower,
+    Speed,
+    AtkSpeed,
+    AtkRange
+}
+public enum EGraceResultHow
+{
+    Increase,
+    Decrease,
+}
