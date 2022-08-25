@@ -71,6 +71,58 @@ public class InventoryManager : SingletonManager<InventoryManager>
         AcquireItem(DatabaseManager.Instance.SelectItem(8003));
         AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
     }
+    private void Update()
+    {
+        for(int i = 0; i < InventroyWeaponItems.Count;i++)
+        {
+            if(InventroyWeaponItems[i].isCoolTime)
+            {
+                InventroyWeaponItems[i].coolTime -= Time.deltaTime;
+                if(InventroyWeaponItems[i].coolTime <= 0f)
+                {
+                    InventroyWeaponItems[i].coolTime = 0f;
+                    InventroyWeaponItems[i].isCoolTime = false;
+                }
+            }
+        }
+        for (int i = 0; i < inventroyEquipmentItems.Count; i++)
+        {
+            if (inventroyEquipmentItems[i].isCoolTime)
+            {
+                inventroyEquipmentItems[i].coolTime -= Time.deltaTime;
+                if (inventroyEquipmentItems[i].coolTime <= 0f)
+                {
+                    inventroyEquipmentItems[i].coolTime = 0f;
+                    inventroyEquipmentItems[i].isCoolTime = false;
+                }
+            }
+        }
+        for (int i = 0; i < InventroyConsumableItems.Count; i++)
+        {
+            if (InventroyConsumableItems[i].isCoolTime)
+            {
+                InventroyConsumableItems[i].coolTime -= Time.deltaTime;
+                if (InventroyConsumableItems[i].coolTime <= 0f)
+                {
+                    InventroyConsumableItems[i].coolTime = 0f;
+                    InventroyConsumableItems[i].isCoolTime = false;
+                }
+            }
+        }
+        for (int i = 0; i < InventroyDecorationItems.Count; i++)
+        {
+            if (InventroyDecorationItems[i].isCoolTime)
+            {
+                InventroyDecorationItems[i].coolTime -= Time.deltaTime;
+                if (InventroyDecorationItems[i].coolTime <= 0f)
+                {
+                    InventroyDecorationItems[i].coolTime = 0f;
+                    InventroyDecorationItems[i].isCoolTime = false;
+                }
+            }
+        }
+
+    }
     public void AddItem(List<Item> _itemList, Item _item)
     {
         // 리스트에 아이템 추가 

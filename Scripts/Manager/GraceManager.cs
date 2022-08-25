@@ -23,7 +23,7 @@ public class GraceManager : MonoBehaviour
         if (!CheckIsActive(_key))
         {
             graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
-            graceList[graceList.Count - 1].isActive = 1;
+            graceList[graceList.Count - 1].isActive = true;
             SetGraceAbility();
         }
         else
@@ -38,7 +38,7 @@ public class GraceManager : MonoBehaviour
         {
             if (graceList[i].graceKey == _key)
             {
-                if (graceList[i].isActive == 1)
+                if (graceList[i].isActive)
                     isActive = true;
                 else
                     isActive = false;

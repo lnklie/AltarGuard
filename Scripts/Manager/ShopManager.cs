@@ -116,7 +116,7 @@ public class ShopManager : SingletonManager<ShopManager>
                 __item = _wand;
                 break;
             case 11:
-                Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value,_item.coolTime, _item.itemRank);
+                Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value,_item.maxCoolTime, _item.itemRank);
                 inventroyConsumableItems.Add(_consumables);
                 __item = _consumables;
 

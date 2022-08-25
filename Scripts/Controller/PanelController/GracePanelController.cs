@@ -29,7 +29,7 @@ public class GracePanelController : MonoBehaviour
         for(int i = 0; i < slots.Count; i++)
         {
             slotButtons.Add(slots[i].GetComponent<Button>());
-            slots[i].Grace = DatabaseManager.Instance.graceList[i];
+            slots[i].Grace = DatabaseManager.Instance.warriorGraceList[i];
         }
     }
 
@@ -55,12 +55,12 @@ public class GracePanelController : MonoBehaviour
         if(_checkIsActiveGrace(selectGrace.graceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "Already Learned";
+            graceLearnButtonText.text = "이미 받음";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "Learn";
+            graceLearnButtonText.text = "받기";
         }
         
     }

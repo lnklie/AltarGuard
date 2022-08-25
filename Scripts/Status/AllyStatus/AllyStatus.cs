@@ -14,7 +14,7 @@ public class AllyStatus : CharacterStatus
     [SerializeField]
     private float itemRarity = 0;
     private int statusPoint = 10;
-
+    [SerializeField]
     private bool isAlterBuff = false;
     private float revivalTime = 5f;
     private float knuckBackPower = 1;
