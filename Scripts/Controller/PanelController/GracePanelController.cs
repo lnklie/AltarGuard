@@ -5,22 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 public class GracePanelController : MonoBehaviour
 {
-    [SerializeField]
-    private List<GraceSlot> slots = new List<GraceSlot>();
-    [SerializeField]
-    private List<Button> slotButtons = new List<Button>();
-    [SerializeField]
-    private GameObject graceInfo = null;
-    [SerializeField]
-    private TextMeshProUGUI graceName = null;
-    [SerializeField]
-    private TextMeshProUGUI graceExplain = null;
-    [SerializeField]
-    private Button graceLearnButton = null;
-    [SerializeField]
-    private TextMeshProUGUI graceLearnButtonText = null;
+    [SerializeField] private List<GraceSlot> slots = new List<GraceSlot>();
+    [SerializeField] private List<Button> slotButtons = new List<Button>();
+    [SerializeField] private GameObject graceInfo = null;
+    [SerializeField] private TextMeshProUGUI graceName = null;
+    [SerializeField] private TextMeshProUGUI graceExplain = null;
+    [SerializeField] private Button graceLearnButton = null;
+    [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
 
     private Grace selectGrace = null;
+
     public delegate bool CheckIsActiveGrace(int _key);
     public delegate void AquireGraceDel(int _key);
     private void Awake()
@@ -29,7 +23,7 @@ public class GracePanelController : MonoBehaviour
         for(int i = 0; i < slots.Count; i++)
         {
             slotButtons.Add(slots[i].GetComponent<Button>());
-            slots[i].Grace = DatabaseManager.Instance.graceList[i];
+            slots[i].Grace = DatabaseManager.Instance.warriorGraceList[i];
         }
     }
 
@@ -55,12 +49,12 @@ public class GracePanelController : MonoBehaviour
         if(_checkIsActiveGrace(selectGrace.graceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "Already Learned";
+            graceLearnButtonText.text = "이미 받음";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "Learn";
+            graceLearnButtonText.text = "받기";
         }
         
     }

@@ -91,9 +91,8 @@ public enum AltarAbility
     Buff_Speed,
     Buff_Healing
 }
-public enum ItemEquipedCharacter
+public enum ECharacter
 {
-    NULL,
     Player,
     Mercenary_A,
     Mercenary_B,
@@ -120,4 +119,80 @@ public enum EItemRank
     UnCommon,
     Rare,
     Unique
+}
+
+public enum EGraceConditionWho
+{
+    Player,
+    Mercenary1,
+    Mercenary2,
+    Mercenary3,
+    Mercenary4,
+    AllMercenary,
+    All
+}
+public enum EGraceConditionWhat
+{
+    Sword,
+    OnlySword,
+    Spear,
+    Exe,
+    Shield,
+    Bow,
+    Wand,
+    OnlyWand,
+    SpearOrExe,
+    SwordAndShield,
+    WandAndShiled,
+    HpPortion,
+    MpPortion,
+    Skill
+}
+public enum EGraceConditionHow
+{
+    Equip,
+    Use,
+    SkillUse,
+}
+public enum EGraceResultWho
+{
+    Player,
+    Mercenary1,
+    Mercenary2,
+    Mercenary3,
+    Mercenary4,
+    AllMercenary,
+    All
+}
+public enum EGraceResultTarget
+{
+    PlayerStr,
+    PlayerDex,
+    PlayerWiz,
+    PlayerLuck,
+    PlayerHpRegen,
+    PlayerPhysicalDamage,
+    PlayerMagicalDamage,
+    PlayerDefensivePower,
+    PlayerSpeed,
+    PlayerAtkSpeed
+}
+public enum EGraceResultWhat
+{
+    Str,
+    Dex,
+    Wiz,
+    Luck,
+    HpRegen,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    Speed,
+    AtkSpeed,
+    AtkRange
+}
+public enum EGraceResultHow
+{
+    Increase,
+    Decrease,
 }
