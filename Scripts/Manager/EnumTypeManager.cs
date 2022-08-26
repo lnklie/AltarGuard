@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnumTypeManager.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EnumTypeManager.cs
 ==============================
 */
 public enum LayerName
@@ -91,9 +91,8 @@ public enum AltarAbility
     Buff_Speed,
     Buff_Healing
 }
-public enum ItemEquipedCharacter
+public enum ECharacter
 {
-    NULL,
     Player,
     Mercenary_A,
     Mercenary_B,
@@ -172,14 +171,11 @@ public enum EGraceResultTarget
     PlayerWiz,
     PlayerLuck,
     PlayerHpRegen,
-    PlayerDamage,
-    PhysicalDamage,
-    MagicalDamage,
-    DefensivePower,
-    PhysicalDamageAndDefensivePower,
-    MagicalDamageAndDefensivePower,
-    Speed,
-    AtkSpeed
+    PlayerPhysicalDamage,
+    PlayerMagicalDamage,
+    PlayerDefensivePower,
+    PlayerSpeed,
+    PlayerAtkSpeed
 }
 public enum EGraceResultWhat
 {
@@ -188,12 +184,9 @@ public enum EGraceResultWhat
     Wiz,
     Luck,
     HpRegen,
-    Damage,
     PhysicalDamage,
     MagicalDamage,
     DefensivePower,
-    PhysicalDamageAndDefensivePower,
-    MagicalDamageAndDefensivePower,
     Speed,
     AtkSpeed,
     AtkRange

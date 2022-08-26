@@ -5,22 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 public class GracePanelController : MonoBehaviour
 {
-    [SerializeField]
-    private List<GraceSlot> slots = new List<GraceSlot>();
-    [SerializeField]
-    private List<Button> slotButtons = new List<Button>();
-    [SerializeField]
-    private GameObject graceInfo = null;
-    [SerializeField]
-    private TextMeshProUGUI graceName = null;
-    [SerializeField]
-    private TextMeshProUGUI graceExplain = null;
-    [SerializeField]
-    private Button graceLearnButton = null;
-    [SerializeField]
-    private TextMeshProUGUI graceLearnButtonText = null;
+    [SerializeField] private List<GraceSlot> slots = new List<GraceSlot>();
+    [SerializeField] private List<Button> slotButtons = new List<Button>();
+    [SerializeField] private GameObject graceInfo = null;
+    [SerializeField] private TextMeshProUGUI graceName = null;
+    [SerializeField] private TextMeshProUGUI graceExplain = null;
+    [SerializeField] private Button graceLearnButton = null;
+    [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
 
     private Grace selectGrace = null;
+
     public delegate bool CheckIsActiveGrace(int _key);
     public delegate void AquireGraceDel(int _key);
     private void Awake()

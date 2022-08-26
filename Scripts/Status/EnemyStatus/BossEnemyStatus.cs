@@ -72,6 +72,6 @@ public class BossEnemyStatus : EnemyStatus
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
         defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
         speed = bossEnemy.speed + dex * 1f;
-        hpRegenValue = str * 1;
+        graceHpRegenValue = str * 1;
     }
 }

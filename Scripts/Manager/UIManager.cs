@@ -241,6 +241,18 @@ public class UIManager : SingletonManager<UIManager>
     {
         // æ∆¿Ã≈€ ¿Â¬¯
         inventoryPanelController.EquipInventoryItem(characterList, _character);
+        for(int i = 0; i < graceManager.GraceList.Count;i++)
+        {
+            if (graceManager.CheckGraceCondition(graceManager.GraceList[i]))
+            {
+                Debug.Log("∆Æ∑Á");
+            }
+            else
+            {
+                Debug.Log("∆»Ω∫");
+            }
+
+        }
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
@@ -343,6 +355,18 @@ public class UIManager : SingletonManager<UIManager>
         gracePanelController.AquireGrace(graceManager.AquireGrace);
         UpdateGracePanel();
         ActiveGraceInfo(false);
+        for (int i = 0; i < graceManager.GraceList.Count; i++)
+        {
+            if (graceManager.CheckGraceCondition(graceManager.GraceList[i]))
+            {
+                Debug.Log("∆Æ∑Á");
+            }
+            else
+            {
+                Debug.Log("∆»Ω∫");
+            }
+
+        }
     }
     public void SelectGrace(int _index)
     {
