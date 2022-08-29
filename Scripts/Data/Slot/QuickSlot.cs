@@ -70,7 +70,7 @@ public class QuickSlot : MonoBehaviour
     }
     public void ResetSlot()
     {
-        // ½½·Ô ¸®¼Â
+        // ìŠ¬ë¡¯ ë¦¬ì…‹
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
@@ -80,7 +80,7 @@ public class QuickSlot : MonoBehaviour
     }
     public void SetSlot()
     {
-        // ½½·Ô ¼¼ÆÃ
+        // ìŠ¬ë¡¯ ì„¸íŒ…
         itemImages[1].sprite = curItem.singleSprite;
         itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
 
@@ -88,7 +88,7 @@ public class QuickSlot : MonoBehaviour
     }
     private void ActiveItemCount()
     {
-        // ¼Ò¸ğÇ°ÀÌ³ª ½×ÀÌ´Â ¾ÆÀÌÅÛÀÌ¸é count ÅØ½ºÆ®¸¦ È°¼ºÈ­
+        // ì†Œëª¨í’ˆì´ë‚˜ ìŒ“ì´ëŠ” ì•„ì´í…œì´ë©´ count í…ìŠ¤íŠ¸ë¥¼ í™œì„±í™”
         if (curItem.itemKey / 1000 < 9)
         {
             EnableItemCount(false);
@@ -127,9 +127,9 @@ public class QuickSlot : MonoBehaviour
     public void SetAutoUseButtonText()
     {
         if (isAutoUse)
-            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "»ç¿ëÁß";
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ì‚¬ìš©ì¤‘";
         else
-            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ÀÚµ¿ »ç¿ë";
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ìë™ ì‚¬ìš©";
     }
     public void SetActiveAutoUseButton(bool _bool)
     {

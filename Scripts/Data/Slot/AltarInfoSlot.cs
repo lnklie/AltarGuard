@@ -43,12 +43,12 @@ public class AltarInfoSlot : MonoBehaviour
     }
     public void SetAltarPropertyCurrentValue()
     {
-        altarPropertyCurrentValue.text = "ÇöÀç ¼öÄ¡: " + GetCurrentValueByLevel().ToString();
+        altarPropertyCurrentValue.text = "Ã‡Ã¶Ã€Ã§ Â¼Ã¶Ã„Â¡: " + GetCurrentValueByLevel().ToString();
         propertyValue = GetCurrentValueByLevel();
     }
     public void SetAltarPropertyNextValue()
     {
-        altarPropertyNextValue.text = "´ÙÀ½ ¼öÄ¡: " + GetNextValueByLevel().ToString();
+        altarPropertyNextValue.text = "Â´Ã™Ã€Â½ Â¼Ã¶Ã„Â¡: " + GetNextValueByLevel().ToString();
     }
     public void SetAltarLevelUpNecessaryMoney()
     {

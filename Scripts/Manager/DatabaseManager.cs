@@ -333,7 +333,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
-            Debug.Log("경로에 밀리 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("寃쎈 諛由 珥 곗댄 踰댁ㅺ 議댁ы吏 듬.");
         }
         else
         {
@@ -347,7 +347,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("RangedGrace")))
         {
-            Debug.Log("경로에 궁수 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("寃쎈 沅 珥 곗댄 踰댁ㅺ 議댁ы吏 듬.");
         }
         else
         {
@@ -406,7 +406,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("AltarProperty")))
         {
-            Debug.Log("경로에 제단 특성 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("寃쎈 � 뱀 곗댄 踰댁ㅺ 議댁ы吏 듬.");
         }
         else
         {
@@ -623,7 +623,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 if (warriorGraceList[i].graceKey == _key)
                     _grace = warriorGraceList[i];
                 else
-                    Debug.Log("해당 은총이 없습니다.");
+                    Debug.Log("대 珥 듬.");
             }
                 break;
             case 1:
@@ -632,7 +632,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (rangedGraceList[i].graceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("대 珥 듬.");
                 }
                 break;
             case 2:
@@ -641,7 +641,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (magicGraceList[i].graceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("대 珥 듬.");
                 }
                 break;
             case 3:
@@ -650,7 +650,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (commanderGraceList[i].graceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("대 珥 듬.");
                 }
                 break;
 
@@ -677,7 +677,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
         }
         return _altarProperty;
     }
