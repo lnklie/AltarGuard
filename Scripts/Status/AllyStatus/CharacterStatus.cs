@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
- * ÏûëÏÑ±Ïûê : Inklie
- * ÌååÏùºÎ™Ö : CharacterStatus.cs
+ * √÷¡æºˆ¡§¿œ : 2022-06-05
+ * ¿€º∫¿⁄ : Inklie
+ * ∆ƒ¿œ∏Ì : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -40,7 +40,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int wiz = 5;
     [SerializeField] protected int luck = 5;
     [SerializeField] protected int hpRegenValue = 0;
-    [SerializeField] protected int physicalDamage = 0;
+    [SerializeField] protected int physicalDamage = 1000;
     [SerializeField] protected int magicalDamage = 0;
     [SerializeField] protected float speed = 0f;
     [SerializeField] protected float atkSpeed = 2f;
@@ -70,7 +70,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int graceMagicalDamage = 0;
     [SerializeField] protected int graceDefensivePower = 0;
     [SerializeField] protected float graceSpeed = 0f;
-    [SerializeField] protected float graceAtkSpeed = 0f;
+    [SerializeField] protected float graceAttackSpeed = 0f;
     [SerializeField] protected float graceAtkRange = 0f;
 
 
@@ -218,6 +218,32 @@ public class CharacterStatus : Status
         get { return graceStr; }
         set { graceStr = value; }
     }
+    public float GraceSpeed
+    {
+        get { return graceSpeed; }
+        set { graceSpeed = value; }
+    }
+    public float GraceAtkRange
+    {
+        get { return graceAtkRange; }
+        set { graceAtkRange = value; }
+    }
+    public int GraceMagicalDamage
+    {
+        get { return graceMagicalDamage; }
+        set { graceMagicalDamage = value; }
+    }
+    public int GracePhysicalDamage
+    {
+        get { return gracePhysicalDamage; }
+        set { gracePhysicalDamage = value; }
+    }
+    public float GraceAttackSpeed
+    {
+        get { return graceAttackSpeed; }
+        set { graceAttackSpeed = value; }
+    }
+
     public int Luck
     {
         get { return luck; }
@@ -268,6 +294,16 @@ public class CharacterStatus : Status
     {
         get { return totalStr; }
         set { totalStr = value; }
+    }
+    public int TotalMaxHp
+    {
+        get { return totalMaxHp; }
+        set { totalMaxHp = value; }
+    }
+    public int TotalMaxMp
+    {
+        get { return totalMaxMp; }
+        set { totalMaxMp = value; }
     }
     public int CurLevel
     {
@@ -389,14 +425,18 @@ public class CharacterStatus : Status
     {
         base.Awake();
         equipmentController = this.GetComponent<EquipmentController>();
-    }
-    public virtual void Start()
-    {
         UpdateAbility();
         curHp = totalMaxHp;
         curMp = totalMaxMp;
         delayTime = atkSpeed;
     }
+    //public virtual void Start()
+    //{
+    //    UpdateAbility();
+    //    curHp = totalMaxHp;
+    //    curMp = totalMaxMp;
+    //    delayTime = atkSpeed;
+    //}
     public override void Update()
     {
         base.Update();
@@ -431,11 +471,12 @@ public class CharacterStatus : Status
 
     public virtual void UpdateAbility()
     {
-        // Îä•Î†• ÏóÖÎç∞Ïù¥Ìä∏
+        // ¥…∑¬ æ˜µ•¿Ã∆Æ
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
-        totalAtkSpeed = atkSpeed + equipedAtkSpeed + graceAtkSpeed;
+
+        totalAtkSpeed = atkSpeed + equipedAtkSpeed + graceAttackSpeed;
         totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
 
         totalPhysicalDamage = physicalDamage + equipedPhysicalDamage + gracePhysicalDamage + buffPhysicalDamage;
