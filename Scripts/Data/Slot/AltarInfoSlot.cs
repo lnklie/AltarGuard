@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Globalization;
 public class AltarInfoSlot : MonoBehaviour
 {
     [SerializeField]
@@ -18,7 +18,13 @@ public class AltarInfoSlot : MonoBehaviour
     private Button levelUpButton = null;
     [SerializeField]
     private AltarProperty altarProperty = null;
+    [SerializeField]
+    private int propertyValue = 0;
 
+    public int PropertyValue
+    {
+        get { return propertyValue; }
+    }
     public void SetAlterProperty(AltarProperty _altarProperty)
     {
         altarProperty = _altarProperty;
@@ -37,15 +43,17 @@ public class AltarInfoSlot : MonoBehaviour
     }
     public void SetAltarPropertyCurrentValue()
     {
-        altarPropertyCurrentValue.text = "ÇöÀç ¼öÄ¡: " + GetCurrentValueByLevel().ToString();
+        altarPropertyCurrentValue.text = "Ã‡Ã¶Ã€Ã§ Â¼Ã¶Ã„Â¡: " + GetCurrentValueByLevel().ToString();
+        propertyValue = GetCurrentValueByLevel();
     }
     public void SetAltarPropertyNextValue()
     {
-        altarPropertyNextValue.text = "´ÙÀ½ ¼öÄ¡: " + GetNextValueByLevel().ToString();
+        altarPropertyNextValue.text = "Â´Ã™Ã€Â½ Â¼Ã¶Ã„Â¡: " + GetNextValueByLevel().ToString();
     }
     public void SetAltarLevelUpNecessaryMoney()
     {
-        altarPropertyNecessaryMoney.text = "\\ " + GetNecessaryMoneyByLevel();
+        NumberFormatInfo numberFormat = new CultureInfo("ko-KR", false).NumberFormat;
+        altarPropertyNecessaryMoney.text = GetNecessaryMoneyByLevel().ToString("c",numberFormat);
     }
 
     public int GetCurrentValueByLevel()

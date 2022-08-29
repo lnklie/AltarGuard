@@ -17,10 +17,7 @@ public class QuickSlot : MonoBehaviour
     private Sprite uiMask = null;
     [SerializeField]
     private int index = 0;
-    [SerializeField]
-    private bool isCoolTime = false;
-    [SerializeField]
-    private float coolTime = 0f;
+
     [SerializeField]
     private Button autoUseButton = null;
     [SerializeField]
@@ -60,20 +57,20 @@ public class QuickSlot : MonoBehaviour
     private void Update()
     {
         
-        if(isItemRegistered && isCoolTime)
+        if(isItemRegistered && CurItem.isCoolTime)
         {
-            coolTime -= Time.deltaTime;
-            itemImages[2].fillAmount = coolTime / curItem.coolTime;
-            if (coolTime <= 0f)
+            CurItem.coolTime -= Time.deltaTime;
+            itemImages[2].fillAmount = CurItem.coolTime / curItem.maxCoolTime;
+            if (CurItem.coolTime <= 0f)
             {
-                coolTime = 0f;
-                isCoolTime = false;
+                CurItem.coolTime = 0f;
+                CurItem.isCoolTime = false;
             }
         }
     }
     public void ResetSlot()
     {
-        // ΩΩ∑‘ ∏Æº¬
+        // Ïä¨Î°Ø Î¶¨ÏÖã
         curItem = null;
         ItemImages[1].sprite = uiMask;
         itemCount.text = "00";
@@ -83,7 +80,7 @@ public class QuickSlot : MonoBehaviour
     }
     public void SetSlot()
     {
-        // ΩΩ∑‘ ºº∆√
+        // Ïä¨Î°Ø ÏÑ∏ÌåÖ
         itemImages[1].sprite = curItem.singleSprite;
         itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
 
@@ -91,7 +88,7 @@ public class QuickSlot : MonoBehaviour
     }
     private void ActiveItemCount()
     {
-        // º“∏«∞¿Ã≥™ Ω◊¿Ã¥¬ æ∆¿Ã≈€¿Ã∏È count ≈ÿΩ∫∆Æ∏¶ »∞º∫»≠
+        // ÏÜåÎ™®ÌíàÏù¥ÎÇò ÏåìÏù¥Îäî ÏïÑÏù¥ÌÖúÏù¥Î©¥ count ÌÖçÏä§Ìä∏Î•º ÌôúÏÑ±Ìôî
         if (curItem.itemKey / 1000 < 9)
         {
             EnableItemCount(false);
@@ -130,9 +127,9 @@ public class QuickSlot : MonoBehaviour
     public void SetAutoUseButtonText()
     {
         if (isAutoUse)
-            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ªÁøÎ¡ﬂ";
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ÏÇ¨Ïö©Ï§ë";
         else
-            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "¿⁄µø ªÁøÎ";
+            autoUseButton.GetComponentInChildren<TextMeshProUGUI>().text = "ÏûêÎèô ÏÇ¨Ïö©";
     }
     public void SetActiveAutoUseButton(bool _bool)
     {
@@ -140,10 +137,10 @@ public class QuickSlot : MonoBehaviour
     }
     public void UseItem()
     {
-        if (isItemRegistered && !isCoolTime)
+        if (isItemRegistered && !CurItem.isCoolTime)
         {
-            isCoolTime = true;
-            coolTime = curItem.coolTime * 1f;
+            CurItem.isCoolTime = true;
+            CurItem.coolTime = curItem.maxCoolTime * 1f;
             UIManager.Instance.UseQuickSlotItem(curItem,index);
         }
     }

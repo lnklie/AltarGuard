@@ -67,7 +67,7 @@ public class SkillController : MonoBehaviour
         else
         {
             passiveSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
-            SetPassiveStatus();
+            //SetPassiveStatus();
             status.UpdateBasicStatus();
         }
         
@@ -77,7 +77,7 @@ public class SkillController : MonoBehaviour
         if (GetPassiveSkill(_skillKey).skillLevel < 10)
         {
             GetPassiveSkill(_skillKey).skillLevel++;
-            SetPassiveStatus();
+            //SetPassiveStatus();
             status.UpdateBasicStatus();
         }
         else
@@ -156,11 +156,11 @@ public class SkillController : MonoBehaviour
         for (int i = 0; i < passiveSkills.Count; i++)
         {
             if (passiveSkills[i].targetStatus == "str")
-                status.PassiveStr = SetPassiveSkillByLevel(passiveSkills[i]);
+                status.GraceStr = SetPassiveSkillByLevel(passiveSkills[i]);
             else if (passiveSkills[i].targetStatus == "dex")
-                status.PassiveDex = SetPassiveSkillByLevel(passiveSkills[i]);
+                status.GraceDex = SetPassiveSkillByLevel(passiveSkills[i]);
             else if (passiveSkills[i].targetStatus == "wiz")
-                status.PassiveWiz = SetPassiveSkillByLevel(passiveSkills[i]);
+                status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
         }
     }
     public Skill GetPassiveSkill(int _skillKey)

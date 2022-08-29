@@ -5,9 +5,7 @@ using System;
 using TMPro;
 /*
 ==============================
- * 최종수정일 : 2022-06-10
- * 작성자 : Inklie
- * 파일명 : UIManager.cs
+
 ==============================
 */
 public class UIManager : SingletonManager<UIManager>
@@ -93,6 +91,7 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateMercenaryProfile(i);
             }
         }
+
     }
 
     private void Update()
@@ -160,7 +159,6 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        Debug.Log("그레이스 업데이트");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
     }
     public void AddMercenary(CharacterStatus _mercenary)
@@ -180,10 +178,10 @@ public class UIManager : SingletonManager<UIManager>
     {
         return mercenary.Count;
     }
-    public void SelectSlotItem(Item _item)
+    public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // 슬롯에 선택한 아이템 
-        inventoryPanelController.SelectSlotItem(_item);
+        // ���Կ� ������ ������ 
+        inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectSlotSellItem(Item _item)
     {
@@ -228,62 +226,66 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // 인벤토리 슬롯 변경
+
         inventoryPanelController.InventorySlotChange(_index);
     }
     public void EquipBtn(int _character)
     {
-        // 아이템 장착
+        // ������ ����
         inventoryPanelController.EquipInventoryItem(characterList, _character);
+        for(int i = 0; i < graceManager.GraceList.Count;i++)
+        {
+            if (graceManager.CheckGraceCondition(graceManager.GraceList[i]))
+            {
+                Debug.Log("Ʈ��");
+            }
+            else
+            {
+                Debug.Log("�Ƚ�");
+            }
+
+        }
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // 아이템 장착 캐릭터 선택 활성화 여부 
+        // ������ ���� ĳ���� ���� Ȱ��ȭ ���� 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // 선택한 아이템 해제
         inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // 아이템 사용
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // 아이템 버리기
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // 아이템 수량으로 버리기
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // 아이템 버리기 확인창 활성화 여부
+
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // 아이템 수량 버리기 확인창 활성화 여부
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // 장비창에서 캐릭터 선택
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // 장비창 캐릭터 이름 업데이트
         inventoryPanelController.UpdateEquipmentName();
     }
     public void SetItemQuickSlot(int _index)
@@ -310,7 +312,6 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // 스텟 업
         statusPanelController.StatusUp(_index);
     }
     #endregion
@@ -342,6 +343,18 @@ public class UIManager : SingletonManager<UIManager>
         gracePanelController.AquireGrace(graceManager.AquireGrace);
         UpdateGracePanel();
         ActiveGraceInfo(false);
+        for (int i = 0; i < graceManager.GraceList.Count; i++)
+        {
+            if (graceManager.CheckGraceCondition(graceManager.GraceList[i]))
+            {
+                Debug.Log("Ʈ��");
+            }
+            else
+            {
+                Debug.Log("�Ƚ�");
+            }
+
+        }
     }
     public void SelectGrace(int _index)
     {
@@ -513,7 +526,6 @@ public class UIManager : SingletonManager<UIManager>
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI 활성화 
         if(_index == 0)
         {
             inventoryPanelController.SetPlayer(player);
@@ -526,8 +538,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if(_index == 2)
         {
-            altarInfoPanelController.SetAltar(altar);
-            altarInfoPanelController.ActiveAltarInfo(true);
+            altarInfoPanelController.SetActiveAltarInfo(true);
         }
         else if(_index == 3)
         {
@@ -568,7 +579,6 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI 비활성화
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);
@@ -579,7 +589,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 2)
         {
-            altarInfoPanelController.ActiveAltarInfo(false);
+            altarInfoPanelController.SetActiveAltarInfo(false);
         }
         else if (_index == 3)
         {

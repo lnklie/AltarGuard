@@ -3,97 +3,129 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * √÷¡æºˆ¡§¿œ : 2022-06-05
- * ¿€º∫¿⁄ : Inklie
- * ∆ƒ¿œ∏Ì : CharacterStatus.cs
+ * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
+ * ÏûëÏÑ±Ïûê : Inklie
+ * ÌååÏùºÎ™Ö : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
 {
-    [SerializeField]
-    protected bool isAtk = false;
-    [SerializeField]
-    protected Transform target = null;
-    [SerializeField]
-    protected float seeRange = 8f;
-    [SerializeField]
-    protected float atkRange = 0f;
-    [SerializeField]
-    protected int curMp = 0;
-    [SerializeField]
-    protected int maxMp = 0;
-    [SerializeField]
-    protected int physicalDamage = 0;
-    [SerializeField]
-    protected int magicalDamage = 0;
-    [SerializeField]
-    protected float speed = 0f;
-    [SerializeField]
-    protected float atkSpeed = 2f;
+    [SerializeField] protected bool isAtk = false;
+    [SerializeField] protected Transform target = null;
+    [SerializeField] protected float seeRange = 8f;
+    [SerializeField] protected int curMp = 0;
+    [SerializeField] protected int maxMp = 0;
     protected float arrowSpd = 2f;
-    [SerializeField]
-    protected Vector2 distance = new Vector2(0, 0);
-    protected int curLevel = 30;
-    [SerializeField]
-    protected int totalStr = 5;
-    [SerializeField]
-    protected int totalDex = 5;
-    [SerializeField]
-    protected int totalWiz = 5;
-    [SerializeField]
-    protected int totalLuck = 5;
-    protected int str = 5;
-    protected int dex = 5;
-    protected int wiz = 5;
-    protected int luck = 5;
-    protected float attackType = 0f;
-    [SerializeField]
-    protected RaycastHit2D hitRay = default;
-    [SerializeField]
-    protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
-    [SerializeField]
-    protected List<Status> allyRayList = new List<Status>();
-    [SerializeField]
-    protected int hpRegenValue = 0;
-    protected bool isHPRegen = false;
-    protected int passiveStr = 0;
-    protected int passiveDex = 0;
-    protected int passiveWiz = 0;
-    protected int passiveLuck = 0;
-    [SerializeField]
-    protected EAIState aiState = EAIState.Idle;
-    [SerializeField]
-    protected Vector2 targetDir = Vector2.zero;
-    [SerializeField]
-    protected EquipmentController equipmentController = null;
-    [SerializeField]
-    protected Transform allyTarget = null;
+    [SerializeField] protected Vector2 distance = new Vector2(0, 0);
+    [SerializeField] protected int curLevel = 30;
+
+    [Header("TotalStatus")]
+    [SerializeField] protected int totalMaxHp = 0;
+    [SerializeField] protected int totalMaxMp = 0;
+    [SerializeField] protected int totalStr = 0;
+    [SerializeField] protected int totalDex = 0;
+    [SerializeField] protected int totalWiz = 0;
+    [SerializeField] protected int totalLuck = 0;
+    [SerializeField] protected int totalHpRegenValue = 0;
+    [SerializeField] protected int totalPhysicalDamage = 0;
+    [SerializeField] protected int totalMagicalDamage = 0;
+    [SerializeField] protected int totalDefensivePower = 0;
+    [SerializeField] protected float totalSpeed = 0;
+    [SerializeField] protected float totalAtkSpeed = 0;
+    [SerializeField] protected float totalAtkRange = 0;
+
+    [Header("BasicStatus")]
+    [SerializeField] protected int str = 5;
+    [SerializeField] protected int dex = 5;
+    [SerializeField] protected int wiz = 5;
+    [SerializeField] protected int luck = 5;
+    [SerializeField] protected int hpRegenValue = 0;
+    [SerializeField] protected int physicalDamage = 0;
+    [SerializeField] protected int magicalDamage = 0;
+    [SerializeField] protected float speed = 0f;
+    [SerializeField] protected float atkSpeed = 2f;
+    [SerializeField] protected float atkRange = 0f;
+
+    [Header("EquipStatus")]
+    [SerializeField] protected int equipedStr = 0;
+    [SerializeField] protected int equipedDex = 5;
+    [SerializeField] protected int equipedWiz = 5;
+    [SerializeField] protected int equipedLuck = 5;
+    [SerializeField] protected int equipedHpRegenValue = 0;
+    [SerializeField] protected int equipedPhysicalDamage = 0;
+    [SerializeField] protected int equipedMagicalDamage = 0;
+    [SerializeField] protected float equipedSpeed = 0f;
+    [SerializeField] protected float equipedAtkSpeed = 2f;
+    [SerializeField] protected float equipedAtkRange = 0f;
+
+    [Header("GraceStatus")]
+    [SerializeField] protected int graceMaxHp = 0;
+    [SerializeField] protected int graceMaxMp = 0;
+    [SerializeField] protected int graceHpRegenValue = 0;
+    [SerializeField] protected int graceStr = 0;
+    [SerializeField] protected int graceDex = 0;
+    [SerializeField] protected int graceWiz = 0;
+    [SerializeField] protected int graceLuck = 0;
+    [SerializeField] protected int gracePhysicalDamage = 0;
+    [SerializeField] protected int graceMagicalDamage = 0;
+    [SerializeField] protected int graceDefensivePower = 0;
+    [SerializeField] protected float graceSpeed = 0f;
+    [SerializeField] protected float graceAtkSpeed = 0f;
+    [SerializeField] protected float graceAtkRange = 0f;
+
+
+
+    [SerializeField] protected EAIState aiState = EAIState.Idle;
+    [SerializeField] protected Vector2 targetDir = Vector2.zero;
+    [SerializeField] protected EquipmentController equipmentController = null;
+    [SerializeField] protected Transform allyTarget = null;
     protected int curExp = 0;
     protected int maxExp = 0;
-    protected int buffPhysicalDamage = 0;
-    protected int buffMagicalDamage = 0;
-    protected int buffDefensivePower = 0;
-    protected float buffSpeed = 0f;
-    protected int buffHpRegenValue = 0;
-    [SerializeField]
-    protected bool isStatusUpdate = false;
-    [SerializeField]
-    protected float delayTime = 0f;
-    [SerializeField]
-    private float stiffenTime = 0f;
-    [SerializeField]
-    private GameObject flag = null;
-    [SerializeField]
-    private bool isFlagComeback = false;
 
-    [SerializeField]
-    private bool[] isAllyTargeted = new bool[5];
-    [SerializeField]
-    private bool[] isEnemyTargeted = new bool[101];
-    [SerializeField]
-    private bool isDied = false;
+    [Header("BuffStatus")]
+    [SerializeField] protected int buffPhysicalDamage = 0;
+    [SerializeField] protected int buffMagicalDamage = 0;
+    [SerializeField] protected int buffDefensivePower = 0;
+    [SerializeField] protected float buffSpeed = 0f;
+    [SerializeField] protected int buffHpRegenValue = 0;
+
+
+    [SerializeField] protected bool isStatusUpdate = false;
+    [SerializeField] protected float delayTime = 0f;
+    [SerializeField] private float stiffenTime = 0f;
+    [SerializeField] private GameObject flag = null;
+    [SerializeField] private bool isFlagComeback = false;
+
+    [SerializeField] protected RaycastHit2D hitRay = default;
+    [SerializeField] protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
+    [SerializeField] protected List<Status> allyRayList = new List<Status>();
+    protected bool isHPRegen = false;
+    protected float attackType = 0f;
+    [SerializeField] private bool[] isAllyTargeted = new bool[5];
+    [SerializeField] private bool[] isEnemyTargeted = new bool[101];
+    [SerializeField] private bool isDied = false;
 
     #region Properties
+    public int GraceMaxHp
+    {
+        get { return graceMaxHp; }
+        set { graceMaxHp = value; }
+    }
+    public int GraceMaxMp
+    {
+        get { return graceMaxMp; }
+        set { graceMaxMp = value; }
+    }
+    public int GraceDefensivePower
+    {
+        get { return graceDefensivePower; }
+        set { graceDefensivePower = value; }
+    }
+    public int GraceHpRegenValue
+    {
+        get { return graceHpRegenValue; }
+        set { graceHpRegenValue = value; }
+    }
     public bool IsDied
     {
         get { return isDied; }
@@ -166,25 +198,25 @@ public class CharacterStatus : Status
         get { return aiState; }
         set { aiState = value; }
     }
-    public int PassiveLuck
+    public int GraceLuck
     {
-        get { return passiveLuck; }
-        set { passiveLuck = value; }
+        get { return graceLuck; }
+        set { graceLuck = value; }
     }
-    public int PassiveWiz
+    public int GraceWiz
     {
-        get { return passiveWiz; }
-        set { passiveWiz = value; }
+        get { return graceWiz; }
+        set { graceWiz = value; }
     }
-    public int PassiveDex
+    public int GraceDex
     {
-        get { return passiveDex; }
-        set { passiveDex = value; }
+        get { return graceDex; }
+        set { graceDex = value; }
     }
-    public int PassiveStr
+    public int GraceStr
     {
-        get { return passiveStr; }
-        set { passiveStr = value; }
+        get { return graceStr; }
+        set { graceStr = value; }
     }
     public int Luck
     {
@@ -205,6 +237,17 @@ public class CharacterStatus : Status
     {
         get { return str; }
         set { str = value; }
+    }
+    public int HpRegenValue
+    {
+        get { return hpRegenValue; }
+        set { hpRegenValue = value; }
+    }
+
+    public int TotalHpRegenValue
+    {
+        get { return totalHpRegenValue; }
+        set { totalHpRegenValue = value; }
     }
     public int TotalLuck
     {
@@ -346,12 +389,14 @@ public class CharacterStatus : Status
     {
         base.Awake();
         equipmentController = this.GetComponent<EquipmentController>();
+    }
+    public virtual void Start()
+    {
         UpdateAbility();
-        curHp = maxHp;
-        curMp = maxMp;
+        curHp = totalMaxHp;
+        curMp = totalMaxMp;
         delayTime = atkSpeed;
     }
-
     public override void Update()
     {
         base.Update();
@@ -374,20 +419,30 @@ public class CharacterStatus : Status
     }
     public void UpdateBasicStatus()
     {
-        totalStr = str + passiveStr;
-        totalDex = dex + passiveDex;
-        totalWiz = wiz + passiveWiz;
-        totalLuck = luck + passiveLuck;
+        totalStr = str + equipedStr + graceStr;
+        totalDex = dex + equipedDex + graceDex;
+        totalWiz = wiz + equipedWiz + graceWiz;
+        totalLuck = luck + equipedLuck + graceLuck;
+
+        maxHp = totalStr * 10;
+        MaxMp = totalWiz * 10;
+        speed = totalDex * 0.1f;
     }
 
     public virtual void UpdateAbility()
     {
-        // ¥…∑¬ æ˜µ•¿Ã∆Æ
+        // Îä•Î†• ÏóÖÎç∞Ïù¥Ìä∏
         UpdateBasicStatus();
-        maxHp = 100 + totalStr * 10;
-        maxMp = 100 + totalWiz * 10;
-        speed = 2 + totalDex * 0.1f + buffSpeed;
-        //hpRegenValue = totalStr * 1 + buffHpRegenValue;
+        totalMaxHp = maxHp + graceMaxHp;
+        totalMaxMp = maxMp + graceMaxMp;
+        totalAtkSpeed = atkSpeed + equipedAtkSpeed + graceAtkSpeed;
+        totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
+
+        totalPhysicalDamage = physicalDamage + equipedPhysicalDamage + gracePhysicalDamage + buffPhysicalDamage;
+        totalMagicalDamage = magicalDamage + equipedMagicalDamage + graceMagicalDamage + buffMagicalDamage;
+
+        totalSpeed = speed + equipedSpeed + graceSpeed + buffSpeed;
+        totalHpRegenValue = hpRegenValue + equipedHpRegenValue + graceHpRegenValue + buffHpRegenValue;
     }
     public void RemoveBuff()
     {
@@ -410,7 +465,7 @@ public class CharacterStatus : Status
             }
             else
             {
-                if (curHp + hpRegenValue >= maxHp)
+                if (curHp + totalHpRegenValue >= maxHp)
                 {
 
                     curHp = maxHp;
@@ -418,7 +473,7 @@ public class CharacterStatus : Status
                 }
                 else
                 {
-                    curHp += hpRegenValue;
+                    curHp += totalHpRegenValue;
                 }
             }
             isStatusUpdate = true;

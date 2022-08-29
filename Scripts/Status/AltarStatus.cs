@@ -36,15 +36,19 @@ public class AltarStatus : Status
 
     private bool isAltarStatusChange = false;
     private Image[] images = null;
-
+    [SerializeField]
+    private SpriteRenderer buffRangeSprite = null;
     #region Property
-
+    public SpriteRenderer BuffRangeSprite
+    {
+        get { return buffRangeSprite; }
+    }
     public AltarState AltarState
     {
         get { return altarState; }
         set { altarState = value; }
     }
-    public int HpLevel
+    public int Hp
     {
         get { return hpLevel; }
         set { hpLevel = value; }
@@ -54,27 +58,27 @@ public class AltarStatus : Status
         get { return defensivePowerLevel; }
         set { defensivePowerLevel = value; }
     }
-    public int BuffRangeLevel
+    public int BuffRange
     {
         get { return buffRangeLevel; }
         set { buffRangeLevel = value; }
     }
-    public int BuffDamageLevel
+    public int BuffDamage
     {
         get { return buffDamageLevel; }
         set { buffDamageLevel = value; }
     }
-    public int BuffDefensivePowerLevel
+    public int BuffDefensivePower
     {
         get { return buffDefensivePowerLevel; }
         set { buffDefensivePowerLevel = value; }
     }
-    public int BuffSpeedLevel
+    public int BuffSpeed
     {
         get { return buffSpeedLevel; }
         set { buffSpeedLevel = value; }
     }
-    public int BuffHpRegenLevel
+    public int BuffHpRegen
     {
         get { return buffHpRegenLevel; }
         set { buffHpRegenLevel = value; }
@@ -99,7 +103,10 @@ public class AltarStatus : Status
     {
         images[1].fillAmount = curHp / (float)maxHp;
     }
-
+    public void SetActiveBuffRange(bool _bool)
+    {
+        buffRangeSprite.gameObject.SetActive(_bool);
+    }
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
         // 제단 업그레이드

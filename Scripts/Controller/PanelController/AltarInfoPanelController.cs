@@ -27,12 +27,34 @@ public class AltarInfoPanelController : MonoBehaviour
             }
         }
     }
-
-    public void UpdateMoney()
+    public void UpdateAltarStatus(int _index)
     {
-        moneyText.text = player.Money.ToString("N0");
+        switch(_index)
+        {
+            case 0:
+                altar.Hp = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 1:
+                altar.DefensivePower = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 2:
+                altar.BuffRange = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 3:
+                altar.BuffDamage = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 4:
+                altar.BuffDefensivePower = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 5:
+                altar.BuffSpeed = altarInfoSlots[_index].PropertyValue;
+                break;
+            case 6:
+                altar.BuffHpRegen = altarInfoSlots[_index].PropertyValue;
+                break;
+        }
+        
     }
-
     public void UpdateMoney()
     {
         moneyText.text = player.Money.ToString("N0");
@@ -88,16 +110,19 @@ public class AltarInfoPanelController : MonoBehaviour
         UpdateAltarInfo(_index);
         UpdateMoney();
         altar.IsAltarStatusChange = true;
-        UpdateMoney();
+        UpdateAltarStatus(_index);
     }
-    public void SetAltar(AltarStatus _altar)
+    //public void SetAltar(AltarStatus _altar)
+    //{
+    //    altar = _altar;
+    //}
+    public void SetActiveAltarInfo(bool _bool)
     {
-        altar = _altar;
-    }
-    public void ActiveAltarInfo(bool _bool)
-    {
-        // UI Ȱ��ȭ 
+        // UI È°¼ºÈ­ 
+
         this.gameObject.SetActive(_bool);
+        altar.SetActiveBuffRange(_bool);
+
         UpdateMoney();
 
     }

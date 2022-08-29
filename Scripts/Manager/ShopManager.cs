@@ -53,7 +53,7 @@ public class ShopManager : SingletonManager<ShopManager>
     public Item AddProduct(Item _item)
     {
         Item __item = null;
-        // ¾ÆÀÌÅÛ ¾ò±â
+        // Â¾Ã†Ã€ÃŒÃ…Ã› Â¾Ã²Â±Ã¢
         switch (_item.itemKey / 1000)
         {
             case 0:
@@ -116,7 +116,7 @@ public class ShopManager : SingletonManager<ShopManager>
                 __item = _wand;
                 break;
             case 11:
-                Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value,_item.coolTime, _item.itemRank);
+                Consumables _consumables = new Consumables(_item.itemKey, _item.itemName, _item.buyPrice, _item.sellPrice, _item.useEffect, _item.target, _item.durationTime, _item.value,_item.maxCoolTime, _item.itemRank);
                 inventroyConsumableItems.Add(_consumables);
                 __item = _consumables;
 
@@ -136,7 +136,7 @@ public class ShopManager : SingletonManager<ShopManager>
 
     public void SortItemKeyInventory(List<Item> _shopInventory)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // Â¸Â®Â½ÂºÃ†Â® ÃÂ¤Â·Ã„
         _shopInventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;

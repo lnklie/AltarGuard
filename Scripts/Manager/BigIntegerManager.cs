@@ -18,7 +18,6 @@ public static class BigIntegerManager
     {
         unitCapacity += _capacity;
 
-        // 0 ~ 999사이를 초기화 시킴
         units.Clear();
         unitsMap.Clear();
         idxMap.Clear();
@@ -26,9 +25,6 @@ public static class BigIntegerManager
         unitsMap.Add("", 0);
         idxMap.Add("", 0);
 
-        // capacity만큼 미리 생성 하는 것
-        // capacity가 1일 경우에는 A ~ Z, 2일 경우에는 AA ~ AZ
-        // capacity 1마다 아스키 코드의 알파벳이 26개 생성됨
 
         for(int i = 0; i <= unitCapacity; i++)
         {
@@ -59,12 +55,11 @@ public static class BigIntegerManager
 
     private static (int value, int idx, int Point) GetSize(BigInteger _value)
     {
-        // 단위를 구하기 위한 값으로 복사
         var _currentValue = _value;
         var _current = (_value / unitSize) % unitSize;
         var _idx = 0;
         var _lastValue = 0;
-        // 현재 값이 999(unitSize) 이상일 경우 나눔
+
         while(_currentValue > unitSize - 1)
         {
             var _predCurrentValue = _currentValue / unitSize;
@@ -81,7 +76,7 @@ public static class BigIntegerManager
     }
 
 
-    // 숫자를 단위로 리턴하기
+
     public static string GetUnit(BigInteger _value)
     {
         if (!isInitialize)
@@ -91,14 +86,14 @@ public static class BigIntegerManager
         return $"{_sizeStruct.value}.{_sizeStruct.Point}{units[_sizeStruct.idx]}";
     }
 
-    // 단위를 숫자로 변경시키기
+
     public static BigInteger UnitToValue(string _unit)
     {
         if (isInitialize == false)
             UnitInitialize(5);
 
         var _split = _unit.Split('.');
-        // 소숫점에 대한 연산
+
         if(_split.Length >= 2)
         {
             var _value = BigInteger.Parse(_split[0]);
@@ -113,7 +108,7 @@ public static class BigIntegerManager
                 return (_unitValue * _value) + (_unitValue / 10) * _point;
             }
         }
-        // 비소수 연산
+
         else
         {
             var _value = BigInteger.Parse((Regex.Replace(_unit, "[^0-9]", "")));

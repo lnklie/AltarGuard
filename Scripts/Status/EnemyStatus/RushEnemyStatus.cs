@@ -80,6 +80,6 @@ public class RushEnemyStatus : EnemyStatus
         magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
         defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
         speed = rushEnemy.speed + dex * 0.1f;
-        hpRegenValue = str * 1;
+        graceHpRegenValue = str * 1;
     }
 }
