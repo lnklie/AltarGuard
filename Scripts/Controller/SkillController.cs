@@ -151,18 +151,18 @@ public class SkillController : MonoBehaviour
             }
         }
     }
-    public void SetPassiveStatus()
-    {
-        for (int i = 0; i < passiveSkills.Count; i++)
-        {
-            if (passiveSkills[i].targetStatus == "str")
-                status.GraceStr = SetPassiveSkillByLevel(passiveSkills[i]);
-            else if (passiveSkills[i].targetStatus == "dex")
-                status.GraceDex = SetPassiveSkillByLevel(passiveSkills[i]);
-            else if (passiveSkills[i].targetStatus == "wiz")
-                status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
-        }
-    }
+    //public void SetPassiveStatus()
+    //{
+    //    for (int i = 0; i < passiveSkills.Count; i++)
+    //    {
+    //        if (passiveSkills[i].targetStatus == "str")
+    //            status.GraceStr = SetPassiveSkillByLevel(passiveSkills[i]);
+    //        else if (passiveSkills[i].targetStatus == "dex")
+    //            status.GraceDex = SetPassiveSkillByLevel(passiveSkills[i]);
+    //        else if (passiveSkills[i].targetStatus == "wiz")
+    //            status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
+    //    }
+    //}
     public Skill GetPassiveSkill(int _skillKey)
     {
         Skill _skill = null;

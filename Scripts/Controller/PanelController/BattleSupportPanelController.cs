@@ -17,7 +17,7 @@ public class BattleSupportPanelController : MonoBehaviour
 
     private void Update()
     {
-        if(player.CurHp / player.MaxHp * 1f <= 1.0f)
+        if(player.CurHp / player.TotalMaxHp * 1f <= 1.0f)
         {
             AutoUse();
         }
