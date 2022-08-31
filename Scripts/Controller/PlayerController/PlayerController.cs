@@ -13,8 +13,8 @@ public class PlayerController : CharacterController
     private PlayerStatus player = null;
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
-    [SerializeField]
-    private GameObject rivivePoint = null;
+    [SerializeField] private GameObject rivivePoint = null;
+
     public override void Awake()
     {
         base.Awake();
@@ -67,7 +67,7 @@ public class PlayerController : CharacterController
     public void DragFlag()
     {
         RaycastHit2D hit = default;
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !player.IsUiOn)
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
             
