@@ -38,8 +38,8 @@ public enum ItemType
     Helmet,
     Armor,
     Back,
-    Weapon,
     SubWeapon,
+    Weapon,
     Consumables,
     Miscellaneous
 }

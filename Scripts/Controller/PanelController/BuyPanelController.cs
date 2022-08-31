@@ -160,16 +160,16 @@ public class BuyPanelController : MonoBehaviour
         SetActiveShopItemInfo(true);
 
 
-        buyingiteminfoText[0].text = selectBuyingItem.itemName;
+        buyingiteminfoText[0].text = selectBuyingItem.itemKorName;
         buyingiteminfoText[1].text = KeyToItemTypeText(selectBuyingItem.itemKey);
         buyingiteminfoText[3].text = "구매 가격: " + selectBuyingItem.buyPrice;
         switch (selectBuyingItem.itemKey / 1000)
         {
             case 0:
-                buyingiteminfoText[2].text = "This is Hair";
+                buyingiteminfoText[2].text = "머리 장식품";
                 break;
             case 1:
-                buyingiteminfoText[2].text = "This is FaceHair";
+                buyingiteminfoText[2].text = "안면 장식품";
                 break;
             case 2:
                 buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
@@ -233,15 +233,15 @@ public class BuyPanelController : MonoBehaviour
     {
         // 아이템 정보창 업데이트
         int _index = selectBuyingItem.itemType;
-        equipediteminfoText[0].text = playerStatus.EquipmentController.EquipItems[_index].itemName;
+        equipediteminfoText[0].text = playerStatus.EquipmentController.EquipItems[_index].itemKorName;
         equipediteminfoText[1].text = KeyToItemTypeText(playerStatus.EquipmentController.EquipItems[_index].itemKey);
         switch (playerStatus.EquipmentController.EquipItems[_index].itemKey / 1000)
         {
             case 0:
-                equipediteminfoText[2].text = "This is Hair";
+                equipediteminfoText[2].text = "머리 장식품";
                 break;
             case 1:
-                equipediteminfoText[2].text = "This is FaceHair";
+                equipediteminfoText[2].text = "안면 장식품";
                 break;
             case 2:
                 equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;

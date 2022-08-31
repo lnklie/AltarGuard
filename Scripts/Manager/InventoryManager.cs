@@ -10,42 +10,33 @@ using UnityEngine;
 */
 public class InventoryManager : SingletonManager<InventoryManager>
 {
-    [SerializeField]
-    private List<Item> inventroyWeaponItems = new List<Item>();
+    [SerializeField] private List<Item> inventroyWeaponItems = new List<Item>();
 
-    [SerializeField]
-    private List<Item> inventroyEquipmentItems = new List<Item>();
+    [SerializeField] private List<Item> inventroyEquipmentItems = new List<Item>();
 
-    [SerializeField]
-    private List<Item> inventroyConsumableItems = new List<Item>();
+    [SerializeField] private List<Item> inventroyConsumableItems = new List<Item>();
 
-    [SerializeField]
-    private List<Item> inventroyMiscellaneousItems = new List<Item>();
+    [SerializeField] private List<Item> inventroyMiscellaneousItems = new List<Item>();
 
-    [SerializeField]
-    private List<Item> inventroyDecorationItems = new List<Item>();
+    [SerializeField] private List<Item> inventroyDecorationItems = new List<Item>();
+
+    [SerializeField] private bool isWeaponCoolTime = false;
+    [SerializeField] private bool isEquipmentCoolTime = false;
+    [SerializeField] private bool isConsumaableCoolTime = false;
+    [SerializeField] private bool isDecorationCoolTime = false;
 
     #region Property
-    public List<Item> InventroyWeaponItems
-    {
-        get { return inventroyWeaponItems; }
-    }
-    public List<Item> InventroyEquipmentItems
-    {
-        get { return inventroyEquipmentItems; }
-    }
-    public List<Item> InventroyConsumableItems
-    {
-        get { return inventroyConsumableItems; }
-    }
-    public List<Item> InventroyMiscellaneousItems
-    {
-        get { return inventroyMiscellaneousItems; }
-    }
-    public List<Item> InventroyDecorationItems
-    {
-        get { return inventroyDecorationItems; }
-    }
+    public List<Item> InventroyWeaponItems { get { return inventroyWeaponItems; } }
+    public List<Item> InventroyEquipmentItems { get { return inventroyEquipmentItems; } }
+    public List<Item> InventroyConsumableItems { get { return inventroyConsumableItems; } }
+    public List<Item> InventroyMiscellaneousItems { get { return inventroyMiscellaneousItems; } }
+    public List<Item> InventroyDecorationItems { get { return inventroyDecorationItems; } }
+
+    public bool IsWeaponCoolTime { get { return isWeaponCoolTime; } set { isWeaponCoolTime = value; } }
+
+    public bool IsEquipmentCoolTime { get { return isEquipmentCoolTime; } set { isEquipmentCoolTime = value; } }
+    public bool IsConsumaableCoolTime { get { return isConsumaableCoolTime; } set { isConsumaableCoolTime = value; } }
+    public bool IsDecorationCoolTime { get { return isDecorationCoolTime; } set { isDecorationCoolTime = value; } }
     #endregion
 
     private void Start()
@@ -70,21 +61,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
         AcquireItem(DatabaseManager.Instance.SelectItem(7002));
         AcquireItem(DatabaseManager.Instance.SelectItem(8003));
         AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
+
     }
     private void Update()
     {
-        for(int i = 0; i < InventroyWeaponItems.Count;i++)
+
+        for (int i = 0; i < InventroyWeaponItems.Count; i++)
         {
-            if(InventroyWeaponItems[i].isCoolTime)
+            if (InventroyWeaponItems[i].isCoolTime)
             {
                 InventroyWeaponItems[i].coolTime -= Time.deltaTime;
-                if(InventroyWeaponItems[i].coolTime <= 0f)
+                if (InventroyWeaponItems[i].coolTime <= 0f)
                 {
-                    InventroyWeaponItems[i].coolTime = 0f;
                     InventroyWeaponItems[i].isCoolTime = false;
+                    InventroyWeaponItems[i].coolTime = 0;
                 }
             }
         }
+
         for (int i = 0; i < inventroyEquipmentItems.Count; i++)
         {
             if (inventroyEquipmentItems[i].isCoolTime)
@@ -92,11 +86,12 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 inventroyEquipmentItems[i].coolTime -= Time.deltaTime;
                 if (inventroyEquipmentItems[i].coolTime <= 0f)
                 {
-                    inventroyEquipmentItems[i].coolTime = 0f;
                     inventroyEquipmentItems[i].isCoolTime = false;
+                    inventroyEquipmentItems[i].coolTime = 0;
                 }
             }
         }
+
         for (int i = 0; i < InventroyConsumableItems.Count; i++)
         {
             if (InventroyConsumableItems[i].isCoolTime)
@@ -104,7 +99,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 InventroyConsumableItems[i].coolTime -= Time.deltaTime;
                 if (InventroyConsumableItems[i].coolTime <= 0f)
                 {
-                    InventroyConsumableItems[i].coolTime = 0f;
+                    InventroyConsumableItems[i].coolTime = 0;
                     InventroyConsumableItems[i].isCoolTime = false;
                 }
             }
@@ -116,8 +111,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 InventroyDecorationItems[i].coolTime -= Time.deltaTime;
                 if (InventroyDecorationItems[i].coolTime <= 0f)
                 {
-                    InventroyDecorationItems[i].coolTime = 0f;
                     InventroyDecorationItems[i].isCoolTime = false;
+                    InventroyDecorationItems[i].coolTime = 0;
                 }
             }
         }
@@ -143,31 +138,32 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 case 4:
                 case 5:
                 case 6:
+                case 7:
                     inventroyEquipmentItems.Add(_item);
                     break;
-                case 7:
                 case 8:
                 case 9:
                 case 10:
+                case 11:
+                case 12:
                     inventroyWeaponItems.Add(_item);
                     break;
-                case 11:
+                case 13:
                     if (IndexOfItem(_item) != -1)
                         SelectItem(_item).count += _item.count;
                     else
                         inventroyConsumableItems.Add(_item);
                     break;
-                case 12:
+                case 14:
                     if (IndexOfItem(_item) != -1)
                         SelectItem(_item).count += _item.count;
                     else
                     {
-
                         inventroyMiscellaneousItems.Add(_item);
                     }
                     break;
             }
-            UIManager.Instance.SetLog(_item.itemName +  " Aquired !!");
+            UIManager.Instance.SetLog(_item.itemKorName +  " Aquired !!");
         }
         return _item;
     }
@@ -186,9 +182,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 4:
             case 5:
             case 6:
+            case 7:
                 index = inventroyEquipmentItems.IndexOf(_item);
                 break;
-            case 7:
             case 8:
                 index = inventroyWeaponItems.IndexOf(_item);
                 break;
@@ -232,9 +228,9 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 case 4:
                 case 5:
                 case 6:
+                case 7:
                     _item = inventroyEquipmentItems[IndexOfItem(_selectItem)];
                     break;
-                case 7:
                 case 8:
                     _item = inventroyWeaponItems[IndexOfItem(_selectItem)];
                     break;
@@ -275,32 +271,32 @@ public class InventoryManager : SingletonManager<InventoryManager>
             case 4:
             case 5:
             case 6:
+            case 7:
                 for (int i = 0; i < inventroyEquipmentItems.Count; i++)
                 {
                     if (_selectItemKey == inventroyEquipmentItems[i].itemKey)
                     _items.Add(inventroyEquipmentItems[i]);
                 }
                 break;
-            case 7:
             case 8:
-                break;
             case 9:
-                break;
             case 10:
+            case 11:
+            case 12:
                 for (int i = 0; i < inventroyWeaponItems.Count; i++)
                 {
                     if (_selectItemKey == inventroyWeaponItems[i].itemKey)
                     _items.Add(inventroyWeaponItems[i]);
                 }
                 break;
-            case 11:
+            case 13:
                 for (int i = 0; i < inventroyConsumableItems.Count; i++)
                 {
                     if (_selectItemKey == inventroyConsumableItems[i].itemKey)
                     _items.Add(inventroyConsumableItems[i]);
                 }
                 break;
-            case 12:
+            case 14:
                 for (int i = 0; i < inventroyMiscellaneousItems.Count; i++)
                 {
                     if (_selectItemKey == inventroyMiscellaneousItems[i].itemKey)

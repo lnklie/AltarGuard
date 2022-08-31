@@ -13,61 +13,43 @@ using TMPro;
 public class InventoryPanelController : MonoBehaviour
 {
     [Header("ItemInfo")]
-    [SerializeField]
-    private GameObject itemInfo = null;
+    [SerializeField] private GameObject itemInfo = null;
 
     [Header("CheckDiscard")]
-    [SerializeField]
-    private GameObject checkDiscard = null;
-    [SerializeField]
-    private GameObject checkAmount = null;
-    [SerializeField]
-    private InputField amount = null;
+    [SerializeField] private GameObject checkDiscard = null;
+    [SerializeField] private GameObject checkAmount = null;
+    [SerializeField] private TMP_InputField amount = null;
 
     [Header("UIImages")]
-    [SerializeField]
-    private GameObject UIImages = null;
+    [SerializeField] private GameObject UIImages = null;
 
     [Header("Buttons")]
-    [SerializeField]
-    private Button[] inventoryButtons = null;
+    [SerializeField] private Button[] inventoryButtons = null;
 
     [Header("Equip")]
-    [SerializeField]
-    private Button[] equipCharactersBtn = null;
-    [SerializeField]
-    private TextMeshProUGUI equipmentNameText = null;
+    [SerializeField] private Button[] equipCharactersBtn = null;
+    [SerializeField] private TextMeshProUGUI equipmentNameText = null;
 
     [Header("MoenyText")]
-    [SerializeField]
-    private TextMeshProUGUI moneyText = null;
+    [SerializeField] private TextMeshProUGUI moneyText = null;
 
     [Header("Default")]
-    [SerializeField]
-    private Sprite UIMask = null;
+    [SerializeField] private Sprite UIMask = null;
 
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
     private bool isQuickSlotsOpen = false;
-    [SerializeField]
-    private int selectCharNum = 0;
-    private int selectInventoryIndex = 0;
-    [SerializeField]
-    private Item selectItem = null;
-    [SerializeField]
-    private EquipmentController selectCharacterEqipment = null;
-    [SerializeField]
-    private AllyStatus selectCharStatus = null;
-    [SerializeField]
-    private InventorySlot[] inventorySlots = null;
-    [SerializeField]
-    private InventorySlot selectInventorySlot = null;
-
-    [SerializeField]
-    private EquipmentSlot[] equipmentSlots = null;
     private TextMeshProUGUI[] iteminfoText = null;
-    [SerializeField]
-    private GameObject quickSlotSelectButtons = null;
+    private int selectInventoryIndex = 0;
+    [SerializeField] private int selectCharNum = 0;
+    [SerializeField] private Item selectItem = null;
+    [SerializeField] private EquipmentController selectCharacterEqipment = null;
+    [SerializeField] private AllyStatus selectCharStatus = null;
+    [SerializeField] private InventorySlot[] inventorySlots = null;
+    [SerializeField] private InventorySlot selectInventorySlot = null;
+    [SerializeField] private EquipmentSlot[] equipmentSlots = null;
+    [SerializeField] private GameObject quickSlotSelectButtons = null;
+
     
     private void Awake()
     {
@@ -99,7 +81,7 @@ public class InventoryPanelController : MonoBehaviour
     {
         moneyText.text = playerStatus.Money.ToString("N0"); 
     }
-    public void InventorySlotChange(int _index)
+    public void ChangeInventorySlot(int _index)
     {
         // 인벤토리 슬롯 바꾸기 
         InventoryReset();
@@ -166,13 +148,12 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
         checkDiscard.SetActive(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
         checkAmount.SetActive(_bool);
+        amount.text = "";
     }
     public void UpdateItemInfo()
     {
@@ -196,7 +177,7 @@ public class InventoryPanelController : MonoBehaviour
                 inventoryButtons[0].gameObject.SetActive(true);
             }
         }
-        iteminfoText[0].text = selectItem.itemName;
+        iteminfoText[0].text = selectItem.itemKorName;
         iteminfoText[1].text = KeyToItemType(selectItem.itemKey);
         switch (selectItem.itemKey / 1000)
         {
@@ -222,31 +203,13 @@ public class InventoryPanelController : MonoBehaviour
                 iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 7:
-                iteminfoText[2].text =
-                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectItem).weaponType;
+                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
                 break;
             case 8:
-                iteminfoText[2].text =
-                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectItem).weaponType + "\n" +
-                    "방어력: " + selectItem.defensivePower;
-                break;
             case 9:
-                iteminfoText[2].text =
-                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectItem).weaponType;
-                break;
             case 10:
+            case 11:
+            case 12:
                 iteminfoText[2].text =
                     "물리 공격력: " + selectItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectItem.magicalDamage + "\n" +
@@ -254,11 +217,11 @@ public class InventoryPanelController : MonoBehaviour
                     "공격 거리: " + ((Weapon)selectItem).atkDistance + "\n" +
                     "무기 종류: " + ((Weapon)selectItem).weaponType;
                 break;
-            case 11:
+            case 13:
                 iteminfoText[2].text =
                     "회복량 : " + selectItem.value + "\n";
                 break;
-            case 12:
+            case 14:
                 iteminfoText[2].text = "이것은 퀘스트 아이템";
                 break;
         }
@@ -315,25 +278,38 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void EquipInventoryItem(List<EquipmentController> _characterList,int _character)
     {
-        if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
+        if(!selectItem.isCoolTime)
         {
-            // 장착하기 버튼
-            if (_characterList[_character].CheckEquipItems[selectItem.itemType])
+            selectItem.isCoolTime = true;
+            if (selectItem.itemType < 7)
+                InventoryManager.Instance.IsEquipmentCoolTime = true;
+            else
+                InventoryManager.Instance.IsWeaponCoolTime = true;
+
+            if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
             {
-                _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
+                // 장착하기 버튼
+                if (_characterList[_character].CheckEquipItems[selectItem.itemType])
+                {
+                    _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
+                }
+                selectItem.equipCharNum = _character;
+                SelectCharacter(_characterList);
+                SetActiveEquipCharacterBox(false);
+                _characterList[_character].ChangeEquipment(selectItem);
+                ChangeInventorySlot(selectInventoryIndex);
+                UpdateEquipmentName();
+                ChangeAllEquipmentImage();
+                SetActiveItemInfo(false);
+                selectItem = null;
             }
-            selectItem.equipCharNum = _character;
-            SelectCharacter(_characterList);
-            SetActiveEquipCharacterBox(false);
-            _characterList[_character].ChangeEquipment(selectItem);
-            InventorySlotChange(selectInventoryIndex);
-            UpdateEquipmentName();
-            ChangeAllEquipmentImage();
-            SetActiveItemInfo(false);
-            selectItem = null;
+            else
+                Debug.Log("레벨이 부족합니다.");
         }
         else
-            Debug.Log("레벨이 부족합니다.");
+        {
+            Debug.Log("쿨타임 중");
+        }
     }
 
     public void TakeOffInventoryItem(List<EquipmentController> _characterList)
@@ -348,7 +324,7 @@ public class InventoryPanelController : MonoBehaviour
             Debug.Log("착용중이 아님");
         SetActiveItemInfo(false);
         ChangeAllEquipmentImage();
-        InventorySlotChange(selectInventoryIndex);
+        ChangeInventorySlot(selectInventoryIndex);
         UpdateEquipmentName();
         selectItem = null;
     }
@@ -450,29 +426,37 @@ public class InventoryPanelController : MonoBehaviour
         else
         {
             InventoryManager.Instance.DiscardItem(selectItem);
-            InventorySlotChange(selectInventoryIndex);
+            ChangeInventorySlot(selectInventoryIndex);
         }
     }
     public void DiscardSelectAmountItem()
     {
-        if (selectItem.count >= int.Parse(amount.text))
+        if(amount.text != "")
         {
-            InventoryManager.Instance.DiscardItem(selectItem, int.Parse(amount.text));
-            InventorySlotChange(selectInventoryIndex);
-            SetActiveCheckDiscardAmount(false);
-            amount.text = null;
+            if (selectItem.count >= int.Parse(amount.text))
+            {
+                InventoryManager.Instance.DiscardItem(selectItem, int.Parse(amount.text));
+                ChangeInventorySlot(selectInventoryIndex);
+                SetActiveCheckDiscardAmount(false);
+                amount.text = null;
+            }
+            else
+                Debug.Log("버리려는 값을 초과함");
         }
         else
-            Debug.Log("버리려는 값을 초과함");
+        {
+            UIManager.Instance.Notice("올바른 값을 입력해주세요.");
+        }
     }
     public void UseSelectItem(PlayerStatus _player)
     {
         // 아이템 사용
         if (!selectItem.isCoolTime)
         {
+            InventoryManager.Instance.IsConsumaableCoolTime = true;
             InventoryManager.Instance.UseItem(_player, selectItem);
             SetActiveItemInfo(false);
-            InventorySlotChange(2);
+            ChangeInventorySlot(2);
             selectItem.isCoolTime = true;
         }
         else

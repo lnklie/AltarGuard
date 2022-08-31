@@ -126,7 +126,7 @@ public class CraftPanelController : MonoBehaviour
         InitNecessaryItemCount();
         Item _item = DatabaseManager.Instance.SelectItem(selectCraftRecipe.completeItemKey);
 
-        craftItemName.text = _item.itemName;
+        craftItemName.text = _item.itemKorName;
         switch (_item.itemKey / 1000)
         {
             case 0:
@@ -263,15 +263,15 @@ public class CraftPanelController : MonoBehaviour
         
         SetActiveNecessaryItemInfoPanel(true);
         Item _item = selectNeedItemInfo;
-        necessaryItemName.text = _item.itemName;
+        necessaryItemName.text = _item.itemKorName;
         necessaryItemType.text = KeyToItemType(_item.itemKey);
         switch (_item.itemKey / 1000)
         {
             case 0:
-                necessaryItemInfo.text = "This is Hair";
+                necessaryItemInfo.text = "머리 장식품";
                 break;
             case 1:
-                necessaryItemInfo.text = "This is FaceHair";
+                necessaryItemInfo.text = "안면 장식품";
                 break;
             case 2:
                 necessaryItemInfo.text = "방어력: " + _item.defensivePower;

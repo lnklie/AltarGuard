@@ -104,322 +104,72 @@ public class CharacterStatus : Status
     [SerializeField] private bool[] isAllyTargeted = new bool[5];
     [SerializeField] private bool[] isEnemyTargeted = new bool[101];
     [SerializeField] private bool isDied = false;
-
+    [SerializeField] private bool isSkillChange = false;
     #region Properties
-    public int GraceMaxHp
-    {
-        get { return graceMaxHp; }
-        set { graceMaxHp = value; }
-    }
-    public int GraceMaxMp
-    {
-        get { return graceMaxMp; }
-        set { graceMaxMp = value; }
-    }
-    public int GraceDefensivePower
-    {
-        get { return graceDefensivePower; }
-        set { graceDefensivePower = value; }
-    }
-    public int GraceHpRegenValue
-    {
-        get { return graceHpRegenValue; }
-        set { graceHpRegenValue = value; }
-    }
-    public bool IsDied
-    {
-        get { return isDied; }
-        set { isDied = value; }
-    }
-    public bool[] IsAllyTargeted
-    {
-        get { return isAllyTargeted; }
-        set { isAllyTargeted = value; }
-    }
-    public bool[] IsEnemyTargeted
-    {
-        get { return isEnemyTargeted; }
-        set { isEnemyTargeted = value; }
-    }
-    public bool IsFlagComeBack
-    {
-        get { return isFlagComeback; }
-        set { isFlagComeback = value; }
-    }
-    public GameObject Flag
-    {
-        get { return flag; }
-        set { flag = value; }
-    }
+    public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
+    public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
+    public int GraceMaxMp { get { return graceMaxMp; } set { graceMaxMp = value; } }
+    public int GraceDefensivePower { get { return graceDefensivePower; } set { graceDefensivePower = value; } }
+    public int GraceHpRegenValue { get { return graceHpRegenValue; } set { graceHpRegenValue = value; } }
+    public bool IsDied { get { return isDied; } set { isDied = value; } }
+    public bool[] IsAllyTargeted { get { return isAllyTargeted; } set { isAllyTargeted = value; } }
+    public bool[] IsEnemyTargeted { get { return isEnemyTargeted; } set { isEnemyTargeted = value; } }
+    public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
+    public GameObject Flag { get { return flag; } set { flag = value; } }
+    public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }
+    public List<Status> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
+    public bool IsAtk { get { return isAtk; } set { isAtk = value; } }
+    public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
+    public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
+    public float DelayTime { get { return delayTime; } set { delayTime = value; } }
+    public List<EnemyStatus> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
+    public float AttackType { get { return attackType; } set { attackType = value; } }
+    public EAIState AIState { get { return aiState; } set { aiState = value; } }
+    public int GraceLuck { get { return graceLuck; } set { graceLuck = value; } }
+    public int GraceWiz { get { return graceWiz; } set { graceWiz = value; } }
+    public int GraceDex { get { return graceDex; } set { graceDex = value; } }
+    public int GraceStr { get { return graceStr; } set { graceStr = value; } }
+    public float GraceSpeed { get { return graceSpeed; } set { graceSpeed = value; } }
+    public float GraceAtkRange { get { return graceAtkRange; } set { graceAtkRange = value; } }
+    public int GraceMagicalDamage { get { return graceMagicalDamage; } set { graceMagicalDamage = value; } }
+    public int GracePhysicalDamage { get { return gracePhysicalDamage; } set { gracePhysicalDamage = value; } }
+    public float GraceAttackSpeed { get { return graceAttackSpeed; } set { graceAttackSpeed = value; } }
+    public int Luck { get { return luck; } set { luck = value; } }
+    public int Wiz { get { return wiz; } set { wiz = value; } }
+    public int Dex { get { return dex; } set { dex = value; } }
+    public int Str { get { return str; } set { str = value; } }
+    public int HpRegenValue { get { return hpRegenValue; } set { hpRegenValue = value; } }
+    public int TotalHpRegenValue { get { return totalHpRegenValue; } set { totalHpRegenValue = value; } }
+    public int TotalLuck { get { return totalLuck; } set { totalLuck = value; } }
+    public int TotalWiz { get { return totalWiz; } set { totalWiz = value; } }
+    public int TotalDex { get { return totalDex; } set { totalDex = value; } }
+    public int TotalStr { get { return totalStr; } set { totalStr = value; } }
+    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
+    public int TotalMaxMp { get { return totalMaxMp; } set { totalMaxMp = value; } }
+    public int CurLevel { get { return curLevel; } set { curLevel = value; } }
+    public Vector2 Distance { get { return distance; } set { distance = value; } }
+    public float ArrowSpd { get { return arrowSpd; } set { arrowSpd = value; } }
+    public Vector2 TargetDir { get { return targetDir; } set { targetDir = value; } }
+    public float AtkSpeed { get { return atkSpeed; } set { atkSpeed = value; } }
+    public float Speed { get { return speed; } }
+    public int PhysicalDamage { get { return physicalDamage; } }
+    public int MagicalDamage { get { return magicalDamage; } }
+    public int CurMp { get { return curMp; } set { curMp = value; } }
+    public int MaxMp { get { return maxMp; } set { maxMp = value; } }
+    public float AtkRange { get { return atkRange; } set { atkRange = value; } }
+    public float SeeRange { get { return seeRange; } set { seeRange = value; } }
+    public Transform Target { get { return target; } set { target = value; } }
+    public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
+    public Transform AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
+    public int CurExp { get { return curExp; } set { curExp = value; } }
+    public int MaxExp { get { return maxExp; } set { maxExp = value; } }
+    public int BuffPhysicalDamage { get { return buffPhysicalDamage; } set { buffPhysicalDamage = value; } }
+    public int BuffMagicalDamage { get { return buffMagicalDamage; } set { buffMagicalDamage = value; } }
+    public int BuffDefensivePower { get { return buffDefensivePower; } set { buffDefensivePower = value; } }
+    public float BuffSpeed { get { return buffSpeed; } set { buffSpeed = value; } }
+    public int BuffHpRegenValue { get { return buffHpRegenValue; } set { buffHpRegenValue = value; } }
 
-    public bool IsHPRegen
-    {
-        get { return isHPRegen; }
-        set { isHPRegen = value; }
-    }
-
-    public List<Status> AllyRayList
-    {
-        get { return allyRayList; }
-        set { allyRayList = value; }
-    }
-    public bool IsAtk
-    {
-        get { return isAtk; }
-        set { isAtk = value; }
-    }
-    public RaycastHit2D HitRay
-    {
-        get { return hitRay; }
-        set { hitRay = value; }
-    }
-    public float StiffenTime
-    {
-        get { return stiffenTime; }
-        set { stiffenTime = value; }
-    }
-    public float DelayTime
-    {
-        get { return delayTime; }
-        set { delayTime = value; }
-    }
-    public List<EnemyStatus> EnemyRayList
-    {
-        get { return enemyRayList; }
-        set { enemyRayList = value; }
-    }
-    public float AttackType
-    {
-        get { return attackType; }
-        set { attackType = value; }
-    }
-    public EAIState AIState
-    {
-        get { return aiState; }
-        set { aiState = value; }
-    }
-    public int GraceLuck
-    {
-        get { return graceLuck; }
-        set { graceLuck = value; }
-    }
-    public int GraceWiz
-    {
-        get { return graceWiz; }
-        set { graceWiz = value; }
-    }
-    public int GraceDex
-    {
-        get { return graceDex; }
-        set { graceDex = value; }
-    }
-    public int GraceStr
-    {
-        get { return graceStr; }
-        set { graceStr = value; }
-    }
-    public float GraceSpeed
-    {
-        get { return graceSpeed; }
-        set { graceSpeed = value; }
-    }
-    public float GraceAtkRange
-    {
-        get { return graceAtkRange; }
-        set { graceAtkRange = value; }
-    }
-    public int GraceMagicalDamage
-    {
-        get { return graceMagicalDamage; }
-        set { graceMagicalDamage = value; }
-    }
-    public int GracePhysicalDamage
-    {
-        get { return gracePhysicalDamage; }
-        set { gracePhysicalDamage = value; }
-    }
-    public float GraceAttackSpeed
-    {
-        get { return graceAttackSpeed; }
-        set { graceAttackSpeed = value; }
-    }
-
-    public int Luck
-    {
-        get { return luck; }
-        set { luck = value; }
-    }
-    public int Wiz
-    {
-        get { return wiz; }
-        set { wiz = value; }
-    }
-    public int Dex
-    {
-        get { return dex; }
-        set { dex = value; }
-    }
-    public int Str
-    {
-        get { return str; }
-        set { str = value; }
-    }
-    public int HpRegenValue
-    {
-        get { return hpRegenValue; }
-        set { hpRegenValue = value; }
-    }
-
-    public int TotalHpRegenValue
-    {
-        get { return totalHpRegenValue; }
-        set { totalHpRegenValue = value; }
-    }
-    public int TotalLuck
-    {
-        get { return totalLuck; }
-        set { totalLuck = value; }
-    }
-    public int TotalWiz
-    {
-        get { return totalWiz; }
-        set { totalWiz = value; }
-    }
-    public int TotalDex
-    {
-        get { return totalDex; }
-        set { totalDex = value; }
-    }
-    public int TotalStr
-    {
-        get { return totalStr; }
-        set { totalStr = value; }
-    }
-    public int TotalMaxHp
-    {
-        get { return totalMaxHp; }
-        set { totalMaxHp = value; }
-    }
-    public int TotalMaxMp
-    {
-        get { return totalMaxMp; }
-        set { totalMaxMp = value; }
-    }
-    public int CurLevel
-    {
-        get { return curLevel; }
-        set { curLevel = value; }
-    }
-    public Vector2 Distance
-    {
-        get { return distance; }
-        set { distance = value; }
-    }
-    public float ArrowSpd
-    {
-        get { return arrowSpd; }
-        set { arrowSpd = value; }
-    }
-    public Vector2 TargetDir
-    {
-        get { return targetDir; }
-        set { targetDir = value; }
-    }
-    public float AtkSpeed
-    {
-        get { return atkSpeed; }
-        set { atkSpeed = value; }
-    }
-    public float Speed
-    {
-        get { return speed; }
-    }
-    public int PhysicalDamage
-    {
-        get { return physicalDamage; }
-    }
-    public int MagicalDamage
-    {
-        get { return magicalDamage; }
-    }
-    public int CurMp
-    {
-        get { return curMp; }
-        set { curMp = value; }
-    }
-    public int MaxMp
-    {
-        get { return maxMp; }
-        set { maxMp = value; }
-    }
-    public float AtkRange
-    {
-        get { return atkRange; }
-        set { atkRange = value; }
-    }
-    public float SeeRange
-    {
-        get { return seeRange; }
-        set { seeRange = value; }
-    }
-    public Transform Target
-    {
-        get { return target; }
-        set { target = value; }
-    }
-    public EquipmentController EquipmentController
-    {
-        get { return equipmentController; }
-        set { equipmentController = value; }
-    }
-    public Transform AllyTarget
-    {
-        get { return allyTarget; }
-        set { allyTarget = value; }
-    }
-
-    public int CurExp
-    {
-        get { return curExp; }
-        set { curExp = value; }
-    }
-    public int MaxExp
-    {
-        get { return maxExp; }
-        set { maxExp = value; }
-    }
-
-    public int BuffPhysicalDamage
-    {
-        get { return buffPhysicalDamage; }
-        set { buffPhysicalDamage = value; }
-    }
-    public int BuffMagicalDamage
-    {
-        get { return buffMagicalDamage; }
-        set { buffMagicalDamage = value; }
-    }
-    public int BuffDefensivePower
-    {
-        get { return buffDefensivePower; }
-        set { buffDefensivePower = value; }
-    }
-    public float BuffSpeed
-    {
-        get { return buffSpeed; }
-        set { buffSpeed = value; }
-    }
-    public int BuffHpRegenValue
-    {
-        get { return buffHpRegenValue; }
-        set { buffHpRegenValue = value; }
-    }
-
-    public bool IsStatusUpdate
-    {
-        get { return isStatusUpdate; }
-        set { isStatusUpdate = value; }
-    }
+    public bool IsStatusUpdate { get { return isStatusUpdate; } set { isStatusUpdate = value; } }
     #endregion
     public override void Awake()
     {

@@ -143,7 +143,7 @@ public class DisassemblePanelController : MonoBehaviour
         isDisassembleItemSelect = false;
         SetActiveDisassembleItemInfo(true);
 
-        disassembleItemInfoText[0].text = selectDisassembleItem.itemName;
+        disassembleItemInfoText[0].text = selectDisassembleItem.itemKorName;
         disassembleItemInfoText[1].text = KeyToItemType(selectDisassembleItem.itemKey);
         switch (selectDisassembleItem.itemKey / 1000)
         {
@@ -264,7 +264,7 @@ public class DisassemblePanelController : MonoBehaviour
         string _AquireResourcesText = null;
         for(int i = 0; i < disassembleItemResourcesList.Count; i++)
         {
-            _AquireResourcesText += disassembleItemResourcesList[i].itemName + " (" + disassembleItemResourcesList[i].count + ")" + "\n";
+            _AquireResourcesText += disassembleItemResourcesList[i].itemKorName + " (" + disassembleItemResourcesList[i].count + ")" + "\n";
         }
 
         disassembleCheckPanelAquireResourcesText.text = _AquireResourcesText;

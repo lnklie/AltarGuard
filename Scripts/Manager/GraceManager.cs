@@ -15,7 +15,7 @@ public class GraceManager : MonoBehaviour
     {
         if (characterStatuses[(int)ECharacter.Player].EquipmentController.IsChangeItem)
         {
-
+            ActiveGrace();
         }
 
     }
@@ -1326,7 +1326,6 @@ public class GraceManager : MonoBehaviour
         else
         {
         }
-        Debug.Log("°ªÀº " + _value1);
     }
     public void AquireGrace(int _key)
     {

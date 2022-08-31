@@ -12,6 +12,7 @@ public class GracePanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI graceExplain = null;
     [SerializeField] private Button graceLearnButton = null;
     [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
+    [SerializeField] private TextMeshProUGUI remainingPoint = null;
 
     private Grace selectGrace = null;
 
@@ -39,7 +40,10 @@ public class GracePanelController : MonoBehaviour
                 Debug.Log("해당 은총이 없습니다.");
         }
     }
-
+    public void UpdateGracePoint(int _gracePoint)
+    {
+        remainingPoint.text = "잔여 포인트: " + _gracePoint;
+    }
 
     public void SelectGrace(int _index, CheckIsActiveGrace _checkIsActiveGrace)
     {
