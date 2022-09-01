@@ -7,6 +7,7 @@ public class AltarInfoPanelController : MonoBehaviour
 {
     [SerializeField]
     private PlayerStatus player = null;
+    [SerializeField]
     private AltarStatus altar = null;
     [SerializeField]
     private AltarInfoSlot[] altarInfoSlots = null;
@@ -118,11 +119,10 @@ public class AltarInfoPanelController : MonoBehaviour
     //}
     public void SetActiveAltarInfo(bool _bool)
     {
-        // UI È°¼ºÈ­ 
+        // UI Ȱ��ȭ 
 
         this.gameObject.SetActive(_bool);
         altar.SetActiveBuffRange(_bool);
-
         UpdateMoney();
 
     }

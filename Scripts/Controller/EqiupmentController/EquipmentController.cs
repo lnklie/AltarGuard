@@ -139,7 +139,7 @@ public class EquipmentController : MonoBehaviour
         if(!_item.isEquip)
         {
             Debug.Log("ÀåÂø!");
-
+            status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
             checkEquipItems[_item.itemType] = true;

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEditor;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : Item.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : Item.cs
 ==============================
 */
 [System.Serializable]
@@ -20,6 +20,7 @@ public class Item
     public int count = 0;
     public int equipCharNum = -1;
     public string itemName = null;
+    public string itemKorName = null;
     public bool isEquip = false;
     public int itemType = -1;
     public int physicalDamage = 0;
@@ -37,6 +38,7 @@ public class Item
     public int value = 0;
     public int skillKey1 = -1;
     public int skillKey2 = -1;
+    public int skillKey3 = -1;
     public int equipLevel = 0;
     public int buyPrice = 0;
     public int sellPrice = 0;
@@ -46,10 +48,11 @@ public class Item
     public float coolTime = 0;
     public bool isCoolTime = false;
     public int itemRank = -1;
-    public Item(int _itemKey, string _itemName,int _buyPrice, int _sellPrice, int _itemRank)
+    public Item(int _itemKey, string _itemName,string _itemKorName, int _buyPrice, int _sellPrice, int _itemRank)
     {
         itemKey = _itemKey;
         itemName = _itemName;
+        itemKorName = _itemKorName;
         buyPrice = _buyPrice;
         sellPrice = _sellPrice;
         count = 0;

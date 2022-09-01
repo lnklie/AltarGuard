@@ -15,7 +15,7 @@ public class Status : MonoBehaviour
     [SerializeField]
     protected int curHp = 0;
     [SerializeField]
-    protected int maxHp = 0;
+    protected int maxHp = 100;
     [SerializeField]
     protected int defensivePower = 0;
     [SerializeField]

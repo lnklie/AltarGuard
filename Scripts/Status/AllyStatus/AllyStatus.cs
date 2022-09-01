@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class AllyStatus : CharacterStatus
 {
-    private float gracePhysicalDamage = 1f;
-    private float graceMagicalDamage = 1f;
-    private float graceAttackSpeed = 1f;
-    private float graceDefensivePower = 1f;
+
 
     [SerializeField]
     private float dropProbability = 0;
@@ -57,26 +54,7 @@ public class AllyStatus : CharacterStatus
     {
         get { return itemRarity; }
     }
-    public float GraceMagicalDamage
-    {
-        get { return graceMagicalDamage; }
-        set { graceMagicalDamage = value; }
-    }
-    public float GracePhysicalDamage
-    {
-        get { return gracePhysicalDamage; }
-        set { gracePhysicalDamage = value; }
-    }
-    public float GraceAttackSpeed
-    {
-        get { return graceAttackSpeed; }
-        set { graceAttackSpeed = value; }
-    }
-    public float GraceDefensivePower
-    {
-        get { return graceDefensivePower; }
-        set { graceDefensivePower = value; }
-    }
+
     #endregion
     public void Start()
     {
@@ -161,9 +139,18 @@ public class AllyStatus : CharacterStatus
     }
     public void InitGraceStatus()
     {
-        gracePhysicalDamage = 1f;
-        graceMagicalDamage = 1f;
-        graceAttackSpeed = 1f;
-        graceDefensivePower = 1f;
+        graceMaxHp = 0;
+        graceMaxMp = 0;
+        graceHpRegenValue = 0;
+        graceStr = 0;
+        graceDex = 0;
+        graceWiz = 0;
+        graceDex = 0;
+        gracePhysicalDamage = 0;
+        graceMagicalDamage = 0;
+        graceDefensivePower = 0;
+        graceSpeed = 0f;
+        graceAttackSpeed = 0f;
+        graceAtkRange = 0f;
     }
 }

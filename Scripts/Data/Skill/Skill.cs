@@ -7,6 +7,7 @@ public class Skill
 {
     public int skillKey;
     public string skillName;
+    public Sprite singleSprite = null;
     public int skillLevel;
     public int skillType;
     public int skillVariable;
@@ -31,6 +32,8 @@ public class Skill
     public float skillFigures9;
     public float skillFigures10;
     public float coolTime;
+    public float maxCoolTime;
+    public bool isCoolTime = false;
     public int skillHitCount;
     public string targetStatus;
     public Skill(int _skillKey, string _skillName, int _skillLevel, int _skillVarable
@@ -66,6 +69,6 @@ public class Skill
         skillFigures8 = _skillFigures8;
         skillFigures9 = _skillFigures9;
         skillFigures10 = _skillFigures10;
-
+        singleSprite = Resources.Load("Sprites/17_SkillIcon/" + skillName, typeof(Sprite)) as Sprite;
     }
 }
