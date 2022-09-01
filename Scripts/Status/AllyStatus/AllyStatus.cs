@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class AllyStatus : CharacterStatus
 {
-    private float gracePhysicalDamage = 1f;
-    private float graceMagicalDamage = 1f;
-    private float graceAttackSpeed = 1f;
-    private float graceDefensivePower = 1f;
+
 
     [SerializeField]
     private float dropProbability = 0;
@@ -57,26 +54,7 @@ public class AllyStatus : CharacterStatus
     {
         get { return itemRarity; }
     }
-    public float GraceMagicalDamage
-    {
-        get { return graceMagicalDamage; }
-        set { graceMagicalDamage = value; }
-    }
-    public float GracePhysicalDamage
-    {
-        get { return gracePhysicalDamage; }
-        set { gracePhysicalDamage = value; }
-    }
-    public float GraceAttackSpeed
-    {
-        get { return graceAttackSpeed; }
-        set { graceAttackSpeed = value; }
-    }
-    public float GraceDefensivePower
-    {
-        get { return graceDefensivePower; }
-        set { graceDefensivePower = value; }
-    }
+
     #endregion
     public void Start()
     {
@@ -154,16 +132,25 @@ public class AllyStatus : CharacterStatus
         base.UpdateAbility();
         dropProbability = totalLuck * 0.001f;
         itemRarity = totalLuck * 0.001f;
-        atkSpeed = 5f - ((equipmentController.EquipItems[7] != null ? atkSpeed : 0f + (totalDex * 0.1f)) * graceAttackSpeed);
-        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage) * gracePhysicalDamage);
-        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage) * graceMagicalDamage);
-        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower) * graceDefensivePower);
+        atkSpeed = 5f - (( totalDex * 0.1f) + equipedAtkSpeed * graceAttackSpeed);
+        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipedPhysicalDamage + buffPhysicalDamage) * gracePhysicalDamage);
+        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipedMagicalDamage + buffMagicalDamage) * graceMagicalDamage);
+        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipedDefensivePower + buffDefensivePower) * graceDefensivePower);
     }
     public void InitGraceStatus()
     {
-        gracePhysicalDamage = 1f;
-        graceMagicalDamage = 1f;
-        graceAttackSpeed = 1f;
-        graceDefensivePower = 1f;
+        graceMaxHp = 0;
+        graceMaxMp = 0;
+        graceHpRegenValue = 0;
+        graceStr = 0;
+        graceDex = 0;
+        graceWiz = 0;
+        graceDex = 0;
+        gracePhysicalDamage = 0;
+        graceMagicalDamage = 0;
+        graceDefensivePower = 0;
+        graceSpeed = 0f;
+        graceAttackSpeed = 0f;
+        graceAtkRange = 0f;
     }
 }

@@ -14,34 +14,18 @@ using TMPro;
 public class InventorySlot : MonoBehaviour
 {
     private TextMeshProUGUI itemCount = null;
-    [SerializeField]
-    private Image[] itemImages = null;
-    [SerializeField]
-    private Item curItem = null;
+    [SerializeField] private Image[] itemImages = null;
+    [SerializeField] private Item curItem = null;
+    [SerializeField] private Sprite uiMask = null;
     private bool isItemChange = false;
-    [SerializeField]
-    private Sprite uiMask = null;
 
 
-    [SerializeField]
-    private bool isItem = false;
+    [SerializeField] private bool isItem = false;
     #region Property
 
-    public Image[] ItemImages
-    {
-        get { return itemImages; }
-        set { itemImages = value; }
-    }
-    public Item CurItem
-    { 
-        get { return curItem; }
-        set { curItem = value; }
-    }
-    public bool IsItemChange
-    {
-        get { return isItemChange; }
-        set { isItemChange = value; }
-    }
+    public Image[] ItemImages { get { return itemImages; } set { itemImages = value; } }
+    public Item CurItem { get { return curItem; } set { curItem = value; } }
+    public bool IsItemChange { get { return isItemChange; } set { isItemChange = value; } }
     #endregion
     private void Awake()
     {
@@ -52,7 +36,12 @@ public class InventorySlot : MonoBehaviour
     {
         if (isItem && curItem.isCoolTime)
         {
+            itemImages[2].gameObject.SetActive(true);
             itemImages[2].fillAmount = curItem.coolTime / curItem.maxCoolTime;
+        }
+        else
+        {
+            itemImages[2].gameObject.SetActive(false);
         }
     }
     public void SlotReset()

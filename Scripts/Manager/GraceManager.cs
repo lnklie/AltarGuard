@@ -5,7 +5,7 @@ public class GraceManager : MonoBehaviour
 {
     [SerializeField] private List<Grace> graceList = new List<Grace>();
     [SerializeField] private List<AllyStatus> characterStatuses = new List<AllyStatus>();
-
+    [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<Grace> GraceList
     {
@@ -13,10 +13,32 @@ public class GraceManager : MonoBehaviour
     }
     private void Update()
     {
-        if (characterStatuses[(int)ECharacter.Player].EquipmentController.IsChangeItem)
-            SetGraceAbility();
-    }
+        if (characterStatuses[(int)ECharacter.Player].IsEquipmentChange)
+        {
+            ActiveGrace();
+        }
 
+    }
+    public void ActiveGrace()
+    {
+        for(int i = 0; i< characterStatuses.Count;i++)
+        {
+            characterStatuses[i].InitGraceStatus();
+        }
+
+        for (int i = 0; i < graceList.Count; i++)
+        {
+            if (CheckGraceCondition(graceList[i]))
+            {
+                OperateGrace(graceList[i]);
+            }
+            else
+            {
+                Debug.Log("ÆÈ½º");
+            }
+
+        }
+    }
     public bool CheckGraceCondition(Grace _grace)
     {
         bool _bool = false;
@@ -37,7 +59,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -52,8 +74,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
                                         {
                                             _bool = true;
                                         }
@@ -68,7 +90,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -79,7 +101,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -90,7 +112,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -102,7 +124,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -114,7 +136,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -125,8 +147,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
                                         {
                                             _bool = true;
                                         }
@@ -137,8 +159,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -150,8 +172,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -162,8 +184,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -184,10 +206,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -202,14 +224,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -224,10 +246,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -238,10 +260,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Axe")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Axe")
                                         {
                                             _bool = true;
                                         }
@@ -252,10 +274,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -267,10 +289,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -282,10 +304,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -296,14 +318,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -314,14 +336,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -333,14 +355,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -351,14 +373,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -379,11 +401,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -398,16 +420,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[0].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -422,11 +444,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -437,11 +459,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -452,11 +474,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -468,11 +490,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -484,11 +506,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -499,16 +521,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[0].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false)
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false)
                                             )
                                         {
                                             _bool = true;
@@ -520,16 +542,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[0].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -541,16 +563,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -561,16 +583,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -592,1317 +614,712 @@ public class GraceManager : MonoBehaviour
     }
     public void OperateGrace(Grace _grace)
     {
+        int _value1 = 0;
+        int _value2 = 0;
         if (_grace.resultWho != -1)
         {
-            int _value = 0;
+            if(_grace.resultTarget1 != -1)
+                switch ((EGraceResultTarget)_grace.resultTarget1)
+                    {
+
+                        case EGraceResultTarget.PlayerStr:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerDex:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerWiz:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerLuck:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerHpRegen:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerPhysicalDamage:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerMagicalDamage:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerDefensivePower:
+                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
+
+                            break;
+                        case EGraceResultTarget.PlayerSpeed:
+                            _value1 = 0;
+
+                            break;
+                        case EGraceResultTarget.PlayerAtkSpeed:
+                            _value1 = 0;
+
+                            break;
+                    }
+            else
+                _value1 = _grace.resultValue1;
+            if (_grace.resultTarget2 != -1)
+                switch ((EGraceResultTarget)_grace.resultTarget2)
+                    {
+
+                        case EGraceResultTarget.PlayerStr:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerDex:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerWiz:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerLuck:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerHpRegen:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerPhysicalDamage:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerMagicalDamage:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerDefensivePower:
+                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue2));
+
+                            break;
+                        case EGraceResultTarget.PlayerSpeed:
+                            _value2 = 0;
+
+                            break;
+                        case EGraceResultTarget.PlayerAtkSpeed:
+                            _value2 = 0;
+
+                            break;
+                    }
+            else
+                _value2 = _grace.resultValue2;
+
             switch ((EGraceResultWho)_grace.resultWho)
             {
                 case EGraceResultWho.Player:
-                    if (_grace.resultWho != -1)
+                case EGraceResultWho.Mercenary1:
+                case EGraceResultWho.Mercenary2:
+                case EGraceResultWho.Mercenary3:
+                case EGraceResultWho.Mercenary4:
+                    if (_grace.resultWhat1 != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat1)
                     {
+                        case EGraceResultWhat.Str:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceStr -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceStr += _value1;
+
+                            break;
+                        case EGraceResultWhat.Dex:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceDex -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceDex += _value1;
+
+                            break;
+                        case EGraceResultWhat.Wiz:
+
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceWiz -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceWiz += _value1;
+                            break;
+
+                        case EGraceResultWhat.Luck:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceLuck -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceLuck += _value1;
+                            break;
+
+
+
+                        case EGraceResultWhat.HpRegen:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value1;
+                            break;
+
+                        case EGraceResultWhat.PhysicalDamage:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value1;
+                            break;
+
+                        case EGraceResultWhat.MagicalDamage:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value1;
+                            break;
+
+                        case EGraceResultWhat.DefensivePower:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceDefensivePower -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceDefensivePower += _value1;
+                            break;
+                        case EGraceResultWhat.Speed:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceSpeed -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkSpeed:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceAttackSpeed -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceAttackSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkRange:
+
+                            if (_grace.resultHow1 == 0)
+                                characterStatuses[_grace.resultWho].GraceAtkRange -= _value1;
+                            else
+                                characterStatuses[_grace.resultWho].GraceAtkRange += _value1;
+                            break;
+                    }
+
+                    if(_grace.resultWhat2 != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat1)
+                    {
+                        case EGraceResultWhat.Str:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceStr -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceStr += _value2;
+
+                            break;
+                        case EGraceResultWhat.Dex:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceDex -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceDex += _value2;
+
+                            break;
+                        case EGraceResultWhat.Wiz:
+
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceWiz -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceWiz += _value2;
+                            break;
+
+                        case EGraceResultWhat.Luck:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceLuck -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceLuck += _value2;
+                            break;
+
+
+
+                        case EGraceResultWhat.HpRegen:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value2;
+                            break;
+
+                        case EGraceResultWhat.PhysicalDamage:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value2;
+                            break;
+
+                        case EGraceResultWhat.MagicalDamage:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value2;
+                            break;
+
+                        case EGraceResultWhat.DefensivePower:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceDefensivePower -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceDefensivePower += _value2;
+                            break;
+                        case EGraceResultWhat.Speed:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceSpeed -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceSpeed += _value2;
+                            break;
+                        case EGraceResultWhat.AtkSpeed:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceAttackSpeed -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceAttackSpeed += _value2;
+                            break;
+                        case EGraceResultWhat.AtkRange:
+
+                            if (_grace.resultHow2 == 0)
+                                characterStatuses[_grace.resultWho].GraceAtkRange -= _value2;
+                            else
+                                characterStatuses[_grace.resultWho].GraceAtkRange += _value2;
+                            break;
+                    }
+                    break;
+                case EGraceResultWho.AllMercenary:
+                    if (_grace.resultWhat1 != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat1)
+                    {
+                        case EGraceResultWhat.Str:
+
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStr -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStr += _value1;
+
+                            break;
+                        case EGraceResultWhat.Dex:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDex -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDex += _value1;
+
+                            break;
+                        case EGraceResultWhat.Wiz:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceWiz -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceWiz += _value1;
+
+                            break;
+                        case EGraceResultWhat.Luck:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceLuck -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceLuck += _value1;
+
+                            break;
+                        case EGraceResultWhat.HpRegen:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceHpRegenValue -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceHpRegenValue += _value1;
+
+                            break;
+                        case EGraceResultWhat.PhysicalDamage:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GracePhysicalDamage -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GracePhysicalDamage += _value1;
+                            break;
+                        case EGraceResultWhat.MagicalDamage:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagicalDamage -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagicalDamage += _value1;
+                            break;
+                        case EGraceResultWhat.DefensivePower:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDefensivePower -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDefensivePower += _value1;
+                            break;
+                        case EGraceResultWhat.Speed:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceSpeed -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkSpeed:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAttackSpeed -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAttackSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkRange:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAtkRange -= _value1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAtkRange += _value1;
+                            break;
+                    }
+
+                    if (_grace.resultWhat2 != -1)
                         switch ((EGraceResultWhat)_grace.resultWhat1)
                         {
                             case EGraceResultWhat.Str:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStr -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStr += _value2;
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                    }
-                                }
                                 break;
                             case EGraceResultWhat.Dex:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDex -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDex += _value2;
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDex -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDex += _value;
-                                            break;
-                                    }
-                                }
                                 break;
                             case EGraceResultWhat.Wiz:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceWiz -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceWiz += _value2;
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceWiz -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceWiz += _value;
-                                            break;
-                                    }
-                                }
                                 break;
                             case EGraceResultWhat.Luck:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceLuck -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceLuck += _value2;
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceLuck -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceLuck += _value;
-                                            break;
-                                    }
-                                }
                                 break;
                             case EGraceResultWhat.HpRegen:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceHpRegenValue -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceHpRegenValue += _value2;
 
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value;
-                                            break;
-                                    }
-                                }
                                 break;
                             case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GracePhysicalDamage -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GracePhysicalDamage += _value2;
                                 break;
                             case EGraceResultWhat.MagicalDamage:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagicalDamage -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagicalDamage += _value2;
                                 break;
                             case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceDefensivePower -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceDefensivePower += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDefensivePower -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDefensivePower += _value2;
                                 break;
                             case EGraceResultWhat.Speed:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceSpeed -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceSpeed += _value2;
                                 break;
                             case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAttackSpeed -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAttackSpeed += _value2;
                                 break;
                             case EGraceResultWhat.AtkRange:
-                                if (_grace.resultTarget1 != -1)
-                                {
-                                    switch ((EGraceResultTarget)_grace.resultTarget1)
-                                    {
-                                        case EGraceResultTarget.PlayerStr:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDex:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerWiz:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerLuck:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerHpRegen:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerPhysicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerMagicalDamage:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerDefensivePower:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                        case EGraceResultTarget.PlayerAtkSpeed:
-                                            if (_grace.resultValue1IsPercent == 0)
-                                                _value = _grace.resultValue1;
-                                            else
-                                                _value = 0;
-
-                                            if (_grace.resultHow1 == 0)
-                                                characterStatuses[_grace.resultWho].GraceStr -= _value;
-                                            else
-                                                characterStatuses[_grace.resultWho].GraceStr += _value;
-                                            break;
-                                    }
-                                }
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAtkRange -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAtkRange += _value2;
                                 break;
                         }
+                    break;
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat1 != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat1)
+                    {
+                        case EGraceResultWhat.Str:
 
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStr -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStr += _value1;
+
+                            break;
+                        case EGraceResultWhat.Dex:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDex -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDex += _value1;
+
+                            break;
+                        case EGraceResultWhat.Wiz:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceWiz -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceWiz += _value1;
+
+                            break;
+                        case EGraceResultWhat.Luck:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceLuck -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceLuck += _value1;
+
+                            break;
+                        case EGraceResultWhat.HpRegen:
+
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceHpRegenValue -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceHpRegenValue += _value1;
+
+                            break;
+                        case EGraceResultWhat.PhysicalDamage:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GracePhysicalDamage -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GracePhysicalDamage += _value1;
+                            break;
+                        case EGraceResultWhat.MagicalDamage:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagicalDamage -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagicalDamage += _value1;
+                            break;
+                        case EGraceResultWhat.DefensivePower:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDefensivePower -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceDefensivePower += _value1;
+                            break;
+                        case EGraceResultWhat.Speed:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceSpeed -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkSpeed:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAttackSpeed -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAttackSpeed += _value1;
+                            break;
+                        case EGraceResultWhat.AtkRange:
+                            if (_grace.resultHow1 == 0)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAtkRange -= _value1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceAtkRange += _value1;
+                            break;
                     }
+
+                    if (_grace.resultWhat2 != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat1)
+                        {
+                            case EGraceResultWhat.Str:
+
+
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStr -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStr += _value2;
+
+                                break;
+                            case EGraceResultWhat.Dex:
+
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDex -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDex += _value2;
+
+                                break;
+                            case EGraceResultWhat.Wiz:
+
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceWiz -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceWiz += _value2;
+
+                                break;
+                            case EGraceResultWhat.Luck:
+
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceLuck -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceLuck += _value2;
+
+                                break;
+                            case EGraceResultWhat.HpRegen:
+
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceHpRegenValue -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceHpRegenValue += _value2;
+
+                                break;
+                            case EGraceResultWhat.PhysicalDamage:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GracePhysicalDamage -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GracePhysicalDamage += _value2;
+                                break;
+                            case EGraceResultWhat.MagicalDamage:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagicalDamage -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagicalDamage += _value2;
+                                break;
+                            case EGraceResultWhat.DefensivePower:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDefensivePower -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceDefensivePower += _value2;
+                                break;
+                            case EGraceResultWhat.Speed:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceSpeed -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceSpeed += _value2;
+                                break;
+                            case EGraceResultWhat.AtkSpeed:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAttackSpeed -= _value2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAttackSpeed += _value2;
+                                break;
+                            case EGraceResultWhat.AtkRange:
+                                if (_grace.resultHow2 == 0)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAtkRange -= _value2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceAtkRange += _value2;
+                                break;
+                        }
                     break;
             }
         }
@@ -1916,7 +1333,7 @@ public class GraceManager : MonoBehaviour
         {
             graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
             graceList[graceList.Count - 1].isActive = true;
-            SetGraceAbility();
+            ActiveGrace();
         }
         else
             Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
@@ -1939,35 +1356,35 @@ public class GraceManager : MonoBehaviour
         return isActive;
     }
 
-    public void SetGraceAbility()
-    {
-        characterStatuses[0].InitGraceStatus();
-        for (int i = 0; i < graceList.Count; i++)
-        {
-            switch(graceList[i].graceKey)
-            {
-                case 0:
-                    if (characterStatuses[0].EquipmentController.EquipItems[7].attackType == "Melee")
-                        characterStatuses[0].GracePhysicalDamage += 0.1f;
-                    break;
-                case 1:
-                    if(characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-                        characterStatuses[0].GracePhysicalDamage += 0.1f;
-                    break;
-                case 2:
-                    if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Axe" ||
-                        characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear")
-                        characterStatuses[0].GracePhysicalDamage += 0.1f;
-                    break;
-                case 3:
-                    if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-                        characterStatuses[0].GraceAttackSpeed += 0.1f;
-                    break;
-                case 4:
-                    if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-                        characterStatuses[0].GracePhysicalDamage += 0.2f;
-                    break;
-            }
-        }
-    }
+    //public void SetGraceAbility()
+    //{
+    //    characterStatuses[0].InitGraceStatus();
+    //    for (int i = 0; i < graceList.Count; i++)
+    //    {
+    //        switch(graceList[i].graceKey)
+    //        {
+    //            case 0:
+    //                if (characterStatuses[0].EquipmentController.EquipItems[7].attackType == "Melee")
+    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+    //                break;
+    //            case 1:
+    //                if(characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+    //                break;
+    //            case 2:
+    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Axe" ||
+    //                    characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear")
+    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+    //                break;
+    //            case 3:
+    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+    //                    characterStatuses[0].GraceAttackSpeed += 0.1f;
+    //                break;
+    //            case 4:
+    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+    //                    characterStatuses[0].GracePhysicalDamage += 0.2f;
+    //                break;
+    //        }
+    //    }
+    //}
 }

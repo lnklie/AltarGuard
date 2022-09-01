@@ -51,13 +51,13 @@ public class RushEnemyStatus : EnemyStatus
         wiz = rushEnemy.wiz;
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
-        equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
+        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
         UpdateAbility();
-        atkRange = equipmentController.EquipItems[7].atkRange;
-        atkSpeed = equipmentController.EquipItems[7].atkSpeed;
+        atkRange = equipedAtkRange;
+        atkSpeed = equipedAtkSpeed;
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -76,9 +76,9 @@ public class RushEnemyStatus : EnemyStatus
         // 능력 업데이트
         maxHp = rushEnemy.hp + str * 10;
         maxMp = rushEnemy.mp + wiz * 10;
-        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
-        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
-        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
+        physicalDamage = str * 5 + equipedPhysicalDamage;
+        magicalDamage = wiz * 5 + equipedMagicalDamage;
+        defensivePower = str * 3 + equipedDefensivePower;
         speed = rushEnemy.speed + dex * 0.1f;
         graceHpRegenValue = str * 1;
     }

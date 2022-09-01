@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : DatabaseManager.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : DatabaseManager.cs
 ==============================
 */
 
@@ -19,8 +19,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Helmet> helmetList = new List<Helmet>();
     public List<Armor> armorList = new List<Armor>();
     public List<Back> backList = new List<Back>();
-    public List<Sword> swordList = new List<Sword>();
     public List<Shield> shieldList = new List<Shield>();
+    public List<Sword> swordList = new List<Sword>();
+    public List<Exe> exeList = new List<Exe>();
+    public List<Spear> spearList = new List<Spear>();
     public List<Bow> bowList = new List<Bow>();
     public List<Wand> wandList = new List<Wand>();
     public List<Consumables> consumablesList = new List<Consumables>();
@@ -44,6 +46,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Grace> rangedGraceList = new List<Grace>();
     public List<Grace> magicGraceList = new List<Grace>();
     public List<Grace> commanderGraceList = new List<Grace>();
+
     [Header("CraftRecipe")]
     public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
 
@@ -68,7 +71,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -76,13 +79,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                hairList.Add(new Hair(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].itemRank));
+                hairList.Add(new Hair(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("ê²½ë¡œì— ì–¼êµ´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¾ó±¼ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -90,13 +93,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                faceHairList.Add(new FaceHair(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].itemRank));
+                faceHairList.Add(new FaceHair(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("ê²½ë¡œì— ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -104,13 +107,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                clothList.Add(new Cloth(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("ê²½ë¡œì— ë°”ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹ÙÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -118,13 +121,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                pantList.Add(new Pant(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -132,13 +135,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                helmetList.Add(new Helmet(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("ê²½ë¡œì— ê°‘ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °©¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -146,13 +149,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                armorList.Add(new Armor(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                armorList.Add(new Armor(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank)); ;
             }
 
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("ê²½ë¡œì— ë§í†  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸ÁÅä µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -160,101 +163,130 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                backList.Add(new Back(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                backList.Add(new Back(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("7_Sword")))
+        if (!File.Exists(CombinePath("7_Shield")))
         {
-            Debug.Log("ê²½ë¡œì— ê²€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹æÆĞ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("7_Sword")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("7_Shield")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                swordList.Add(new Sword(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType,items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].defensivePower, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("8_Shield")))
+        if (!File.Exists(CombinePath("8_Sword")))
         {
-            Debug.Log("ê²½ë¡œì— ë°©íŒ¨ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °Ë µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("8_Shield")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("8_Sword")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                shieldList.Add(new Shield(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance,items[i].defensivePower, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                swordList.Add(new Sword(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType,items[i].weaponType, items[i].physicalDamage,
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("9_Bow")))
+        if (!File.Exists(CombinePath("9_Exe")))
         {
-            Debug.Log("ê²½ë¡œì— í™œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ µµ³¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("9_Bow")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("9_Exe")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                exeList.Add(new Exe(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("10_Wand")))
+        if (!File.Exists(CombinePath("10_Spear")))
         {
-            Debug.Log("ê²½ë¡œì— ì§€íŒ¡ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Ã¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("10_Wand")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("10_Spear")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                spearList.Add(new Spear(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("11_Consumables")))
+        if (!File.Exists(CombinePath("11_Bow")))
         {
-            Debug.Log("ê²½ë¡œì— ì†Œë¹„í’ˆ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ È° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("11_Consumables")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("11_Bow")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect, items[i].target, items[i].durationTime, items[i].value, items[i].maxCoolTime, items[i].itemRank));
+                bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("12_Miscellaneous")))
+        if (!File.Exists(CombinePath("12_Wand")))
         {
-            Debug.Log("ê²½ë¡œì— ê¸°íƒ€í…œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÁöÆÎÀÌ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("12_Miscellaneous")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("12_Wand")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
-                miscellaneousList.Add(new Miscellaneous(items[i].itemKey, items[i].itemName, items[i].buyPrice, items[i].sellPrice, items[i].purpose, items[i].itemRank));
+                wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+            }
+
+        }
+        if (!File.Exists(CombinePath("13_Consumables")))
+        {
+            Debug.Log("°æ·Î¿¡ ¼ÒºñÇ° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("13_Consumables")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                consumablesList.Add(new Consumables(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].useEffect, items[i].target, items[i].durationTime, items[i].value, items[i].maxCoolTime, items[i].itemRank));
+            }
+
+        }
+        if (!File.Exists(CombinePath("14_Miscellaneous")))
+        {
+            Debug.Log("°æ·Î¿¡ ±âÅ¸ÅÛ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("14_Miscellaneous")));
+            Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            for (var i = 0; i < items.Length; i++)
+            {
+                miscellaneousList.Add(new Miscellaneous(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].purpose, items[i].itemRank));
             }
 
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("ê²½ë¡œì— ì  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Àû µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -273,7 +305,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("ê²½ë¡œì— ê²½í—˜ì¹˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °æÇèÄ¡ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -286,7 +318,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("ê²½ë¡œì— ìŠ¤í…Œì´ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ½ºÅ×ÀÌÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -299,7 +331,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ActiveSkill")))
         {
-            Debug.Log("ê²½ë¡œì— ì•¡í‹°ë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¾×Æ¼ºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -311,12 +343,12 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].coolTime, skill[i].skillHitCount));
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].maxCoolTime, skill[i].skillHitCount));
             }
         }
         if (!File.Exists(CombinePath("PassiveSkill")))
         {
-            Debug.Log("ê²½ë¡œì— íŒ¨ì‹œë¸Œ ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÆĞ½Ãºê ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -333,7 +365,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
-            Debug.Log("å¯ƒìˆÂœÂ—Â è«›Â€ç”± ÂÂ€ç¥Â Âê³—ÂëŒ„Â„ è¸°ÂëŒÂŠã…ºÂ€ è­°ëŒÂÑ‹Â•Â˜ï§Â€ Â•ÂŠÂŠë“¬Â‹ÂˆÂ‹.");
+            Debug.Log("°æ·Î¿¡ ¹Ğ¸® ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -342,12 +374,12 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
                 warriorGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValue1IsPercent, grace[i].resultValue2IsPercent, grace[i].resultHow1, grace[i].resultHow2));
+                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("RangedGrace")))
         {
-            Debug.Log("å¯ƒìˆÂœÂ—Â æ²…ÂÂˆÂ˜ ÂÂ€ç¥Â Âê³—ÂëŒ„Â„ è¸°ÂëŒÂŠã…ºÂ€ è­°ëŒÂÑ‹Â•Â˜ï§Â€ Â•ÂŠÂŠë“¬Â‹ÂˆÂ‹.");
+            Debug.Log("°æ·Î¿¡ ±Ã¼ö ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -357,12 +389,12 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             {
                            
                 rangedGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValue1IsPercent, grace[i].resultValue2IsPercent, grace[i].resultHow1, grace[i].resultHow2));
+                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("MagicGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -371,13 +403,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
                 magicGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValue1IsPercent, grace[i].resultValue2IsPercent, grace[i].resultHow1, grace[i].resultHow2));
+                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
 
         if (!File.Exists(CombinePath("CommanderGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -386,12 +418,12 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
                 commanderGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                   grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValue1IsPercent, grace[i].resultValue2IsPercent, grace[i].resultHow1, grace[i].resultHow2));
+                   grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
         {
-            Debug.Log("ê²½ë¡œì— ì œì‘ ë ˆì‹œí”¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¦ÀÛ ·¹½ÃÇÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -406,7 +438,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("AltarProperty")))
         {
-            Debug.Log("å¯ƒìˆÂœÂ—Â ï¿½ÂœÂ‹ ÂŠë±€Â„ Âê³—ÂëŒ„Â„ è¸°ÂëŒÂŠã…ºÂ€ è­°ëŒÂÑ‹Â•Â˜ï§Â€ Â•ÂŠÂŠë“¬Â‹ÂˆÂ‹.");
+            Debug.Log("°æ·Î¿¡ Á¦´Ü Æ¯¼º µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -429,7 +461,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             return null;
         else
         {
-            Item _item = new Item(_key, null, 0 , 0, -1);
+            Item _item = new Item(_key, null, null, 0 , 0, -1);
             switch(_key / 1000)
             {
                 case 0:
@@ -437,7 +469,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == hairList[i].itemKey)
                         {
-                            Hair _hair = new Hair(hairList[i].itemKey, hairList[i].itemName, hairList[i].buyPrice, hairList[i].sellPrice, hairList[i].itemRank);
+                            Hair _hair = new Hair(hairList[i].itemKey, hairList[i].itemName, hairList[i].itemKorName, hairList[i].buyPrice, hairList[i].sellPrice, hairList[i].itemRank);
                             _item = _hair;
                         }
                     }
@@ -447,7 +479,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == faceHairList[i].itemKey)
                         {
-                            FaceHair _faceHair = new FaceHair(faceHairList[i].itemKey, faceHairList[i].itemName, faceHairList[i].buyPrice, faceHairList[i].sellPrice, faceHairList[i].itemRank);
+                            FaceHair _faceHair = new FaceHair(faceHairList[i].itemKey, faceHairList[i].itemName, faceHairList[i].itemKorName, faceHairList[i].buyPrice, faceHairList[i].sellPrice, faceHairList[i].itemRank);
                             _item = _faceHair;
                         }
                     }
@@ -457,7 +489,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == clothList[i].itemKey)
                         {
-                            Cloth _cloth = new Cloth(clothList[i].itemKey, clothList[i].itemName, clothList[i].buyPrice, clothList[i].sellPrice, clothList[i].defensivePower, clothList[i].equipLevel, clothList[i].disassembleItemKey, clothList[i].disassembleItemAmount, clothList[i].itemRank);
+                            Cloth _cloth = new Cloth(clothList[i].itemKey, clothList[i].itemName, clothList[i].itemKorName, clothList[i].buyPrice, clothList[i].sellPrice, clothList[i].defensivePower, clothList[i].equipLevel, clothList[i].disassembleItemKey, clothList[i].disassembleItemAmount, clothList[i].itemRank);
                             _item = _cloth;
                         }
                     }
@@ -467,7 +499,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == pantList[i].itemKey)
                         {
-                            Pant _pant = new Pant(pantList[i].itemKey, pantList[i].itemName, pantList[i].buyPrice, pantList[i].sellPrice, pantList[i].defensivePower, pantList[i].equipLevel, pantList[i].disassembleItemKey, pantList[i].disassembleItemAmount, pantList[i].itemRank);
+                            Pant _pant = new Pant(pantList[i].itemKey, pantList[i].itemName, pantList[i].itemKorName, pantList[i].buyPrice, pantList[i].sellPrice, pantList[i].defensivePower, pantList[i].equipLevel, pantList[i].disassembleItemKey, pantList[i].disassembleItemAmount, pantList[i].itemRank);
                             _item = _pant;
                         }
                     }
@@ -477,7 +509,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == helmetList[i].itemKey)
                         {
-                            Helmet _helmet = new Helmet(helmetList[i].itemKey, helmetList[i].itemName, helmetList[i].buyPrice, helmetList[i].sellPrice, helmetList[i].defensivePower, helmetList[i].equipLevel, helmetList[i].disassembleItemKey, helmetList[i].disassembleItemAmount, helmetList[i].itemRank);
+                            Helmet _helmet = new Helmet(helmetList[i].itemKey, helmetList[i].itemName, helmetList[i].itemKorName, helmetList[i].buyPrice, helmetList[i].sellPrice,
+                                helmetList[i].defensivePower, helmetList[i].equipLevel, helmetList[i].disassembleItemKey, helmetList[i].disassembleItemAmount, helmetList[i].itemRank);
                             _item = _helmet;
                         }
                     }
@@ -487,7 +520,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == armorList[i].itemKey)
                         {
-                            Armor _armor = new Armor(armorList[i].itemKey, armorList[i].itemName, armorList[i].buyPrice, armorList[i].sellPrice, armorList[i].defensivePower, armorList[i].equipLevel, armorList[i].disassembleItemKey, armorList[i].disassembleItemAmount, armorList[i].itemRank);
+                            Armor _armor = new Armor(armorList[i].itemKey, armorList[i].itemName, armorList[i].itemKorName, armorList[i].buyPrice, armorList[i].sellPrice, armorList[i].defensivePower, armorList[i].equipLevel, armorList[i].disassembleItemKey, armorList[i].disassembleItemAmount, armorList[i].itemRank);
                             _item = _armor;
                         }
                     }
@@ -497,77 +530,101 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == backList[i].itemKey)
                         {
-                            Back _back = new Back(backList[i].itemKey, backList[i].itemName, backList[i].buyPrice, backList[i].sellPrice, backList[i].defensivePower, backList[i].equipLevel, backList[i].disassembleItemKey, backList[i].disassembleItemAmount, backList[i].itemRank);
+                            Back _back = new Back(backList[i].itemKey, backList[i].itemName, backList[i].itemKorName, backList[i].buyPrice, backList[i].sellPrice, backList[i].defensivePower, backList[i].equipLevel, backList[i].disassembleItemKey, backList[i].disassembleItemAmount, backList[i].itemRank);
                             _item = _back;
                         }
                     }
                     break;
                 case 7:
-                    for (int i = 0; i < swordList.Count; i++)
-                    {
-                        if (_key == swordList[i].itemKey)
-                        {
-                            Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
-                        swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].skillKey1, swordList[i].skillKey2, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
-                            _item = _sword;
-                        }
-                    }
-                    break;
-                case 8:
                     for (int i = 0; i < shieldList.Count; i++)
                     {
                         if (_key == shieldList[i].itemKey)
                         {
-                            Shield _shield = new Shield(shieldList[i].itemKey, shieldList[i].itemName, shieldList[i].buyPrice, shieldList[i].sellPrice, shieldList[i].attackType, shieldList[i].weaponType, shieldList[i].physicalDamage, shieldList[i].magicalDamage,
-                        shieldList[i].atkRange, shieldList[i].atkDistance, shieldList[i].defensivePower, shieldList[i].atkSpeed, shieldList[i].skillKey1, shieldList[i].skillKey2, shieldList[i].equipLevel, shieldList[i].disassembleItemKey, shieldList[i].disassembleItemAmount, shieldList[i].itemRank);
+                            Shield _shield = new Shield(
+                                shieldList[i].itemKey, shieldList[i].itemName, shieldList[i].itemKorName, shieldList[i].buyPrice, shieldList[i].sellPrice, shieldList[i].defensivePower,
+                                shieldList[i].equipLevel, shieldList[i].disassembleItemKey, shieldList[i].disassembleItemAmount, shieldList[i].itemRank);
                             _item = _shield;
                         }
                     }
                     break;
+                case 8:
+                    for (int i = 0; i < swordList.Count; i++)
+                    {
+                        if (_key == swordList[i].itemKey)
+                        {
+                            Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].itemKorName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
+                        swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].skillKey1, swordList[i].skillKey2, swordList[i].skillKey3, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
+                            _item = _sword;
+                        }
+                    }
+                    break;
+
                 case 9:
+                    for (int i = 0; i < exeList.Count; i++)
+                    {
+                        if (_key == exeList[i].itemKey)
+                        {
+                            Exe _exe = new Exe(exeList[i].itemKey, exeList[i].itemName, exeList[i].itemKorName, exeList[i].buyPrice, exeList[i].sellPrice, exeList[i].attackType, exeList[i].weaponType, exeList[i].physicalDamage, exeList[i].magicalDamage,
+                        exeList[i].atkRange, exeList[i].atkDistance, exeList[i].atkSpeed, exeList[i].skillKey1, exeList[i].skillKey2, exeList[i].skillKey3, exeList[i].equipLevel, exeList[i].disassembleItemKey, exeList[i].disassembleItemAmount, exeList[i].itemRank);
+                            _item = _exe;
+                        }
+                    }
+                    break;
+                case 10:
+                    for (int i = 0; i < spearList.Count; i++)
+                    {
+                        if (_key == spearList[i].itemKey)
+                        {
+                            Spear _spear = new Spear(spearList[i].itemKey, spearList[i].itemName, spearList[i].itemKorName, spearList[i].buyPrice, spearList[i].sellPrice, spearList[i].attackType, spearList[i].weaponType, spearList[i].physicalDamage, spearList[i].magicalDamage,
+                        spearList[i].atkRange, spearList[i].atkDistance, spearList[i].atkSpeed, spearList[i].skillKey1, spearList[i].skillKey2, spearList[i].skillKey3, spearList[i].equipLevel, spearList[i].disassembleItemKey, spearList[i].disassembleItemAmount, spearList[i].itemRank);
+                            _item = _spear;
+                        }
+                    }
+                    break;
+                case 11:
                     for (int i = 0; i < bowList.Count; i++)
                     {
                         if (_key == bowList[i].itemKey)
                         {
                             Bow _bow = new Bow(
-                                bowList[i].itemKey, bowList[i].itemName, bowList[i].buyPrice, bowList[i].sellPrice, bowList[i].attackType, bowList[i].weaponType, bowList[i].physicalDamage, bowList[i].magicalDamage,
-                                bowList[i].atkRange, bowList[i].atkDistance, bowList[i].atkSpeed, bowList[i].skillKey1, bowList[i].skillKey2, bowList[i].equipLevel, bowList[i].disassembleItemKey, bowList[i].disassembleItemAmount, bowList[i].itemRank);
+                                bowList[i].itemKey, bowList[i].itemName, bowList[i].itemKorName, bowList[i].buyPrice, bowList[i].sellPrice, bowList[i].attackType, bowList[i].weaponType, bowList[i].physicalDamage, bowList[i].magicalDamage,
+                                bowList[i].atkRange, bowList[i].atkDistance, bowList[i].atkSpeed, bowList[i].skillKey1, bowList[i].skillKey2, bowList[i].skillKey3, bowList[i].equipLevel, bowList[i].disassembleItemKey, bowList[i].disassembleItemAmount, bowList[i].itemRank);
                             _item = _bow;
                         }
                     }
                     break;
-                case 10:
+                case 12:
                     for (int i = 0; i < wandList.Count; i++)
                     {
                         if (_key == wandList[i].itemKey)
                         {
                             Wand _wand = new Wand(
-                                wandList[i].itemKey, wandList[i].itemName, wandList[i].buyPrice, wandList[i].sellPrice, wandList[i].attackType, wandList[i].weaponType, wandList[i].physicalDamage, wandList[i].magicalDamage,
-                                wandList[i].atkRange, wandList[i].atkDistance, wandList[i].atkSpeed, wandList[i].skillKey1, wandList[i].skillKey2, wandList[i].equipLevel, wandList[i].disassembleItemKey, wandList[i].disassembleItemAmount, wandList[i].itemRank);
+                                wandList[i].itemKey, wandList[i].itemName, wandList[i].itemKorName, wandList[i].buyPrice, wandList[i].sellPrice, wandList[i].attackType, wandList[i].weaponType, wandList[i].physicalDamage, wandList[i].magicalDamage,
+                                wandList[i].atkRange, wandList[i].atkDistance, wandList[i].atkSpeed, wandList[i].skillKey1, wandList[i].skillKey2, wandList[i].skillKey3, wandList[i].equipLevel, wandList[i].disassembleItemKey, wandList[i].disassembleItemAmount, wandList[i].itemRank);
                             _item = _wand;
                         }
                     }
                     break;
-                case 11:
+                case 13:
                     for (int i = 0; i < consumablesList.Count; i++)
                     {
                         if (_key == consumablesList[i].itemKey)
                         {
                             Consumables _consumables = new Consumables(
-                                consumablesList[i].itemKey, consumablesList[i].itemName, consumablesList[i].buyPrice, consumablesList[i].sellPrice,
+                                consumablesList[i].itemKey, consumablesList[i].itemName, consumablesList[i].itemKorName, consumablesList[i].buyPrice, consumablesList[i].sellPrice,
                                 consumablesList[i].useEffect, consumablesList[i].target, consumablesList[i].durationTime, consumablesList[i].value, consumablesList[i].maxCoolTime, consumablesList[i].itemRank);
                             _consumables.count = _amount;
                             _item = _consumables;
                         }
                     }
                     break;
-                case 12:
+                case 14:
                     for (int i = 0; i < miscellaneousList.Count; i++)
                     {
                         if (_key == miscellaneousList[i].itemKey)
                         {
                             Miscellaneous _miscellaneous = new Miscellaneous(
-                                miscellaneousList[i].itemKey, miscellaneousList[i].itemName, miscellaneousList[i].buyPrice, miscellaneousList[i].sellPrice, miscellaneousList[i].purpose, miscellaneousList[i].itemRank);
+                                miscellaneousList[i].itemKey, miscellaneousList[i].itemName, miscellaneousList[i].itemKorName, miscellaneousList[i].buyPrice, miscellaneousList[i].sellPrice, miscellaneousList[i].purpose, miscellaneousList[i].itemRank);
                             _miscellaneous.count = _amount;
                             _item = _miscellaneous;
                         }
@@ -592,13 +649,16 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     public Skill SelectSkill(int _key)
     {
-        Skill _skill = null;
+        Skill _skill = new Skill(-1,"",-1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
         if(_key < 1000)
         {
             for(int i =0; i< activeSkillList.Count; i++)
             {
-                if(activeSkillList[i].skillKey == _key)
-                    _skill = activeSkillList[i];
+                if (activeSkillList[i].skillKey == _key)
+                {
+                    ActiveSkill _activeSkill = new ActiveSkill(activeSkillList[i].skillKey, activeSkillList[i].skillName, activeSkillList[i].skillLevel, activeSkillList[i].skillType, activeSkillList[i].skillVariable, activeSkillList[i].skillValue1, activeSkillList[i].skillValue2, activeSkillList[i].skillValue3, activeSkillList[i].skillValue4, activeSkillList[i].skillValue5, activeSkillList[i].skillValue6, activeSkillList[i].skillValue7, activeSkillList[i].skillValue8, activeSkillList[i].skillValue9, activeSkillList[i].skillValue10, activeSkillList[i].skillFigures1, activeSkillList[i].skillFigures2, activeSkillList[i].skillFigures3, activeSkillList[i].skillFigures4, activeSkillList[i].skillFigures5, activeSkillList[i].skillFigures6, activeSkillList[i].skillFigures7, activeSkillList[i].skillFigures8, activeSkillList[i].skillFigures9, activeSkillList[i].skillFigures10, activeSkillList[i].maxCoolTime, activeSkillList[i].skillHitCount);
+                    _skill = _activeSkill;
+                }
             }
         }
         else
@@ -618,13 +678,13 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         switch(_key / 1000)
         {
             case 0:
-            for (int i = 0; i < warriorGraceList.Count; i++)
-            {
-                if (warriorGraceList[i].graceKey == _key)
-                    _grace = warriorGraceList[i];
-                else
-                    Debug.Log("Â•ëŒ€Â‹ ÂÂ€ç¥ÂÂ Â—Â†ÂŠë“¬Â‹ÂˆÂ‹.");
-            }
+                for (int i = 0; i < warriorGraceList.Count; i++)
+                {
+                    if (warriorGraceList[i].graceKey == _key)
+                        _grace = warriorGraceList[i];
+                    else
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                }
                 break;
             case 1:
                 for (int i = 0; i < rangedGraceList.Count; i++)
@@ -632,7 +692,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (rangedGraceList[i].graceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("Â•ëŒ€Â‹ ÂÂ€ç¥ÂÂ Â—Â†ÂŠë“¬Â‹ÂˆÂ‹.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
             case 2:
@@ -641,7 +701,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (magicGraceList[i].graceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("Â•ëŒ€Â‹ ÂÂ€ç¥ÂÂ Â—Â†ÂŠë“¬Â‹ÂˆÂ‹.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
             case 3:
@@ -650,7 +710,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (commanderGraceList[i].graceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("Â•ëŒ€Â‹ ÂÂ€ç¥ÂÂ Â—Â†ÂŠë“¬Â‹ÂˆÂ‹.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
 
@@ -665,7 +725,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
         }
         return _craftRecipe;
     }
@@ -677,6 +737,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
+                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
         }
         return _altarProperty;
     }

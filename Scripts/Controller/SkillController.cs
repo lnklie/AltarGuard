@@ -4,47 +4,20 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterStatus status = null;
-
-    [SerializeField]
-    private List<Skill> activeSkills = new List<Skill>();
-    [SerializeField]
-    private List<Skill> passiveSkills = new List<Skill>();
-    [SerializeField]
-    private List<float> coolTimes = new List<float>();
-    [SerializeField]
-    private List<SkillObject> skillPrefabs = new List<SkillObject>();
-    [SerializeField]
-    private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private CharacterStatus status = null;
+    [SerializeField] private List<Skill> activeSkills = new List<Skill>();
+    [SerializeField] private List<Skill> passiveSkills = new List<Skill>();
+    [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
+    [SerializeField] private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private bool isSkillDelay = false;
     private bool[] isCoolTime = { false, false, false };
-    [SerializeField]
-    private bool isSkillDelay = false;
 
-    public bool IsSkillDelay
-    {
-        get { return isSkillDelay; }
-        set { isSkillDelay = value; }
-    }
+    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-    public List<Skill> SkillQueue
-    {
-        get { return skillQueue; }
-    }
-    public List<Skill> ActiveSkills
-    {
-        get { return activeSkills; }
-    }
-    public List<Skill> PassiveSkills
-    {
-        get { return passiveSkills; }
-        set { passiveSkills = value; }
-    }
-    public bool[] IsCoolTime
-    {
-        get { return isCoolTime; }
-        set { isCoolTime = value; }
-    }
+    public List<Skill> SkillQueue { get { return skillQueue; } }
+    public List<Skill> ActiveSkills { get { return activeSkills; } }
+    public List<Skill> PassiveSkills { get { return passiveSkills; } set { passiveSkills = value; } }
+    public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
     #endregion
     private void Start()
     {
@@ -55,13 +28,19 @@ public class SkillController : MonoBehaviour
     private void Update()
     {
         CalculateSkillCoolTime();
+
+        if(status.IsSkillChange)
+        {
+
+            status.IsSkillChange = false;
+
+        }
     }
     public void AquireSkill(int _skillKey)
     {
         if (_skillKey < 1000)
         {
             activeSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
-            coolTimes.Add(DatabaseManager.Instance.SelectSkill(_skillKey).coolTime);
             skillQueue.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
         }
         else
@@ -96,22 +75,29 @@ public class SkillController : MonoBehaviour
         int index = activeSkills.IndexOf(_skill);
         if (index != -1)
         {
-            if(!isCoolTime[index])
+            if (status.Target != null)
             {
-                SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                isCoolTime[index] = true;
-                coolTimes[index] = 0;
-                status.IsAtk = true;
-                _skillObject.IsSkillUse = true;
-                _skillObject.transform.position = _target.transform.position;
-                _skillObject.gameObject.SetActive(true);
-                _skillObject.Target = _target;
-                _skillObject.Damage = SetSkillDamageByLevel(_skill);
-                _skillObject.SkillHitCount = _skill.skillHitCount;
-                skillQueue.RemoveAt(index);
+                if (!_skill.isCoolTime)
+                {
+                    SkillObject _skillObject = skillPrefabs[_skill.skillKey];
+                    _skill.isCoolTime = true;
+                    status.IsAtk = true;
+                    _skill.coolTime = 0f;
+                    _skillObject.IsSkillUse = true;
+                    _skillObject.transform.position = _target.transform.position;
+                    _skillObject.gameObject.SetActive(true);
+                    _skillObject.Target = _target;
+                    _skillObject.Damage = SetSkillDamageByLevel(_skill);
+                    _skillObject.SkillHitCount = _skill.skillHitCount;
+                    skillQueue.RemoveAt(index);
+                }
+                else
+                    Debug.Log("ÄðÅ¸ÀÓ Áß");
             }
             else
-                Debug.Log("ÄðÅ¸ÀÓ Áß");
+            {
+                UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+            }
         }
         else
             Debug.Log("¾ø´Â ½ºÅ³");
@@ -119,50 +105,59 @@ public class SkillController : MonoBehaviour
     public void UseSkill(Transform _target)
     {
         int index = activeSkills.IndexOf(skillQueue[0]);
-        if (skillQueue.Count > 0)
+        if(status.Target !=null)
         {
-            SkillObject _skillObject = skillPrefabs[index];
-            isCoolTime[index] = true;
-            coolTimes[index] = 0;
-            //status.IsAtk = true;
-            _skillObject.IsSkillUse = true;
-            _skillObject.transform.position = _target.transform.position;
-            _skillObject.gameObject.SetActive(true);
-            _skillObject.Target = _target;
-            _skillObject.Damage = SetSkillDamageByLevel(skillQueue[0]);
-            _skillObject.SkillHitCount = skillQueue[0].skillHitCount;
-            skillQueue.RemoveAt(0);
+            if (skillQueue.Count > 0)
+            {
+            
+                SkillObject _skillObject = skillPrefabs[index];
+                skillQueue[0].isCoolTime = true;
+                skillQueue[0].coolTime = 0;
+                //status.IsAtk = true;
+                _skillObject.IsSkillUse = true;
+                _skillObject.transform.position = _target.transform.position;
+                _skillObject.gameObject.SetActive(true);
+                _skillObject.Target = _target;
+                _skillObject.Damage = SetSkillDamageByLevel(skillQueue[0]);
+                _skillObject.SkillHitCount = skillQueue[0].skillHitCount;
+                skillQueue.RemoveAt(0);
+            }
+            else
+                Debug.Log("ÄðÅ¸ÀÓ Áß");
         }
         else
-            Debug.Log("ÄðÅ¸ÀÓ Áß");
+        {
+            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+        }
     }
     public void CalculateSkillCoolTime()
     {
-        for (int i = 0; i < coolTimes.Count; i++)
+        for (int i = 0; i <activeSkills.Count; i++)
         {
-            if (isCoolTime[i])
+            if (activeSkills[i].isCoolTime)
             {
-                coolTimes[i] += Time.deltaTime;
-                if (coolTimes[i] >= activeSkills[i].coolTime)
+                activeSkills[i].coolTime += Time.deltaTime;
+                if (activeSkills[i].coolTime >= activeSkills[i].maxCoolTime)
                 {
-                    isCoolTime[i] = false;
+                    activeSkills[i].coolTime = activeSkills[i].maxCoolTime;
+                    activeSkills[i].isCoolTime = false;
                     skillQueue.Add(activeSkills[i]);
                 }
             }
         }
     }
-    public void SetPassiveStatus()
-    {
-        for (int i = 0; i < passiveSkills.Count; i++)
-        {
-            if (passiveSkills[i].targetStatus == "str")
-                status.GraceStr = SetPassiveSkillByLevel(passiveSkills[i]);
-            else if (passiveSkills[i].targetStatus == "dex")
-                status.GraceDex = SetPassiveSkillByLevel(passiveSkills[i]);
-            else if (passiveSkills[i].targetStatus == "wiz")
-                status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
-        }
-    }
+    //public void SetPassiveStatus()
+    //{
+    //    for (int i = 0; i < passiveSkills.Count; i++)
+    //    {
+    //        if (passiveSkills[i].targetStatus == "str")
+    //            status.GraceStr = SetPassiveSkillByLevel(passiveSkills[i]);
+    //        else if (passiveSkills[i].targetStatus == "dex")
+    //            status.GraceDex = SetPassiveSkillByLevel(passiveSkills[i]);
+    //        else if (passiveSkills[i].targetStatus == "wiz")
+    //            status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
+    //    }
+    //}
     public Skill GetPassiveSkill(int _skillKey)
     {
         Skill _skill = null;
