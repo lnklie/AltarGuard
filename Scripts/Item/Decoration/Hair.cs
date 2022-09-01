@@ -12,7 +12,7 @@ using UnityEditor;
 [System.Serializable]
 public class Hair : Item
 {
-    public Hair(int _itemKey, string _itemName, int _buyPrice, int _sellPrice, int _itemRank) : base(_itemKey, _itemName, _buyPrice, _sellPrice,_itemRank)
+    public Hair(int _itemKey, string _itemName, string _itemKorName, int _buyPrice, int _sellPrice, int _itemRank) : base(_itemKey, _itemName, _itemKorName, _buyPrice, _sellPrice,_itemRank)
     {
         itemType = (int)ItemType.Hair;
         singleSprite = Resources.Load("Sprites/0_Hair/" + itemName, typeof(Sprite)) as Sprite;

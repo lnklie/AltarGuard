@@ -16,13 +16,12 @@ public class DataManager : MonoBehaviour
 {
     private string path = null;
 
-    [SerializeField]
-    private PlayerStatus playerStatus = null ;
-    [SerializeField]
-    private AltarStatus altarState = null ;
+    [SerializeField] private PlayerStatus playerStatus = null ;
+    [SerializeField] private EquipmentController playerEquipmentController = null;
 
-    [SerializeField]
-    private MercenaryManager mercenaryManager = null;
+    [SerializeField] private AltarStatus altarState = null ;
+
+    [SerializeField] private MercenaryManager mercenaryManager = null;
     private void Start()
     {
         path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
@@ -70,7 +69,7 @@ public class DataManager : MonoBehaviour
                 playerStatus.CurLevel = playerData.level;
                 playerStatus.Money = playerData.money;
                 playerStatus.Stage = playerData.stage;
-                playerStatus.EquipmentController.CheckEquipItems = playerData.checkEquipItems;
+                playerEquipmentController.CheckEquipItems = playerData.checkEquipItems;
                 for (int i = 0; i < playerData.decoItems.Count; i++)
                 {
                     InventoryManager.Instance.AddItem(InventoryManager.Instance.InventroyDecorationItems,playerData.decoItems[i]);
@@ -94,24 +93,24 @@ public class DataManager : MonoBehaviour
                 for (int i = 0; i < 2; i++)
                 {
                     if (playerData.checkEquipItems[i])
-                        playerStatus.EquipmentController.ChangeEquipment(playerData.equipedItems[i]);
+                        playerEquipmentController.ChangeEquipment(playerData.equipedItems[i]);
                     
                     else
-                        playerStatus.EquipmentController.RemoveEquipment(i);
+                        playerEquipmentController.RemoveEquipment(i);
                 }
                 for (int i = 2; i < 7; i++)
                 {
                     if (playerData.checkEquipItems[i])
-                        playerStatus.EquipmentController.ChangeEquipment(playerData.equipedItems[i]);
+                        playerEquipmentController.ChangeEquipment(playerData.equipedItems[i]);
                     else
-                        playerStatus.EquipmentController.RemoveEquipment(i);
+                        playerEquipmentController.RemoveEquipment(i);
                 }
                 for (int i = 7; i < 9; i++)
                 {
                     if (playerData.checkEquipItems[i])
-                        playerStatus.EquipmentController.ChangeEquipment(playerData.equipedItems[i]);
+                        playerEquipmentController.ChangeEquipment(playerData.equipedItems[i]);
                     else
-                        playerStatus.EquipmentController.RemoveEquipment(i);
+                        playerEquipmentController.RemoveEquipment(i);
                 }
 
                 altarState.Hp = playerData.altar.hpLevel;
@@ -125,6 +124,7 @@ public class DataManager : MonoBehaviour
                 for (int j = 0; j < playerData.mercenaries.Length; j++)
                 {
                     AllyStatus _mercenaryStatus = mercenaryManager.Mercenarys[j].GetComponent<AllyStatus>();
+                    EquipmentController _mercenaryEquipmentController = mercenaryManager.Mercenarys[j].GetComponent<EquipmentController>();
                     _mercenaryStatus.ObjectName = playerData.mercenaries[j].objectName;
                     _mercenaryStatus.Str = playerData.mercenaries[j].str;
                     _mercenaryStatus.Dex = playerData.mercenaries[j].dex;
@@ -136,17 +136,17 @@ public class DataManager : MonoBehaviour
                     for (int i = 0; i < 2; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryEquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                     for (int i = 2; i < 7; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryEquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                     for (int i = 7; i < 9; i++)
                     {
                         if (playerData.mercenaries[j].checkEquipItems[i])
-                            _mercenaryStatus.EquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
+                            _mercenaryEquipmentController.ChangeEquipment(playerData.mercenaries[j].equipedItems[i]);
                     }
                 }
             }
@@ -169,7 +169,7 @@ public class DataManager : MonoBehaviour
         playerData.level = playerStatus.CurLevel;
         playerData.money = playerStatus.Money; ;
         playerData.stage = playerStatus.Stage;
-        playerData.checkEquipItems = playerStatus.EquipmentController.CheckEquipItems;
+        playerData.checkEquipItems = playerEquipmentController.CheckEquipItems;
         AddItemList(playerData.decoItems, InventoryManager.Instance.InventroyDecorationItems);
         AddItemList(playerData.weaponItems, InventoryManager.Instance.InventroyWeaponItems);
         AddItemList(playerData.equipmentItems, InventoryManager.Instance.InventroyEquipmentItems);
@@ -179,7 +179,7 @@ public class DataManager : MonoBehaviour
         for (int i = 0; i < playerData.equipedItems.Length; i++)
         {
             if(playerData.checkEquipItems[i])
-                playerData.equipedItems[i] = playerStatus.EquipmentController.EquipItems[i];
+                playerData.equipedItems[i] = playerEquipmentController.EquipItems[i];
         
         }
         Debug.Log("1 " + altarState.Hp + " "+playerData.altar.hpLevel);
@@ -196,6 +196,7 @@ public class DataManager : MonoBehaviour
         {
             Character character = new Character();
             AllyStatus _mercenaryStatus = mercenaryManager.Mercenarys[i].GetComponent<AllyStatus>();
+            EquipmentController _mercenaryEquipmenrController = mercenaryManager.Mercenarys[i].GetComponent<EquipmentController>();
             character.objectName = _mercenaryStatus.ObjectName;
             character.str = _mercenaryStatus.Str;
             character.dex = _mercenaryStatus.Dex;
@@ -204,11 +205,11 @@ public class DataManager : MonoBehaviour
             character.statusPoint = _mercenaryStatus.StatusPoint;
             character.exp = _mercenaryStatus.CurExp;
             character.level = _mercenaryStatus.CurLevel;
-            character.checkEquipItems = _mercenaryStatus.EquipmentController.CheckEquipItems;
+            character.checkEquipItems = _mercenaryEquipmenrController.CheckEquipItems;
             for (int j = 0; j < playerData.equipedItems.Length; j++)
             {
                 if(character.checkEquipItems[j])
-                    character.equipedItems[j] = _mercenaryStatus.EquipmentController.EquipItems[j];
+                    character.equipedItems[j] = _mercenaryEquipmenrController.EquipItems[j];
                 
             }
             playerData.mercenaries[i] = character;

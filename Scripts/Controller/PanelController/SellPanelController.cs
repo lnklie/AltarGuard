@@ -82,30 +82,38 @@ public class SellPanelController : MonoBehaviour
         MoneyUpdate();
         if (_index == 0)
         {
+            int _index2 = 0;
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
-                shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
-                shopInventorySlots[i].SlotSetting();
-                shopInventorySlots[i].EnableItemCount(false);
+                if(!InventoryManager.Instance.InventroyWeaponItems[i].isEquip)
+                {
+                    shopInventorySlots[_index2].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
+                    shopInventorySlots[_index2].SlotSetting();
+                    shopInventorySlots[_index2].EnableItemCount(false);
+                    _index2++;
+                }
 
             }
         }
         if (_index == 1)
         {
+            int _index2 = 0;
             for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
-                shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
-                shopInventorySlots[i].SlotSetting();
-                shopInventorySlots[i].EnableItemCount(false);
+                if (!InventoryManager.Instance.InventroyEquipmentItems[i].isEquip)
+                {
+                    shopInventorySlots[_index2].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
+                    shopInventorySlots[_index2].SlotSetting();
+                    shopInventorySlots[_index2].EnableItemCount(false);
+                    _index2++;
+                }
             }
         }
         if (_index == 2)
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyConsumableItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyConsumableItems);
+
                 shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyConsumableItems[i];
                 shopInventorySlots[i].SlotSetting();
             }
@@ -114,7 +122,6 @@ public class SellPanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyMiscellaneousItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
                 shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyMiscellaneousItems[i];
                 shopInventorySlots[i].SlotSetting();
 
@@ -122,12 +129,16 @@ public class SellPanelController : MonoBehaviour
         }
         if (_index == 4)
         {
+            int _index2 = 0;
             for (int i = 0; i < InventoryManager.Instance.InventroyDecorationItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyDecorationItems);
-                shopInventorySlots[i].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
-                shopInventorySlots[i].SlotSetting();
-                shopInventorySlots[i].EnableItemCount(false);
+                if (!InventoryManager.Instance.InventroyDecorationItems[i].isEquip)
+                {
+                    shopInventorySlots[_index2].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
+                    shopInventorySlots[_index2].SlotSetting();
+                    shopInventorySlots[_index2].EnableItemCount(false);
+                    _index2++;
+                }
             }
         }
         selectInventoryIndex = _index;

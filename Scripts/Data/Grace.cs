@@ -21,12 +21,10 @@ public class Grace
     public int resultWhat2 = -1;
     public int resultValue1 = -1;
     public int resultValue2 = -1;
-    public int resultValue1IsPercent = -1;
-    public int resultValue2IsPercent = -1;
     public int resultHow1 = -1;
     public int resultHow2 = -1;
     public Grace(int _graceKey, string _graceName, string _explain, int _necessaryGraceKey, int _conditionWho, int _conditionWhat, int _conditionValue, int _conditionHow,
-        int _resultWho, int _resultTarget1, int _resultTarget2, int _resultWhat1, int _resultWhat2, int _resultValue1, int _resultValue2, int _resultValue1IsPercent, int _resultValue2IsPercent, int _resultHow1, int _resultHow2)
+        int _resultWho, int _resultTarget1, int _resultTarget2, int _resultWhat1, int _resultWhat2, int _resultValue1, int _resultValue2,int _resultHow1, int _resultHow2)
     {
         this.graceKey = _graceKey;
         this.graceName = _graceName;
@@ -43,8 +41,6 @@ public class Grace
         this.resultWhat2 = _resultWhat2;
         this.resultValue1 = _resultValue1;
         this.resultValue2 = _resultValue2;
-        this.resultValue1IsPercent = _resultValue1IsPercent;
-        this.resultValue2IsPercent = _resultValue2IsPercent;
         this.resultHow1 = _resultHow1;
         this.resultHow2 = _resultHow2;
     }
