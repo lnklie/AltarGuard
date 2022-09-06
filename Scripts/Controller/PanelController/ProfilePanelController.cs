@@ -13,39 +13,26 @@ using TMPro;
 public class ProfilePanelController : MonoBehaviour
 {
     [Header("StateImages & StateTexts")]
-    [SerializeField]
-    private Image[] playerStateImages = null;
-    [SerializeField]
-    private Image bossStateImages = null;
-    [SerializeField]
-    private TextMeshProUGUI[] playerTexts = null;
+    [SerializeField] private Image[] playerStateImages = null;
+    [SerializeField] private Image bossStateImages = null;
+    [SerializeField] private TextMeshProUGUI[] playerTexts = null;
 
-    [SerializeField]
-    private Image[] mercenaryStateImages = null;
-    [SerializeField]
-    private TextMeshProUGUI[] mercenaryTexts = null;
-    [SerializeField]
-    private TextMeshProUGUI[] bossTexts = null;
+    [SerializeField] private Image[] mercenaryStateImages = null;
+    [SerializeField] private TextMeshProUGUI[] mercenaryTexts = null;
+    [SerializeField] private TextMeshProUGUI[] bossTexts = null;
 
     [Header("ProfileImages")]
-    [SerializeField]
-    private GameObject bossProfile = null;
+    [SerializeField] private GameObject bossProfile = null;
+    [SerializeField] private List<GameObject> profiles = new List<GameObject>();
 
-    [SerializeField]
-    private List<GameObject> profiles = new List<GameObject>();
-    public List<GameObject> Profiles
-    {
-        get { return profiles; }
-        set { profiles = value; }
-    }
+    [SerializeField] private Sprite UIMask;
+
+    [SerializeField] private Conversation[] conversations = null;
+
+    public List<GameObject> Profiles { get { return profiles; } set { profiles = value; } }
 
 
-    [SerializeField]
-    private Sprite UIMask;
-    private void Awake()
-    {
 
-    }
     #region "º¸½º ¾÷µ¥ÀÌÆ®"
     public void SetBossProfile(bool _bool)
     {
@@ -108,281 +95,59 @@ public class ProfilePanelController : MonoBehaviour
         }
 
     }
-    //public void ChangePlayerUIItemImage(List<EquipmentController> _characterList)
-    //{
-    //    // ÇÃ·¹ÀÌ¾î ÇÁ·ÎÇÊ UI º¯°æÇÏ±â
-    //    // ¸Ó¸®
-    //    if (_characterList[0].CheckEquipItems[0])
-    //    {
-    //        playerProfileImages[7].sprite = _characterList[0].EquipItems[0].spList[0];
-    //        playerProfileImages[7].rectTransform.pivot = playerProfileImages[7].sprite.pivot / playerProfileImages[7].sprite.rect.size;
-    //    }
-    //    else
-    //    {
-    //        playerProfileImages[7].sprite = UIMask;
-
-    //    }
-
-    //    // ¾ó±¼Àå½Ä
-    //    if (_characterList[0].CheckEquipItems[1])
-    //    {
-    //        playerProfileImages[6].sprite = _characterList[0].EquipItems[1].spList[0];
-    //        playerProfileImages[6].rectTransform.pivot = playerProfileImages[6].sprite.pivot / playerProfileImages[6].sprite.rect.size;
-    //    }
-    //    else
-    //        playerProfileImages[6].sprite = UIMask;
-    //    // À§¿Ê
-    //    if (_characterList[0].CheckEquipItems[2])
-    //    {
-    //        playerProfileImages[4].sprite = _characterList[0].EquipItems[2].spList[1];
-    //        playerProfileImages[2].sprite = _characterList[0].EquipItems[2].spList[0];
-    //        playerProfileImages[0].sprite = _characterList[0].EquipItems[2].spList[2];
-    //    }
-    //    else
-    //    {
-    //        playerProfileImages[4].sprite = UIMask;
-    //        playerProfileImages[2].sprite = UIMask;
-    //        playerProfileImages[0].sprite = UIMask;
-    //    }
-    //    // Åõ±¸
-    //    if (_characterList[0].CheckEquipItems[4])
-    //    {
-    //        playerProfileImages[8].sprite = _characterList[0].EquipItems[4].spList[0];
-    //        playerProfileImages[8].rectTransform.pivot = playerProfileImages[8].sprite.pivot / playerProfileImages[8].sprite.rect.size;
-    //    }
-    //    else
-    //        playerProfileImages[8].sprite = UIMask;
-    //    // °©¿Ê
-    //    if (_characterList[0].CheckEquipItems[5])
-    //    {
-    //        playerProfileImages[5].sprite = _characterList[0].EquipItems[5].spList[1];
-    //        playerProfileImages[3].sprite = _characterList[0].EquipItems[5].spList[0];
-    //        playerProfileImages[1].sprite = _characterList[0].EquipItems[5].spList[2];
-    //    }
-    //    else
-    //    {
-    //        playerProfileImages[5].sprite = UIMask;
-    //        playerProfileImages[3].sprite = UIMask;
-    //        playerProfileImages[1].sprite = UIMask;
-    //    }
-    //}
-    //public void ChangeMercenaryUIItemImage(List<EquipmentController> _characterList,int _index)
-    //{
-    //    // ¿ëº´ ÇÁ·ÎÇÊ UI º¯°æÇÏ±â
-    //    if (_index == 0)
-    //    {
-    //        // ¸Ó¸®
-    //        if (_characterList[_index + 1].CheckEquipItems[0])
-    //        {
-    //            mercenaryAProfileImages[7].sprite = _characterList[_index  +1].EquipItems[0].spList[0];
-    //            mercenaryAProfileImages[7].rectTransform.pivot = mercenaryAProfileImages[7].sprite.pivot / mercenaryAProfileImages[7].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryAProfileImages[7].sprite = UIMask;
-    //        // ¾ó±¼Àå½Ä
-    //        if (_characterList[_index + 1].CheckEquipItems[1])
-    //        {
-    //            mercenaryAProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
-    //            mercenaryAProfileImages[6].rectTransform.pivot = mercenaryAProfileImages[6].sprite.pivot / mercenaryAProfileImages[6].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryAProfileImages[6].sprite = UIMask;
-    //        // À§¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[2])
-    //        {
-    //            mercenaryAProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
-    //            mercenaryAProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
-    //            mercenaryAProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryAProfileImages[4].sprite = UIMask;
-    //            mercenaryAProfileImages[2].sprite = UIMask;
-    //            mercenaryAProfileImages[0].sprite = UIMask;
-    //        }
-    //        // Åõ±¸
-    //        if (_characterList[_index + 1].CheckEquipItems[4])
-    //        {
-    //            mercenaryAProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
-    //            mercenaryAProfileImages[8].rectTransform.pivot = mercenaryAProfileImages[8].sprite.pivot / mercenaryAProfileImages[8].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryAProfileImages[8].sprite = UIMask;
-    //        // °©¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[5])
-    //        {
-    //            mercenaryAProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
-    //            mercenaryAProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
-    //            mercenaryAProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryAProfileImages[5].sprite = UIMask;
-    //            mercenaryAProfileImages[3].sprite = UIMask;
-    //            mercenaryAProfileImages[1].sprite = UIMask;
-    //        }
-    //    }
-    //    else if (_index == 1)
-    //    {
-    //        // ¸Ó¸®
-    //        if (_characterList[_index + 1].CheckEquipItems[0])
-    //        {
-    //            mercenaryBProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
-    //            mercenaryBProfileImages[7].rectTransform.pivot = mercenaryBProfileImages[7].sprite.pivot / mercenaryBProfileImages[7].sprite.rect.size;
-
-    //        }
-    //        else
-    //            mercenaryBProfileImages[7].sprite = UIMask;
-    //        // ¾ó±¼Àå½Ä
-    //        if (_characterList[_index + 1].CheckEquipItems[1])
-    //        {
-    //            mercenaryBProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
-    //            mercenaryBProfileImages[6].rectTransform.pivot = mercenaryBProfileImages[6].sprite.pivot / mercenaryBProfileImages[6].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryBProfileImages[6].sprite = UIMask;
-    //        // À§¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[2])
-    //        {
-    //            mercenaryBProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
-    //            mercenaryBProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
-    //            mercenaryBProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryBProfileImages[4].sprite = UIMask;
-    //            mercenaryBProfileImages[2].sprite = UIMask;
-    //            mercenaryBProfileImages[0].sprite = UIMask;
-    //        }
-    //        // Åõ±¸
-    //        if (_characterList[_index + 1].CheckEquipItems[4])
-    //        {
-    //            mercenaryBProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
-    //            mercenaryBProfileImages[8].rectTransform.pivot = mercenaryBProfileImages[8].sprite.pivot / mercenaryBProfileImages[8].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryBProfileImages[8].sprite = UIMask;
-    //        // °©¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[5])
-    //        {
-    //            mercenaryBProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
-    //            mercenaryBProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
-    //            mercenaryBProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryBProfileImages[5].sprite = UIMask;
-    //            mercenaryBProfileImages[3].sprite = UIMask;
-    //            mercenaryBProfileImages[1].sprite = UIMask;
-    //        }
-    //    }
-    //    if (_index == 2)
-    //    {
-    //        // ¸Ó¸®
-    //        if (_characterList[_index + 1].CheckEquipItems[0])
-    //        {
-    //            mercenaryCProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
-    //            mercenaryCProfileImages[7].rectTransform.pivot = mercenaryCProfileImages[7].sprite.pivot / mercenaryCProfileImages[7].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryCProfileImages[7].sprite = UIMask;
-    //        // ¾ó±¼Àå½Ä
-    //        if (_characterList[_index + 1].CheckEquipItems[1])
-    //        {
-    //            mercenaryCProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
-    //            mercenaryCProfileImages[6].rectTransform.pivot = mercenaryCProfileImages[6].sprite.pivot / mercenaryCProfileImages[6].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryCProfileImages[6].sprite = UIMask;
-    //        // À§¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[2])
-    //        {
-    //            mercenaryCProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
-    //            mercenaryCProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
-    //            mercenaryCProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryCProfileImages[4].sprite = UIMask;
-    //            mercenaryCProfileImages[2].sprite = UIMask;
-    //            mercenaryCProfileImages[0].sprite = UIMask;
-    //        }
-    //        // Åõ±¸
-    //        if (_characterList[_index + 1].CheckEquipItems[4])
-    //        {
-    //            mercenaryCProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
-    //            mercenaryCProfileImages[8].rectTransform.pivot = mercenaryCProfileImages[8].sprite.pivot / mercenaryCProfileImages[8].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryCProfileImages[8].sprite = UIMask;
-    //        // °©¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[5])
-    //        {
-    //            mercenaryCProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
-    //            mercenaryCProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
-    //            mercenaryCProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryCProfileImages[5].sprite = UIMask;
-    //            mercenaryCProfileImages[3].sprite = UIMask;
-    //            mercenaryCProfileImages[1].sprite = UIMask;
-    //        }
-    //    }
-    //    if (_index == 3)
-    //    {
-    //        // ¸Ó¸®
-    //        if (_characterList[_index + 1].CheckEquipItems[0])
-    //        {
-    //            mercenaryDProfileImages[7].sprite = _characterList[_index + 1].EquipItems[0].spList[0];
-    //            mercenaryDProfileImages[7].rectTransform.pivot = mercenaryDProfileImages[7].sprite.pivot / mercenaryDProfileImages[7].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryDProfileImages[7].sprite = UIMask;
-    //        // ¾ó±¼Àå½Ä
-    //        if (_characterList[_index + 1].CheckEquipItems[1])
-    //        {
-    //            mercenaryDProfileImages[6].sprite = _characterList[_index + 1].EquipItems[1].spList[0];
-    //            mercenaryDProfileImages[6].rectTransform.pivot = mercenaryDProfileImages[6].sprite.pivot / mercenaryDProfileImages[6].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryDProfileImages[6].sprite = UIMask;
-    //        // À§¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[2])
-    //        {
-    //            mercenaryDProfileImages[4].sprite = _characterList[_index + 1].EquipItems[2].spList[0];
-    //            mercenaryDProfileImages[2].sprite = _characterList[_index + 1].EquipItems[2].spList[1];
-    //            mercenaryDProfileImages[0].sprite = _characterList[_index + 1].EquipItems[2].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryDProfileImages[4].sprite = UIMask;
-    //            mercenaryDProfileImages[2].sprite = UIMask;
-    //            mercenaryDProfileImages[0].sprite = UIMask;
-    //        }
-    //        // Åõ±¸
-    //        if (_characterList[_index + 1].CheckEquipItems[4])
-    //        {
-    //            mercenaryDProfileImages[8].sprite = _characterList[_index + 1].EquipItems[4].spList[0];
-    //            mercenaryDProfileImages[8].rectTransform.pivot = mercenaryDProfileImages[8].sprite.pivot / mercenaryDProfileImages[8].sprite.rect.size;
-    //        }
-    //        else
-    //            mercenaryDProfileImages[8].sprite = UIMask;
-    //        // °©¿Ê
-    //        if (_characterList[_index + 1].CheckEquipItems[5])
-    //        {
-    //            mercenaryDProfileImages[5].sprite = _characterList[_index + 1].EquipItems[5].spList[0];
-    //            mercenaryDProfileImages[3].sprite = _characterList[_index + 1].EquipItems[5].spList[1];
-    //            mercenaryDProfileImages[1].sprite = _characterList[_index + 1].EquipItems[5].spList[2];
-    //        }
-    //        else
-    //        {
-    //            mercenaryDProfileImages[5].sprite = UIMask;
-    //            mercenaryDProfileImages[3].sprite = UIMask;
-    //            mercenaryDProfileImages[1].sprite = UIMask;
-    //        }
-    //    }
-    //}
+    public IEnumerator Conversation(GameScript _gameScript)
+    {
+        if(_gameScript.actorNum0 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum0].Talk(_gameScript.script0, _gameScript.scriptSpeed0, _gameScript.scriptAniSpeed0));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag0);
+        if (_gameScript.actorNum1 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum1].Talk(_gameScript.script1, _gameScript.scriptSpeed1, _gameScript.scriptAniSpeed1));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag1);
+        if (_gameScript.actorNum2 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum2].Talk(_gameScript.script2, _gameScript.scriptSpeed2, _gameScript.scriptAniSpeed2));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag2);
+        if (_gameScript.actorNum3 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum3].Talk(_gameScript.script3, _gameScript.scriptSpeed3, _gameScript.scriptAniSpeed3));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag3);
+        if (_gameScript.actorNum4 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum4].Talk(_gameScript.script4, _gameScript.scriptSpeed4, _gameScript.scriptAniSpeed4));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag4);
+        if (_gameScript.actorNum5 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum5].Talk(_gameScript.script5, _gameScript.scriptSpeed5, _gameScript.scriptAniSpeed5));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag5);
+        if (_gameScript.actorNum6 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum6].Talk(_gameScript.script6, _gameScript.scriptSpeed6, _gameScript.scriptAniSpeed6));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag6);
+        if (_gameScript.actorNum7 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum7].Talk(_gameScript.script7, _gameScript.scriptSpeed7, _gameScript.scriptAniSpeed7));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag7);
+        if (_gameScript.actorNum8 != -1)
+        {
+            StartCoroutine(conversations[_gameScript.actorNum8].Talk(_gameScript.script8, _gameScript.scriptSpeed8, _gameScript.scriptAniSpeed8));
+        }
+        yield return new WaitForSeconds(_gameScript.timeLag8);
+        if (_gameScript.actorNum9 != -1)
+        {
+            Debug.Log("¿ä±ã");
+            StartCoroutine(conversations[_gameScript.actorNum9].Talk(_gameScript.script9, _gameScript.scriptSpeed9, _gameScript.scriptAniSpeed9));
+        }
+    }
     #endregion
     public void ActiveInventory()
     {

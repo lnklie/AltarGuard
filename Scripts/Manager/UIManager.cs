@@ -76,29 +76,28 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F4))
-        {
-            Notice("Game Start");
-        }
-        if (player.IsStatusUpdate || player.IsStateChange)
+        if (player.TriggerStatusUpdate || player.TriggerStateChange)
         {
             UpdatePlayerProfile();
         }
+        for(int i = 0; i < mercenary.Count; i++)
+        {
+            if (mercenary[i].TriggerStatusUpdate || mercenary[i].TriggerStateChange)
+            {
+                UpdateMercenaryProfile(i);
+                mercenary[i].TriggerStatusUpdate = false;
+            }
+        }
         if(bossEnemy)
         {
-            if(bossEnemy.IsDamaged || bossEnemy.IsStatusUpdate)
+            if(bossEnemy.IsDamaged || bossEnemy.TriggerStatusUpdate)
             {
                 UpdateBossInfo();
             }
         }
-        for(int i = 0; i < mercenary.Count; i++)
-        {
-            if (mercenary[i].IsStatusUpdate)
-            {
-                UpdateMercenaryProfile(i);
-                mercenary[i].IsStatusUpdate = false;
-            }
-        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+            StartCoroutine(profilePanelController.Conversation(DatabaseManager.Instance.SelectGameScript(0)));
     }
     public void SetBossInfo(bool _bool)
     {
@@ -139,7 +138,6 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        Debug.Log("그레이스 업데이트");
         gracePanelController.UpdateSlots(graceManager.CheckIsActive);
         UpdateGracePoint();
     }

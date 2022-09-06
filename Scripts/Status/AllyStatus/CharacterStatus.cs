@@ -54,6 +54,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int equipedHpRegenValue = 0;
     [SerializeField] protected int equipedPhysicalDamage = 0;
     [SerializeField] protected int equipedMagicalDamage = 0;
+    [SerializeField] protected int equipedDefensivePower = 0;
     [SerializeField] protected float equipedSpeed = 0f;
     [SerializeField] protected float equipedAtkSpeed = 2f;
     [SerializeField] protected float equipedAtkRange = 0f;
@@ -77,7 +78,8 @@ public class CharacterStatus : Status
 
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
-    [SerializeField] protected EquipmentController equipmentController = null;
+    [SerializeField] protected bool triggerEquipmentChange = false;
+    //[SerializeField] protected EquipmentController equipmentController = null;
     [SerializeField] protected Transform allyTarget = null;
     protected int curExp = 0;
     protected int maxExp = 0;
@@ -90,7 +92,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int buffHpRegenValue = 0;
 
 
-    [SerializeField] protected bool isStatusUpdate = false;
+    [SerializeField] protected bool triggerStatusUpdate = false;
     [SerializeField] protected float delayTime = 0f;
     [SerializeField] private float stiffenTime = 0f;
     [SerializeField] private GameObject flag = null;
@@ -106,6 +108,7 @@ public class CharacterStatus : Status
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
     #region Properties
+    public bool IsEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
     public int GraceMaxMp { get { return graceMaxMp; } set { graceMaxMp = value; } }
@@ -159,7 +162,7 @@ public class CharacterStatus : Status
     public float AtkRange { get { return atkRange; } set { atkRange = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
     public Transform Target { get { return target; } set { target = value; } }
-    public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
+    //public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
     public Transform AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
     public int CurExp { get { return curExp; } set { curExp = value; } }
     public int MaxExp { get { return maxExp; } set { maxExp = value; } }
@@ -169,12 +172,12 @@ public class CharacterStatus : Status
     public float BuffSpeed { get { return buffSpeed; } set { buffSpeed = value; } }
     public int BuffHpRegenValue { get { return buffHpRegenValue; } set { buffHpRegenValue = value; } }
 
-    public bool IsStatusUpdate { get { return isStatusUpdate; } set { isStatusUpdate = value; } }
+    public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
     #endregion
     public override void Awake()
     {
         base.Awake();
-        equipmentController = this.GetComponent<EquipmentController>();
+        //equipmentController = this.GetComponent<EquipmentController>();
         UpdateAbility();
         curHp = totalMaxHp;
         curMp = totalMaxMp;
@@ -190,13 +193,13 @@ public class CharacterStatus : Status
     public override void Update()
     {
         base.Update();
-        if(isStatusUpdate)
+        if(triggerStatusUpdate)
         {
-            isStatusUpdate = false;
+            triggerStatusUpdate = false;
         }
-        if (equipmentController.IsChangeItem)
+        if (triggerEquipmentChange)
         {
-            equipmentController.IsChangeItem = false;
+            triggerEquipmentChange = false;
             UpdateAbility();
         }
         if (!isHPRegen)
@@ -205,7 +208,6 @@ public class CharacterStatus : Status
     public void AquireExp(Status status)
     {
         curExp += status.DefeatExp;
-        
     }
     public void UpdateBasicStatus()
     {
@@ -267,7 +269,7 @@ public class CharacterStatus : Status
                     curHp += totalHpRegenValue;
                 }
             }
-            isStatusUpdate = true;
+            triggerStatusUpdate = true;
         }
     }
 }

@@ -4,46 +4,20 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterStatus status = null;
-
-    [SerializeField]
-    private List<Skill> activeSkills = new List<Skill>();
-    [SerializeField]
-    private List<Skill> passiveSkills = new List<Skill>();
-
-    [SerializeField]
-    private List<SkillObject> skillPrefabs = new List<SkillObject>();
-    [SerializeField]
-    private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private CharacterStatus status = null;
+    [SerializeField] private List<Skill> activeSkills = new List<Skill>();
+    [SerializeField] private List<Skill> passiveSkills = new List<Skill>();
+    [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
+    [SerializeField] private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private bool isSkillDelay = false;
     private bool[] isCoolTime = { false, false, false };
-    [SerializeField]
-    private bool isSkillDelay = false;
 
-    public bool IsSkillDelay
-    {
-        get { return isSkillDelay; }
-        set { isSkillDelay = value; }
-    }
+    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-    public List<Skill> SkillQueue
-    {
-        get { return skillQueue; }
-    }
-    public List<Skill> ActiveSkills
-    {
-        get { return activeSkills; }
-    }
-    public List<Skill> PassiveSkills
-    {
-        get { return passiveSkills; }
-        set { passiveSkills = value; }
-    }
-    public bool[] IsCoolTime
-    {
-        get { return isCoolTime; }
-        set { isCoolTime = value; }
-    }
+    public List<Skill> SkillQueue { get { return skillQueue; } }
+    public List<Skill> ActiveSkills { get { return activeSkills; } }
+    public List<Skill> PassiveSkills { get { return passiveSkills; } set { passiveSkills = value; } }
+    public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
     #endregion
     private void Start()
     {
@@ -57,6 +31,7 @@ public class SkillController : MonoBehaviour
 
         if(status.IsSkillChange)
         {
+
             status.IsSkillChange = false;
 
         }
@@ -164,7 +139,8 @@ public class SkillController : MonoBehaviour
                 activeSkills[i].coolTime += Time.deltaTime;
                 if (activeSkills[i].coolTime >= activeSkills[i].maxCoolTime)
                 {
-                    isCoolTime[i] = false;
+                    activeSkills[i].coolTime = activeSkills[i].maxCoolTime;
+                    activeSkills[i].isCoolTime = false;
                     skillQueue.Add(activeSkills[i]);
                 }
             }
