@@ -67,7 +67,7 @@ public class Status : MonoBehaviour
         get { return isDamaged; }
         set { isDamaged = value; }
     }
-    public bool IsStateChange
+    public bool TriggerStateChange
     {
         get { return isStateChange; }
         set { isStateChange = value; }

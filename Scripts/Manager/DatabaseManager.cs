@@ -52,6 +52,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("AltarProperty")]
     public List<AltarProperty> altarPropertyList = new List<AltarProperty>();
+
+    [Header("GameScript")]
+    public List<GameScript> gameScriptList = new List<GameScript>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -343,7 +346,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].coolTime, skill[i].skillHitCount));
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].maxCoolTime, skill[i].skillHitCount));
             }
         }
         if (!File.Exists(CombinePath("PassiveSkill")))
@@ -454,6 +457,23 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     , altarProperties[i].rateOfValueIncreaseBySection_6, altarProperties[i].rateOfValueIncreaseBySection_7, altarProperties[i].rateOfValueIncreaseBySection_8, altarProperties[i].rateOfValueIncreaseBySection_9, altarProperties[i].rateOfValueIncreaseBySection_10));
             }
         }
+        if (!File.Exists(CombinePath("GameScript")))
+        {
+            Debug.Log("경로에 대본 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GameScript")));
+            GameScript[] gameScripts = JsonHelper.FromJson<GameScript>(loadJson);
+            for (var i = 0; i < gameScripts.Length; i++)
+            {
+                gameScriptList.Add(new GameScript(gameScripts[i].scriptKey, gameScripts[i].actorNum0, gameScripts[i].actorNum1, gameScripts[i].actorNum2, gameScripts[i].actorNum3,gameScripts[i].actorNum4, gameScripts[i].actorNum5, gameScripts[i].actorNum6, gameScripts[i].actorNum7, gameScripts[i].actorNum8, gameScripts[i].actorNum9,
+                    gameScripts[i].script0, gameScripts[i].script1, gameScripts[i].script2, gameScripts[i].script3, gameScripts[i].script4, gameScripts[i].script5, gameScripts[i].script6, gameScripts[i].script7, gameScripts[i].script8, gameScripts[i].script9,
+                    gameScripts[i].scriptSpeed0, gameScripts[i].scriptSpeed1, gameScripts[i].scriptSpeed2, gameScripts[i].scriptSpeed3, gameScripts[i].scriptSpeed4, gameScripts[i].scriptSpeed5, gameScripts[i].scriptSpeed6, gameScripts[i].scriptSpeed7, gameScripts[i].scriptSpeed8, gameScripts[i].scriptSpeed9,
+                    gameScripts[i].scriptAniSpeed0, gameScripts[i].scriptAniSpeed1, gameScripts[i].scriptAniSpeed2, gameScripts[i].scriptAniSpeed3, gameScripts[i].scriptAniSpeed4, gameScripts[i].scriptAniSpeed5, gameScripts[i].scriptAniSpeed6, gameScripts[i].scriptAniSpeed7, gameScripts[i].scriptAniSpeed8, gameScripts[i].scriptAniSpeed9,
+                    gameScripts[i].timeLag0, gameScripts[i].timeLag1, gameScripts[i].timeLag2, gameScripts[i].timeLag3, gameScripts[i].timeLag4, gameScripts[i].timeLag5, gameScripts[i].timeLag6, gameScripts[i].timeLag7, gameScripts[i].timeLag8));
+            }
+        }
     }
     public Item SelectItem(int _key, int _amount = 1)
     {
@@ -509,7 +529,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     {
                         if (_key == helmetList[i].itemKey)
                         {
-                            Helmet _helmet = new Helmet(helmetList[i].itemKey, helmetList[i].itemName, helmetList[i].itemKorName, helmetList[i].buyPrice, helmetList[i].sellPrice, helmetList[i].defensivePower, helmetList[i].equipLevel, helmetList[i].disassembleItemKey, helmetList[i].disassembleItemAmount, helmetList[i].itemRank);
+                            Helmet _helmet = new Helmet(helmetList[i].itemKey, helmetList[i].itemName, helmetList[i].itemKorName, helmetList[i].buyPrice, helmetList[i].sellPrice,
+                                helmetList[i].defensivePower, helmetList[i].equipLevel, helmetList[i].disassembleItemKey, helmetList[i].disassembleItemAmount, helmetList[i].itemRank);
                             _item = _helmet;
                         }
                     }
@@ -648,13 +669,16 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     public Skill SelectSkill(int _key)
     {
-        Skill _skill = null;
+        Skill _skill = new Skill(-1,"",-1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
         if(_key < 1000)
         {
             for(int i =0; i< activeSkillList.Count; i++)
             {
-                if(activeSkillList[i].skillKey == _key)
-                    _skill = activeSkillList[i];
+                if (activeSkillList[i].skillKey == _key)
+                {
+                    ActiveSkill _activeSkill = new ActiveSkill(activeSkillList[i].skillKey, activeSkillList[i].skillName, activeSkillList[i].skillLevel, activeSkillList[i].skillType, activeSkillList[i].skillVariable, activeSkillList[i].skillValue1, activeSkillList[i].skillValue2, activeSkillList[i].skillValue3, activeSkillList[i].skillValue4, activeSkillList[i].skillValue5, activeSkillList[i].skillValue6, activeSkillList[i].skillValue7, activeSkillList[i].skillValue8, activeSkillList[i].skillValue9, activeSkillList[i].skillValue10, activeSkillList[i].skillFigures1, activeSkillList[i].skillFigures2, activeSkillList[i].skillFigures3, activeSkillList[i].skillFigures4, activeSkillList[i].skillFigures5, activeSkillList[i].skillFigures6, activeSkillList[i].skillFigures7, activeSkillList[i].skillFigures8, activeSkillList[i].skillFigures9, activeSkillList[i].skillFigures10, activeSkillList[i].maxCoolTime, activeSkillList[i].skillHitCount);
+                    _skill = _activeSkill;
+                }
             }
         }
         else
@@ -716,7 +740,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public CraftRecipe SelectCraftRecipe(int _key)
     {
         CraftRecipe _craftRecipe = null;
-        for (int i = 0; i < magicGraceList.Count; i++)
+        for (int i = 0; i < craftRecipeList.Count; i++)
         {
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
@@ -728,13 +752,25 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public AltarProperty SelectAltarProperty(int _key)
     {
         AltarProperty _altarProperty = null;
-        for (int i = 0; i < magicGraceList.Count; i++)
+        for (int i = 0; i < altarPropertyList.Count; i++)
         {
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
+                Debug.Log("해당 제단 특성이 없습니다.");
         }
         return _altarProperty;
+    }
+    public GameScript SelectGameScript(int _key)
+    {
+        GameScript _gameScript = null;
+        for (int i = 0; i < gameScriptList.Count; i++)
+        {
+            if (gameScriptList[i].scriptKey == _key)
+                _gameScript = gameScriptList[i];
+            else
+                Debug.Log("해당 제작 레시피가 없습니다.");
+        }
+        return _gameScript;
     }
 }

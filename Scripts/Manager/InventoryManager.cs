@@ -52,15 +52,15 @@ public class InventoryManager : SingletonManager<InventoryManager>
         //AcquireItem(DatabaseManager.Instance.SelectItem(11), 1);
         //AcquireItem(DatabaseManager.Instance.SelectItem(12), 1);
 
-        AcquireItem(DatabaseManager.Instance.SelectItem(1003));
-        AcquireItem(DatabaseManager.Instance.SelectItem(2001));
-        AcquireItem(DatabaseManager.Instance.SelectItem(3002));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(1003));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(2001));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(3002));
         AcquireItem(DatabaseManager.Instance.SelectItem(4003));
-        AcquireItem(DatabaseManager.Instance.SelectItem(5002));
-        AcquireItem(DatabaseManager.Instance.SelectItem(6003));
-        AcquireItem(DatabaseManager.Instance.SelectItem(7002));
-        AcquireItem(DatabaseManager.Instance.SelectItem(8003));
-        AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(5002));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(6003));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(7002));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(8003));
+        //AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
 
     }
     private void Update()
@@ -125,6 +125,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public Item AcquireItem(Item _item)
     {
+        _item.dateTime = System.DateTime.Now;
+        Debug.Log("얻는 아이템의 이름은 " + _item.itemKorName + " 얻은 시간은 " + _item.dateTime);
         if (_item != null)
         { 
             switch (_item.itemKey / 1000)
@@ -457,8 +459,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         {
             if (a.itemKey < b.itemKey) return -1;
             else if (a.itemKey > b.itemKey) return 1;
-            else return 0;
-
+            else return a.dateTime.CompareTo(b.dateTime);
         });
     }
 }

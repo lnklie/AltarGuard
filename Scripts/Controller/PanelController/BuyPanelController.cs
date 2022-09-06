@@ -7,30 +7,23 @@ using TMPro;
 public class BuyPanelController : MonoBehaviour
 {
     [Header("ItemInfo")]
-    [SerializeField]
-    private GameObject shopItemInfo = null;
-    [SerializeField]
-    private GameObject equipedItemInfo = null;
-    [SerializeField]
-    private BuySlot[] buySlots = null;
+    [SerializeField] private GameObject shopItemInfo = null;
+    [SerializeField] private GameObject equipedItemInfo = null;
+    [SerializeField] private BuySlot[] buySlots = null;
 
     [Header("MoneyText")]
-    [SerializeField]
-    private TextMeshProUGUI moneyText = null;
+    [SerializeField] private TextMeshProUGUI moneyText = null;
 
-    [SerializeField]
-    private PlayerStatus playerStatus = null;
-    [SerializeField]
-    private Item selectBuyingItem = null;
-    private int selectBuyShopPanelIndex = 0;
+    [SerializeField] private PlayerStatus playerStatus = null;
+    [SerializeField] private EquipmentController playerEquipmentController = null;
+
+    [SerializeField] private Item selectBuyingItem = null;
+    [SerializeField] private TextMeshProUGUI[] buyingiteminfoText = null;
+    [SerializeField] private TextMeshProUGUI[] equipediteminfoText = null;
+    [SerializeField] private TMP_InputField buyAmount = null;
     private bool isBuyingItemSelect = false;
-    [SerializeField]
-    private TextMeshProUGUI[] buyingiteminfoText = null;
-    [SerializeField]
-    private TextMeshProUGUI[] equipediteminfoText = null;
+    private int selectBuyShopPanelIndex = 0;
 
-    [SerializeField]
-    private TMP_InputField buyAmount = null;
 
     private void Awake()
     {
@@ -150,7 +143,7 @@ public class BuyPanelController : MonoBehaviour
         }
         else
         {
-            if (playerStatus.EquipmentController.CheckEquipItems[selectBuyingItem.itemType])
+            if (playerEquipmentController.CheckEquipItems[selectBuyingItem.itemType])
             {
                 SetActiveEquipedItemInfo(true);
                 UpdateEquipedItemInfo();
@@ -233,9 +226,9 @@ public class BuyPanelController : MonoBehaviour
     {
         // 아이템 정보창 업데이트
         int _index = selectBuyingItem.itemType;
-        equipediteminfoText[0].text = playerStatus.EquipmentController.EquipItems[_index].itemKorName;
-        equipediteminfoText[1].text = KeyToItemTypeText(playerStatus.EquipmentController.EquipItems[_index].itemKey);
-        switch (playerStatus.EquipmentController.EquipItems[_index].itemKey / 1000)
+        equipediteminfoText[0].text = playerEquipmentController.EquipItems[_index].itemKorName;
+        equipediteminfoText[1].text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
+        switch (playerEquipmentController.EquipItems[_index].itemKey / 1000)
         {
             case 0:
                 equipediteminfoText[2].text = "머리 장식품";
@@ -244,52 +237,52 @@ public class BuyPanelController : MonoBehaviour
                 equipediteminfoText[2].text = "안면 장식품";
                 break;
             case 2:
-                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 3:
-                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 4:
-                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 5:
-                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 6:
-                equipediteminfoText[2].text = "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 7:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 8:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType + "\n" +
-                    "방어력: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType + "\n" +
+                    "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 9:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 10:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 11:
                 equipediteminfoText[2].text =

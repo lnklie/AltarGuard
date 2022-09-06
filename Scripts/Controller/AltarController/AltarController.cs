@@ -75,7 +75,7 @@ public class AltarController : BaseController
     public void SetState(AltarState _alterState)
     {
         // 상태 할당
-        altar.IsStateChange = true;
+        altar.TriggerStateChange = true;
         altar.AltarState = _alterState;
     }
     public void State()
@@ -100,16 +100,16 @@ public class AltarController : BaseController
 
     private void Idle()
     {
-        altar.IsStateChange = false;
+        altar.TriggerStateChange = false;
     }
     private void Damaged()
     {
-        altar.IsStateChange = false;
+        altar.TriggerStateChange = false;
         altar.IsDamaged = false;
     }
     private void Destroyed()
     {
-        altar.IsStateChange = false;
+        altar.TriggerStateChange = false;
     }
 
     public void UpdateBuff()

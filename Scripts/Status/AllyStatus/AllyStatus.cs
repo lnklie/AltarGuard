@@ -132,10 +132,10 @@ public class AllyStatus : CharacterStatus
         base.UpdateAbility();
         dropProbability = totalLuck * 0.001f;
         itemRarity = totalLuck * 0.001f;
-        atkSpeed = 5f - ((equipmentController.EquipItems[7] != null ? atkSpeed : 0f + (totalDex * 0.1f)) * graceAttackSpeed);
-        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipmentController.GetEquipmentPhysicDamage() + buffPhysicalDamage) * gracePhysicalDamage);
-        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipmentController.GetEquipmentMagicDamage() + buffMagicalDamage) * graceMagicalDamage);
-        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipmentController.GetEquipmentDefensivePower() + buffDefensivePower) * graceDefensivePower);
+        atkSpeed = 5f - (( totalDex * 0.1f) + equipedAtkSpeed * graceAttackSpeed);
+        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipedPhysicalDamage + buffPhysicalDamage) * gracePhysicalDamage);
+        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipedMagicalDamage + buffMagicalDamage) * graceMagicalDamage);
+        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipedDefensivePower + buffDefensivePower) * graceDefensivePower);
     }
     public void InitGraceStatus()
     {
