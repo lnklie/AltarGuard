@@ -7,30 +7,23 @@ using TMPro;
 public class BuyPanelController : MonoBehaviour
 {
     [Header("ItemInfo")]
-    [SerializeField]
-    private GameObject shopItemInfo = null;
-    [SerializeField]
-    private GameObject equipedItemInfo = null;
-    [SerializeField]
-    private BuySlot[] buySlots = null;
+    [SerializeField] private GameObject shopItemInfo = null;
+    [SerializeField] private GameObject equipedItemInfo = null;
+    [SerializeField] private BuySlot[] buySlots = null;
 
     [Header("MoneyText")]
-    [SerializeField]
-    private TextMeshProUGUI moneyText = null;
+    [SerializeField] private TextMeshProUGUI moneyText = null;
 
-    [SerializeField]
-    private PlayerStatus playerStatus = null;
-    [SerializeField]
-    private Item selectBuyingItem = null;
-    private int selectBuyShopPanelIndex = 0;
+    [SerializeField] private PlayerStatus playerStatus = null;
+    [SerializeField] private EquipmentController playerEquipmentController = null;
+
+    [SerializeField] private Item selectBuyingItem = null;
+    [SerializeField] private TextMeshProUGUI[] buyingiteminfoText = null;
+    [SerializeField] private TextMeshProUGUI[] equipediteminfoText = null;
+    [SerializeField] private TMP_InputField buyAmount = null;
     private bool isBuyingItemSelect = false;
-    [SerializeField]
-    private TextMeshProUGUI[] buyingiteminfoText = null;
-    [SerializeField]
-    private TextMeshProUGUI[] equipediteminfoText = null;
+    private int selectBuyShopPanelIndex = 0;
 
-    [SerializeField]
-    private TMP_InputField buyAmount = null;
 
     private void Awake()
     {
@@ -45,7 +38,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingInventorySlotChange(int _index)
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
         SellSlotsReset();
         SetActiveShopItemInfo(false);
         SetActiveEquipedItemInfo(false);
@@ -100,7 +93,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public string KeyToItemTypeText(int _key)
     {
-        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
+        // í‚¤ë¥¼ ì•„ì´í…œ íƒ€ì…ìœ¼ë¡œ ë³€ê²½
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -142,7 +135,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingItemInfo()
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
+        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
         isBuyingItemSelect = false;
         if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
         {
@@ -150,7 +143,7 @@ public class BuyPanelController : MonoBehaviour
         }
         else
         {
-            if (playerStatus.EquipmentController.CheckEquipItems[selectBuyingItem.itemType])
+            if (playerEquipmentController.CheckEquipItems[selectBuyingItem.itemType])
             {
                 SetActiveEquipedItemInfo(true);
                 UpdateEquipedItemInfo();
@@ -162,147 +155,147 @@ public class BuyPanelController : MonoBehaviour
 
         buyingiteminfoText[0].text = selectBuyingItem.itemKorName;
         buyingiteminfoText[1].text = KeyToItemTypeText(selectBuyingItem.itemKey);
-        buyingiteminfoText[3].text = "±¸¸Å °¡°İ: " + selectBuyingItem.buyPrice;
+        buyingiteminfoText[3].text = "êµ¬ë§¤ ê°€ê²©: " + selectBuyingItem.buyPrice;
         switch (selectBuyingItem.itemKey / 1000)
         {
             case 0:
-                buyingiteminfoText[2].text = "¸Ó¸® Àå½ÄÇ°";
+                buyingiteminfoText[2].text = "ë¨¸ë¦¬ ì¥ì‹í’ˆ";
                 break;
             case 1:
-                buyingiteminfoText[2].text = "¾È¸é Àå½ÄÇ°";
+                buyingiteminfoText[2].text = "ì•ˆë©´ ì¥ì‹í’ˆ";
                 break;
             case 2:
-                buyingiteminfoText[2].text = "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 3:
-                buyingiteminfoText[2].text = "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 4:
-                buyingiteminfoText[2].text = "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 5:
-                buyingiteminfoText[2].text = "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 6:
-                buyingiteminfoText[2].text = "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 7:
                 buyingiteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + selectBuyingItem.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + selectBuyingItem.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)selectBuyingItem).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectBuyingItem.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + selectBuyingItem.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 8:
                 buyingiteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + selectBuyingItem.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + selectBuyingItem.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)selectBuyingItem).weaponType + "\n" +
-                    "¹æ¾î·Â: " + selectBuyingItem.defensivePower;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectBuyingItem.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + selectBuyingItem.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)selectBuyingItem).weaponType + "\n" +
+                    "ë°©ì–´ë ¥: " + selectBuyingItem.defensivePower;
                 break;
             case 9:
                 buyingiteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + selectBuyingItem.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + selectBuyingItem.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)selectBuyingItem).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectBuyingItem.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + selectBuyingItem.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 10:
                 buyingiteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + selectBuyingItem.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + selectBuyingItem.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)selectBuyingItem).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectBuyingItem.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + selectBuyingItem.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 11:
                 buyingiteminfoText[2].text =
-                    "È¸º¹·® : " + selectBuyingItem.value + "\n";
+                    "íšŒë³µëŸ‰ : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
                 buyingiteminfoText[2].text =
-                     "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
+                     "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
                 break;
         }
     }
     public void UpdateEquipedItemInfo()
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
+        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
         int _index = selectBuyingItem.itemType;
-        equipediteminfoText[0].text = playerStatus.EquipmentController.EquipItems[_index].itemKorName;
-        equipediteminfoText[1].text = KeyToItemTypeText(playerStatus.EquipmentController.EquipItems[_index].itemKey);
-        switch (playerStatus.EquipmentController.EquipItems[_index].itemKey / 1000)
+        equipediteminfoText[0].text = playerEquipmentController.EquipItems[_index].itemKorName;
+        equipediteminfoText[1].text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
+        switch (playerEquipmentController.EquipItems[_index].itemKey / 1000)
         {
             case 0:
-                equipediteminfoText[2].text = "¸Ó¸® Àå½ÄÇ°";
+                equipediteminfoText[2].text = "ë¨¸ë¦¬ ì¥ì‹í’ˆ";
                 break;
             case 1:
-                equipediteminfoText[2].text = "¾È¸é Àå½ÄÇ°";
+                equipediteminfoText[2].text = "ì•ˆë©´ ì¥ì‹í’ˆ";
                 break;
             case 2:
-                equipediteminfoText[2].text = "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 3:
-                equipediteminfoText[2].text = "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 4:
-                equipediteminfoText[2].text = "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 5:
-                equipediteminfoText[2].text = "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 6:
-                equipediteminfoText[2].text = "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 7:
                 equipediteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 8:
                 equipediteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType + "\n" +
-                    "¹æ¾î·Â: " + playerStatus.EquipmentController.EquipItems[_index].defensivePower;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + (playerEquipmentController.EquipItems[_index]).weaponType + "\n" +
+                    "ë°©ì–´ë ¥: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 9:
                 equipediteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 10:
                 equipediteminfoText[2].text =
-                    "¹°¸® °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + playerStatus.EquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)playerStatus.EquipmentController.EquipItems[_index]).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 11:
                 equipediteminfoText[2].text =
-                    "È¸º¹·® : " + selectBuyingItem.value + "\n";
+                    "íšŒë³µëŸ‰ : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
-                equipediteminfoText[2].text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
+                equipediteminfoText[2].text = "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
                 break;
         }
     }
     public void UpdateBuyMoneyText()
     {
-        buyingiteminfoText[3].text = "±¸¸Å °¡°İ: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
+        buyingiteminfoText[3].text = "êµ¬ë§¤ ê°€ê²©: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
     }
     public void BuyItem()
     {
@@ -323,7 +316,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SellSlotsReset()
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
         for (int i = 0; i < buySlots.Length; i++)
         {
             buySlots[i].SlotReset();
@@ -331,12 +324,12 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SetActiveShopItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         shopItemInfo.SetActive(_bool);
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActivebuyPanel(bool _bool)
@@ -345,7 +338,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SelectSlotBuyItem(Item _item)
     {
-        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
+        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
         selectBuyingItem = _item;
         isBuyingItemSelect = true;
     }

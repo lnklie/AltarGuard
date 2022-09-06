@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * √÷¡æºˆ¡§¿œ : 2022-06-05
- * ¿€º∫¿⁄ : Inklie
- * ∆ƒ¿œ∏Ì : CharacterStatus.cs
+ * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
+ * ÏûëÏÑ±Ïûê : Inklie
+ * ÌååÏùºÎ™Ö : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -54,6 +54,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int equipedHpRegenValue = 0;
     [SerializeField] protected int equipedPhysicalDamage = 0;
     [SerializeField] protected int equipedMagicalDamage = 0;
+    [SerializeField] protected int equipedDefensivePower = 0;
     [SerializeField] protected float equipedSpeed = 0f;
     [SerializeField] protected float equipedAtkSpeed = 2f;
     [SerializeField] protected float equipedAtkRange = 0f;
@@ -77,7 +78,8 @@ public class CharacterStatus : Status
 
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
-    [SerializeField] protected EquipmentController equipmentController = null;
+    [SerializeField] protected bool isEquipmentChange = false;
+    //[SerializeField] protected EquipmentController equipmentController = null;
     [SerializeField] protected Transform allyTarget = null;
     protected int curExp = 0;
     protected int maxExp = 0;
@@ -106,6 +108,7 @@ public class CharacterStatus : Status
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
     #region Properties
+    public bool IsEquipmentChange { get { return isEquipmentChange; } set { isEquipmentChange = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
     public int GraceMaxMp { get { return graceMaxMp; } set { graceMaxMp = value; } }
@@ -159,7 +162,7 @@ public class CharacterStatus : Status
     public float AtkRange { get { return atkRange; } set { atkRange = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
     public Transform Target { get { return target; } set { target = value; } }
-    public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
+    //public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
     public Transform AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
     public int CurExp { get { return curExp; } set { curExp = value; } }
     public int MaxExp { get { return maxExp; } set { maxExp = value; } }
@@ -174,7 +177,7 @@ public class CharacterStatus : Status
     public override void Awake()
     {
         base.Awake();
-        equipmentController = this.GetComponent<EquipmentController>();
+        //equipmentController = this.GetComponent<EquipmentController>();
         UpdateAbility();
         curHp = totalMaxHp;
         curMp = totalMaxMp;
@@ -194,9 +197,9 @@ public class CharacterStatus : Status
         {
             isStatusUpdate = false;
         }
-        if (equipmentController.IsChangeItem)
+        if (isEquipmentChange)
         {
-            equipmentController.IsChangeItem = false;
+            isEquipmentChange = false;
             UpdateAbility();
         }
         if (!isHPRegen)
@@ -221,7 +224,7 @@ public class CharacterStatus : Status
 
     public virtual void UpdateAbility()
     {
-        // ¥…∑¬ æ˜µ•¿Ã∆Æ
+        // Îä•Î†• ÏóÖÎç∞Ïù¥Ìä∏
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;

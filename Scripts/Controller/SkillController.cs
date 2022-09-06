@@ -4,46 +4,20 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterStatus status = null;
-
-    [SerializeField]
-    private List<Skill> activeSkills = new List<Skill>();
-    [SerializeField]
-    private List<Skill> passiveSkills = new List<Skill>();
-
-    [SerializeField]
-    private List<SkillObject> skillPrefabs = new List<SkillObject>();
-    [SerializeField]
-    private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private CharacterStatus status = null;
+    [SerializeField] private List<Skill> activeSkills = new List<Skill>();
+    [SerializeField] private List<Skill> passiveSkills = new List<Skill>();
+    [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
+    [SerializeField] private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private bool isSkillDelay = false;
     private bool[] isCoolTime = { false, false, false };
-    [SerializeField]
-    private bool isSkillDelay = false;
 
-    public bool IsSkillDelay
-    {
-        get { return isSkillDelay; }
-        set { isSkillDelay = value; }
-    }
+    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-    public List<Skill> SkillQueue
-    {
-        get { return skillQueue; }
-    }
-    public List<Skill> ActiveSkills
-    {
-        get { return activeSkills; }
-    }
-    public List<Skill> PassiveSkills
-    {
-        get { return passiveSkills; }
-        set { passiveSkills = value; }
-    }
-    public bool[] IsCoolTime
-    {
-        get { return isCoolTime; }
-        set { isCoolTime = value; }
-    }
+    public List<Skill> SkillQueue { get { return skillQueue; } }
+    public List<Skill> ActiveSkills { get { return activeSkills; } }
+    public List<Skill> PassiveSkills { get { return passiveSkills; } set { passiveSkills = value; } }
+    public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
     #endregion
     private void Start()
     {
@@ -85,14 +59,14 @@ public class SkillController : MonoBehaviour
             status.UpdateBasicStatus();
         }
         else
-            Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
+            Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (activeSkills.IndexOf(_skill) != -1)
             activeSkills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
     public void UseSkill(Skill _skill, Transform _target)
@@ -117,15 +91,15 @@ public class SkillController : MonoBehaviour
                     skillQueue.RemoveAt(index);
                 }
                 else
-                    Debug.Log("ÄðÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ìž„ ì¤‘");
             }
             else
             {
-                UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
             }
         }
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
     public void UseSkill(Transform _target)
     {
@@ -148,11 +122,11 @@ public class SkillController : MonoBehaviour
                 skillQueue.RemoveAt(0);
             }
             else
-                Debug.Log("ÄðÅ¸ÀÓ Áß");
+                Debug.Log("ì¿¨íƒ€ìž„ ì¤‘");
         }
         else
         {
-            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
         }
     }
     public void CalculateSkillCoolTime()
@@ -164,7 +138,8 @@ public class SkillController : MonoBehaviour
                 activeSkills[i].coolTime += Time.deltaTime;
                 if (activeSkills[i].coolTime >= activeSkills[i].maxCoolTime)
                 {
-                    isCoolTime[i] = false;
+                    activeSkills[i].coolTime = activeSkills[i].maxCoolTime;
+                    activeSkills[i].isCoolTime = false;
                     skillQueue.Add(activeSkills[i]);
                 }
             }
@@ -228,7 +203,7 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.CurLevel * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("¿Ã·ÁÁÖ´Â ´É·ÂÄ¡´Â " + _skillDamage);
+        Debug.Log("ì˜¬ë ¤ì£¼ëŠ” ëŠ¥ë ¥ì¹˜ëŠ” " + _skillDamage);
         return _skillDamage;
     }
     public int SetSkillDamageByLevel(Skill _skill)

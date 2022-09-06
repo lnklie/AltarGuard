@@ -14,7 +14,6 @@ public class BossEnemyStatus : EnemyStatus
     public override void Awake()
     {
         base.Awake();
-        equipmentController = this.GetComponent<EquipmentController>();
     }
     public override void Update()
     {
@@ -33,20 +32,9 @@ public class BossEnemyStatus : EnemyStatus
         wiz = bossEnemy.wiz;
         seeRange = bossEnemy.seeRange;
         defeatExp = bossEnemy.defeatExp;
-        if (equipmentController != null )
-        {
-            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(4000));
-            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(5000));
-            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(3000));
-            equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(10000));
-            UpdateAbility();
-            atkRange = equipmentController.EquipItems[7].atkRange;
-            atkSpeed = equipmentController.EquipItems[7].atkSpeed;
-        }
-        else
-        {
-            Debug.Log("여긴 왜없나요?!!!!!!");
-        }
+        atkRange = equipedAtkRange;
+        atkSpeed = equipedAtkSpeed;
+        UpdateAbility();
 
         itemDropKey.Add(bossEnemy.itemDropKey1);
         itemDropKey.Add(bossEnemy.itemDropKey2);
@@ -68,9 +56,9 @@ public class BossEnemyStatus : EnemyStatus
         // 능력 업데이트
         maxHp = bossEnemy.hp + str * 10;
         maxMp = bossEnemy.mp + wiz * 10;
-        physicalDamage = str * 5 + equipmentController.GetEquipmentPhysicDamage();
-        magicalDamage = wiz * 5 + equipmentController.GetEquipmentMagicDamage();
-        defensivePower = str * 3 + equipmentController.GetEquipmentDefensivePower();
+        physicalDamage = str * 5 + equipedPhysicalDamage;
+        magicalDamage = wiz * 5 + equipedMagicalDamage;
+        defensivePower = str * 3 + equipedDefensivePower;
         speed = bossEnemy.speed + dex * 1f;
         graceHpRegenValue = str * 1;
     }

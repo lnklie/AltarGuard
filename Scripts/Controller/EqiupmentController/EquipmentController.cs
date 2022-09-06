@@ -22,7 +22,6 @@ public class EquipmentController : MonoBehaviour
     private WeaponSpace weaponSpace = null;
     private SubWeaponSpace subWeaponSpace = null;
 
-    private bool isChangeItem = false;
 
     [SerializeField]
     private Item[] equipItems = new Item[9];
@@ -30,11 +29,6 @@ public class EquipmentController : MonoBehaviour
     [SerializeField]
     private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
     #region Property
-    public bool IsChangeItem
-    {
-        get { return isChangeItem; }
-        set { isChangeItem = value; }
-    }
     public Item[] EquipItems
     {
         get { return equipItems; }
@@ -183,7 +177,7 @@ public class EquipmentController : MonoBehaviour
                     subWeaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     break;
             }
-            isChangeItem = true;
+            status.IsEquipmentChange = true;
         }
         else
         {
@@ -297,7 +291,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
         }
-        isChangeItem = true;
+        status.IsEquipmentChange = true;
     }
     public void RemoveEquipment(int _index)
     {
@@ -360,6 +354,6 @@ public class EquipmentController : MonoBehaviour
                 subWeaponSpace.ChangeItemSprite(null);
                 break;
         }
-        isChangeItem = true;
+        status.IsEquipmentChange = true;
     }
 }

@@ -5,7 +5,7 @@ public class GraceManager : MonoBehaviour
 {
     [SerializeField] private List<Grace> graceList = new List<Grace>();
     [SerializeField] private List<AllyStatus> characterStatuses = new List<AllyStatus>();
-
+    [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<Grace> GraceList
     {
@@ -13,7 +13,7 @@ public class GraceManager : MonoBehaviour
     }
     private void Update()
     {
-        if (characterStatuses[(int)ECharacter.Player].EquipmentController.IsChangeItem)
+        if (characterStatuses[(int)ECharacter.Player].IsEquipmentChange)
         {
             ActiveGrace();
         }
@@ -34,7 +34,7 @@ public class GraceManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("∆»Ω∫");
+                Debug.Log("ÌåîÏä§");
             }
 
         }
@@ -59,7 +59,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -74,8 +74,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
                                         {
                                             _bool = true;
                                         }
@@ -90,7 +90,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -101,7 +101,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -112,7 +112,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -124,7 +124,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -136,7 +136,7 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -147,8 +147,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
                                         {
                                             _bool = true;
                                         }
@@ -159,8 +159,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -172,8 +172,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -184,8 +184,8 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[_grace.conditionWho].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -206,10 +206,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -224,14 +224,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -246,10 +246,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -260,10 +260,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Axe" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Axe")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Axe" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Axe")
                                         {
                                             _bool = true;
                                         }
@@ -274,10 +274,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -289,10 +289,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -304,10 +304,10 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -318,14 +318,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -336,14 +336,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -355,14 +355,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -373,14 +373,14 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -401,11 +401,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -420,16 +420,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[0].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false))
                                         {
                                             _bool = true;
                                         }
@@ -444,11 +444,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -459,11 +459,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -474,11 +474,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -490,11 +490,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Bow" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -506,11 +506,11 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -521,16 +521,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[0].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.CheckEquipItems[8] == false) &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.CheckEquipItems[8] == false)
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[8] == false)
                                             )
                                         {
                                             _bool = true;
@@ -542,16 +542,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Exe") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Spear" ||
-                                            characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[0].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -563,16 +563,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Sword" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -583,16 +583,16 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[0].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[1].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[1].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[2].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[2].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[3].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[3].EquipmentController.EquipItems[8].weaponType == "Shield") &&
-                                            (characterStatuses[4].EquipmentController.EquipItems[7].weaponType == "Wand" &&
-                                            characterStatuses[4].EquipmentController.EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -1336,13 +1336,13 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("¿ÃπÃ πËøÓ ¿∫√—");
+            Debug.Log("Ïù¥ÎØ∏ Î∞∞Ïö¥ ÏùÄÏ¥ù");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("√º≈©«œ∑¡¥¬ ≈∞¥¬ " + _key);
+        Debug.Log("Ï≤¥ÌÅ¨ÌïòÎ†§Îäî ÌÇ§Îäî " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)
