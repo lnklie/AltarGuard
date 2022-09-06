@@ -31,7 +31,6 @@ public class SkillController : MonoBehaviour
 
         if(status.IsSkillChange)
         {
-
             status.IsSkillChange = false;
 
         }
@@ -60,14 +59,14 @@ public class SkillController : MonoBehaviour
             status.UpdateBasicStatus();
         }
         else
-            Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
+            Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (activeSkills.IndexOf(_skill) != -1)
             activeSkills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
     public void UseSkill(Skill _skill, Transform _target)
@@ -92,15 +91,15 @@ public class SkillController : MonoBehaviour
                     skillQueue.RemoveAt(index);
                 }
                 else
-                    Debug.Log("ÄğÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
             }
             else
             {
-                UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
             }
         }
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
     public void UseSkill(Transform _target)
     {
@@ -123,11 +122,11 @@ public class SkillController : MonoBehaviour
                 skillQueue.RemoveAt(0);
             }
             else
-                Debug.Log("ÄğÅ¸ÀÓ Áß");
+                Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
         }
         else
         {
-            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
         }
     }
     public void CalculateSkillCoolTime()
@@ -204,7 +203,7 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.CurLevel * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("¿Ã·ÁÁÖ´Â ´É·ÂÄ¡´Â " + _skillDamage);
+        Debug.Log("ì˜¬ë ¤ì£¼ëŠ” ëŠ¥ë ¥ì¹˜ëŠ” " + _skillDamage);
         return _skillDamage;
     }
     public int SetSkillDamageByLevel(Skill _skill)
