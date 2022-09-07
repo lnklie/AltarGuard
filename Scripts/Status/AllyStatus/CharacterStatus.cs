@@ -149,6 +149,8 @@ public class CharacterStatus : Status
     public int TotalStr { get { return totalStr; } set { totalStr = value; } }
     public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
     public int TotalMaxMp { get { return totalMaxMp; } set { totalMaxMp = value; } }
+    public float TotalAtkRange { get { return totalAtkRange; } set { totalAtkRange = value; } }
+    public float TotalAtkSpeed { get { return totalAtkSpeed; } set { totalAtkSpeed = value; } }
     public int CurLevel { get { return curLevel; } set { curLevel = value; } }
     public Vector2 Distance { get { return distance; } set { distance = value; } }
     public float ArrowSpd { get { return arrowSpd; } set { arrowSpd = value; } }

@@ -48,6 +48,7 @@ public class Item
     public float coolTime = 0;
     public bool isCoolTime = false;
     public int itemRank = -1;
+    public int inventoryIndex = -1; 
     public System.DateTime dateTime = default; 
     public Item(int _itemKey, string _itemName,string _itemKorName, int _buyPrice, int _sellPrice, int _itemRank)
     {

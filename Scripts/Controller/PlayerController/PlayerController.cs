@@ -329,20 +329,6 @@ public class PlayerController : CharacterController
     }
 
 
-    private void AquireRay()
-    {
-        player.ItemSight = Physics2D.CircleCastAll(this.transform.position, 1f, Vector2.up, 0, LayerMask.GetMask("Item"));
-        for (int i = 0; i < player.ItemSight.Length; i++)
-        {
-            if (player.ItemSight[i])
-            {
-                DropItem dropItem = player.ItemSight[i].collider.GetComponent<DropItem>();
-                InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(dropItem.CurItemKey));
-                DropManager.Instance.ReturnItem(dropItem.gameObject);
-            }
-        }
-    }
-
     private IEnumerator Blink(CharacterStatus _status)
     {
         _status.IsDamaged = false;        

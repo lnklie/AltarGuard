@@ -17,9 +17,9 @@ public class RushEnemyController : EnemyController
     }
     public bool IsDelay(EnemyStatus _status)
     {
-        if (_status.DelayTime >= _status.AtkSpeed)
+        if (_status.DelayTime >= _status.TotalAtkSpeed)
         {
-            _status.DelayTime = _status.AtkSpeed;
+            _status.DelayTime = _status.TotalAtkSpeed;
             return false;
         }
         else
