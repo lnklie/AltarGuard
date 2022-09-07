@@ -76,7 +76,7 @@ public class DisassemblePanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
+                ///InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
                 disassembleInventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
                 disassembleInventorySlots[i].SlotSetting();
 
@@ -86,7 +86,7 @@ public class DisassemblePanelController : MonoBehaviour
         {
             for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
+                //InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
                 disassembleInventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
                 disassembleInventorySlots[i].SlotSetting();
             }

@@ -62,6 +62,11 @@ public class BattleSupportPanelController : MonoBehaviour
         {
             InventoryManager.Instance.UseItem(player, _item);
 
+            if (quickSlots[_slotIndex].CurItem.count <= 0)
+            {
+                player.QuickSlotItems[_slotIndex] = null;
+            }
+
         }
         else if (_item.itemType < 9)
         {
@@ -82,8 +87,6 @@ public class BattleSupportPanelController : MonoBehaviour
             Debug.Log("사용하실 수 없는 아이템입니다.");
         }
 
-        if (quickSlots[_slotIndex].CurItem.count <= 0)
-            player.QuickSlotItems[_slotIndex] = null;
         quickSlots[_slotIndex].UpdateQuickSlotItem();
     }
 

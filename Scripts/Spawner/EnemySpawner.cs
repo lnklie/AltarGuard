@@ -13,34 +13,25 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 {
 
     [Header("RushEnemyPrefabs")]
-    [SerializeField]
-    private GameObject rushOrcPrefab = null;
+    [SerializeField] private GameObject rushOrcPrefab = null;
 
 
     [Header("RushBossEnemyPrefabs")]
-    [SerializeField]
-    private GameObject bossOrcPrefab = null;
+    [SerializeField] private GameObject bossOrcPrefab = null;
 
 
     [Header("SpawnPosition")]
-    [SerializeField]
-    private Vector2[] spawnPos = null;
+    [SerializeField] private Vector2[] spawnPos = null;
 
     [Header("Current Boss")]
-    [SerializeField]
-    private BossEnemyStatus curBoss = null;
-    public BossEnemyStatus CurBoss
-    {
-        get { return curBoss; }
-    }
-
+    [SerializeField] private BossEnemyStatus curBoss = null;
     private Queue<Vector2> enemyPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyPos
-    {
-        get { return enemyPos; }
-    }
-
     private Queue<GameObject> rushOrcs = new Queue<GameObject>();
+
+    public BossEnemyStatus CurBoss { get { return curBoss; } }
+    public Queue<Vector2> EnemyPos { get { return enemyPos; } }
+
+
 
 
     [SerializeField]

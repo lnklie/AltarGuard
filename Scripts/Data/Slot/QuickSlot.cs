@@ -5,49 +5,25 @@ using UnityEngine.UI;
 using TMPro;
 public class QuickSlot : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI itemCount = null;
-    [SerializeField]
-    private Image[] itemImages = null;
-    [SerializeField]
-    private Item curItem = null;
-    [SerializeField]
-    private bool isItemRegistered = false;
-    [SerializeField]
-    private Sprite uiMask = null;
-    [SerializeField]
-    private int index = 0;
+    [SerializeField] private TextMeshProUGUI itemCount = null;
+    [SerializeField] private TextMeshProUGUI checkEquip = null;
+    [SerializeField] private Image itemImage = null;
+    [SerializeField] private Image coolTimeImage = null;
+    [SerializeField] private Item curItem = null;
+    [SerializeField] private bool isItemRegistered = false;
+    [SerializeField] private Sprite uiMask = null;
+    [SerializeField] private int index = 0;
 
-    [SerializeField]
-    private Button autoUseButton = null;
-    [SerializeField]
-    private bool isAutoUse = false;
+    [SerializeField] private Button autoUseButton = null;
+    [SerializeField] private bool isAutoUse = false;
 
     #region Property
-    public bool IsAutoUse
-    {
-        get { return isAutoUse; }
-        set { isAutoUse = value; }
-    }
-    public Image[] ItemImages
-    {
-        get { return itemImages; }
-        set { itemImages = value; }
-    }
-    public Item CurItem
-    {
-        get { return curItem; }
-        set { curItem = value; }
-    }
-    public bool IsItemRegistered
-    {
-        get { return isItemRegistered; }
-        set { isItemRegistered = value; }
-    }
+    public bool IsAutoUse { get { return isAutoUse; } set { isAutoUse = value; } }
+    public Item CurItem { get { return curItem; } set { curItem = value; } }
+    public bool IsItemRegistered { get { return isItemRegistered; } set { isItemRegistered = value; } }
     #endregion
     private void Awake()
     {
-        itemImages = GetComponentsInChildren<Image>();
         itemCount = GetComponentInChildren<TextMeshProUGUI>();
     }
     private void Start()
@@ -60,7 +36,7 @@ public class QuickSlot : MonoBehaviour
         if(isItemRegistered && CurItem.isCoolTime)
         {
             CurItem.coolTime -= Time.deltaTime;
-            itemImages[2].fillAmount = CurItem.coolTime / curItem.maxCoolTime;
+            coolTimeImage.fillAmount = CurItem.coolTime / curItem.maxCoolTime;
             if (CurItem.coolTime <= 0f)
             {
                 CurItem.coolTime = 0f;
@@ -72,18 +48,22 @@ public class QuickSlot : MonoBehaviour
     {
         // ½½·Ô ¸®¼Â
         curItem = null;
-        ItemImages[1].sprite = uiMask;
+        itemImage.sprite = uiMask;
         itemCount.text = "00";
         isAutoUse = false;
+        checkEquip.gameObject.SetActive(false);
         SetActiveAutoUseButton(false);
         EnableItemCount(false);
     }
     public void SetSlot()
     {
         // ½½·Ô ¼¼ÆÃ
-        itemImages[1].sprite = curItem.singleSprite;
-        itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
-
+        itemImage.sprite = curItem.singleSprite;
+        itemImage.rectTransform.sizeDelta = new Vector2(100f, 100f);
+        if (curItem.isEquip)
+            checkEquip.gameObject.SetActive(true);
+        else
+            checkEquip.gameObject.SetActive(false);
         ActiveItemCount();
     }
     private void ActiveItemCount()

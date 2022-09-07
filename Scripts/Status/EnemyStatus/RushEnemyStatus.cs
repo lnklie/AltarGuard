@@ -4,18 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RushEnemyStatus : EnemyStatus
 {
-    [SerializeField]
-    protected Enemy rushEnemy = null;
+    [SerializeField] protected Enemy rushEnemy = null;
 
 
     private Image[] images = null;
 
 
 
-    public Enemy RushEnemy
-    {
-        set { rushEnemy = value; }
-    }
+    public Enemy RushEnemy { set { rushEnemy = value; } }
     public override void Awake()
     {
         base.Awake();
@@ -46,9 +42,9 @@ public class RushEnemyStatus : EnemyStatus
     public void CustomEnemy()
     {
         objectName = rushEnemy.objectName;
-        str = rushEnemy.str;
-        dex = rushEnemy.dex;
-        wiz = rushEnemy.wiz;
+        totalStr = rushEnemy.str + equipedStr;
+        totalDex = rushEnemy.dex;
+        totalWiz = rushEnemy.wiz;
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
@@ -56,8 +52,8 @@ public class RushEnemyStatus : EnemyStatus
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
         UpdateAbility();
-        atkRange = equipedAtkRange;
-        atkSpeed = equipedAtkSpeed;
+        totalAtkRange = equipedAtkRange;
+        totalAtkSpeed = equipedAtkSpeed;
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -74,12 +70,12 @@ public class RushEnemyStatus : EnemyStatus
     public override void UpdateAbility()
     {
         // 능력 업데이트
-        maxHp = rushEnemy.hp + str * 10;
-        maxMp = rushEnemy.mp + wiz * 10;
-        physicalDamage = str * 5 + equipedPhysicalDamage;
-        magicalDamage = wiz * 5 + equipedMagicalDamage;
-        defensivePower = str * 3 + equipedDefensivePower;
-        speed = rushEnemy.speed + dex * 0.1f;
-        graceHpRegenValue = str * 1;
+        totalMaxHp = rushEnemy.hp + str * 10;
+        totalMaxMp = rushEnemy.mp + wiz * 10;
+        totalPhysicalDamage = str * 5 + equipedPhysicalDamage;
+        totalMagicalDamage = wiz * 5 + equipedMagicalDamage;
+        totalDefensivePower = str * 3 + equipedDefensivePower;
+        totalSpeed = rushEnemy.speed + dex * 0.1f;
+        totalHpRegenValue = str * 1;
     }
 }
