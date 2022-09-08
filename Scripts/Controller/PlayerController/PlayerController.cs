@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * √÷¡æºˆ¡§¿œ : 2022-06-05
- * ¿€º∫¿⁄ : Inklie
- * ∆ƒ¿œ∏Ì : PlayerController.cs
+ * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
+ * ÏûëÏÑ±Ïûê : Inklie
+ * ÌååÏùºÎ™Ö : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -90,10 +90,6 @@ public class PlayerController : CharacterController
         {
             case EPlayerState.Play:
                 Perception(player);
-                if (player.IsDamaged)
-                {
-                    StartCoroutine(Blink(player));
-                }
                 if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
                     StartCoroutine(PlayerAttack(player));
@@ -104,73 +100,6 @@ public class PlayerController : CharacterController
                         PlayerMove(player);
                     else
                         PlayerIdle(player);
-                }
-
-                if (Input.GetKeyDown(KeyCode.Z))
-                {
-                    if (skillController.ActiveSkills[0].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
-                        }
-                        else
-                            Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                    }
-                    else if (skillController.ActiveSkills[0].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.X))
-                {
-
-                        if (skillController.ActiveSkills[1].skillType == 0)
-                        {
-                            if (player.Target)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
-                            }
-                            else
-                                Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                        }
-                        else if (skillController.ActiveSkills[1].skillType == 1)
-                        {
-                            if (player.AllyTarget)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
-                            }
-                            else
-                                Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                        }
-                }
-                else if (Input.GetKeyDown(KeyCode.C))
-                {
-
-                    if (skillController.ActiveSkills[2].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
-                        }
-                        else
-                            Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                    }
-                    else if (skillController.ActiveSkills[2].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
-                    }
-
                 }
                 break;
             case EPlayerState.AutoPlay:
@@ -185,7 +114,7 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("æ∆±∫ ≈¨∏Ø");
+            Debug.Log("ÏïÑÍµ∞ ÌÅ¥Î¶≠");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -197,11 +126,11 @@ public class PlayerController : CharacterController
                     {
                         _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("æ∆±∫ ≈∏∞Ÿ∆√ " + hit.rigidbody.gameObject.name);
+                    Debug.Log("ÏïÑÍµ∞ ÌÉÄÍ≤üÌåÖ " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("¥ÎªÛ¿Ã ≥ π´ ∏÷∏Æ¿÷Ω¿¥œ¥Ÿ.");
+                    Debug.Log("ÎåÄÏÉÅÏù¥ ÎÑàÎ¨¥ Î©ÄÎ¶¨ÏûàÏäµÎãàÎã§.");
             }
             else
             {
@@ -229,14 +158,14 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove(PlayerStatus _status)
     {
-        // øÚ¡˜¿” Ω««‡
+        // ÏõÄÏßÅÏûÑ Ïã§Ìñâ
         _status.ActiveLayer(LayerName.WalkLayer);
-        _status.Rig.velocity = _status.Speed * _status.Dir;
+        _status.Rig.velocity = _status.TotalSpeed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
     {
-        // ≈∞¿‘∑¬
+        // ÌÇ§ÏûÖÎ†•
         _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -267,7 +196,7 @@ public class PlayerController : CharacterController
     }
     public bool IsMove(PlayerStatus _status)
     {
-        // øÚ¡˜¿Ã∞Ì ¿÷¥¬¡ˆ »Æ¿Œ
+        // ÏõÄÏßÅÏù¥Í≥† ÏûàÎäîÏßÄ ÌôïÏù∏
         if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
@@ -305,7 +234,7 @@ public class PlayerController : CharacterController
     public void DamageEnemy(PlayerStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // π¸¿ßæ»ø° ¿÷¥¬ ¿˚µÈø°∞‘ µ•πÃ¡ˆ
+        // Î≤îÏúÑÏïàÏóê ÏûàÎäî Ï†ÅÎì§ÏóêÍ≤å Îç∞ÎØ∏ÏßÄ
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -328,14 +257,6 @@ public class PlayerController : CharacterController
         }
     }
 
-
-    private IEnumerator Blink(CharacterStatus _status)
-    {
-        _status.IsDamaged = false;        
-        bodySprites.color = new Color(1f,1f,1f,155/255f);
-        yield return new WaitForSeconds(0.5f);
-         bodySprites.color = new Color(1f, 1f, 1f, 1f);
-    }
 
     private IEnumerator Died(PlayerStatus _status)
     {
@@ -389,7 +310,7 @@ public class PlayerController : CharacterController
             SortSightRayList(_status.EnemyRayList);
             for (int i = 0; i < _status.EnemyRayList.Count; i++)
             {
-                //Debug.Log("≈∏∞ŸµÈ∞˙¿« ∞≈∏Æ¥¬ " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
+                //Debug.Log("ÌÉÄÍ≤üÎì§Í≥ºÏùò Í±∞Î¶¨Îäî " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
                 if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
                     || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
@@ -424,7 +345,7 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("≈∏∞Ÿ∆√");
+        Debug.Log("ÌÉÄÍ≤üÌåÖ");
         if (_allyTarget)
         {
             if (player.AllyTarget)

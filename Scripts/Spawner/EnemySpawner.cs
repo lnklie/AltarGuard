@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EnemySpawner.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EnemySpawner.cs
 ==============================
 */
 
@@ -45,7 +45,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     private void InitEnemyPos()
     {
-        // Àû À§Ä¡ ´ã±â
+        // ì  ìœ„ì¹˜ ë‹´ê¸°
         for (int k = 0; k < 5; k++)
         {
             for (int i = 0; i < 5; i++)
@@ -59,7 +59,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     private void InitEnemy(GameObject _enemy, Queue<GameObject> _enemyQueue)
     {
-        // Àû ¿ÀºêÁ§Æ®Ç® »ı¼º 
+        // ì  ì˜¤ë¸Œì íŠ¸í’€ ìƒì„± 
         for (int i = 0; i < 100; i++)
         {
             GameObject obj = Instantiate(_enemy);
@@ -78,14 +78,19 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     {
         GameObject _obj = null;
         RushEnemyStatus _rushEnemyStatus = null;
-
+        EquipmentController _rushEnemyEquipment = null;
         for (int i = 0; i < _enemyNum; i++)
         {
             _obj = rushOrcs.Dequeue();
             _obj.SetActive(true);
             _rushEnemyStatus = _obj.GetComponentInChildren<RushEnemyStatus>();
-            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
+            _rushEnemyEquipment = _obj.GetComponentInChildren<EquipmentController>();
             _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.weaponKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.helmetKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.armorKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.pantKey));
+            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
             _rushEnemyStatus.IsEnemyChange = true;
             enemyPos.Enqueue(_obj.transform.position);
         }
@@ -105,7 +110,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     public void ReturnEnemy(GameObject _enemy)
     {
-        // Àû ´Ù½Ã µ¹¾Æ¿À±â
+        // ì  ë‹¤ì‹œ ëŒì•„ì˜¤ê¸°
         if (!_enemy.CompareTag("Boss"))
         {
             rushOrcs.Enqueue(_enemy);
@@ -118,7 +123,7 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     }
     public void ReturnBossEnemy(GameObject _enemy)
     {
-        Debug.Log("º¸½º µ¹¾Æ¿À±â");
+        Debug.Log("ë³´ìŠ¤ ëŒì•„ì˜¤ê¸°");
         UIManager.Instance.SetBossInfo(false);
         _enemy.transform.parent.gameObject.SetActive(false);
     }

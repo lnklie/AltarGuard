@@ -9,9 +9,7 @@ public class RushEnemyStatus : EnemyStatus
 
     private Image[] images = null;
 
-
-
-    public Enemy RushEnemy { set { rushEnemy = value; } }
+    public Enemy RushEnemy { get { return rushEnemy; } set { rushEnemy = value; } }
     public override void Awake()
     {
         base.Awake();
@@ -25,9 +23,10 @@ public class RushEnemyStatus : EnemyStatus
         {
             CustomEnemy();
         }
-        if (isStateChange)
+        if (triggerStatusUpdate)
         {
             UpdateEnemyHp();
+            triggerStatusUpdate = false;
         }
     }
     public override void Damaged(int _damage)
@@ -44,7 +43,7 @@ public class RushEnemyStatus : EnemyStatus
         objectName = rushEnemy.objectName;
         totalStr = rushEnemy.str + equipedStr;
         totalDex = rushEnemy.dex;
-        totalWiz = rushEnemy.wiz;
+        totalWiz = rushEnemy.wiz; 
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
@@ -52,8 +51,8 @@ public class RushEnemyStatus : EnemyStatus
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
         UpdateAbility();
-        totalAtkRange = equipedAtkRange;
-        totalAtkSpeed = equipedAtkSpeed;
+        totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
+        totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -69,7 +68,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public override void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // Â´Ã‰Â·Ã‚ Â¾Ã·ÂµÂ¥Ã€ÃŒÃ†Â®
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
         totalPhysicalDamage = str * 5 + equipedPhysicalDamage;

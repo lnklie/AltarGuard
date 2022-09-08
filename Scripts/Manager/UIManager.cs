@@ -76,15 +76,17 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Update()
     {
-        if (player.TriggerStatusUpdate || player.TriggerStateChange)
+        if (player.TriggerStatusUpdate)
         {
             UpdatePlayerProfile();
+            player.TriggerStatusUpdate = false;
         }
         for(int i = 0; i < mercenary.Count; i++)
         {
-            if (mercenary[i].TriggerStatusUpdate || mercenary[i].TriggerStateChange)
+            if (mercenary[i].TriggerStatusUpdate)
             {
                 UpdateMercenaryProfile(i);
+                Debug.Log("맞은 용병은 " + mercenary[i].ObjectName);
                 mercenary[i].TriggerStatusUpdate = false;
             }
         }

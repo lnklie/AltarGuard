@@ -21,9 +21,6 @@ public class SkillController : MonoBehaviour
     #endregion
     private void Start()
     {
-        AquireSkill(0);
-        AquireSkill(1);
-        AquireSkill(2);
     }
     private void Update()
     {
@@ -31,9 +28,7 @@ public class SkillController : MonoBehaviour
 
         if(status.IsSkillChange)
         {
-
             status.IsSkillChange = false;
-
         }
     }
     public void AquireSkill(int _skillKey)
@@ -46,7 +41,6 @@ public class SkillController : MonoBehaviour
         else
         {
             passiveSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
-            //SetPassiveStatus();
             status.UpdateBasicStatus();
         }
         

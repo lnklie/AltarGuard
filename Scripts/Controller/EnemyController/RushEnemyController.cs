@@ -48,7 +48,7 @@ public class RushEnemyController : EnemyController
         rushEnemyStatus.UpdateEnemyHp();
         _status.AIState = EAIState.Died;
         _status.ActiveLayer(LayerName.DieLayer);
-        _status.TriggerStateChange = false;
+        //_status.TriggerStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return new WaitForSeconds(2f);
