@@ -9,8 +9,6 @@ public class RushEnemyStatus : EnemyStatus
 
     private Image[] images = null;
 
-
-
     public Enemy RushEnemy { get { return rushEnemy; } set { rushEnemy = value; } }
     public override void Awake()
     {
@@ -55,7 +53,6 @@ public class RushEnemyStatus : EnemyStatus
         UpdateAbility();
         totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
         totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
-
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -71,7 +68,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public override void UpdateAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // Â´Ã‰Â·Ã‚ Â¾Ã·ÂµÂ¥Ã€ÃŒÃ†Â®
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
         totalPhysicalDamage = str * 5 + equipedPhysicalDamage;
