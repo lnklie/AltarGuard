@@ -160,7 +160,6 @@ public class MercenaryController : CharacterController
 
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        Debug.Log("죽음 용병");
         _status.AIState = EAIState.Died;
         _status.IsDied = true;
         _status.ActiveLayer(LayerName.DieLayer);
@@ -169,7 +168,6 @@ public class MercenaryController : CharacterController
         yield return new WaitForSeconds(mercenary.RevivalTime);
         Rivive(_status);
         _status.IsDied = false;
-        Debug.Log("죽음 용병 해제");
     }
 
 }

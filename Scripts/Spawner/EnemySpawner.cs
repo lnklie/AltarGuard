@@ -13,34 +13,26 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 {
 
     [Header("RushEnemyPrefabs")]
-    [SerializeField]
-    private GameObject rushOrcPrefab = null;
+    [SerializeField] private GameObject rushOrcPrefab = null;
 
 
     [Header("RushBossEnemyPrefabs")]
-    [SerializeField]
-    private GameObject bossOrcPrefab = null;
+    [SerializeField] private GameObject bossOrcPrefab = null;
 
 
     [Header("SpawnPosition")]
-    [SerializeField]
-    private Vector2[] spawnPos = null;
+    [SerializeField] private Vector2[] spawnPos = null;
 
     [Header("Current Boss")]
-    [SerializeField]
-    private BossEnemyStatus curBoss = null;
-    public BossEnemyStatus CurBoss
-    {
-        get { return curBoss; }
-    }
+    [SerializeField] private BossEnemyStatus curBoss = null;
 
     private Queue<Vector2> enemyPos = new Queue<Vector2>();
-    public Queue<Vector2> EnemyPos
-    {
-        get { return enemyPos; }
-    }
-
     private Queue<GameObject> rushOrcs = new Queue<GameObject>();
+
+    public BossEnemyStatus CurBoss { get { return curBoss; } }
+    public Queue<Vector2> EnemyPos { get { return enemyPos; } }
+
+
 
 
     [SerializeField]
@@ -87,14 +79,19 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
     {
         GameObject _obj = null;
         RushEnemyStatus _rushEnemyStatus = null;
-
+        EquipmentController _rushEnemyEquipment = null;
         for (int i = 0; i < _enemyNum; i++)
         {
             _obj = rushOrcs.Dequeue();
             _obj.SetActive(true);
             _rushEnemyStatus = _obj.GetComponentInChildren<RushEnemyStatus>();
-            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
+            _rushEnemyEquipment = _obj.GetComponentInChildren<EquipmentController>();
             _rushEnemyStatus.RushEnemy = DatabaseManager.Instance.SelectRushEnemy(_enemyKey);
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.weaponKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.helmetKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.armorKey));
+            _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.pantKey));
+            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
             _rushEnemyStatus.IsEnemyChange = true;
             enemyPos.Enqueue(_obj.transform.position);
         }

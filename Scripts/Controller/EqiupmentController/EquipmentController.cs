@@ -23,7 +23,7 @@ public class EquipmentController : MonoBehaviour
     private WeaponSpace weaponSpace = null;
     private SubWeaponSpace subWeaponSpace = null;
 
-
+    [SerializeField] private SkillController skillController = null;
     [SerializeField] private Item[] equipItems = new Item[9];
     [SerializeField] private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
 
@@ -46,23 +46,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void Start()
     {
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(1003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(2003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(3003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(4003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(5003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(6003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(7003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8003)));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(2001));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(3002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(4003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(5002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(6003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(7002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(8003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(11001));
-
     }
 
     public int GetEquipmentDefensivePower()
@@ -166,6 +149,7 @@ public class EquipmentController : MonoBehaviour
                 case (int)ItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     ChangeAttackType();
+                    SkillChange();
                     break;
             }
             status.IsEquipmentChange = true;
@@ -175,6 +159,22 @@ public class EquipmentController : MonoBehaviour
             Debug.Log("¿Â¬¯ ¡ﬂ¿‘¥œ¥Ÿ.");
         }
     }
+    public void SkillChange()
+    {
+        if(equipItems[8].skillKey1 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey1);
+        }
+        else if(equipItems[8].skillKey2 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey2);
+        }
+        else if (equipItems[8].skillKey3 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey3);
+        }
+    }
+
     public void TakeOffEquipment(Item _item)
     {
         // ¿Â¬¯«ÿ¡¶

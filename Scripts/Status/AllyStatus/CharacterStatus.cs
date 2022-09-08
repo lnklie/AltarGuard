@@ -14,7 +14,7 @@ public class CharacterStatus : Status
     [SerializeField] protected Transform target = null;
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
-    [SerializeField] protected int maxMp = 0;
+    [SerializeField] protected float maxAtkSpeed = 5f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
@@ -35,6 +35,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float totalAtkRange = 0;
 
     [Header("BasicStatus")]
+    [SerializeField] protected int maxMp = 0;
     [SerializeField] protected int str = 5;
     [SerializeField] protected int dex = 5;
     [SerializeField] protected int wiz = 5;
@@ -92,7 +93,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int buffHpRegenValue = 0;
 
 
-    [SerializeField] protected bool triggerStatusUpdate = false;
+
     [SerializeField] protected float delayTime = 0f;
     [SerializeField] private float stiffenTime = 0f;
     [SerializeField] private GameObject flag = null;
@@ -149,6 +150,11 @@ public class CharacterStatus : Status
     public int TotalStr { get { return totalStr; } set { totalStr = value; } }
     public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
     public int TotalMaxMp { get { return totalMaxMp; } set { totalMaxMp = value; } }
+    public int TotalPhysicalDamage { get { return totalPhysicalDamage; } set { totalPhysicalDamage = value; } }
+    public int TotalMagicalDamage { get { return totalMagicalDamage; } set { totalMagicalDamage = value; } }
+    public float TotalSpeed { get { return totalSpeed; } set { totalSpeed = value; } }
+    public float TotalAtkRange { get { return totalAtkRange; } set { totalAtkRange = value; } }
+    public float TotalAtkSpeed { get { return totalAtkSpeed; } set { totalAtkSpeed = value; } }
     public int CurLevel { get { return curLevel; } set { curLevel = value; } }
     public Vector2 Distance { get { return distance; } set { distance = value; } }
     public float ArrowSpd { get { return arrowSpd; } set { arrowSpd = value; } }
@@ -172,7 +178,7 @@ public class CharacterStatus : Status
     public float BuffSpeed { get { return buffSpeed; } set { buffSpeed = value; } }
     public int BuffHpRegenValue { get { return buffHpRegenValue; } set { buffHpRegenValue = value; } }
 
-    public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
+
     #endregion
     public override void Awake()
     {
@@ -227,8 +233,8 @@ public class CharacterStatus : Status
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
-
-        totalAtkSpeed = atkSpeed + equipedAtkSpeed + graceAttackSpeed;
+        
+        totalAtkSpeed = maxAtkSpeed - (atkSpeed + equipedAtkSpeed + graceAttackSpeed);
         totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
 
         totalPhysicalDamage = physicalDamage + equipedPhysicalDamage + gracePhysicalDamage + buffPhysicalDamage;

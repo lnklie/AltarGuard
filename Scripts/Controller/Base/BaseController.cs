@@ -48,6 +48,6 @@ public class BaseController : MonoBehaviour
     public void SetState(CharacterStatus _status, EAIState _state)
     {
         _status.AIState = _state;
-        _status.TriggerStateChange = true;
+        //_status.TriggerStateChange = true;
     }
 }
