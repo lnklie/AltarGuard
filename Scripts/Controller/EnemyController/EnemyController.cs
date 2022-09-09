@@ -10,7 +10,7 @@ using UnityEngine.UI;
 ==============================
 */
 public class EnemyController : CharacterController
-{
+{ 
     [SerializeField] private Status altar = null;
     [SerializeField] protected EnemyStatus enemyStatus = null;
 

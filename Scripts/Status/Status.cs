@@ -76,7 +76,6 @@ public class Status : MonoBehaviour
     {
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
-        Debug.Log("맞은 캐릭터는 " + objectName);
         StartCoroutine(Blink());
         SetDamageText(ReviseDamage(_damage, defensivePower));
     }

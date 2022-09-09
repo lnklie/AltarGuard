@@ -177,6 +177,8 @@ public class CharacterController : BaseController, IAIController
                     Debug.Log("타겟이 없음");
             }
         }
+        
+
         yield return new WaitForSeconds(1f);
         skillController.IsSkillDelay = false;
     }

@@ -110,6 +110,9 @@ public class EquipmentController : MonoBehaviour
             status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
+            status.UpdateEquipAbility(equipItems);
+            status.UpdateTotalAbility();
+            status.TriggerStatusUpdate = true;
             checkEquipItems[_item.itemType] = true;
             switch (_item.itemType)
             {
@@ -152,7 +155,7 @@ public class EquipmentController : MonoBehaviour
                     SkillChange();
                     break;
             }
-            status.IsEquipmentChange = true;
+            status.TriggerEquipmentChange = true;
         }
         else
         {
@@ -281,7 +284,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
         }
-        status.IsEquipmentChange = true;
+        status.TriggerEquipmentChange = true;
     }
     public void RemoveEquipment(int _index)
     {
@@ -344,6 +347,6 @@ public class EquipmentController : MonoBehaviour
                 ChangeAttackType();
                 break;
         }
-        status.IsEquipmentChange = true;
+        status.TriggerEquipmentChange = true;
     }
 }

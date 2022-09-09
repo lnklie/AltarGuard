@@ -86,7 +86,6 @@ public class UIManager : SingletonManager<UIManager>
             if (mercenary[i].TriggerStatusUpdate)
             {
                 UpdateMercenaryProfile(i);
-                Debug.Log("맞은 용병은 " + mercenary[i].ObjectName);
                 mercenary[i].TriggerStatusUpdate = false;
             }
         }
