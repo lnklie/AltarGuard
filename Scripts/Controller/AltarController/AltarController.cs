@@ -75,7 +75,7 @@ public class AltarController : BaseController
     public void SetState(AltarState _alterState)
     {
         // 상태 할당
-        altar.TriggerStateChange = true;
+        //altar.TriggerStateChange = true;
         altar.AltarState = _alterState;
     }
     public void State()
@@ -100,16 +100,16 @@ public class AltarController : BaseController
 
     private void Idle()
     {
-        altar.TriggerStateChange = false;
+        //altar.TriggerStateChange = false;
     }
     private void Damaged()
     {
-        altar.TriggerStateChange = false;
+        //altar.TriggerStateChange = false;
         altar.IsDamaged = false;
     }
     private void Destroyed()
     {
-        altar.TriggerStateChange = false;
+        //altar.TriggerStateChange = false;
     }
 
     public void UpdateBuff()
@@ -122,7 +122,7 @@ public class AltarController : BaseController
             characters[i].BuffDefensivePower = altar.BuffDefensivePower;
             characters[i].BuffSpeed = altar.BuffSpeed;
             characters[i].BuffHpRegenValue = altar.BuffHpRegen;
-            characters[i].UpdateAbility();
+            characters[i].UpdateTotalAbility();
             UpdateBuffRange();
         }
     }
@@ -134,7 +134,7 @@ public class AltarController : BaseController
         _ally.BuffDefensivePower = 0;
         _ally.BuffSpeed = 0;
         _ally.BuffHpRegenValue = 0;
-        _ally.UpdateAbility();
+        _ally.UpdateTotalAbility();
     }
     private void UpdateBuffRange()
     {

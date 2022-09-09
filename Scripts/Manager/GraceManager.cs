@@ -13,7 +13,7 @@ public class GraceManager : MonoBehaviour
     }
     private void Update()
     {
-        if (characterStatuses[(int)ECharacter.Player].IsEquipmentChange)
+        if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
         {
             ActiveGrace();
         }

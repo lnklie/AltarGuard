@@ -19,52 +19,21 @@ public class EnemyStatus : CharacterStatus
     protected List<float> itemDropProb = new List<float>();
     protected bool isEnemyChange;
 
-    [SerializeField]
-    private TextMesh textMesh = null;
-    [SerializeField]
-    private int enemyIndex = -1;
+    [SerializeField] private int enemyIndex = -1;
 
     #region Property
-    public int EnemyIndex
-    {
-        get { return enemyIndex; }
-        set { enemyIndex = value; }
-    }
-    public RaycastHit2D AltarRay
-    {
-        get { return altarRay; }
-        set { altarRay = value; }
-    }
+    public int EnemyIndex { get { return enemyIndex; } set { enemyIndex = value; } }
+    public RaycastHit2D AltarRay { get { return altarRay; } set { altarRay = value; } }
 
-    public EnemyType EnemyType
-    {
-        get { return enemyType; }
-    }
-    public bool IsKnuckBack
-    {
-        get { return isKnuckBack; }
-        set { isKnuckBack = value; }
-    }
-    public List<int> ItemDropKey
-    {
-        get { return itemDropKey; }
-        set { itemDropKey = value; }
-    }
-    public List<float> ItemDropProb
-    {
-        get { return itemDropProb; }
-        set { itemDropProb = value; }
-    }
-    public bool IsEnemyChange
-    {
-        get { return isEnemyChange; }
-        set { isEnemyChange = value; }
-    }
+    public EnemyType EnemyType { get { return enemyType; } }
+    public bool IsKnuckBack { get { return isKnuckBack; } set { isKnuckBack = value; } }
+    public List<int> ItemDropKey { get { return itemDropKey; } set { itemDropKey = value; } }
+    public List<float> ItemDropProb { get { return itemDropProb; } set { itemDropProb = value; } }
+    public bool IsEnemyChange { get { return isEnemyChange; } set { isEnemyChange = value; } }
     #endregion
     public override void Awake()
     {
         base.Awake();
-        textMesh = this.gameObject.transform.parent.GetComponentInChildren<TextMesh>();
     }
     public override void Update()
     {

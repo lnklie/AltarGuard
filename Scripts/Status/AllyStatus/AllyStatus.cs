@@ -96,7 +96,7 @@ public class AllyStatus : CharacterStatus
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
-        UpdateAbility();
+        UpdateTotalAbility();
     }
 
     private void UpLevel()
@@ -106,7 +106,7 @@ public class AllyStatus : CharacterStatus
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
-        UpdateAbility();
+        UpdateTotalAbility();
     }
 
     private void LvToExp()
@@ -126,10 +126,10 @@ public class AllyStatus : CharacterStatus
         else
             return false;
     }
-    public override void UpdateAbility()
+    public override void UpdateTotalAbility()
     {
         // 능력 업데이트
-        base.UpdateAbility();
+        base.UpdateTotalAbility();
         dropProbability = totalLuck * 0.001f;
         itemRarity = totalLuck * 0.001f;
         atkSpeed = 5f - (( totalDex * 0.1f) + equipedAtkSpeed * graceAttackSpeed);

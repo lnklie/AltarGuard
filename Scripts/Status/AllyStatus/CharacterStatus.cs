@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
- * ÏûëÏÑ±Ïûê : Inklie
- * ÌååÏùºÎ™Ö : CharacterStatus.cs
+ * √÷¡æºˆ¡§¿œ : 2022-06-05
+ * ¿€º∫¿⁄ : Inklie
+ * ∆ƒ¿œ∏Ì : CharacterStatus.cs
 ==============================
 */
 public class CharacterStatus : Status
@@ -14,7 +14,7 @@ public class CharacterStatus : Status
     [SerializeField] protected Transform target = null;
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
-    [SerializeField] protected float maxAtkSpeed = 5f;
+    [SerializeField] protected float maxAtkSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
@@ -49,15 +49,15 @@ public class CharacterStatus : Status
 
     [Header("EquipStatus")]
     [SerializeField] protected int equipedStr = 0;
-    [SerializeField] protected int equipedDex = 5;
-    [SerializeField] protected int equipedWiz = 5;
-    [SerializeField] protected int equipedLuck = 5;
+    [SerializeField] protected int equipedDex = 0;
+    [SerializeField] protected int equipedWiz = 0;
+    [SerializeField] protected int equipedLuck = 0;
     [SerializeField] protected int equipedHpRegenValue = 0;
     [SerializeField] protected int equipedPhysicalDamage = 0;
     [SerializeField] protected int equipedMagicalDamage = 0;
     [SerializeField] protected int equipedDefensivePower = 0;
     [SerializeField] protected float equipedSpeed = 0f;
-    [SerializeField] protected float equipedAtkSpeed = 2f;
+    [SerializeField] protected float equipedAtkSpeed = 0f;
     [SerializeField] protected float equipedAtkRange = 0f;
 
     [Header("GraceStatus")]
@@ -109,7 +109,7 @@ public class CharacterStatus : Status
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
     #region Properties
-    public bool IsEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
+    public bool TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
     public int GraceMaxMp { get { return graceMaxMp; } set { graceMaxMp = value; } }
@@ -184,29 +184,23 @@ public class CharacterStatus : Status
     {
         base.Awake();
         //equipmentController = this.GetComponent<EquipmentController>();
-        UpdateAbility();
+        UpdateTotalAbility();
         curHp = totalMaxHp;
         curMp = totalMaxMp;
-        delayTime = atkSpeed;
+        
     }
-    //public virtual void Start()
-    //{
-    //    UpdateAbility();
-    //    curHp = totalMaxHp;
-    //    curMp = totalMaxMp;
-    //    delayTime = atkSpeed;
-    //}
+    public virtual void Start()
+    {
+        triggerStatusUpdate = true;
+    }
     public override void Update()
     {
         base.Update();
-        if(triggerStatusUpdate)
-        {
-            triggerStatusUpdate = false;
-        }
+
         if (triggerEquipmentChange)
         {
             triggerEquipmentChange = false;
-            UpdateAbility();
+            UpdateTotalAbility();
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
@@ -226,10 +220,35 @@ public class CharacterStatus : Status
         MaxMp = totalWiz * 10;
         speed = totalDex * 0.1f;
     }
-
-    public virtual void UpdateAbility()
+    public void UpdateEquipAbility(Item[] _items)
     {
-        // Îä•Î†• ÏóÖÎç∞Ïù¥Ìä∏
+        InitEquipAbility();
+        for (int i = 0;  i < _items.Length; i++)
+        {
+            equipedPhysicalDamage += _items[i].physicalDamage;
+            equipedMagicalDamage += _items[i].magicalDamage;
+            equipedDefensivePower += _items[i].defensivePower;
+            equipedAtkRange += _items[i].atkRange;
+            equipedAtkSpeed += _items[i].atkSpeed;
+        }
+    }
+    public void InitEquipAbility()
+    {
+        equipedStr = 0;
+        equipedDex = 0;
+        equipedWiz = 0;
+        equipedLuck = 0;
+        equipedHpRegenValue = 0;
+        equipedPhysicalDamage = 0;
+        equipedMagicalDamage = 0;
+        equipedDefensivePower = 0;
+        equipedSpeed = 0f;
+        equipedAtkSpeed = 0f;
+        equipedAtkRange = 0f;
+    }
+    public virtual void UpdateTotalAbility()
+    {
+        // ¥…∑¬ æ˜µ•¿Ã∆Æ
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
@@ -242,6 +261,8 @@ public class CharacterStatus : Status
 
         totalSpeed = speed + equipedSpeed + graceSpeed + buffSpeed;
         totalHpRegenValue = hpRegenValue + equipedHpRegenValue + graceHpRegenValue + buffHpRegenValue;
+
+        delayTime = totalAtkSpeed;
     }
     public void RemoveBuff()
     {
@@ -274,7 +295,7 @@ public class CharacterStatus : Status
                 {
                     curHp += totalHpRegenValue;
                 }
-            }
+            } 
             triggerStatusUpdate = true;
         }
     }

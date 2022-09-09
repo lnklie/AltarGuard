@@ -8,8 +8,8 @@ public class RushEnemyStatus : EnemyStatus
 
 
     private Image[] images = null;
-
     public Enemy RushEnemy { get { return rushEnemy; } set { rushEnemy = value; } }
+
     public override void Awake()
     {
         base.Awake();
@@ -23,11 +23,6 @@ public class RushEnemyStatus : EnemyStatus
         {
             CustomEnemy();
         }
-        if (triggerStatusUpdate)
-        {
-            UpdateEnemyHp();
-            triggerStatusUpdate = false;
-        }
     }
     public override void Damaged(int _damage)
     {
@@ -36,23 +31,24 @@ public class RushEnemyStatus : EnemyStatus
     }
     public void UpdateEnemyHp()
     {
-        images[1].fillAmount = curHp / (float)maxHp;
+        images[1].fillAmount = curHp / (float)TotalMaxHp;
     }
     public void CustomEnemy()
     {
         objectName = rushEnemy.objectName;
         totalStr = rushEnemy.str + equipedStr;
-        totalDex = rushEnemy.dex;
-        totalWiz = rushEnemy.wiz; 
+        totalDex = rushEnemy.dex + equipedDex;
+        totalWiz = rushEnemy.wiz + equipedWiz; 
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
         //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
-        UpdateAbility();
+        UpdateTotalAbility();
         totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
         totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
+
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -66,15 +62,19 @@ public class RushEnemyStatus : EnemyStatus
         isEnemyChange = false;
     }
 
-    public override void UpdateAbility()
+    public override void UpdateTotalAbility()
     {
-        // Â´Ã‰Â·Ã‚ Â¾Ã·ÂµÂ¥Ã€ÃŒÃ†Â®
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
-        totalPhysicalDamage = str * 5 + equipedPhysicalDamage;
+        totalPhysicalDamage = 1;
+        //totalPhysicalDamage = str * 5 + equipedPhysicalDamage;
         totalMagicalDamage = wiz * 5 + equipedMagicalDamage;
         totalDefensivePower = str * 3 + equipedDefensivePower;
         totalSpeed = rushEnemy.speed + dex * 0.1f;
         totalHpRegenValue = str * 1;
+
+
+        curHp = totalMaxHp;
     }
 }
