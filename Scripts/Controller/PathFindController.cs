@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class PathFindController : MonoBehaviour
 {
-    [SerializeField]
-    CharacterStatus status;
+    [SerializeField] CharacterStatus status;
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
-    [SerializeField]
-    private List<Node> finalNodeList;
-    public List<Node> FinalNodeList
-    {
-        get { return finalNodeList; }
-        set { finalNodeList = value; }
-    }
+    [SerializeField] private List<Node> finalNodeList;
+    public List<Node> FinalNodeList { get { return finalNodeList; } set { finalNodeList = value; } }
     public bool allowDiagonal, dontCrossCorner;
 
     int sizeX, sizeY;
@@ -47,7 +41,7 @@ public class PathFindController : MonoBehaviour
             {
                 bool isWall = false;
                 foreach (Collider2D col in Physics2D.OverlapCircleAll(new Vector2(i + bottomLeft.x, j + bottomLeft.y), 0.4f))
-                    if (col.gameObject.layer == 7)  isWall = true;
+                    if (col.gameObject.layer == 7 || col.gameObject.layer == 10)  isWall = true;
 
                 NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
             }

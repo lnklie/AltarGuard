@@ -10,18 +10,13 @@ using UnityEngine;
 */
 public class Status : MonoBehaviour
 {
-    [SerializeField]
-    protected string objectName = "";
-    [SerializeField]
-    protected int curHp = 0;
-    [SerializeField]
-    protected int maxHp = 100;
-    [SerializeField]
-    protected int defensivePower = 0;
-    [SerializeField]
-    protected bool isDamaged = false;
-    [SerializeField]
-    protected bool isStateChange = false;
+    [SerializeField] protected string objectName = "";
+    [SerializeField] protected int curHp = 0;
+    [SerializeField] protected int maxHp = 100;
+    [SerializeField] protected int defensivePower = 0;
+    [SerializeField] protected bool isDamaged = false;
+    //[SerializeField] protected bool triggerStateChange = false;
+    [SerializeField] protected bool triggerStatusUpdate = false;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
@@ -33,57 +28,18 @@ public class Status : MonoBehaviour
     protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
-    public int DefeatExp
-    {
-        get { return defeatExp; }
-        set { defeatExp = value; }
-    }
-    public Transform TargetPos
-    {
-        get { return targetPos; }
-    }
-    public string ObjectName
-    {
-        get { return objectName; }
-        set { objectName = value; }
-    }
-    public int CurHp
-    {
-        get { return curHp; }
-        set { curHp = value; }
-    }
-    public int MaxHp
-    {
-        get { return maxHp; }
-        set { maxHp = value; }
-    }
-    public int DefensivePower
-    {
-        get { return defensivePower; }
-        set { defensivePower = value; }
-    }
-    public bool IsDamaged
-    {
-        get { return isDamaged; }
-        set { isDamaged = value; }
-    }
-    public bool IsStateChange
-    {
-        get { return isStateChange; }
-        set { isStateChange = value; }
-    }
-    public BoxCollider2D Col
-    {
-        get { return col; }
-    }
-    public Rigidbody2D Rig
-    {
-        get { return rig; }
-    }
-    public Animator Ani
-    {
-        get { return ani; }
-    }
+    public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
+    public int DefeatExp { get { return defeatExp; } set { defeatExp = value; } }
+    public Transform TargetPos { get { return targetPos; } }
+    public string ObjectName { get { return objectName; } set { objectName = value; } }
+    public int CurHp { get { return curHp; } set { curHp = value; } }
+    public int MaxHp { get { return maxHp; } set { maxHp = value; } }
+    public int DefensivePower { get { return defensivePower; } set { defensivePower = value; } }
+    public bool IsDamaged { get { return isDamaged; } set { isDamaged = value; } }
+    //public bool TriggerStateChange { get { return triggerStateChange; } set { triggerStateChange = value; } }
+    public BoxCollider2D Col { get { return col; } }
+    public Rigidbody2D Rig { get { return rig; } }
+    public Animator Ani { get { return ani; } }
     #endregion
 
 
@@ -97,8 +53,8 @@ public class Status : MonoBehaviour
     }
     public virtual void Update()
     {
-        if (isStateChange)
-            isStateChange = false;
+        //if (TriggerStateChange)
+        //    TriggerStateChange = false;
     }
     public void SetDamageText(int _damage)
     {
@@ -119,6 +75,7 @@ public class Status : MonoBehaviour
     public virtual void Damaged(int _damage)
     {
         curHp -= ReviseDamage(_damage, defensivePower);
+        triggerStatusUpdate = true;
         StartCoroutine(Blink());
         SetDamageText(ReviseDamage(_damage, defensivePower));
     }

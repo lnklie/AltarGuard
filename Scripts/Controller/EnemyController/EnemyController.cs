@@ -10,11 +10,9 @@ using UnityEngine.UI;
 ==============================
 */
 public class EnemyController : CharacterController
-{
-    [SerializeField]
-    private Status altar = null;
-    [SerializeField]
-    protected EnemyStatus enemyStatus = null;
+{ 
+    [SerializeField] private Status altar = null;
+    [SerializeField] protected EnemyStatus enemyStatus = null;
 
     public override void Awake()
     {
@@ -134,7 +132,7 @@ public class EnemyController : CharacterController
 
     public override void AttackDamage(CharacterStatus _status)
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, _status.TotalAtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Ally"));
 
         for (int i = 0; i < hits.Length; i++)
         {

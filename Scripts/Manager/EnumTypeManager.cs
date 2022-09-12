@@ -27,6 +27,7 @@ public enum EAIState
     Idle,
     Chase,
     Attack,
+    UseSkill,
     Died
 }
 public enum ItemType

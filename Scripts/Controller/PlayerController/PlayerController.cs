@@ -90,10 +90,6 @@ public class PlayerController : CharacterController
         {
             case EPlayerState.Play:
                 Perception(player);
-                if (player.IsDamaged)
-                {
-                    StartCoroutine(Blink(player));
-                }
                 if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
                     StartCoroutine(PlayerAttack(player));
@@ -104,73 +100,6 @@ public class PlayerController : CharacterController
                         PlayerMove(player);
                     else
                         PlayerIdle(player);
-                }
-
-                if (Input.GetKeyDown(KeyCode.Z))
-                {
-                    if (skillController.ActiveSkills[0].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.Target);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                    else if (skillController.ActiveSkills[0].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[0], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.X))
-                {
-
-                        if (skillController.ActiveSkills[1].skillType == 0)
-                        {
-                            if (player.Target)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[1], player.Target);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
-                        }
-                        else if (skillController.ActiveSkills[1].skillType == 1)
-                        {
-                            if (player.AllyTarget)
-                            {
-                                skillController.UseSkill(skillController.ActiveSkills[1], player.AllyTarget);
-                            }
-                            else
-                                Debug.Log("타겟이 없음");
-                        }
-                }
-                else if (Input.GetKeyDown(KeyCode.C))
-                {
-
-                    if (skillController.ActiveSkills[2].skillType == 0)
-                    {
-                        if (player.Target)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.Target);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-                    else if (skillController.ActiveSkills[2].skillType == 1)
-                    {
-                        if (player.AllyTarget)
-                        {
-                            skillController.UseSkill(skillController.ActiveSkills[2], player.AllyTarget);
-                        }
-                        else
-                            Debug.Log("타겟이 없음");
-                    }
-
                 }
                 break;
             case EPlayerState.AutoPlay:
@@ -231,7 +160,7 @@ public class PlayerController : CharacterController
     {
         // 움직임 실행
         _status.ActiveLayer(LayerName.WalkLayer);
-        _status.Rig.velocity = _status.Speed * _status.Dir;
+        _status.Rig.velocity = _status.TotalSpeed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
@@ -329,27 +258,6 @@ public class PlayerController : CharacterController
     }
 
 
-    private void AquireRay()
-    {
-        player.ItemSight = Physics2D.CircleCastAll(this.transform.position, 1f, Vector2.up, 0, LayerMask.GetMask("Item"));
-        for (int i = 0; i < player.ItemSight.Length; i++)
-        {
-            if (player.ItemSight[i])
-            {
-                DropItem dropItem = player.ItemSight[i].collider.GetComponent<DropItem>();
-                InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(dropItem.CurItemKey));
-                DropManager.Instance.ReturnItem(dropItem.gameObject);
-            }
-        }
-    }
-
-    private IEnumerator Blink(CharacterStatus _status)
-    {
-        _status.IsDamaged = false;        
-        bodySprites.color = new Color(1f,1f,1f,155/255f);
-        yield return new WaitForSeconds(0.5f);
-         bodySprites.color = new Color(1f, 1f, 1f, 1f);
-    }
 
     private IEnumerator Died(PlayerStatus _status)
     {

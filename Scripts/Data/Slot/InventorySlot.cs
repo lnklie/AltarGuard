@@ -13,55 +13,85 @@ using TMPro;
 */
 public class InventorySlot : MonoBehaviour
 {
-    private TextMeshProUGUI itemCount = null;
-    [SerializeField] private Image[] itemImages = null;
+    [SerializeField] private Image itemImage = null;
+    [SerializeField] private Image itemCoolTimeImage = null;
     [SerializeField] private Item curItem = null;
     [SerializeField] private Sprite uiMask = null;
+    [SerializeField] private TextMeshProUGUI checkItemEquip = null;
+    [SerializeField] private TextMeshProUGUI itemCount = null;
+    [SerializeField] private bool isItem = false;
     private bool isItemChange = false;
 
 
-    [SerializeField] private bool isItem = false;
     #region Property
 
-    public Image[] ItemImages { get { return itemImages; } set { itemImages = value; } }
     public Item CurItem { get { return curItem; } set { curItem = value; } }
     public bool IsItemChange { get { return isItemChange; } set { isItemChange = value; } }
     #endregion
-    private void Awake()
-    {
-        itemImages = GetComponentsInChildren<Image>();
-        itemCount = GetComponentInChildren<TextMeshProUGUI>();
-    }
+
     private void Update()
     {
         if (isItem && curItem.isCoolTime)
         {
-            itemImages[2].gameObject.SetActive(true);
-            itemImages[2].fillAmount = curItem.coolTime / curItem.maxCoolTime;
+            itemCoolTimeImage.gameObject.SetActive(true);
+            itemCoolTimeImage.fillAmount = curItem.coolTime / curItem.maxCoolTime;
         }
         else
         {
-            itemImages[2].gameObject.SetActive(false);
+            itemCoolTimeImage.gameObject.SetActive(false);
         }
     }
     public void SlotReset()
     {
         // ½½·Ô ¸®¼Â
         curItem = null;
-        ItemImages[1].sprite = uiMask;
+        itemImage.sprite = uiMask;
         itemCount.text = "00";
-        itemImages[2].fillAmount = 0f;
+        itemCoolTimeImage.fillAmount = 0f;
         isItem = false;
         EnableItemCount(false);
+        checkItemEquip.gameObject.SetActive(false);
     }
     public void SlotSetting()
     {
         // ½½·Ô ¼¼ÆÃ
-        itemImages[1].sprite = curItem.singleSprite;
-        itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
+        itemImage.sprite = curItem.singleSprite;
+        itemImage.rectTransform.sizeDelta = new Vector2(100f, 100f);
         isItem = true;
         SetItemCoolTime();
         ActiveItemCount();
+        ActiveCheckItemEquip();
+    }
+    public void ActiveCheckItemEquip()
+    {
+        if (curItem.isEquip)
+        {
+            checkItemEquip.gameObject.SetActive(true);
+            if(curItem.equipCharNum == 0)
+            {
+                checkItemEquip.color = Color.white;
+            }
+            else if(curItem.equipCharNum == 1)
+            {
+                checkItemEquip.color = Color.red;
+            }
+            else if(curItem.equipCharNum == 2)
+            {
+                checkItemEquip.color = Color.blue;
+            }
+            else if (curItem.equipCharNum == 3)
+            {
+                checkItemEquip.color = Color.green;
+            }
+            else if (curItem.equipCharNum == 4)
+            {
+                checkItemEquip.color = Color.magenta;
+            }
+        }
+        else
+        {
+            checkItemEquip.gameObject.SetActive(false);
+        }
     }
     private void ActiveItemCount()
     {

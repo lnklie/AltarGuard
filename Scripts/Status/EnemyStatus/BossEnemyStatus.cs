@@ -34,7 +34,7 @@ public class BossEnemyStatus : EnemyStatus
         defeatExp = bossEnemy.defeatExp;
         atkRange = equipedAtkRange;
         atkSpeed = equipedAtkSpeed;
-        UpdateAbility();
+        UpdateTotalAbility();
 
         itemDropKey.Add(bossEnemy.itemDropKey1);
         itemDropKey.Add(bossEnemy.itemDropKey2);
@@ -51,7 +51,7 @@ public class BossEnemyStatus : EnemyStatus
         isEnemyChange = false;
     }
 
-    public override void UpdateAbility()
+    public override void UpdateTotalAbility()
     {
         // 능력 업데이트
         maxHp = bossEnemy.hp + str * 10;

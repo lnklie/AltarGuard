@@ -34,8 +34,9 @@ public class Skill
     public float coolTime;
     public float maxCoolTime;
     public bool isCoolTime = false;
-    public int skillHitCount;
-    public string targetStatus;
+    public int skillHitCount = 0;
+    public string targetStatus = null;
+    public float skillRange = 0f;
     public Skill(int _skillKey, string _skillName, int _skillLevel, int _skillVarable
         , int  _skillValue1, int _skillValue2, int _skillValue3
         , int _skillValue4, int _skillValue5, int _skillValue6
