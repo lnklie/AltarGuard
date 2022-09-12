@@ -4,9 +4,9 @@ using UnityEngine;
 
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : EquipmentController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : EquipmentController.cs
 ==============================
 */
 public class EquipmentController : MonoBehaviour
@@ -50,7 +50,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // Àåºñ¿¡ ¹æ¾î·Â Ãâ·Â
+        // ì¥ë¹„ì— ë°©ì–´ë ¥ ì¶œë ¥
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -62,7 +62,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // Àåºñ¿¡ ¹°¸®µ¥¹ÌÁö Ãâ·Â
+        // ì¥ë¹„ì— ë¬¼ë¦¬ë°ë¯¸ì§€ ì¶œë ¥
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,7 +74,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // Àåºñ¿¡ ¸¶¹ıµ¥¹ÌÁö Ãâ·Â
+        // ì¥ë¹„ì— ë§ˆë²•ë°ë¯¸ì§€ ì¶œë ¥
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -86,7 +86,7 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ¹«±â ¾ÆÀÌÅÛ¿¡ µû¸¥ °ø°İ Å¸ÀÔ º¯°æ
+        // ë¬´ê¸° ì•„ì´í…œì— ë”°ë¥¸ ê³µê²© íƒ€ì… ë³€ê²½
         if (checkEquipItems[7])
         {
             status.AtkRange = equipItems[7].atkRange;
@@ -106,7 +106,7 @@ public class EquipmentController : MonoBehaviour
     {
         if(!_item.isEquip)
         {
-            Debug.Log("ÀåÂø!");
+            Debug.Log("ì¥ì°©!");
             status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
@@ -159,7 +159,7 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
+            Debug.Log("ì¥ì°© ì¤‘ì…ë‹ˆë‹¤.");
         }
     }
     public void SkillChange()
@@ -180,7 +180,7 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        // ÀåÂøÇØÁ¦
+        // ì¥ì°©í•´ì œ
         switch (_item.itemType)
         {
             case 0:
@@ -288,7 +288,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ÀåÂø Á¦°Å
+        // ì¥ì°© ì œê±°
         switch (_index)
         {
             case 0:
