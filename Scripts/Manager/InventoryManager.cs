@@ -31,7 +31,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
     public List<Item> InventroyConsumableItems { get { return inventroyConsumableItems; } }
     public List<Item> InventroyMiscellaneousItems { get { return inventroyMiscellaneousItems; } }
     public List<Item> InventroyDecorationItems { get { return inventroyDecorationItems; } }
-
     public bool IsWeaponCoolTime { get { return isWeaponCoolTime; } set { isWeaponCoolTime = value; } }
 
     public bool IsEquipmentCoolTime { get { return isEquipmentCoolTime; } set { isEquipmentCoolTime = value; } }
@@ -123,8 +122,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
         // 리스트에 아이템 추가 
         _itemList.Add(_item);    
     }
-    public Item AcquireItem(Item _item)
+    public Item AcquireItem(Item _item,int _count = 1)
     {
+        _item.dateTime = System.DateTime.Now;
+        Debug.Log("��� �������� �̸�� " + _item.itemKorName + " ��� �ð�� " + _item.dateTime);
         if (_item != null)
         { 
             switch (_item.itemKey / 1000)
@@ -132,6 +133,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 case 0:
                 case 1:
                     inventroyDecorationItems.Add(_item);
+                    _item.inventoryIndex = inventroyDecorationItems.IndexOf(_item);
+                    _item.count = _count;
                     break;
                 case 2:
                 case 3:
@@ -140,6 +143,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 case 6:
                 case 7:
                     inventroyEquipmentItems.Add(_item);
+                    _item.inventoryIndex = inventroyEquipmentItems.IndexOf(_item);
+                    _item.count = _count;
                     break;
                 case 8:
                 case 9:
@@ -147,12 +152,16 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 case 11:
                 case 12:
                     inventroyWeaponItems.Add(_item);
+                    _item.inventoryIndex = inventroyWeaponItems.IndexOf(_item);
+                    _item.count = _count;
                     break;
                 case 13:
                     if (IndexOfItem(_item) != -1)
                         SelectItem(_item).count += _item.count;
                     else
+                    {
                         inventroyConsumableItems.Add(_item);
+                    }
                     break;
                 case 14:
                     if (IndexOfItem(_item) != -1)
@@ -163,6 +172,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     }
                     break;
             }
+            _item.inventoryIndex = IndexOfItem(_item);
             UIManager.Instance.SetLog(_item.itemKorName +  " Aquired !!");
         }
         return _item;
@@ -308,18 +318,26 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
         return _items;
     }
-    public void UseItem(CharacterStatus _character, Item _Item)
+    public void SetInventoryIndex(List<Item> _inventory)
     {
-        // 소모품만 가능 UI에서 소모품만 사용하기 UI나타나기
-        if (IndexOfItem(_Item) != -1)
+        for(int i = 0; i < _inventory.Count; i++)
         {
-            SelectItem(_Item).count--;
-            UseEffect(_character, _Item);
-            Debug.Log("아이템 사용");
-            if (SelectItem(_Item).count == 0)
+            _inventory[i].inventoryIndex = i;
+        }
+    }
+    public void UseItem(CharacterStatus _character, Item _item)
+    {
+        // �Ҹ�ǰ�� ���� UI���� �Ҹ�ǰ�� ����ϱ� UI��Ÿ����
+        if (IndexOfItem(_item) != -1)
+        {
+            SelectItem(_item).count--;
+            UseEffect(_character, _item);
+            Debug.Log("������ ���");
+            if (SelectItem(_item).count == 0)
             {
-                inventroyConsumableItems.Remove(SelectItem(_Item));
-                Debug.Log("아이템 비워짐");
+                inventroyConsumableItems.Remove(SelectItem(_item));
+                SetInventoryIndex(inventroyConsumableItems);
+                Debug.Log("������ �����");
             }
         }
         else
@@ -355,7 +373,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
-                        Debug.Log("아이템 비워짐");
+                        SetInventoryIndex(inventroyWeaponItems);
+                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -380,7 +399,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
-                        Debug.Log("아이템 비워짐");
+                        SetInventoryIndex(inventroyEquipmentItems);
+                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -403,7 +423,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
-                        Debug.Log("아이템 비워짐");
+                        SetInventoryIndex(inventroyDecorationItems);
+                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -424,7 +445,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if ( _item.count <= 0)
                 {
                     inventroyConsumableItems.Remove(_item);
-                    Debug.Log("아이템 비워짐");
+                    SetInventoryIndex(inventroyConsumableItems);
+                    Debug.Log("������ �����");
                 }
             }
             else
@@ -440,7 +462,8 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 if (_item.count == 0)
                 {
                     inventroyMiscellaneousItems.Remove(_item);
-                    Debug.Log("아이템 비워짐");
+                    SetInventoryIndex(inventroyMiscellaneousItems);
+                    Debug.Log("������ �����");
                 }
             }
             else
@@ -449,16 +472,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
             }
         }
     }
-
-    public void SortItemKeyInventory(List<Item> _inventory)
+    public void SortInventoryByItemKey(List<Item> _inventory)
     {
         // 리스트 정렬
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
             else if (a.itemKey > b.itemKey) return 1;
-            else return a.equipCharNum.CompareTo(b.equipCharNum);
-            
+            else return 0;
+        });
+    }
+    public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
+    {
+        // ����Ʈ ���
+        _inventory.Sort(delegate (Item a, Item b)
+        {
+            if (a.itemKey < b.itemKey) return -1;
+            else if (a.itemKey > b.itemKey) return 1;
+            else return a.inventoryIndex.CompareTo(b.inventoryIndex);
         });
     }
 }

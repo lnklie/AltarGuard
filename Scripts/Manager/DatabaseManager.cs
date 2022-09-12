@@ -52,6 +52,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("AltarProperty")]
     public List<AltarProperty> altarPropertyList = new List<AltarProperty>();
+
+    [Header("GameScript")]
+    public List<GameScript> gameScriptList = new List<GameScript>();
     private void Awake()
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
@@ -454,6 +457,23 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     , altarProperties[i].rateOfValueIncreaseBySection_6, altarProperties[i].rateOfValueIncreaseBySection_7, altarProperties[i].rateOfValueIncreaseBySection_8, altarProperties[i].rateOfValueIncreaseBySection_9, altarProperties[i].rateOfValueIncreaseBySection_10));
             }
         }
+        if (!File.Exists(CombinePath("GameScript")))
+        {
+            Debug.Log("��ο� �뺻 ������ ���̽��� ������� �ʽ�ϴ�.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GameScript")));
+            GameScript[] gameScripts = JsonHelper.FromJson<GameScript>(loadJson);
+            for (var i = 0; i < gameScripts.Length; i++)
+            {
+                gameScriptList.Add(new GameScript(gameScripts[i].scriptKey, gameScripts[i].actorNum0, gameScripts[i].actorNum1, gameScripts[i].actorNum2, gameScripts[i].actorNum3,gameScripts[i].actorNum4, gameScripts[i].actorNum5, gameScripts[i].actorNum6, gameScripts[i].actorNum7, gameScripts[i].actorNum8, gameScripts[i].actorNum9,
+                    gameScripts[i].script0, gameScripts[i].script1, gameScripts[i].script2, gameScripts[i].script3, gameScripts[i].script4, gameScripts[i].script5, gameScripts[i].script6, gameScripts[i].script7, gameScripts[i].script8, gameScripts[i].script9,
+                    gameScripts[i].scriptSpeed0, gameScripts[i].scriptSpeed1, gameScripts[i].scriptSpeed2, gameScripts[i].scriptSpeed3, gameScripts[i].scriptSpeed4, gameScripts[i].scriptSpeed5, gameScripts[i].scriptSpeed6, gameScripts[i].scriptSpeed7, gameScripts[i].scriptSpeed8, gameScripts[i].scriptSpeed9,
+                    gameScripts[i].scriptAniSpeed0, gameScripts[i].scriptAniSpeed1, gameScripts[i].scriptAniSpeed2, gameScripts[i].scriptAniSpeed3, gameScripts[i].scriptAniSpeed4, gameScripts[i].scriptAniSpeed5, gameScripts[i].scriptAniSpeed6, gameScripts[i].scriptAniSpeed7, gameScripts[i].scriptAniSpeed8, gameScripts[i].scriptAniSpeed9,
+                    gameScripts[i].timeLag0, gameScripts[i].timeLag1, gameScripts[i].timeLag2, gameScripts[i].timeLag3, gameScripts[i].timeLag4, gameScripts[i].timeLag5, gameScripts[i].timeLag6, gameScripts[i].timeLag7, gameScripts[i].timeLag8));
+            }
+        }
     }
     public Item SelectItem(int _key, int _amount = 1)
     {
@@ -720,7 +740,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public CraftRecipe SelectCraftRecipe(int _key)
     {
         CraftRecipe _craftRecipe = null;
-        for (int i = 0; i < magicGraceList.Count; i++)
+        for (int i = 0; i < craftRecipeList.Count; i++)
         {
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
@@ -732,13 +752,24 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public AltarProperty SelectAltarProperty(int _key)
     {
         AltarProperty _altarProperty = null;
-        for (int i = 0; i < magicGraceList.Count; i++)
+        for (int i = 0; i < altarPropertyList.Count; i++)
         {
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
         }
         return _altarProperty;
+    }
+    public GameScript SelectGameScript(int _key)
+    {
+        GameScript _gameScript = null;
+        for (int i = 0; i < gameScriptList.Count; i++)
+        {
+            if (gameScriptList[i].scriptKey == _key)
+                _gameScript = gameScriptList[i];
+            else
+                Debug.Log("�ش� ��� �����ǰ� ���ϴ�.");
+        }
+        return _gameScript;
     }
 }

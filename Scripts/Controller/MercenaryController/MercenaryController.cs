@@ -23,9 +23,11 @@ public class MercenaryController : CharacterController
     private void Rivive(CharacterStatus _Status)
     {
         this.gameObject.transform.position = rivivePoint.transform.position;
+
         _Status.Rig.isKinematic = false;
         _Status.Col.enabled = true;
-        _Status.CurHp = mercenary.MaxHp;
+        _Status.CurHp = mercenary.TotalMaxHp;
+        _Status.TriggerStatusUpdate = true;
         _Status.AIState = EAIState.Idle;
     }
 
@@ -45,7 +47,7 @@ public class MercenaryController : CharacterController
 
     public override void AttackDamage(CharacterStatus _status)
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position,_status.AtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position,_status.TotalAtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Enemy"));
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
@@ -101,7 +103,7 @@ public class MercenaryController : CharacterController
             else
             {
                 _status.AIState = EAIState.Chase;
-                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
+                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.TotalAtkRange)
                 {
                     _status.AIState = EAIState.Attack;
                 }
@@ -160,16 +162,14 @@ public class MercenaryController : CharacterController
 
     public override IEnumerator AIDied(CharacterStatus _status)
     {
-        Debug.Log("죽음 용병");
         _status.AIState = EAIState.Died;
         _status.IsDied = true;
         _status.ActiveLayer(LayerName.DieLayer);
-        _status.Rig.velocity = UnityEngine.Vector2.zero;
+        _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return new WaitForSeconds(mercenary.RevivalTime);
         Rivive(_status);
         _status.IsDied = false;
-        Debug.Log("죽음 용병 해제");
     }
 
 }

@@ -237,52 +237,52 @@ public class BuyPanelController : MonoBehaviour
                 equipediteminfoText[2].text = "안면 장식품";
                 break;
             case 2:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 3:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 4:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 5:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 6:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 7:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "��� ���: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "��� �Ÿ�: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "���� ���: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 8:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType + "\n" +
-                    "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "��� ���: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "��� �Ÿ�: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "���� ���: " + (playerEquipmentController.EquipItems[_index]).weaponType + "\n" +
+                    "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 9:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "��� ���: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "��� �Ÿ�: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "���� ���: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 10:
                 equipediteminfoText[2].text =
-                    "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
-                    "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
-                    "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
-                    "공격 거리: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
-                    "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
+                    "���� ��ݷ�: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
+                    "��� ���: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
+                    "��� �Ÿ�: " + (playerEquipmentController.EquipItems[_index]).atkDistance + "\n" +
+                    "���� ���: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 11:
                 equipediteminfoText[2].text =

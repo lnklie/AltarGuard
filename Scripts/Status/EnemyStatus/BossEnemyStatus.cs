@@ -25,7 +25,7 @@ public class BossEnemyStatus : EnemyStatus
     }
     public void CustomEnemy()
     {
-        Debug.Log("Ä¿½ºÅÒ ¿¡³Ê¹Ì 2");
+        Debug.Log("ì»¤ìŠ¤í…€ ì—ë„ˆë¯¸ 2");
         objectName = bossEnemy.objectName;
         str = bossEnemy.str;
         dex = bossEnemy.dex;
@@ -34,7 +34,7 @@ public class BossEnemyStatus : EnemyStatus
         defeatExp = bossEnemy.defeatExp;
         atkRange = equipedAtkRange;
         atkSpeed = equipedAtkSpeed;
-        UpdateAbility();
+        UpdateTotalAbility();
 
         itemDropKey.Add(bossEnemy.itemDropKey1);
         itemDropKey.Add(bossEnemy.itemDropKey2);
@@ -51,9 +51,9 @@ public class BossEnemyStatus : EnemyStatus
         isEnemyChange = false;
     }
 
-    public override void UpdateAbility()
+    public override void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         maxHp = bossEnemy.hp + str * 10;
         maxMp = bossEnemy.mp + wiz * 10;
         physicalDamage = str * 5 + equipedPhysicalDamage;

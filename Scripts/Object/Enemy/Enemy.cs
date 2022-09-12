@@ -19,6 +19,9 @@ public class Enemy : Elements
     public int wiz = 0;
     public float seeRange;
     public float speed = 0f;
+    public float atkRange = 1f;
+    public float atkSpeed = 1f;
+
     public int defeatExp = 0;
     public int itemDropKey1 = -1;
     public int itemDropKey2 = -1;
@@ -59,6 +62,7 @@ public class Enemy : Elements
         itemDropProb3 = _itemDropProb3;
         itemDropProb4 = _itemDropProb4;
         itemDropProb5 = _itemDropProb5;
+
         enemyType = _enemyType;
         helmetKey = _helmetKey;
         armorKey = _armorKey;
