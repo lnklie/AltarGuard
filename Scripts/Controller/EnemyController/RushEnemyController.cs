@@ -17,9 +17,9 @@ public class RushEnemyController : EnemyController
     }
     public bool IsDelay(EnemyStatus _status)
     {
-        if (_status.DelayTime >= _status.AtkSpeed)
+        if (_status.DelayTime >= _status.TotalAtkSpeed)
         {
-            _status.DelayTime = _status.AtkSpeed;
+            _status.DelayTime = _status.TotalAtkSpeed;
             return false;
         }
         else
@@ -48,7 +48,6 @@ public class RushEnemyController : EnemyController
         rushEnemyStatus.UpdateEnemyHp();
         _status.AIState = EAIState.Died;
         _status.ActiveLayer(LayerName.DieLayer);
-        _status.IsStateChange = false;
         _status.Rig.velocity = Vector2.zero;
         _status.Col.enabled = false;
         yield return new WaitForSeconds(2f);

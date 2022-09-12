@@ -210,7 +210,6 @@ public class DataManager : MonoBehaviour
             {
                 if(character.checkEquipItems[j])
                     character.equipedItems[j] = _mercenaryEquipmenrController.EquipItems[j];
-                
             }
             playerData.mercenaries[i] = character;
         }

@@ -21,9 +21,6 @@ public class SkillController : MonoBehaviour
     #endregion
     private void Start()
     {
-        AquireSkill(0);
-        AquireSkill(1);
-        AquireSkill(2);
     }
     private void Update()
     {
@@ -32,7 +29,6 @@ public class SkillController : MonoBehaviour
         if(status.IsSkillChange)
         {
             status.IsSkillChange = false;
-
         }
     }
     public void AquireSkill(int _skillKey)
@@ -45,7 +41,6 @@ public class SkillController : MonoBehaviour
         else
         {
             passiveSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
-            //SetPassiveStatus();
             status.UpdateBasicStatus();
         }
         
@@ -59,14 +54,14 @@ public class SkillController : MonoBehaviour
             status.UpdateBasicStatus();
         }
         else
-            Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
+            Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (activeSkills.IndexOf(_skill) != -1)
             activeSkills.Remove(_skill);
         else
-            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
 
     public void UseSkill(Skill _skill, Transform _target)
@@ -91,27 +86,32 @@ public class SkillController : MonoBehaviour
                     skillQueue.RemoveAt(index);
                 }
                 else
-                    Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
+                    Debug.Log("ÄğÅ¸ÀÓ Áß");
             }
             else
             {
-                UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
+                UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
             }
         }
         else
-            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
     public void UseSkill(Transform _target)
     {
-        int index = activeSkills.IndexOf(skillQueue[0]);
+        //int index = activeSkills.IndexOf(skillQueue[0]);
+        // Debug.Log("ÀÎµ¦½º´Â " + index);
         if(status.Target !=null)
         {
             if (skillQueue.Count > 0)
             {
-            
-                SkillObject _skillObject = skillPrefabs[index];
+
+                Debug.Log("111");
+                SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                Debug.Log("222");
                 skillQueue[0].isCoolTime = true;
+                Debug.Log("333");
                 skillQueue[0].coolTime = 0;
+                Debug.Log("444");
                 //status.IsAtk = true;
                 _skillObject.IsSkillUse = true;
                 _skillObject.transform.position = _target.transform.position;
@@ -122,11 +122,11 @@ public class SkillController : MonoBehaviour
                 skillQueue.RemoveAt(0);
             }
             else
-                Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
+                Debug.Log("ÄğÅ¸ÀÓ Áß");
         }
         else
         {
-            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
+            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
         }
     }
     public void CalculateSkillCoolTime()
@@ -203,7 +203,7 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.CurLevel * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("ì˜¬ë ¤ì£¼ëŠ” ëŠ¥ë ¥ì¹˜ëŠ” " + _skillDamage);
+        Debug.Log("¿Ã·ÁÁÖ´Â ´É·ÂÄ¡´Â " + _skillDamage);
         return _skillDamage;
     }
     public int SetSkillDamageByLevel(Skill _skill)
