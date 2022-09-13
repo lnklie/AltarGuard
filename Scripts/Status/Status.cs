@@ -74,6 +74,7 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
+        //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());

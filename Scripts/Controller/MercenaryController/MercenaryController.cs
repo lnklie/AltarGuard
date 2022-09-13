@@ -65,7 +65,6 @@ public class MercenaryController : CharacterController
                     {
                         if (_isDrops[j])
                         {
-                            Debug.Log("얻다! " + _isDrops[j]);
                             InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
                         }
                     }

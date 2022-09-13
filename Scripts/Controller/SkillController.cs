@@ -8,13 +8,16 @@ public class SkillController : MonoBehaviour
     [SerializeField] private List<Skill> activeSkills = new List<Skill>();
     [SerializeField] private List<Skill> passiveSkills = new List<Skill>();
     [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
-    [SerializeField] private List<Skill> skillQueue = new List<Skill>();
+    [SerializeField] private List<Skill> attackSkillQueue = new List<Skill>();
+    [SerializeField] private List<Skill> cureSkillQueue = new List<Skill>();
+    [SerializeField] private List<Skill> buffSkillQueue = new List<Skill>();
+    [SerializeField] private List<Skill> debuffSkillQueue = new List<Skill>();
     [SerializeField] private bool isSkillDelay = false;
     private bool[] isCoolTime = { false, false, false };
 
     public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-    public List<Skill> SkillQueue { get { return skillQueue; } }
+    public List<Skill> SkillQueue { get { return attackSkillQueue; } }
     public List<Skill> ActiveSkills { get { return activeSkills; } }
     public List<Skill> PassiveSkills { get { return passiveSkills; } set { passiveSkills = value; } }
     public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
@@ -33,14 +36,30 @@ public class SkillController : MonoBehaviour
     }
     public void AquireSkill(int _skillKey)
     {
+        Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
         if (_skillKey < 1000)
         {
-            activeSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
-            skillQueue.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
+            activeSkills.Add(_newSkill);
+            if(_newSkill.skillType == 0)
+            {
+                attackSkillQueue.Add(_newSkill);
+            }
+            else if(_newSkill.skillType == 1)
+            {
+                cureSkillQueue.Add(_newSkill);
+            }
+            else if (_newSkill.skillType == 2)
+            {
+                buffSkillQueue.Add(_newSkill);
+            }
+            else
+            {
+                debuffSkillQueue.Add(_newSkill);
+            }
         }
         else
         {
-            passiveSkills.Add(DatabaseManager.Instance.SelectSkill(_skillKey));
+            passiveSkills.Add(_newSkill);
             status.UpdateBasicStatus();
         }
         
@@ -54,14 +73,14 @@ public class SkillController : MonoBehaviour
             status.UpdateBasicStatus();
         }
         else
-            Debug.Log("Ω∫≈≥ ∑π∫ß¿Ã MAX");
+            Debug.Log("Ïä§ÌÇ¨ Î†àÎ≤®Ïù¥ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (activeSkills.IndexOf(_skill) != -1)
             activeSkills.Remove(_skill);
         else
-            Debug.Log("æ¯¥¬ Ω∫≈≥");
+            Debug.Log("ÏóÜÎäî Ïä§ÌÇ¨");
     }
 
     public void UseSkill(Skill _skill, Transform _target)
@@ -77,70 +96,66 @@ public class SkillController : MonoBehaviour
                     _skill.isCoolTime = true;
                     status.IsAtk = true;
                     _skill.coolTime = 0f;
-                    _skillObject.IsSkillUse = true;
-                    _skillObject.transform.position = _target.transform.position;
-                    _skillObject.gameObject.SetActive(true);
-                    _skillObject.Target = _target;
-                    _skillObject.Damage = SetSkillDamageByLevel(_skill);
-                    _skillObject.SkillHitCount = _skill.skillHitCount;
-                    skillQueue.RemoveAt(index);
+                    _skillObject.SetSkill(_target, _skill, status);
+                    attackSkillQueue.RemoveAt(index);
                 }
                 else
-                    Debug.Log("ƒ≈∏¿” ¡ﬂ");
+                    Debug.Log("Ïø®ÌÉÄÏûÑ Ï§ë");
             }
             else
             {
-                UIManager.Instance.Notice("≈∏∞Ÿ¿Ã æ¯¿Ω");
+                UIManager.Instance.Notice("ÌÉÄÍ≤üÏù¥ ÏóÜÏùå");
             }
         }
         else
-            Debug.Log("æ¯¥¬ Ω∫≈≥");
+            Debug.Log("ÏóÜÎäî Ïä§ÌÇ¨");
     }
     public void UseSkill(Transform _target)
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("¿Œµ¶Ω∫¥¬ " + index);
+        // Debug.Log("Ïù∏Îç±Ïä§Îäî " + index);
         if(status.Target !=null)
         {
-            if (skillQueue.Count > 0)
+
+            if (attackSkillQueue.Count > 0)
             {
 
-                Debug.Log("111");
-                SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                Debug.Log("222");
-                skillQueue[0].isCoolTime = true;
-                Debug.Log("333");
-                skillQueue[0].coolTime = 0;
-                Debug.Log("444");
-                //status.IsAtk = true;
-                _skillObject.IsSkillUse = true;
-                _skillObject.transform.position = _target.transform.position;
-                _skillObject.gameObject.SetActive(true);
-                _skillObject.Target = _target;
-                _skillObject.Damage = SetSkillDamageByLevel(skillQueue[0]);
-                _skillObject.SkillHitCount = skillQueue[0].skillHitCount;
-                skillQueue.RemoveAt(0);
+                SkillObject _skillObject = skillPrefabs[attackSkillQueue[0].skillKey];
+                attackSkillQueue[0].isCoolTime = true;
+                attackSkillQueue[0].coolTime = 0;
+                status.IsAtk = true;
+                _skillObject.SetSkill(_target, attackSkillQueue[0],status);
+                attackSkillQueue.RemoveAt(0);
             }
-            else
-                Debug.Log("ƒ≈∏¿” ¡ﬂ");
+            else if(cureSkillQueue.Count > 0)
+            {
+                // Ïä§ÌÇ¨ ÌÅê Ïó¨Îü¨Í∞úÎ°ú ÎÇòÎààÍ±∞ ÏóÜÏï†Í∏∞
+            }
+            else if(buffSkillQueue.Count > 0)
+            {
+
+            }
+            //else if()
         }
         else
         {
-            Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
+            Debug.Log("ÌÉÄÍ≤üÏù¥ ÏóÜÏùå");
         }
     }
     public void CalculateSkillCoolTime()
     {
-        for (int i = 0; i <activeSkills.Count; i++)
+        for (int i = 0; i < activeSkills.Count; i++)
         {
             if (activeSkills[i].isCoolTime)
             {
                 activeSkills[i].coolTime += Time.deltaTime;
+                Debug.Log("Ïø®ÌÉÄÏûÑ ÌöåÎ≥µ Ï§ë ");
                 if (activeSkills[i].coolTime >= activeSkills[i].maxCoolTime)
                 {
+                    Debug.Log("Ïø®ÌÉÄÏûÑ ÌöåÎ≥µ ÏôÑÎ£å");
                     activeSkills[i].coolTime = activeSkills[i].maxCoolTime;
                     activeSkills[i].isCoolTime = false;
-                    skillQueue.Add(activeSkills[i]);
+                    attackSkillQueue.Add(activeSkills[i]);
                 }
             }
         }
@@ -203,95 +218,8 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.CurLevel * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("ø√∑¡¡÷¥¬ ¥…∑¬ƒ°¥¬ " + _skillDamage);
+        Debug.Log("Ïò¨Î†§Ï£ºÎäî Îä•Î†•ÏπòÎäî " + _skillDamage);
         return _skillDamage;
     }
-    public int SetSkillDamageByLevel(Skill _skill)
-    {
-        int _skillDamage = 0;
-        switch (_skill.skillLevel)
-        {
-            case 1:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures1 * 1000);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures1);
-                else if (_skill.skillVariable == 2) 
-                    _skillDamage = _skill.skillValue1 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures1);
-                break;
-            case 2:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue2 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures2);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue2 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures2);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue2 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures2);
-                break;
-            case 3:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue3 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures3);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue3 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures3);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue3 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures3);
-                break;
-            case 4:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue4 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures4);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue4 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures4);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue4 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures4);
-                break;
-            case 5:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue5 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures5);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue5 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures5);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue5 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures5);
-                break;
-            case 6:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue6 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures6);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue6 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures6);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue6 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures6);
-                break;
-            case 7:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue7 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures7);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue7 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures7);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue7 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures7);
-                break;
-            case 8:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue8 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures8);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue8 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures8);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue8 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures8);
-                break;
-            case 9:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue9 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures9);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue9 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures9);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue9 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures9);
-                break;
-            case 10:
-                if (_skill.skillVariable == 0)
-                    _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.TotalStr * _skill.skillFigures10);
-                else if (_skill.skillVariable == 1)
-                    _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.TotalDex * _skill.skillFigures10);
-                else if (_skill.skillVariable == 2)
-                    _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.TotalWiz * _skill.skillFigures10);
-                break;
-        }
-        return _skillDamage;
-    }
+
 }

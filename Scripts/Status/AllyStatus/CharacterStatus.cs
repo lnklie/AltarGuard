@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : CharacterStatus.cs
-==============================
-*/
+
 public class CharacterStatus : Status
 {
     [SerializeField] protected bool isAtk = false;
@@ -15,6 +9,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
+    [SerializeField] protected float maxCastingSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
@@ -33,6 +28,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float totalSpeed = 0;
     [SerializeField] protected float totalAtkSpeed = 0;
     [SerializeField] protected float totalAtkRange = 0;
+    [SerializeField] protected float totalCastingSpeed = 0;
 
     [Header("BasicStatus")]
     [SerializeField] protected int maxMp = 0;
@@ -46,6 +42,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float speed = 0f;
     [SerializeField] protected float atkSpeed = 2f;
     [SerializeField] protected float atkRange = 0f;
+    [SerializeField] protected float castingSpeed = 5f;
 
     [Header("EquipStatus")]
     [SerializeField] protected int equipedStr = 0;
@@ -59,6 +56,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float equipedSpeed = 0f;
     [SerializeField] protected float equipedAtkSpeed = 0f;
     [SerializeField] protected float equipedAtkRange = 0f;
+    [SerializeField] protected float equipedCastingSpeed = 0f;
 
     [Header("GraceStatus")]
     [SerializeField] protected int graceMaxHp = 0;
@@ -74,7 +72,7 @@ public class CharacterStatus : Status
     [SerializeField] protected float graceSpeed = 0f;
     [SerializeField] protected float graceAttackSpeed = 0f;
     [SerializeField] protected float graceAtkRange = 0f;
-
+    [SerializeField] protected float graceCastingSpeed = 0f;
 
 
     [SerializeField] protected EAIState aiState = EAIState.Idle;
@@ -138,6 +136,7 @@ public class CharacterStatus : Status
     public int GraceMagicalDamage { get { return graceMagicalDamage; } set { graceMagicalDamage = value; } }
     public int GracePhysicalDamage { get { return gracePhysicalDamage; } set { gracePhysicalDamage = value; } }
     public float GraceAttackSpeed { get { return graceAttackSpeed; } set { graceAttackSpeed = value; } }
+    public float GraceCastingSpeed { get { return graceCastingSpeed; } set { graceCastingSpeed = value; } }
     public int Luck { get { return luck; } set { luck = value; } }
     public int Wiz { get { return wiz; } set { wiz = value; } }
     public int Dex { get { return dex; } set { dex = value; } }
@@ -155,6 +154,7 @@ public class CharacterStatus : Status
     public float TotalSpeed { get { return totalSpeed; } set { totalSpeed = value; } }
     public float TotalAtkRange { get { return totalAtkRange; } set { totalAtkRange = value; } }
     public float TotalAtkSpeed { get { return totalAtkSpeed; } set { totalAtkSpeed = value; } }
+    public float TotalCastingSpeed { get { return totalCastingSpeed; } set { totalCastingSpeed = value; } }
     public int CurLevel { get { return curLevel; } set { curLevel = value; } }
     public Vector2 Distance { get { return distance; } set { distance = value; } }
     public float ArrowSpd { get { return arrowSpd; } set { arrowSpd = value; } }
@@ -167,6 +167,7 @@ public class CharacterStatus : Status
     public int MaxMp { get { return maxMp; } set { maxMp = value; } }
     public float AtkRange { get { return atkRange; } set { atkRange = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
+    public float CastingSpeed { get { return castingSpeed; } set { castingSpeed = value; } }
     public Transform Target { get { return target; } set { target = value; } }
     //public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
     public Transform AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
@@ -245,17 +246,19 @@ public class CharacterStatus : Status
         equipedSpeed = 0f;
         equipedAtkSpeed = 0f;
         equipedAtkRange = 0f;
+        equipedCastingSpeed = 0f;
     }
     public virtual void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
         
         totalAtkSpeed = maxAtkSpeed - (atkSpeed + equipedAtkSpeed + graceAttackSpeed);
         totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
-
+        totalCastingSpeed = maxCastingSpeed - (castingSpeed + equipedCastingSpeed + graceCastingSpeed);
+        
         totalPhysicalDamage = physicalDamage + equipedPhysicalDamage + gracePhysicalDamage + buffPhysicalDamage;
         totalMagicalDamage = magicalDamage + equipedMagicalDamage + graceMagicalDamage + buffMagicalDamage;
 
@@ -285,10 +288,10 @@ public class CharacterStatus : Status
             }
             else
             {
-                if (curHp + totalHpRegenValue >= maxHp)
+                if (curHp + totalHpRegenValue >= totalMaxHp)
                 {
 
-                    curHp = maxHp;
+                    curHp = totalMaxHp;
                     yield return null;
                 }
                 else
