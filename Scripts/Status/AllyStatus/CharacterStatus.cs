@@ -250,7 +250,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;

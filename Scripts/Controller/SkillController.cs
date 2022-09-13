@@ -73,14 +73,14 @@ public class SkillController : MonoBehaviour
             status.UpdateBasicStatus();
         }
         else
-            Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
+            Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (activeSkills.IndexOf(_skill) != -1)
             activeSkills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
     public void UseSkill(Skill _skill, Transform _target)
@@ -100,23 +100,23 @@ public class SkillController : MonoBehaviour
                     attackSkillQueue.RemoveAt(index);
                 }
                 else
-                    Debug.Log("ÄðÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ìž„ ì¤‘");
             }
             else
             {
-                UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
             }
         }
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
     public void UseSkill(Transform _target)
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("ÀÎµ¦½º´Â " + index);
+        // Debug.Log("ì¸ë±ìŠ¤ëŠ” " + index);
         if(status.Target !=null)
         {
-            
+
             if (attackSkillQueue.Count > 0)
             {
 
@@ -129,7 +129,7 @@ public class SkillController : MonoBehaviour
             }
             else if(cureSkillQueue.Count > 0)
             {
-                // ½ºÅ³ Å¥ ¿©·¯°³·Î ³ª´«°Å ¾ø¾Ö±â
+                // ìŠ¤í‚¬ í ì—¬ëŸ¬ê°œë¡œ ë‚˜ëˆˆê±° ì—†ì• ê¸°
             }
             else if(buffSkillQueue.Count > 0)
             {
@@ -139,7 +139,7 @@ public class SkillController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+            Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
         }
     }
     public void CalculateSkillCoolTime()
@@ -149,10 +149,10 @@ public class SkillController : MonoBehaviour
             if (activeSkills[i].isCoolTime)
             {
                 activeSkills[i].coolTime += Time.deltaTime;
-                Debug.Log("ÄðÅ¸ÀÓ È¸º¹ Áß ");
+                Debug.Log("ì¿¨íƒ€ìž„ íšŒë³µ ì¤‘ ");
                 if (activeSkills[i].coolTime >= activeSkills[i].maxCoolTime)
                 {
-                    Debug.Log("ÄðÅ¸ÀÓ È¸º¹ ¿Ï·á");
+                    Debug.Log("ì¿¨íƒ€ìž„ íšŒë³µ ì™„ë£Œ");
                     activeSkills[i].coolTime = activeSkills[i].maxCoolTime;
                     activeSkills[i].isCoolTime = false;
                     attackSkillQueue.Add(activeSkills[i]);
@@ -218,7 +218,7 @@ public class SkillController : MonoBehaviour
                     _skillDamage = _skill.skillValue10 + Mathf.CeilToInt(status.CurLevel * _skill.skillFigures10);
                 break;
         }
-        Debug.Log("¿Ã·ÁÁÖ´Â ´É·ÂÄ¡´Â " + _skillDamage);
+        Debug.Log("ì˜¬ë ¤ì£¼ëŠ” ëŠ¥ë ¥ì¹˜ëŠ” " + _skillDamage);
         return _skillDamage;
     }
 
