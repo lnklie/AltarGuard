@@ -6,48 +6,37 @@ using TMPro;
 public class SellPanelController : MonoBehaviour
 {
     [Header("SellItemInfo")]
-    [SerializeField]
-    private GameObject sellItemInfo = null;
+    [SerializeField] private GameObject sellItemInfo = null;
 
     [Header("SellItemAmount")]
-    [SerializeField]
-    private GameObject sellItemAmount = null;
+    [SerializeField] private GameObject sellItemAmount = null;
 
-    [SerializeField]
-    private List<SellSlot> sellSlots = new List<SellSlot>();
+    [SerializeField] private List<SellSlot> sellSlots = new List<SellSlot>();
 
     [Header("EasyRegister")]
-    [SerializeField]
-    private GameObject easyRegister = null;
-    [SerializeField]
-    private Toggle[] topToggleList = null;
-    [SerializeField]
-    private Toggle[] lowToggleList = null;
+    [SerializeField] private GameObject easyRegister = null;
+    [SerializeField] private Toggle[] topToggleList = null;
+    [SerializeField] private Toggle[] lowToggleList = null;
 
-    [SerializeField]
-    private Item selectSellItem = null;
-    [SerializeField]
-    private List<ShopInventorySlot> shopInventorySlots = new List<ShopInventorySlot>();
+    [SerializeField] private Item selectSellItem = null;
+    [SerializeField] private List<ShopInventorySlot> shopInventorySlots = new List<ShopInventorySlot>();
     private TextMeshProUGUI[] sellItemInfoText = null;
-    [SerializeField]
-    private List<Item> sellItemList = new List<Item>(); 
+    [SerializeField] private List<Item> sellItemList = new List<Item>(); 
+
     [Header("PlayerMoenyText")]
-    [SerializeField]
-    private TextMeshProUGUI moneyText = null;
+    [SerializeField] private TextMeshProUGUI moneyText = null;
+
     [Header("SellMoenyText")]
-    [SerializeField]
-    private TextMeshProUGUI sellMoneyText = null;
-    [SerializeField]
-    private PlayerStatus playerStatus = null;
+    [SerializeField] private TextMeshProUGUI sellMoneyText = null;
+
+    [SerializeField] private PlayerStatus playerStatus = null;
+
     private bool isSellItemSelect = false;
-    [SerializeField]
-    private TMP_InputField sellAmount = null;
+    [SerializeField] private TMP_InputField sellAmount = null;
     private int selectInventoryIndex = 0;
     private int sellMoney = 0;
-    public List<Item> SellItemList
-    {
-        get { return sellItemList; }
-    }
+    public List<Item> SellItemList { get { return sellItemList; } }
+
     private void Awake()
     {
         sellItemInfoText = sellItemInfo.GetComponentsInChildren<TextMeshProUGUI>();

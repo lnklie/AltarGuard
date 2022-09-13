@@ -41,7 +41,7 @@ public class CharacterController : BaseController, IAIController
     }
     public bool IsAtkRange(CharacterStatus _status)
     {
-        if (GetDistance(_status.transform.position, _status.Target.transform.position) <= _status.AtkRange)
+        if (GetDistance(_status.transform.position, _status.Target.transform.position) <= _status.TotalAtkRange)
             return true;
         else
             return false;
@@ -91,7 +91,7 @@ public class CharacterController : BaseController, IAIController
     }
     public bool IsDelay(CharacterStatus _status)
     {
-        float atkSpeed = _status.AtkSpeed;
+        float atkSpeed = _status.TotalAtkSpeed;
         if (_status.DelayTime < atkSpeed)
         {
             return true;
@@ -104,9 +104,9 @@ public class CharacterController : BaseController, IAIController
     public int AttackTypeDamage(CharacterStatus _status)
     {
         if (_status.AttackType < 1f)
-            return _status.PhysicalDamage;
+            return _status.TotalPhysicalDamage;
         else
-            return _status.MagicalDamage;
+            return _status.TotalMagicalDamage;
     }
     public void ShotArrow(CharacterStatus _status)
     {
@@ -156,25 +156,28 @@ public class CharacterController : BaseController, IAIController
     public IEnumerator UseSkill(CharacterStatus _status)
     {
         skillController.IsSkillDelay = true;
-        if (skillController.ActiveSkills[0].skillType == 0)
+        yield return new WaitForSeconds(_status.TotalCastingSpeed);
+        if(skillController.ActiveSkills[0] != null)
         {
-            if (_status.Target)
+            if (skillController.ActiveSkills[0].skillType == 0)
             {
-                skillController.UseSkill(_status.Target);
+                if (_status.Target)
+                {
+                    skillController.UseSkill(_status.Target);
+                }
+                else
+                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
             }
-            else
-                Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
-        }
-        else if (skillController.ActiveSkills[0].skillType == 1)
-        {
-            if (_status.AllyTarget)
+            else if (skillController.ActiveSkills[0].skillType == 1)
             {
-                skillController.UseSkill(_status.AllyTarget);
+                if (_status.AllyTarget)
+                {
+                    skillController.UseSkill(_status.AllyTarget);
+                }
+                else
+                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
             }
-            else
-                Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
         }
-        yield return new WaitForSeconds(1f);
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)
@@ -202,6 +205,9 @@ public class CharacterController : BaseController, IAIController
             case EAIState.Attack:
                 AIAttack(_status);
                 break;
+            case EAIState.UseSkill:
+                AIUseSkill(_status);
+                break;
         }
     }
     public virtual void AIPerception(CharacterStatus _status)
@@ -220,7 +226,7 @@ public class CharacterController : BaseController, IAIController
         {
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
             _status.ActiveLayer(LayerName.WalkLayer);
-            _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.Speed * Time.deltaTime);
+            _status.transform.position = Vector2.MoveTowards(_status.transform.position, _moveDir, _status.TotalSpeed * Time.deltaTime);
         }
         else if (pathFindController.FinalNodeList.Count == 1)
         {
@@ -231,22 +237,25 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
-        if(skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay)
-        {
-            StartCoroutine(UseSkill(_status));
-        }
-        else
-        { 
-            _status.ActiveLayer(LayerName.AttackLayer);
-            _status.Ani.SetFloat("AtkType", _status.AttackType);
-            _status.Rig.velocity = Vector2.zero;
-            StartCoroutine(AttackByAttackType(_status));
-        }
-    }
 
+        _status.ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
+        _status.Rig.velocity = Vector2.zero;
+        StartCoroutine(AttackByAttackType(_status));
+
+    }
+    public virtual void AIUseSkill(CharacterStatus _status)
+    {
+        _status.ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
+        _status.Rig.velocity = Vector2.zero;
+        StartCoroutine(UseSkill(_status));
+    }
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
         yield return null;
     }
+
+
     #endregion
 }

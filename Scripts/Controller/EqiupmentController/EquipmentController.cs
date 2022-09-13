@@ -12,33 +12,24 @@ using UnityEngine;
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
+
     private HairSpace hairSpace = null;
+    private FaceHairSpace faceHairSpace = null;
+    private ClothSpace[] clothSpaces = null;
+    private PantSpace[] pantSpaces = null;
     private ArmorSpace[] armorSpaces = null;
     private BackSpace backSpace = null;
-    private ClothSpace[] clothSpaces = null;
-    private FaceHairSpace faceHairSpace = null;
     private HelmetSpace helmetSpace = null;
-    private PantSpace[] pantSpaces = null;
     private WeaponSpace weaponSpace = null;
     private SubWeaponSpace subWeaponSpace = null;
 
+    [SerializeField] private SkillController skillController = null;
+    [SerializeField] private Item[] equipItems = new Item[9];
+    [SerializeField] private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
 
-    [SerializeField]
-    private Item[] equipItems = new Item[9];
-
-    [SerializeField]
-    private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
     #region Property
-    public Item[] EquipItems
-    {
-        get { return equipItems; }
-        set { equipItems = value; }
-    }
-    public bool[] CheckEquipItems
-    {
-        get { return checkEquipItems; }
-        set { checkEquipItems = value; }
-    }
+    public Item[] EquipItems { get { return equipItems; } set { equipItems = value; } }
+    public bool[] CheckEquipItems { get { return checkEquipItems; } set { checkEquipItems = value; } }
     #endregion
     private void Awake()
     {
@@ -55,23 +46,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void Start()
     {
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(1003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(2003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(3003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(4003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(5003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(6003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(7003)));
-        //ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8003)));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(2001));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(3002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(4003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(5002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(6003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(7002));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(8003));
-        //ChangeEquipment(DatabaseManager.Instance.SelectItem(11001));
-
     }
 
     public int GetEquipmentDefensivePower()
@@ -132,58 +106,79 @@ public class EquipmentController : MonoBehaviour
     {
         if(!_item.isEquip)
         {
-            Debug.Log("ÀåÂø!");
             status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
+            status.UpdateEquipAbility(equipItems);
+            status.UpdateTotalAbility();
+            status.TriggerStatusUpdate = true;
             checkEquipItems[_item.itemType] = true;
             switch (_item.itemType)
             {
-                case 0:
+                case (int)ItemType.Hair:
                     hairSpace.ChangeItemSprite(equipItems[0].spList[0]);
                     break;
-                case 1:
+                case (int)ItemType.FaceHair:
                     faceHairSpace.ChangeItemSprite(equipItems[1].spList[0]);
                     break;
-                case 2:
+                case (int)ItemType.Cloth:
                     for (int i = 0; i < clothSpaces.Length; i++)
                     {
                         clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
                     }
                     break;
-                case 3:
+                case (int)ItemType.Pant:
                     for (int i = 0; i < pantSpaces.Length; i++)
                     {
                         pantSpaces[i].ChangeItemSprite(equipItems[3].spList[i]);
                     }
                     break;
-                case 4:
+                case (int)ItemType.Helmet:
                     helmetSpace.ChangeItemSprite(equipItems[4].spList[0]);
                     break;
-                case 5:
+                case (int)ItemType.Armor:
                     for (int i = 0; i < armorSpaces.Length; i++)
                     {
                         armorSpaces[i].ChangeItemSprite(equipItems[5].spList[i]);
                     }
                     break;
-                case 6:
+                case (int)ItemType.Back:
                     backSpace.ChangeItemSprite(equipItems[6].spList[0]);
                     break;
-                case 7:
-                    weaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
-                    ChangeAttackType();
+                case (int)ItemType.SubWeapon:
+                    subWeaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
                     break;
-                case 8:
-                    subWeaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                case (int)ItemType.Weapon:
+                    weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                    ChangeAttackType();
+                    SkillChange();
                     break;
             }
-            status.IsEquipmentChange = true;
+            status.TriggerEquipmentChange = true;
         }
         else
         {
             Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
         }
     }
+    public void SkillChange()
+    {
+        if(equipItems[8].skillKey1 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey1);
+        }
+
+        if(equipItems[8].skillKey2 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey2);
+        }
+        
+        if (equipItems[8].skillKey3 != -1)
+        {
+            skillController.AquireSkill(equipItems[8].skillKey3);
+        }
+    }
+
     public void TakeOffEquipment(Item _item)
     {
         // ÀåÂøÇØÁ¦
@@ -271,13 +266,11 @@ public class EquipmentController : MonoBehaviour
             case 7:
                 if (checkEquipItems[7])
                 {
-
                     equipItems[7].isEquip = false;
                     equipItems[7].equipCharNum = -1;
                     equipItems[7] = null;
                     checkEquipItems[7] = false;
-                    weaponSpace.ChangeItemSprite(null);
-                    ChangeAttackType();
+                    subWeaponSpace.ChangeItemSprite(null);
                 }
                 break;
             case 8:
@@ -287,11 +280,12 @@ public class EquipmentController : MonoBehaviour
                     equipItems[8].equipCharNum = -1;
                     equipItems[8] = null;
                     checkEquipItems[8] = false;
-                    subWeaponSpace.ChangeItemSprite(null);
+                    weaponSpace.ChangeItemSprite(null);
+                    ChangeAttackType();
                 }
                 break;
         }
-        status.IsEquipmentChange = true;
+        status.TriggerEquipmentChange = true;
     }
     public void RemoveEquipment(int _index)
     {
@@ -345,15 +339,15 @@ public class EquipmentController : MonoBehaviour
             case 7:
                 equipItems[7] = null;
                 checkEquipItems[7] = false;
-                weaponSpace.ChangeItemSprite(null);
-                ChangeAttackType();
+                subWeaponSpace.ChangeItemSprite(null);
                 break;
             case 8:
                 equipItems[8] = null;
                 checkEquipItems[8] = false;
-                subWeaponSpace.ChangeItemSprite(null);
+                weaponSpace.ChangeItemSprite(null);
+                ChangeAttackType();
                 break;
         }
-        status.IsEquipmentChange = true;
+        status.TriggerEquipmentChange = true;
     }
 }

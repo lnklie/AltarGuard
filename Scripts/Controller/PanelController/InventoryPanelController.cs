@@ -39,13 +39,17 @@ public class InventoryPanelController : MonoBehaviour
     private PlayerStatus playerStatus = null;
     private bool isItemSelect = false;
     private bool isQuickSlotsOpen = false;
-    private TextMeshProUGUI[] iteminfoText = null;
+    [SerializeField] private TextMeshProUGUI iteminfoNameText = null;
+    [SerializeField] private TextMeshProUGUI iteminfoTypeText = null;
+    [SerializeField] private TextMeshProUGUI iteminfoExplainText = null;
+    [SerializeField] private TextMeshProUGUI iteminfoRankText = null;
+
     private int selectInventoryIndex = 0;
     [SerializeField] private int selectCharNum = 0;
     [SerializeField] private Item selectItem = null;
     [SerializeField] private EquipmentController selectCharacterEqipment = null;
     [SerializeField] private AllyStatus selectCharStatus = null;
-    [SerializeField] private InventorySlot[] inventorySlots = null;
+    [SerializeField] private List<InventorySlot> inventorySlotList = new List<InventorySlot>();
     [SerializeField] private InventorySlot selectInventorySlot = null;
     [SerializeField] private EquipmentSlot[] equipmentSlots = null;
     [SerializeField] private GameObject quickSlotSelectButtons = null;
@@ -53,9 +57,8 @@ public class InventoryPanelController : MonoBehaviour
     
     private void Awake()
     {
-        iteminfoText = itemInfo.GetComponentsInChildren<TextMeshProUGUI>();
-        inventorySlots = this.GetComponentsInChildren<InventorySlot>();
         equipmentSlots = this.GetComponentsInChildren<EquipmentSlot>();
+        inventorySlotList.AddRange(this.GetComponentsInChildren<InventorySlot>());
         
     }
     private void Update()
@@ -69,74 +72,131 @@ public class InventoryPanelController : MonoBehaviour
         selectCharacterEqipment = _player.GetComponent<EquipmentController>();
         selectCharStatus = playerStatus;
     }
-    public void InventoryReset()
+    public void ResetInventory()
     {
         // 인벤토리 슬롯 리셋
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventorySlotList.Count; i++)
         {
-            inventorySlots[i].SlotReset();
+            inventorySlotList[i].SlotReset();
         }
     }
-    public void MoneyUpdate()
+    public void UpdateMoney()
     {
-        moneyText.text = playerStatus.Money.ToString("N0"); 
+        moneyText.text = ConvertMoney(playerStatus.Money);
+    }
+
+    public string ConvertMoney(int _money)
+    {
+        string _moneyText = null;
+        int _tempMoney = _money;
+        int _mark = 0;
+        //switch()
+        
+        while(_mark < 2)
+        {
+            if(_tempMoney >= Mathf.Pow(10, 12))
+            {
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "조 ";
+                _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
+            }
+            else if (_tempMoney >= 100000000)
+            {
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "억 ";
+                _tempMoney = (_tempMoney % 100000000);
+            }
+            else if (_tempMoney >= 10000)
+            {
+
+                _moneyText += ((_tempMoney / 10000)).ToString() + "만 ";
+                _tempMoney = (_tempMoney % 10000);
+
+            }
+            else if (_tempMoney >= 1)
+            {
+
+                _moneyText += _tempMoney.ToString();
+                _tempMoney = 0;
+            }
+            _mark++;
+        }
+        return _moneyText;
+    }
+    public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
+    {
+        // 리스트 정렬
+        _inventory.Sort(delegate (Item a, Item b)
+        {
+            if (a.itemKey < b.itemKey) return -1;
+            else if (a.itemKey > b.itemKey) return 1;
+            else return a.inventoryIndex.CompareTo(b.inventoryIndex);
+        });
     }
     public void ChangeInventorySlot(int _index)
     {
         // 인벤토리 슬롯 바꾸기 
-        InventoryReset();
+        ResetInventory();
         SetActiveItemInfo(false);
-        MoneyUpdate();
+        UpdateMoney();
         SetActiveFalseQuickSlotSelectButtons();
+        List<Item> _inventory = new List<Item>();
         if (_index == 0)
         {
-            for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
+            _inventory.AddRange(InventoryManager.Instance.InventroyWeaponItems);
+            SortInventoryByKeyAndInventoryIndex(_inventory);
+
+
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyWeaponItems);
-                inventorySlots[i].CurItem = InventoryManager.Instance.InventroyWeaponItems[i];
-                inventorySlots[i].SlotSetting();
-                inventorySlots[i].EnableItemCount(false);
+                inventorySlotList[i].CurItem = _inventory[i];
+                inventorySlotList[i].SlotSetting();
+                inventorySlotList[i].EnableItemCount(false);
             }
         }
         if (_index == 1)
         {
-            for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
+            _inventory.AddRange(InventoryManager.Instance.InventroyEquipmentItems);
+            SortInventoryByKeyAndInventoryIndex(_inventory);
+
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyEquipmentItems);
-                inventorySlots[i].CurItem = InventoryManager.Instance.InventroyEquipmentItems[i];
-                inventorySlots[i].SlotSetting();
-                inventorySlots[i].EnableItemCount(false);
+                inventorySlotList[i].CurItem = _inventory[i];
+                inventorySlotList[i].SlotSetting();
+                inventorySlotList[i].EnableItemCount(false);
             }
         }
         if (_index == 2)
         {
-            for (int i = 0; i < InventoryManager.Instance.InventroyConsumableItems.Count; i++)
+            _inventory.AddRange(InventoryManager.Instance.InventroyConsumableItems);
+            SortInventoryByKeyAndInventoryIndex(_inventory);
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyConsumableItems);
-                inventorySlots[i].CurItem = InventoryManager.Instance.InventroyConsumableItems[i];
-                inventorySlots[i].SlotSetting();
+                inventorySlotList[i].CurItem = _inventory[i];
+                inventorySlotList[i].SlotSetting();
             }
         }
         if (_index == 3)
         {
-            for (int i = 0; i < InventoryManager.Instance.InventroyMiscellaneousItems.Count; i++)
+            _inventory.AddRange(InventoryManager.Instance.InventroyMiscellaneousItems);
+            SortInventoryByKeyAndInventoryIndex(_inventory);
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyMiscellaneousItems);
-                inventorySlots[i].CurItem = InventoryManager.Instance.InventroyMiscellaneousItems[i];
-                inventorySlots[i].SlotSetting();
+                inventorySlotList[i].CurItem = _inventory[i];
+                inventorySlotList[i].SlotSetting();
 
             }
         }
         if (_index == 4)
         {
-            for (int i = 0; i < InventoryManager.Instance.InventroyDecorationItems.Count; i++)
+            _inventory.AddRange(InventoryManager.Instance.InventroyDecorationItems);
+            SortInventoryByKeyAndInventoryIndex(_inventory);
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                InventoryManager.Instance.SortItemKeyInventory(InventoryManager.Instance.InventroyDecorationItems);
-                inventorySlots[i].CurItem = InventoryManager.Instance.InventroyDecorationItems[i];
-                inventorySlots[i].SlotSetting();
-                inventorySlots[i].EnableItemCount(false);
+                inventorySlotList[i].CurItem = _inventory[i];
+                inventorySlotList[i].SlotSetting();
+                inventorySlotList[i].EnableItemCount(false);
             }
         }
+        //SortItemKeyInventorySlots(inventorySlotList);
         selectInventoryIndex = _index;
     }
     public void SetActiveItemInfo(bool _bool)
@@ -177,40 +237,41 @@ public class InventoryPanelController : MonoBehaviour
                 inventoryButtons[0].gameObject.SetActive(true);
             }
         }
-        iteminfoText[0].text = selectItem.itemKorName;
-        iteminfoText[1].text = KeyToItemType(selectItem.itemKey);
+        iteminfoNameText.text = selectItem.itemKorName;
+        iteminfoTypeText.text = KeyToItemType(selectItem.itemKey);
+        iteminfoRankText.text = IntRankToStringRank(selectItem.itemRank);
         switch (selectItem.itemKey / 1000)
         {
             case 0:
-                iteminfoText[2].text = "This is Hair";
+                iteminfoExplainText.text = "This is Hair";
                 break;
             case 1:
-                iteminfoText[2].text = "This is FaceHair";
+                iteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 3:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 4:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 5:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 6:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 7:
-                iteminfoText[2].text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
                 break;
             case 8:
             case 9:
             case 10:
             case 11:
             case 12:
-                iteminfoText[2].text =
+                iteminfoExplainText.text =
                     "물리 공격력: " + selectItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectItem.magicalDamage + "\n" +
                     "공격 범위: " + ((Weapon)selectItem).atkRange + "\n" +
@@ -218,11 +279,11 @@ public class InventoryPanelController : MonoBehaviour
                     "무기 종류: " + ((Weapon)selectItem).weaponType;
                 break;
             case 13:
-                iteminfoText[2].text =
+                iteminfoExplainText.text =
                     "회복량 : " + selectItem.value + "\n";
                 break;
             case 14:
-                iteminfoText[2].text = "이것은 퀘스트 아이템";
+                iteminfoExplainText.text = "이것은 퀘스트 아이템";
                 break;
         }
     }
@@ -233,6 +294,27 @@ public class InventoryPanelController : MonoBehaviour
         {
             inventoryButtons[i].gameObject.SetActive(false);
         }
+    }
+
+    public string IntRankToStringRank(int _Rank)
+    {
+        string _rank = null;
+        switch((EItemRank)_Rank)
+        {
+            case EItemRank.Common:
+                _rank =  "Common";
+                break;
+            case EItemRank.UnCommon:
+                _rank = "UnCommon";
+                break;
+            case EItemRank.Rare:
+                _rank = "Rare";
+                break;
+            case EItemRank.Unique:
+                _rank = "Unique";
+                break;
+        }
+        return _rank;
     }
     public string KeyToItemType(int _key)
     {
@@ -465,6 +547,7 @@ public class InventoryPanelController : MonoBehaviour
     public void SetItemQuickSlot(int _index)
     {
         playerStatus.QuickSlotItems[_index] = selectItem;
+        SetActiveFalseQuickSlotSelectButtons();
     }
     public void SetActiveQuickSlotSelectButtons()
     {
