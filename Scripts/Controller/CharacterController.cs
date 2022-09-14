@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class CharacterController : BaseController, IAIController
 {
-    [SerializeField]
-    protected SkillController skillController = null;
-    [SerializeField]
-    protected CharacterStatus characterStatus = null;
-    [SerializeField]
-    protected PathFindController pathFindController = null;
+    [SerializeField] protected SkillController skillController = null;
+    [SerializeField] protected CharacterStatus characterStatus = null;
+    [SerializeField] protected PathFindController pathFindController = null;
     
     public override void Awake()
     {
@@ -157,9 +154,10 @@ public class CharacterController : BaseController, IAIController
     {
         skillController.IsSkillDelay = true;
         yield return new WaitForSeconds(_status.TotalCastingSpeed);
-        if(skillController.ActiveSkills[0] != null)
+        
+        if(skillController.Skills[0] != null)
         {
-            if (skillController.ActiveSkills[0].skillType == 0)
+            if (skillController.Skills[0].skillType == 0)
             {
                 if (_status.Target)
                 {
@@ -168,7 +166,7 @@ public class CharacterController : BaseController, IAIController
                 else
                     Debug.Log("타겟이 없음");
             }
-            else if (skillController.ActiveSkills[0].skillType == 1)
+            else if (skillController.Skills[0].skillType == 1)
             {
                 if (_status.AllyTarget)
                 {

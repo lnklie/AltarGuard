@@ -6,15 +6,15 @@ public class SkillObject : MonoBehaviour
 {
     private CircleCollider2D col = null;
     [SerializeField] private int damage = 0;
+    [SerializeField] private float maxCoolTime = 0f;
+    [SerializeField] private bool isSkillUse = false;
+    [SerializeField] private CharacterStatus castingStatus = null;
+    [SerializeField] private Skill skill = null;
     private int skillHitCount = 0;
     private float maxDurationTime = 0f;
     private float durationTime = 0f;
 
     private Transform target = null;
-    [SerializeField] private float maxCoolTime = 0f;
-    [SerializeField] private bool isSkillUse = false;
-    [SerializeField] private CharacterStatus castingStatus = null;
-    [SerializeField] private Skill skill = null;
 
     #region Property
     public int Damage { get { return damage; } set { damage = value; } }
@@ -94,7 +94,7 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
-        // ·¹ÀÌ¸¦ ½î´Â ¿ªÇÒ
+        // Â·Â¹Ã€ÃŒÂ¸Â¦ Â½Ã®Â´Ã‚ Â¿ÂªÃ‡Ã’
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)

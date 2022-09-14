@@ -18,13 +18,10 @@ public class CameraManager : MonoBehaviour
     private float halfHeight = 0f;
 
     private Camera M_camera = null;
-    [SerializeField]
-    private GameObject target = null;
+    [SerializeField] private GameObject target = null;
 
-    [SerializeField]
-    private BoxCollider2D bound = null;
-    [SerializeField]
-    private float speed = 0f;
+    [SerializeField] private BoxCollider2D bound = null;
+    [SerializeField] private float speed = 0f;
     private void Start()
     {
         M_camera = GetComponent<Camera>();

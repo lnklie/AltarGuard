@@ -165,6 +165,7 @@ public class EquipmentController : MonoBehaviour
     {
         if(equipItems[8].skillKey1 != -1)
         {
+            Debug.Log("��ųŰ�� " + equipItems[8].skillKey1);
             skillController.AquireSkill(equipItems[8].skillKey1);
         }
 
@@ -181,7 +182,8 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        // 장착해제
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateTotalAbility();
         switch (_item.itemType)
         {
             case 0:

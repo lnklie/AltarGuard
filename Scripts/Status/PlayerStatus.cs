@@ -12,7 +12,7 @@ public class PlayerStatus : AllyStatus
 {
     private RaycastHit2D[] itemSight = default;
     private int stage = 1;
-    private Vector2 dir;
+    private Vector2 dir = Vector2.zero;
     [SerializeField] private int money = 100000;
     [SerializeField] private int gracePoint = 0;
     private EPlayerState playerState = EPlayerState.Play;
