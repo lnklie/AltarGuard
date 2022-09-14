@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class CharacterController : BaseController, IAIController
 {
-    [SerializeField]
-    protected SkillController skillController = null;
-    [SerializeField]
-    protected CharacterStatus characterStatus = null;
-    [SerializeField]
-    protected PathFindController pathFindController = null;
+    [SerializeField] protected SkillController skillController = null;
+    [SerializeField] protected CharacterStatus characterStatus = null;
+    [SerializeField] protected PathFindController pathFindController = null;
     
     public override void Awake()
     {
@@ -156,19 +153,19 @@ public class CharacterController : BaseController, IAIController
     public IEnumerator UseSkill(CharacterStatus _status)
     {
         skillController.IsSkillDelay = true;
-        if(skillController.ActiveSkills[0] != null)
+        yield return new WaitForSeconds(_status.TotalCastingSpeed);
+        if(skillController.Skills[0] != null)
         {
-            if (skillController.ActiveSkills[0].skillType == 0)
+            if (skillController.Skills[0].skillType == 0)
             {
                 if (_status.Target)
                 {
-                    
                     skillController.UseSkill(_status.Target);
                 }
                 else
                     Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
             }
-            else if (skillController.ActiveSkills[0].skillType == 1)
+            else if (skillController.Skills[0].skillType == 1)
             {
                 if (_status.AllyTarget)
                 {
@@ -178,9 +175,6 @@ public class CharacterController : BaseController, IAIController
                     Debug.Log("≈∏∞Ÿ¿Ã æ¯¿Ω");
             }
         }
-        
-
-        yield return new WaitForSeconds(1f);
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)

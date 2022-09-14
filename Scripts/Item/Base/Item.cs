@@ -36,6 +36,7 @@ public class Item
     public string target = null;
     public float durationTime = 0f;
     public int value = 0;
+    public int[] skillkeies = new int[3];
     public int skillKey1 = -1;
     public int skillKey2 = -1;
     public int skillKey3 = -1;

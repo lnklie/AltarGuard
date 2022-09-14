@@ -7,6 +7,8 @@ public class Skill
 {
     public int skillKey;
     public string skillName;
+    public string skillKorName;
+    public string skillExplain;
     public Sprite singleSprite = null;
     public int skillLevel;
     public int skillType;
@@ -37,7 +39,9 @@ public class Skill
     public int skillHitCount = 0;
     public string targetStatus = null;
     public float skillRange = 0f;
-    public Skill(int _skillKey, string _skillName, int _skillLevel, int _skillVarable
+    public Skill(int _skillKey, string _skillName, string _skillKorName, string _skillExplain,
+        int _skillLevel, int _skillVarable
+        , int _skillType, float _skillRange, float _maxCoolTime, int _skillHitCount
         , int  _skillValue1, int _skillValue2, int _skillValue3
         , int _skillValue4, int _skillValue5, int _skillValue6
         , int _skillValue7, int _skillValue8, int _skillValue9
@@ -48,8 +52,14 @@ public class Skill
     {
         skillKey = _skillKey;
         skillName = _skillName;
+        skillKorName = _skillKorName;
+        skillExplain = _skillExplain;
         skillLevel = _skillLevel;
         skillVariable = _skillVarable;
+        skillType = _skillType;
+        skillRange = _skillRange;
+        maxCoolTime = _maxCoolTime;
+        skillHitCount = _skillHitCount;
         skillValue1 = _skillValue1;
         skillValue2 = _skillValue2;
         skillValue3 = _skillValue3;
@@ -70,6 +80,8 @@ public class Skill
         skillFigures8 = _skillFigures8;
         skillFigures9 = _skillFigures9;
         skillFigures10 = _skillFigures10;
+
+
         singleSprite = Resources.Load("Sprites/17_SkillIcon/" + skillName, typeof(Sprite)) as Sprite;
     }
 }

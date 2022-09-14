@@ -125,7 +125,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
     public Item AcquireItem(Item _item,int _count = 1)
     {
         _item.dateTime = System.DateTime.Now;
-        Debug.Log("얻는 아이템의 이름은 " + _item.itemKorName + " 얻은 시간은 " + _item.dateTime);
         if (_item != null)
         { 
             switch (_item.itemKey / 1000)

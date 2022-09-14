@@ -20,12 +20,9 @@ public class Status : MonoBehaviour
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
-    [SerializeField]
-    protected Transform targetPos = null;
-    [SerializeField]
-    private DamageTextController damageTextController;
-    [SerializeField]
-    protected int defeatExp = 0;
+    [SerializeField] protected Transform targetPos = null;
+    [SerializeField] private DamageTextController damageTextController;
+    [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
@@ -74,6 +71,7 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
+        //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());

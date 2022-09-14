@@ -106,7 +106,6 @@ public class EquipmentController : MonoBehaviour
     {
         if(!_item.isEquip)
         {
-            Debug.Log("장착!");
             status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
@@ -166,13 +165,16 @@ public class EquipmentController : MonoBehaviour
     {
         if(equipItems[8].skillKey1 != -1)
         {
+            Debug.Log("스킬키는 " + equipItems[8].skillKey1);
             skillController.AquireSkill(equipItems[8].skillKey1);
         }
-        else if(equipItems[8].skillKey2 != -1)
+
+        if(equipItems[8].skillKey2 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey2);
         }
-        else if (equipItems[8].skillKey3 != -1)
+        
+        if (equipItems[8].skillKey3 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey3);
         }
@@ -180,6 +182,8 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateTotalAbility();
         // 장착해제
         switch (_item.itemType)
         {

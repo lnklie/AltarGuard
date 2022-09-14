@@ -38,8 +38,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Stage> stageList = new List<Stage>();
 
     [Header("Skill")]
-    public List<ActiveSkill> activeSkillList = new List<ActiveSkill>();
-    public List<PassiveSkill> passiveSkillList = new List<PassiveSkill>();
+    public List<Skill> skillList = new List<Skill>();
 
     [Header("Grace")]
     public List<Grace> warriorGraceList = new List<Grace>();
@@ -332,38 +331,21 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
-        if (!File.Exists(CombinePath("ActiveSkill")))
+        if (!File.Exists(CombinePath("Skill")))
         {
-            Debug.Log("경로에 액티브 스킬 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ActiveSkill")));
-            ActiveSkill[] skill = JsonHelper.FromJson<ActiveSkill>(loadJson);
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill")));
+            Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
-                activeSkillList.Add(new ActiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel,skill[i].skillType, skill[i].skillVariable, skill[i].skillRange,
+                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillKorName,skill[i].skillExplain, skill[i].skillLevel, skill[i].skillVariable,skill[i].skillType, skill[i].skillRange, skill[i].maxCoolTime, skill[i].skillHitCount,
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].maxCoolTime, skill[i].skillHitCount));
-            }
-        }
-        if (!File.Exists(CombinePath("PassiveSkill")))
-        {
-            Debug.Log("경로에 패시브 스킬 데이터 베이스가 존재하지 않습니다.");
-        }
-        else
-        {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("PassiveSkill")));
-            PassiveSkill[] skill = JsonHelper.FromJson<PassiveSkill>(loadJson);
-            for (var i = 0; i < skill.Length; i++)
-            {
-                passiveSkillList.Add(new PassiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel, skill[i].skillVariable, skill[i].targetStatus,
-                    skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
-                    skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
-                    skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10)) ;
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
             }
         }
         if (!File.Exists(CombinePath("WarriorGrace")))
@@ -669,27 +651,16 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     public Skill SelectSkill(int _key)
     {
-        Skill _skill = new Skill(-1,"",-1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
-        if(_key < 1000)
+        Skill _skill = new Skill(-1,"","","",-1,-1,-1, -1 ,1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+        for (int i = 0; i < skillList.Count; i++)
         {
-            for(int i =0; i< activeSkillList.Count; i++)
+            if (skillList[i].skillKey == _key)
             {
-                if (activeSkillList[i].skillKey == _key)
-                {
-                    ActiveSkill _activeSkill = new ActiveSkill(activeSkillList[i].skillKey, activeSkillList[i].skillName, activeSkillList[i].skillLevel, activeSkillList[i].skillType, activeSkillList[i].skillVariable, activeSkillList[i].skillRange,
-                        activeSkillList[i].skillValue1, activeSkillList[i].skillValue2, activeSkillList[i].skillValue3, activeSkillList[i].skillValue4, activeSkillList[i].skillValue5, activeSkillList[i].skillValue6, activeSkillList[i].skillValue7, activeSkillList[i].skillValue8, activeSkillList[i].skillValue9, activeSkillList[i].skillValue10,
-                        activeSkillList[i].skillFigures1, activeSkillList[i].skillFigures2, activeSkillList[i].skillFigures3, activeSkillList[i].skillFigures4, activeSkillList[i].skillFigures5, activeSkillList[i].skillFigures6, activeSkillList[i].skillFigures7, activeSkillList[i].skillFigures8, activeSkillList[i].skillFigures9, activeSkillList[i].skillFigures10,
-                        activeSkillList[i].maxCoolTime, activeSkillList[i].skillHitCount);
-                    _skill = _activeSkill;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < passiveSkillList.Count; i++)
-            {
-                if (passiveSkillList[i].skillKey == _key)
-                    _skill = passiveSkillList[i];
+                Skill _selectSkill = new Skill(skillList[i].skillKey, skillList[i].skillName, skillList[i].skillKorName, skillList[i].skillExplain, skillList[i].skillLevel, skillList[i].skillVariable, skillList[i].skillType, skillList[i].skillRange, skillList[i].maxCoolTime, skillList[i].skillHitCount,
+                    skillList[i].skillValue1, skillList[i].skillValue2, skillList[i].skillValue3, skillList[i].skillValue4, skillList[i].skillValue5, skillList[i].skillValue6, skillList[i].skillValue7, skillList[i].skillValue8, skillList[i].skillValue9, skillList[i].skillValue10,
+                    skillList[i].skillFigures1, skillList[i].skillFigures2, skillList[i].skillFigures3, skillList[i].skillFigures4, skillList[i].skillFigures5, skillList[i].skillFigures6, skillList[i].skillFigures7, skillList[i].skillFigures8, skillList[i].skillFigures9, skillList[i].skillFigures10);
+                _skill = _selectSkill;
             }
         }
         return _skill;

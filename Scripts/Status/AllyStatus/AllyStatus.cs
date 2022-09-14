@@ -4,60 +4,39 @@ using UnityEngine;
 
 public class AllyStatus : CharacterStatus
 {
+    [SerializeField] private float totalDropProbability = 0;
+    [SerializeField] private float totalItemRarity = 0;
 
+    [SerializeField] private float dropProbability = 0;
+    [SerializeField] private float itemRarity = 0;
 
-    [SerializeField]
-    private float dropProbability = 0;
-    [SerializeField]
-    private float itemRarity = 0;
+    [SerializeField] private float equipDropProbability = 0;
+    [SerializeField] private float equipItemRarity = 0;
+
+    [SerializeField] private float graceDropProbability = 0;
+    [SerializeField] private float graceItemRarity = 0;
+
     private int statusPoint = 10;
-    [SerializeField]
-    private bool isAlterBuff = false;
+    [SerializeField] private bool isAlterBuff = false;
     private float revivalTime = 5f;
     private float knuckBackPower = 1;
 
-    [SerializeField]
-    private int allyNum = 0;
+    [SerializeField] private int allyNum = 0;
     #region Properties
-    public int AllyNum
-    {
-        get{ return allyNum; }
-        set{ allyNum = value; }
-    }
-    public float KnuckBackPower
-    {
-        get { return knuckBackPower; }
-        set { knuckBackPower = value; }
-    }
-    public float RevivalTime
-    {
-        get { return revivalTime; }
-        set { revivalTime = value; }
-    }
+    public int AllyNum { get{ return allyNum; } set{ allyNum = value; } }
+    public float KnuckBackPower { get { return knuckBackPower; } set { knuckBackPower = value; } }
+    public float RevivalTime { get { return revivalTime; } set { revivalTime = value; } }
 
-    public int StatusPoint
-    {
-        get { return statusPoint; }
-        set { statusPoint = value; }
-    }
+    public int StatusPoint { get { return statusPoint; } set { statusPoint = value; } }
 
-    public bool IsAlterBuff
-    {
-        get { return isAlterBuff; }
-        set { isAlterBuff = value; }
-    }
-    public float DropProbability
-    {
-        get { return dropProbability; }
-    }
-    public float ItemRarity
-    {
-        get { return itemRarity; }
-    }
+    public bool IsAlterBuff {get { return isAlterBuff; } set { isAlterBuff = value; } }
+    public float TotalDropProbability { get { return totalDropProbability; } }
+    public float TotalItemRarity { get { return totalItemRarity; } }
 
     #endregion
-    public void Start()
+    public override void Start()
     {
+        base.Start();
         LvToExp();
     }
 
@@ -126,16 +105,33 @@ public class AllyStatus : CharacterStatus
         else
             return false;
     }
+    public override void UpdateBasicStatus()
+    {
+        base.UpdateBasicStatus();
+
+        dropProbability = totalLuck * 0.001f;
+        itemRarity = totalLuck * 0.001f;
+    }
+    public override void UpdateEquipAbility(Item[] _items)
+    {
+        InitEquipAbility();
+        for (int i = 0; i < _items.Length; i++)
+        {
+            equipedPhysicalDamage += _items[i].physicalDamage;
+            equipedMagicalDamage += _items[i].magicalDamage;
+            equipedDefensivePower += _items[i].defensivePower;
+            equipedAtkRange += _items[i].atkRange;
+            equipedAtkSpeed += _items[i].atkSpeed;
+            //equipDropProbability += _items[i].;
+            //equipItemRarity += _items[i].;
+        }
+    }
     public override void UpdateTotalAbility()
     {
         // 능력 업데이트
         base.UpdateTotalAbility();
-        dropProbability = totalLuck * 0.001f;
-        itemRarity = totalLuck * 0.001f;
-        atkSpeed = 5f - (( totalDex * 0.1f) + equipedAtkSpeed * graceAttackSpeed);
-        physicalDamage = Mathf.CeilToInt((totalStr * 5 + equipedPhysicalDamage + buffPhysicalDamage) * gracePhysicalDamage);
-        magicalDamage = Mathf.CeilToInt((totalWiz * 5 + equipedMagicalDamage + buffMagicalDamage) * graceMagicalDamage);
-        defensivePower = Mathf.CeilToInt((totalStr * 3 + equipedDefensivePower + buffDefensivePower) * graceDefensivePower);
+        totalDropProbability = dropProbability + equipDropProbability + graceDropProbability;
+        totalItemRarity = itemRarity + equipItemRarity + graceItemRarity;
     }
     public void InitGraceStatus()
     {
@@ -152,5 +148,7 @@ public class AllyStatus : CharacterStatus
         graceSpeed = 0f;
         graceAttackSpeed = 0f;
         graceAtkRange = 0f;
+        graceDropProbability = 0f;
+        graceItemRarity = 0f;
     }
 }
