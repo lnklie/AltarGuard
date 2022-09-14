@@ -46,7 +46,7 @@ public class CharacterController : BaseController, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -56,7 +56,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -107,13 +107,13 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -154,6 +154,7 @@ public class CharacterController : BaseController, IAIController
     {
         skillController.IsSkillDelay = true;
         yield return new WaitForSeconds(_status.TotalCastingSpeed);
+        
         if(skillController.Skills[0] != null)
         {
             if (skillController.Skills[0].skillType == 0)
@@ -163,7 +164,7 @@ public class CharacterController : BaseController, IAIController
                     skillController.UseSkill(_status.Target);
                 }
                 else
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                    Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -172,7 +173,7 @@ public class CharacterController : BaseController, IAIController
                     skillController.UseSkill(_status.AllyTarget);
                 }
                 else
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                    Debug.Log("íƒ€ê²Ÿì´ ì—†ìŒ");
             }
         }
         skillController.IsSkillDelay = false;
