@@ -18,12 +18,10 @@ public class SkillInfoPanelController : MonoBehaviour
     public void LearnSkill(SkillController _skillController, int _skillKey)
     {
         _skillController.AquireSkill(_skillKey);
-        Debug.Log("현재 습득한 스킬은 " + _skillController.GetPassiveSkill(_skillKey).skillName);
     }
     public void LevelUpSkill(SkillController _skillController, int _skillKey)
     {
         _skillController.LevelUpSkill(_skillKey);
-        Debug.Log("현재 스킬, " + _skillController.GetPassiveSkill(_skillKey).skillName +  "의 레벨은 " + _skillController.GetPassiveSkill(_skillKey).skillLevel);
     }
 
     //public void UpdateSkillInfo(SkillController _skillController)

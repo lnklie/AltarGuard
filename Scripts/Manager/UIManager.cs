@@ -31,15 +31,16 @@ public class UIManager : SingletonManager<UIManager>
 
     [Header("Altar")]
     [SerializeField] private AltarStatus altar = null;
-    [SerializeField] private List<CharacterStatus> mercenary = new List<CharacterStatus>();
+    [SerializeField] private List<CharacterStatus> mercenaries = new List<CharacterStatus>();
     [SerializeField] private List<EquipmentController> characterList = new List<EquipmentController>();
+    [SerializeField] private List<SkillController> skillControllerList = new List<SkillController>();
 
     [Header("Panels")]
     [SerializeField] private InventoryPanelController inventoryPanelController = null;    
     [SerializeField] private ProfilePanelController profilePanelController = null;
     [SerializeField] private StatusPanelController statusPanelController = null;
     [SerializeField] private AltarInfoPanelController altarInfoPanelController = null;
-    [SerializeField] private SkillInfoPanelController skillInfoPanelController = null;
+    [SerializeField] private SkillPanelController skillPanelController = null;
     [SerializeField] private GracePanelController gracePanelController = null;
     [SerializeField] private LogPanelController logPanelController = null;
     [SerializeField] private GameObject shopSelectPanel = null;
@@ -64,9 +65,9 @@ public class UIManager : SingletonManager<UIManager>
     private void Start()
     {
         UpdatePlayerProfile();
-        for (int i = 0; i < mercenary.Count; i++)
+        for (int i = 0; i < mercenaries.Count; i++)
         {
-            if(mercenary[i] != null)
+            if(mercenaries[i] != null)
             {
                 UpdateMercenaryProfile(i);
             }
@@ -81,12 +82,12 @@ public class UIManager : SingletonManager<UIManager>
             UpdatePlayerProfile();
             player.TriggerStatusUpdate = false;
         }
-        for(int i = 0; i < mercenary.Count; i++)
+        for(int i = 0; i < mercenaries.Count; i++)
         {
-            if (mercenary[i].TriggerStatusUpdate)
+            if (mercenaries[i].TriggerStatusUpdate)
             {
                 UpdateMercenaryProfile(i);
-                mercenary[i].TriggerStatusUpdate = false;
+                mercenaries[i].TriggerStatusUpdate = false;
             }
         }
         if(bossEnemy)
@@ -148,7 +149,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void AddMercenary(CharacterStatus _mercenary)
     {
-        mercenary.Add(_mercenary);
+        mercenaries.Add(_mercenary);
         AddMercenaryEquipmentController(_mercenary);
     }
     public void AddMercenaryEquipmentController(CharacterStatus _mercenary)
@@ -161,7 +162,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public int GetMercenaryNum()
     {
-        return mercenary.Count;
+        return mercenaries.Count;
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
@@ -179,7 +180,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UseSkill(Skill _skill)
     {
-        player.transform.parent.GetComponentInChildren<SkillController>().UseSkill(_skill, player.Target);
+        skillControllerList[0].UseSkill(_skill);
     }
     #region Profile
     public void UpdateBossInfo()
@@ -203,7 +204,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void UpdateMercenaryProfile(int _index)
     {
-        profilePanelController.UpdateMercenaryProfile(mercenary[_index], _index);
+        profilePanelController.UpdateMercenaryProfile(mercenaries[_index], _index);
     }
     public void SetActiveCharactersProfile(int _index, bool _bool)
     {
@@ -230,8 +231,7 @@ public class UIManager : SingletonManager<UIManager>
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
         userControlPanelController.InitSkillSlot();
-        Debug.Log("액티브 스킬의 길이는 " + player.transform.parent.GetComponentInChildren<SkillController>().ActiveSkills.Count);
-        userControlPanelController.SetSkillSlot(player.transform.parent.GetComponentInChildren<SkillController>().ActiveSkills);
+        userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
@@ -319,12 +319,9 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region SkillPanel
-    public void LearnPassiveSkillBtn(int _skillKey)
+    public void SelectCharacterInSkillController(bool _isUp)
     {
-        if (playerSkillController.GetPassiveSkill(_skillKey) == null)
-            skillInfoPanelController.LearnSkill(playerSkillController, _skillKey);
-        else
-            skillInfoPanelController.LevelUpSkill(playerSkillController, _skillKey);
+        skillPanelController.SelectCharacterInSkillController(skillControllerList, _isUp);
     }
     #endregion
 
@@ -545,7 +542,9 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 3)
         {
-            skillInfoPanelController.ActiveSkillPanel(true);
+            skillPanelController.ActiveSkillPanel(true);
+            skillPanelController.SelectCharacter(skillControllerList[0], player);
+            skillPanelController.SetSkillInfo();
         }
         else if (_index == 4)
         {
@@ -598,7 +597,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 3)
         {
-            skillInfoPanelController.ActiveSkillPanel(false);
+            skillPanelController.ActiveSkillPanel(false);
         }
         else if (_index == 4)
         {

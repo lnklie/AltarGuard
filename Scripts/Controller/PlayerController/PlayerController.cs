@@ -13,6 +13,7 @@ public class PlayerController : CharacterController
     private PlayerStatus player = null;
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
+    private FlagController hitFlag = null;
     [SerializeField] private GameObject rivivePoint = null;
 
     public override void Awake()
@@ -46,7 +47,7 @@ public class PlayerController : CharacterController
 
         if (!IsDelay(player))
         {
-            player.DelayTime = player.AtkSpeed;
+            player.DelayTime = player.TotalAtkSpeed;
         }
         else
         {
@@ -66,24 +67,21 @@ public class PlayerController : CharacterController
     }
     public void DragFlag()
     {
-        RaycastHit2D hit = default;
-        if (Input.GetMouseButton(0) && !player.IsUiOn)
+        if (Input.GetMouseButtonDown(0) && !player.IsUiOn)
         {
-            hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
-            
-            if (hit)
+            RaycastHit2D _hitFlag = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
+            if (_hitFlag)
             {
-
-                Vector2 _mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                hit.transform.position = _mousePoint;
-                if (_mousePoint.x > 12f || _mousePoint.x < -12f
-                    || _mousePoint.y > 12f || _mousePoint.y < -12f)
-                {
-                    hit.transform.position = new Vector2(0f, -4f);
-                }
+                hitFlag = _hitFlag.collider.GetComponent<FlagController>();
+                hitFlag.IsSelect = true;
             }
         }
-    }
+        else if(Input.GetMouseButtonUp(0) && hitFlag != null &&hitFlag.IsSelect && !player.IsUiOn)
+        {
+            hitFlag.IsSelect = false;
+            hitFlag = null;
+        }
+    } 
     public void PlayerState()
     {
         switch(player.PlayerState)
@@ -244,7 +242,7 @@ public class PlayerController : CharacterController
                 if (_enemy.IsLastHit())
                 {
                     _status.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
@@ -311,7 +309,6 @@ public class PlayerController : CharacterController
             SortSightRayList(_status.EnemyRayList);
             for (int i = 0; i < _status.EnemyRayList.Count; i++)
             {
-                //Debug.Log("타겟들과의 거리는 " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
                 if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
                     || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
@@ -331,6 +328,29 @@ public class PlayerController : CharacterController
         {
             _status.Target = null;
         }
+
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
     public void TargetEnemy(Status _target)
     {
@@ -342,6 +362,13 @@ public class PlayerController : CharacterController
             }
             player.Target = _target.TargetPos;
             player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+        }
+    }
+    public void TargetAlly(Status _target)
+    {
+        if (_target)
+        {
+            player.AllyTarget = _target.TargetPos;
         }
     }
     public void TargetAlly(CharacterStatus _allyTarget)
@@ -383,7 +410,12 @@ public class PlayerController : CharacterController
             else
             {
                 _status.AIState = EAIState.Chase;
-                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
+                if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
+                    GetDistance(this.transform.position, _status.Target.transform.position) <= skillController.SkillQueue[0].skillRange)
+                {
+                    _status.AIState = EAIState.UseSkill;
+                }
+                else if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.TotalAtkRange)
                 {
                     _status.AIState = EAIState.Attack;
                 }
@@ -457,6 +489,30 @@ public class PlayerController : CharacterController
         {
             _status.Target = null;
         }
+
+          
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
 
 
@@ -474,7 +530,7 @@ public class PlayerController : CharacterController
                 if (_enemy.IsLastHit())
                 {
                     _status.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[i])

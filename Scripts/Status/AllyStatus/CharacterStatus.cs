@@ -210,7 +210,7 @@ public class CharacterStatus : Status
     {
         curExp += status.DefeatExp;
     }
-    public void UpdateBasicStatus()
+    public virtual void UpdateBasicStatus()
     {
         totalStr = str + equipedStr + graceStr;
         totalDex = dex + equipedDex + graceDex;
@@ -221,7 +221,7 @@ public class CharacterStatus : Status
         MaxMp = totalWiz * 10;
         speed = totalDex * 0.1f;
     }
-    public void UpdateEquipAbility(Item[] _items)
+    public virtual void UpdateEquipAbility(Item[] _items)
     {
         InitEquipAbility();
         for (int i = 0;  i < _items.Length; i++)
@@ -250,11 +250,13 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
-        
+
+        totalDefensivePower = defensivePower + equipedDefensivePower + graceDefensivePower + buffDefensivePower;
+
         totalAtkSpeed = maxAtkSpeed - (atkSpeed + equipedAtkSpeed + graceAttackSpeed);
         totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
         totalCastingSpeed = maxCastingSpeed - (castingSpeed + equipedCastingSpeed + graceCastingSpeed);

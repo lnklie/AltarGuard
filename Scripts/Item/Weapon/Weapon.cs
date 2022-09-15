@@ -27,6 +27,9 @@ public class Weapon :Item
         skillKey1 = _skillKey1;
         skillKey2 = _skillKey2;
         skillKey3 = _skillKey3;
+        skillkeies[0] = skillKey1;
+        skillkeies[1] = skillKey2;
+        skillkeies[2] = skillKey3;
         equipLevel = _equipLevel;
         disassembleItemKey = _disassembleItemKey;
         disassembleItemAmount = _disassembleItemAmount;

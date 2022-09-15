@@ -20,12 +20,9 @@ public class Status : MonoBehaviour
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
-    [SerializeField]
-    protected Transform targetPos = null;
-    [SerializeField]
-    private DamageTextController damageTextController;
-    [SerializeField]
-    protected int defeatExp = 0;
+    [SerializeField] protected Transform targetPos = null;
+    [SerializeField] private DamageTextController damageTextController;
+    [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }

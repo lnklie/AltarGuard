@@ -11,8 +11,7 @@ using UnityEngine;
 public class MercenaryController : CharacterController
 {
     protected MercenaryStatus mercenary = null;
-    [SerializeField]
-    private GameObject rivivePoint = null;
+    [SerializeField] private GameObject rivivePoint = null;
 
     public override  void Awake()
     {
@@ -60,7 +59,7 @@ public class MercenaryController : CharacterController
                 {
                     _status.AquireExp(_enemy);
 
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
