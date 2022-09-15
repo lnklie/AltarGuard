@@ -24,12 +24,10 @@ public class SkillSlot : MonoBehaviour
     {
         curSkill = null;
         skillImage.sprite = defaultSprite;
-        Debug.Log("段奄鉢馬切");
     }
 
     public void SetSlot(Skill _skill)
     {
-        Debug.Log("実特馬切");
         curSkill = _skill;
         skillImage.sprite = curSkill.singleSprite;
     }

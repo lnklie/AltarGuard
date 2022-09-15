@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using TMPro;
+
 public class SkillPanelController : MonoBehaviour
 {
     [SerializeField] private SkillController selectSkillController = null;
     [SerializeField] private CharacterStatus selectCharacter = null;
     [SerializeField] private SkillInfoSlot[] skillInfoSlots = null;
-    private int selectNum = 0;
+    [SerializeField] private TextMeshProUGUI characterName = null;
+    [SerializeField] private TextMeshProUGUI characterLevel = null;
+    [SerializeField] private int selectNum = 0;
 
     public void SelectCharacter(SkillController _equipmentController, CharacterStatus _characterStatus)
     {
@@ -29,23 +33,39 @@ public class SkillPanelController : MonoBehaviour
             }
         }
     }
-    
+
+    public void InitSkillInfo()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+
+            skillInfoSlots[i].gameObject.SetActive(false);
+            skillInfoSlots[i].InitSkill();
+
+        }
+    }
     public void SelectCharacterInSkillController(List<SkillController> _charaterList, bool _isUp)
     {
-        // Ω∫≈◊¿Ã≈ÕΩ∫ √¢ ƒ≥∏Ø≈Õ º±≈√
+        // Ïä§ÌÖåÏù¥ÌÑ∞Ïä§ Ï∞Ω Ï∫êÎ¶≠ÌÑ∞ ÏÑ†ÌÉù
         if (_isUp)
         {
             selectNum++;
-            if (selectNum == UIManager.Instance.GetMercenaryNum() + 1)
+            Debug.Log(selectNum + " ÏóÖ");
+            if (selectNum == 5)
                 selectNum = 0;
         }
         else
         {
+            Debug.Log("Îã§Ïö¥");
             selectNum--;
             if (selectNum < 0)
-                selectNum = UIManager.Instance.GetMercenaryNum();
+                selectNum = 4;
         }
-        selectCharacter = _charaterList[selectNum].GetComponent<AllyStatus>();
+        InitSkillInfo();
+        SelectCharacter(_charaterList[selectNum], _charaterList[selectNum].GetComponent<AllyStatus>());
+        characterName.text = selectCharacter.ObjectName;
+        characterLevel.text = "LV." + selectCharacter.CurLevel.ToString();
+        SetSkillInfo();
     }
     public void ActiveSkillPanel(bool _bool)
     {

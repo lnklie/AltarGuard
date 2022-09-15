@@ -12,8 +12,7 @@ public class UserControlPanelController : MonoBehaviour
         for (int i = 0; i < skillSlots.Length; i++)
         {
 
-                skillSlots[i].InitSlot();
-            
+            skillSlots[i].InitSlot();
         }
     }
     public void SetSkillSlot(List<Skill> _skills)

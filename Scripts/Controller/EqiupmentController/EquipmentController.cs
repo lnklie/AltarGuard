@@ -4,9 +4,9 @@ using UnityEngine;
 
 /*
 ==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EquipmentController.cs
+ * �������� : 2022-06-05
+ * �ۼ��� : Inklie
+ * ���ϸ� : EquipmentController.cs
 ==============================
 */
 public class EquipmentController : MonoBehaviour
@@ -50,7 +50,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // 장비에 방어력 출력
+        // ��� ���� ���
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -62,7 +62,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // 장비에 물리데미지 출력
+        // ��� ���������� ���
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,7 +74,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // 장비에 마법데미지 출력
+        // ��� ������� ���
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -86,7 +86,7 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // 무기 아이템에 따른 공격 타입 변경
+        // ���� �����ۿ� �� ��� Ÿ�� ����
         if (checkEquipItems[7])
         {
             status.AtkRange = equipItems[7].atkRange;
@@ -158,7 +158,7 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("장착 중입니다.");
+            Debug.Log("���� ���Դϴ�.");
         }
     }
     public void SkillChange()
@@ -291,7 +291,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // 장착 제거
+        // ���� ���
         switch (_index)
         {
             case 0:

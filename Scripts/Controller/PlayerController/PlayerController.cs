@@ -309,7 +309,6 @@ public class PlayerController : CharacterController
             SortSightRayList(_status.EnemyRayList);
             for (int i = 0; i < _status.EnemyRayList.Count; i++)
             {
-                //Debug.Log("타겟들과의 거리는 " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
                 if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
                     || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
@@ -329,6 +328,29 @@ public class PlayerController : CharacterController
         {
             _status.Target = null;
         }
+
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
     public void TargetEnemy(Status _target)
     {
@@ -340,6 +362,13 @@ public class PlayerController : CharacterController
             }
             player.Target = _target.TargetPos;
             player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+        }
+    }
+    public void TargetAlly(Status _target)
+    {
+        if (_target)
+        {
+            player.AllyTarget = _target.TargetPos;
         }
     }
     public void TargetAlly(CharacterStatus _allyTarget)
@@ -459,6 +488,30 @@ public class PlayerController : CharacterController
         else
         {
             _status.Target = null;
+        }
+
+          
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
         }
     }
 

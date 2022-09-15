@@ -7,18 +7,18 @@ public class SkillController : MonoBehaviour
     [SerializeField] private CharacterStatus status = null;
     [SerializeField] private List<Skill> skills = new List<Skill>();
     [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
-    [SerializeField] private List<Skill> attackSkillQueue = new List<Skill>();
-    [SerializeField] private List<Skill> cureSkillQueue = new List<Skill>();
-    [SerializeField] private List<Skill> buffSkillQueue = new List<Skill>();
-    [SerializeField] private List<Skill> debuffSkillQueue = new List<Skill>();
+
+    [SerializeField] private List<Skill> skillQueue = new List<Skill>();
+
     [SerializeField] private bool isSkillDelay = false;
     private bool[] isCoolTime = { false, false, false };
 
     public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-    public List<Skill> SkillQueue { get { return attackSkillQueue; } }
 
+    public List<Skill> SkillQueue { get { return skillQueue; } }
     public List<Skill> Skills { get { return skills; } }
+
     public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
     #endregion
     private void Start()
@@ -38,23 +38,9 @@ public class SkillController : MonoBehaviour
         Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
 
         skills.Add(_newSkill);
-        if (_newSkill.skillType == 0)
-        {
-            attackSkillQueue.Add(_newSkill);
-        }
-        else if (_newSkill.skillType == 1)
-        {
-            cureSkillQueue.Add(_newSkill);
-        }
-        else if (_newSkill.skillType == 2)
-        {
-            buffSkillQueue.Add(_newSkill);
-        }
-        else
-        {
-            debuffSkillQueue.Add(_newSkill);
-        }
 
+        skillQueue.Add(_newSkill);
+        
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -65,71 +51,123 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
-        //    Debug.Log("��ų ������ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("없는 스킬");
+            Debug.Log("��� ��ų");
     }
 
-    public void UseSkill(Skill _skill, Transform _target)
+    public void UseSkill(Skill _skill)
     {
         int index = skills.IndexOf(_skill);
         if (index != -1)
         {
-            if (status.Target != null)
+
+            if (!_skill.isCoolTime)
             {
-                if (!_skill.isCoolTime)
+
+                SkillObject _skillObject = skillPrefabs[_skill.skillKey];
+                _skill.isCoolTime = true;
+                status.IsAtk = true;
+                _skill.coolTime = 0f;
+
+                if (_skill.skillType == 0)
                 {
-                    SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                    _skill.isCoolTime = true;
-                    status.IsAtk = true;
-                    _skill.coolTime = 0f;
-                    _skillObject.SetSkill(_target, _skill, status);
-                    attackSkillQueue.RemoveAt(index);
+                    if (status.Target != null)
+                    {
+                        _skillObject.SetSkill(status.Target, _skill, status);
+                    }
+                    else
+                    {
+                        UIManager.Instance.Notice("Ÿ���� ���");
+                    }
                 }
-                else
-                    Debug.Log("쿨타임 중");
+                else if (_skill.skillType == 1)
+                {
+                    if (status.AllyTarget != null)
+                    {
+                        _skillObject.SetSkill(status.AllyTarget, _skill, status);
+                    }
+                    else
+                    {
+                        UIManager.Instance.Notice("Ÿ���� ���");
+                    }
+                    
+                }
+                else if (_skill.skillType == 2)
+                {
+                    if (status.AllyTarget != null)
+                    {
+                        _skillObject.SetSkill(status.AllyTarget, _skill, status);
+                    }
+                    else
+                    {
+                        UIManager.Instance.Notice("Ÿ���� ���");
+                    } 
+                }
+                else if (_skill.skillType == 3)
+                {
+                    if (status.Target != null)
+                    {
+                        _skillObject.SetSkill(status.Target, _skill, status);
+                    }
+                    else
+                    {
+                        UIManager.Instance.Notice("Ÿ���� ���");
+                    }
+                }
+                skillQueue.RemoveAt(index);
+
+
             }
             else
-            {
-                UIManager.Instance.Notice("타겟이 없음");
-            }
+                Debug.Log("��Ÿ�� ��");
+
         }
         else
-            Debug.Log("없는 스킬");
+            Debug.Log("��� ��ų");
+
     }
-    public void UseSkill(Transform _target)
+    public void UseSkill()
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("인덱스는 " + index);
+        // Debug.Log("�ε����� " + index);
         if(status.Target !=null)
         {
-            if (attackSkillQueue.Count > 0)
+            
+            if (skillQueue.Count > 0)
             {
 
-                SkillObject _skillObject = skillPrefabs[attackSkillQueue[0].skillKey];
-                attackSkillQueue[0].isCoolTime = true;
-                attackSkillQueue[0].coolTime = 0;
+                skillQueue[0].isCoolTime = true;
+                skillQueue[0].coolTime = 0;
                 status.IsAtk = true;
-                _skillObject.SetSkill(_target, attackSkillQueue[0],status);
-                attackSkillQueue.RemoveAt(0);
-            }
-            else if(cureSkillQueue.Count > 0)
-            {
-            }
-            else if(buffSkillQueue.Count > 0)
-            {
-
+                SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                if(skillQueue[0].skillType == 0)
+                {
+                    _skillObject.SetSkill(status.Target, skillQueue[0],status);
+                }
+                else if(skillQueue[0].skillType == 1)
+                {
+                    _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
+                }
+                else if (skillQueue[0].skillType == 2)
+                {
+                    _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
+                }
+                else if (skillQueue[0].skillType == 3)
+                {
+                    _skillObject.SetSkill(status.Target, skillQueue[0], status);
+                }
+                skillQueue.RemoveAt(0);
             }
             //else if()
         }
         else
         {
-            Debug.Log("타겟이 없음");
+            Debug.Log("Ÿ���� ���");
         }
     }
     public void CalculateSkillCoolTime()
@@ -139,13 +177,12 @@ public class SkillController : MonoBehaviour
             if (skills[i].isCoolTime)
             {
                 skills[i].coolTime += Time.deltaTime;
-                Debug.Log("��Ÿ�� ȸ�� �� ");
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
                     Debug.Log("��Ÿ�� ȸ�� �Ϸ�");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
-                    attackSkillQueue.Add(skills[i]);
+                    skillQueue.Add(skills[i]);
                 }
             }
         }

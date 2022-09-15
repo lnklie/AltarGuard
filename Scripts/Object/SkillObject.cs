@@ -27,7 +27,6 @@ public class SkillObject : MonoBehaviour
     public void Awake()
     {
         col = this.GetComponent<CircleCollider2D>();
-        castingStatus = this.transform.parent.parent.GetComponentInChildren<CharacterStatus>();
     }
     private void Start()
     {
@@ -35,7 +34,7 @@ public class SkillObject : MonoBehaviour
 
     }
     private void Update()
-    {
+    { 
         if(isSkillUse)
             StartCoroutine(CastingSkill());
         RemoveSkill();
@@ -56,6 +55,7 @@ public class SkillObject : MonoBehaviour
     {
         isSkillUse = false;
         RaycastHit2D[] _hitRay = HitRay();
+        Debug.Log("맞은 적의 수는 " + _hitRay.Length);
         for(int i = 0; i < _hitRay.Length; i++)
         {
             if (_hitRay[i])
@@ -64,13 +64,12 @@ public class SkillObject : MonoBehaviour
                 
                 for (int j = 0; j < skillHitCount; j++)
                 {
-                    _status.Damaged(damage / skillHitCount);
+                    _status.Damaged(damage);
                     if (this.transform.parent.gameObject.layer == 8)
                     {
                         castingStatus.AquireExp(_status);
-                        
                     }
-                    yield return new WaitForSeconds(durationTime / skillHitCount);
+                    yield return new WaitForSeconds(maxDurationTime / skillHitCount);
                     castingStatus.IsAtk = false;
                 }
             }
