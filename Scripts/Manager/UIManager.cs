@@ -64,6 +64,7 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Start()
     {
+        characterList[0].ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002)));
         UpdatePlayerProfile();
         for (int i = 0; i < mercenaries.Count; i++)
         {
@@ -180,7 +181,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UseSkill(Skill _skill)
     {
-        player.GetComponent<SkillController>().UseSkill(_skill, player.Target);
+        skillControllerList[0].UseSkill(_skill);
     }
     #region Profile
     public void UpdateBossInfo()
@@ -230,7 +231,6 @@ public class UIManager : SingletonManager<UIManager>
         // æ∆¿Ã≈€ ¿Â¬¯
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
-        userControlPanelController.InitSkillSlot();
         userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)

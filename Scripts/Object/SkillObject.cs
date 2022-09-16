@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillObject : MonoBehaviour
 {
     private CircleCollider2D col = null;
-    [SerializeField] private int damage = 0;
+    [SerializeField] private int value = 0;
     [SerializeField] private float maxCoolTime = 0f;
     [SerializeField] private bool isSkillUse = false;
     [SerializeField] private CharacterStatus castingStatus = null;
@@ -17,7 +17,7 @@ public class SkillObject : MonoBehaviour
     private Transform target = null;
 
     #region Property
-    public int Damage { get { return damage; } set { damage = value; } }
+    public int Damage { get { return value; } set { this.value = value; } }
     public int SkillHitCount { get { return skillHitCount; } set { skillHitCount = value; } }
     public float MaxDuration { get { return maxDurationTime; } set { maxDurationTime = value; } }
     public Transform Target { get { return target; } set { target = value; } }
@@ -27,7 +27,6 @@ public class SkillObject : MonoBehaviour
     public void Awake()
     {
         col = this.GetComponent<CircleCollider2D>();
-        castingStatus = this.transform.parent.parent.GetComponentInChildren<CharacterStatus>();
     }
     private void Start()
     {
@@ -35,45 +34,57 @@ public class SkillObject : MonoBehaviour
 
     }
     private void Update()
-    {
+    { 
         if(isSkillUse)
             StartCoroutine(CastingSkill());
         RemoveSkill();
     }
     public void SetSkill(Transform _target, Skill _skill, CharacterStatus _characterStatus)
     {
-        isSkillUse = true;
-        target = _target;
         skill = _skill;
         castingStatus = _characterStatus;
-        damage = SetSkillDamageByLevel();
+        target = _target; 
+        value = SetSkillValueByLevel();
         skillHitCount = skill.skillHitCount;
         this.gameObject.SetActive(true);
         this.transform.position = target.transform.position;
-
+        isSkillUse = true;
     }
     public IEnumerator CastingSkill()
     {
         isSkillUse = false;
-        RaycastHit2D[] _hitRay = HitRay();
-        for(int i = 0; i < _hitRay.Length; i++)
+        if(skill.skillType == 0)
         {
-            if (_hitRay[i])
+            RaycastHit2D[] _hitRay = HitRay();
+ 
+            for(int i = 0; i < _hitRay.Length; i++)
             {
-                Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
-                
-                for (int j = 0; j < skillHitCount; j++)
+                if (_hitRay[i])
                 {
-                    _status.Damaged(damage / skillHitCount);
-                    if (this.transform.parent.gameObject.layer == 8)
+                    Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
+                
+                    for (int j = 0; j < skillHitCount; j++)
                     {
-                        castingStatus.AquireExp(_status);
-                        
+                        _status.Damaged(value);
+                        if (this.transform.parent.gameObject.layer == 8)
+                        {
+                            castingStatus.AquireExp(_status);
+                        }
+                        yield return new WaitForSeconds(maxDurationTime / skillHitCount);
                     }
-                    yield return new WaitForSeconds(durationTime / skillHitCount);
                     castingStatus.IsAtk = false;
                 }
             }
+        }
+        else if(skill.skillType == 1)
+        {
+            Status _status = target.parent.gameObject.GetComponent<Status>();
+            for (int j = 0; j < skillHitCount; j++)
+            {
+                _status.recovered(value);
+                yield return new WaitForSeconds(maxDurationTime / skillHitCount);
+            }
+            castingStatus.IsAtk = false;
         }
     }
 
@@ -94,7 +105,7 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
-        // Â·Â¹Ã€ÃŒÂ¸Â¦ Â½Ã®Â´Ã‚ Â¿ÂªÃ‡Ã’
+        // ·¹ÀÌ¸¦ ½î´Â ¿ªÇÒ
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)
@@ -103,7 +114,7 @@ public class SkillObject : MonoBehaviour
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius, Vector2.zero, 0f, LayerMask.GetMask("Enemy"));
         return ray;
     }
-    public int SetSkillDamageByLevel()
+    public int SetSkillValueByLevel()
     {
         int _skillDamage = 0;
         switch (skill.skillLevel)
