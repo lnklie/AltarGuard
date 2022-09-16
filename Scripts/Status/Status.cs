@@ -21,7 +21,7 @@ public class Status : MonoBehaviour
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
     [SerializeField] protected Transform targetPos = null;
-    [SerializeField] private DamageTextController damageTextController;
+    [SerializeField] private ValueTextController damageTextController;
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
@@ -53,10 +53,11 @@ public class Status : MonoBehaviour
         //if (TriggerStateChange)
         //    TriggerStateChange = false;
     }
-    public void SetDamageText(int _damage)
+    public void SetValueText(int _damage, Color _color)
     {
-        damageTextController.SetDamageText(_damage);
+        damageTextController.SetText(_damage, _color);
     }
+
     public int ReviseDamage(int _damage, int _depensivePower)
     {
         return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
@@ -75,7 +76,13 @@ public class Status : MonoBehaviour
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
-        SetDamageText(ReviseDamage(_damage, defensivePower));
+        SetValueText(ReviseDamage(_damage, defensivePower),Color.red);
+    }
+    public virtual void recovered(int _value)
+    {
+        curHp += _value;
+        triggerStatusUpdate = true;
+        SetValueText(_value, Color.green);
     }
     private IEnumerator Blink()
     {

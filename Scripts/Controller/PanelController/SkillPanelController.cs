@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
-
 public class SkillPanelController : MonoBehaviour
 {
     [SerializeField] private SkillController selectSkillController = null;
@@ -33,7 +32,6 @@ public class SkillPanelController : MonoBehaviour
             }
         }
     }
-
     public void InitSkillInfo()
     {
         for (int i = 0; i < 3; i++)
@@ -50,13 +48,11 @@ public class SkillPanelController : MonoBehaviour
         if (_isUp)
         {
             selectNum++;
-            Debug.Log(selectNum + " 업");
             if (selectNum == 5)
                 selectNum = 0;
         }
         else
         {
-            Debug.Log("다운");
             selectNum--;
             if (selectNum < 0)
                 selectNum = 4;

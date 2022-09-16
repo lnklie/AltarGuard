@@ -15,7 +15,6 @@ public class SkillController : MonoBehaviour
 
     public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
-
     public List<Skill> SkillQueue { get { return skillQueue; } }
     public List<Skill> Skills { get { return skills; } }
 
@@ -41,6 +40,9 @@ public class SkillController : MonoBehaviour
 
         skillQueue.Add(_newSkill);
         
+
+        skillQueue.Add(_newSkill);
+        
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -57,12 +59,12 @@ public class SkillController : MonoBehaviour
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("��� ��ų");
     }
 
     public void UseSkill(Skill _skill)
     {
-        int index = skills.IndexOf(_skill);
+        int index = skillQueue.IndexOf(_skill);
+        Debug.Log("�ε����� " + index);
         if (index != -1)
         {
 
@@ -71,7 +73,6 @@ public class SkillController : MonoBehaviour
 
                 SkillObject _skillObject = skillPrefabs[_skill.skillKey];
                 _skill.isCoolTime = true;
-                status.IsAtk = true;
                 _skill.coolTime = 0f;
 
                 if (_skill.skillType == 0)
@@ -120,8 +121,6 @@ public class SkillController : MonoBehaviour
                     }
                 }
                 skillQueue.RemoveAt(index);
-
-
             }
             else
                 Debug.Log("��Ÿ�� ��");
@@ -134,7 +133,6 @@ public class SkillController : MonoBehaviour
     public void UseSkill()
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("�ε����� " + index);
         if(status.Target !=null)
         {
             
@@ -143,7 +141,7 @@ public class SkillController : MonoBehaviour
 
                 skillQueue[0].isCoolTime = true;
                 skillQueue[0].coolTime = 0;
-                status.IsAtk = true;
+                //status.IsAtk = true;
                 SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
                 if(skillQueue[0].skillType == 0)
                 {
@@ -167,7 +165,6 @@ public class SkillController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ÿ���� ���");
         }
     }
     public void CalculateSkillCoolTime()

@@ -2,13 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-==============================
- * �������� : 2022-06-05
- * �ۼ��� : Inklie
- * ���ϸ� : EquipmentController.cs
-==============================
-*/
+
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
@@ -50,7 +44,6 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // ��� ���� ���
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -62,7 +55,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // ��� ���������� ���
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,7 +66,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // ��� ������� ���
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -86,7 +77,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ���� �����ۿ� �� ��� Ÿ�� ����
         if (checkEquipItems[7])
         {
             status.AtkRange = equipItems[7].atkRange;
@@ -158,14 +148,12 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("���� ���Դϴ�.");
         }
     }
     public void SkillChange()
     {
         if(equipItems[8].skillKey1 != -1)
         {
-            Debug.Log("��ųŰ�� " + equipItems[8].skillKey1);
             skillController.AquireSkill(equipItems[8].skillKey1);
         }
 
@@ -184,6 +172,7 @@ public class EquipmentController : MonoBehaviour
     {
         status.UpdateEquipAbility(equipItems);
         status.UpdateTotalAbility();
+        // �������
         switch (_item.itemType)
         {
             case 0:
@@ -291,7 +280,6 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ���� ���
         switch (_index)
         {
             case 0:

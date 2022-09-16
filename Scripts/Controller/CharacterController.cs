@@ -19,7 +19,10 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void Update()
     {
-        AIPerception(characterStatus);
+        if(!characterStatus.IsDied)
+        { 
+            AIPerception(characterStatus);
+        }
         AIChangeState(characterStatus);
         AIState(characterStatus);
     }
@@ -46,7 +49,7 @@ public class CharacterController : BaseController, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-        // ����Ʈ ���
+
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -56,7 +59,6 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ����Ʈ ���
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -66,7 +68,7 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ����Ʈ ���
+
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -117,13 +119,11 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // Ȱ���
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("ȭ�� ���");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -173,7 +173,6 @@ public class CharacterController : BaseController, IAIController
                     skillController.UseSkill();
                 }
                 else   
-                    Debug.Log("Ÿ���� ���");
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -182,9 +181,10 @@ public class CharacterController : BaseController, IAIController
                     skillController.UseSkill();
                 }
                 else
-                    Debug.Log("Ÿ���� ���");
+
             }
         }
+        Debug.Log("����?");
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)

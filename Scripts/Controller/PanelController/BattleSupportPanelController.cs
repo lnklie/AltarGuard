@@ -4,16 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BattleSupportPanelController : MonoBehaviour
 {
-    [SerializeField]
-    private QuickSlot[] quickSlots = new QuickSlot[4];
+    [SerializeField] private QuickSlot[] quickSlots = new QuickSlot[4];
 
     [Header("Player")]
-    [SerializeField]
-    private PlayerStatus player = null;
-    [SerializeField]
-    private EquipmentController playerEquipmentController = null;
-    [SerializeField]
-    private Image autoPlayTextImage = null;
+    [SerializeField] private PlayerStatus player = null;
+    [SerializeField] private EquipmentController playerEquipmentController = null;
+    [SerializeField] private Image autoPlayTextImage = null;
 
     private void Update()
     {
