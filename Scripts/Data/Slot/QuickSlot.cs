@@ -15,6 +15,7 @@ public class QuickSlot : MonoBehaviour
     [SerializeField] private int index = 0;
 
     [SerializeField] private Button autoUseButton = null;
+    [SerializeField] private Button clearQuickSlotButton = null;
     [SerializeField] private bool isAutoUse = false;
 
     #region Property
@@ -28,7 +29,7 @@ public class QuickSlot : MonoBehaviour
     }
     private void Start()
     {
-        ResetSlot();
+        InitSlot();
     }
     private void Update()
     {
@@ -44,7 +45,7 @@ public class QuickSlot : MonoBehaviour
             }
         }
     }
-    public void ResetSlot()
+    public void InitSlot()
     {
         // ½½·Ô ¸®¼Â
         curItem = null;
@@ -53,6 +54,7 @@ public class QuickSlot : MonoBehaviour
         isAutoUse = false;
         checkEquip.gameObject.SetActive(false);
         SetActiveAutoUseButton(false);
+        SetActiveClearQuickSlotButton(false);
         EnableItemCount(false);
     }
     public void SetSlot()
@@ -65,6 +67,7 @@ public class QuickSlot : MonoBehaviour
         else
             checkEquip.gameObject.SetActive(false);
         ActiveItemCount();
+        SetActiveClearQuickSlotButton(true);
     }
     private void ActiveItemCount()
     {
@@ -85,7 +88,7 @@ public class QuickSlot : MonoBehaviour
         UpdateItemCount();
         if (curItem.count <= 0)
         {
-            ResetSlot();
+            InitSlot();
             isItemRegistered = false;
         }
         else
@@ -104,6 +107,11 @@ public class QuickSlot : MonoBehaviour
         isAutoUse = !isAutoUse;
         SetAutoUseButtonText();
     }
+    public void ClearQuickSlot()
+    {
+        isItemRegistered = false;
+        InitSlot();
+    }
     public void SetAutoUseButtonText()
     {
         if (isAutoUse)
@@ -114,6 +122,10 @@ public class QuickSlot : MonoBehaviour
     public void SetActiveAutoUseButton(bool _bool)
     {
         autoUseButton.gameObject.SetActive(_bool);
+    }
+    public void SetActiveClearQuickSlotButton(bool _bool)
+    {
+        clearQuickSlotButton.gameObject.SetActive(_bool);
     }
     public void UseItem()
     {

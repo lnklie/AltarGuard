@@ -15,19 +15,19 @@ public class Status : MonoBehaviour
     [SerializeField] protected int maxHp = 100;
     [SerializeField] protected int defensivePower = 0;
     [SerializeField] protected bool isDamaged = false;
-    //[SerializeField] protected bool triggerStateChange = false;
+    [SerializeField] protected int totalMaxHp = 0;
+    [SerializeField] protected int totalDefensivePower = 0;
     [SerializeField] protected bool triggerStatusUpdate = false;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
     protected Animator ani = null;
-    [SerializeField]
-    protected Transform targetPos = null;
-    [SerializeField]
-    private DamageTextController damageTextController;
-    [SerializeField]
-    protected int defeatExp = 0;
+    [SerializeField] protected Transform targetPos = null;
+    [SerializeField] private ValueTextController damageTextController;
+    [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
+    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
+    public int TotalDefensivePower { get { return totalDefensivePower; } set { totalDefensivePower = value; } }
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
     public int DefeatExp { get { return defeatExp; } set { defeatExp = value; } }
     public Transform TargetPos { get { return targetPos; } }
@@ -51,15 +51,12 @@ public class Status : MonoBehaviour
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
-    public virtual void Update()
+
+    public void SetValueText(int _damage, Color _color)
     {
-        //if (TriggerStateChange)
-        //    TriggerStateChange = false;
+        damageTextController.SetText(_damage, _color);
     }
-    public void SetDamageText(int _damage)
-    {
-        damageTextController.SetDamageText(_damage);
-    }
+
     public int ReviseDamage(int _damage, int _depensivePower)
     {
         return Mathf.CeilToInt(_damage * (1f / (1 + _depensivePower)));
@@ -74,10 +71,17 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
+        //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
-        SetDamageText(ReviseDamage(_damage, defensivePower));
+        SetValueText(ReviseDamage(_damage, defensivePower),Color.red);
+    }
+    public virtual void recovered(int _value)
+    {
+        curHp += _value;
+        triggerStatusUpdate = true;
+        SetValueText(_value, Color.green);
     }
     private IEnumerator Blink()
     {
@@ -93,5 +97,20 @@ public class Status : MonoBehaviour
             ani.SetLayerWeight(i, 0);
         }
         ani.SetLayerWeight((int)layerName, 1);
+    }
+    public float GetDistance(Vector2 _end)
+    {
+        // 대상과의 거리 측정
+        float x1 = transform.position.x;
+        float y1 = transform.position.y;
+        float x2 = _end.x;
+        float y2 = _end.y;
+        float width = x2 - x1;
+        float height = y2 - y1;
+
+        float distance = width * width + height * height;
+        distance = Mathf.Sqrt(distance);
+
+        return distance;
     }
 }

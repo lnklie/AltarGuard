@@ -1,42 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : StageManager.cs
-==============================
-*/
+
 public class StageManager : SingletonManager<StageManager>
 {
 
-    [SerializeField]
-    private bool isStart = false;
-    public bool IsStart
-    {
-        get { return isStart; }
-    }
-    [SerializeField]
-    private bool isStage = false;
-    public bool IsStage
-    {
-        get { return isStage; }
-    }
-    [SerializeField]
-    private EnemySpawner enemySpawner = null;
-    [SerializeField]
-    private PlayerStatus player;
-    [SerializeField]
-    private Stage curStage = null;
+    [SerializeField] private bool isStart = false;
+    [SerializeField] private bool isStage = false;
+    [SerializeField] private EnemySpawner enemySpawner = null;
+    [SerializeField] private PlayerStatus player;
+    [SerializeField] private Stage curStage = null;
+    [SerializeField] private int spawnedEneies = 0;
 
-    [SerializeField]
-    private int spawnedEneies = 0;
-    public int SpawnedEneies
-    {
-        get { return spawnedEneies;}
-        set { spawnedEneies = value; }
-    }
+    public bool IsStart { get { return isStart; } }
+    public bool IsStage { get { return isStage; } }
+    public int SpawnedEneies { get { return spawnedEneies;} set { spawnedEneies = value; } }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F1))

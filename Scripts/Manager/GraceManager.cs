@@ -14,7 +14,6 @@ public class GraceManager : MonoBehaviour
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
-
         {
             ActiveGrace();
         }
@@ -35,7 +34,7 @@ public class GraceManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("íŒ”ìŠ¤");
+                Debug.Log("ÆÈ½º");
             }
 
         }
@@ -1337,13 +1336,13 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("ì´ë¯¸ ë°°ìš´ ì€ì´");
+            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("ì²´í¬í•˜ë ¤ëŠ” í‚¤ëŠ” " + _key);
+        Debug.Log("Ã¼Å©ÇÏ·Á´Â Å°´Â " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)

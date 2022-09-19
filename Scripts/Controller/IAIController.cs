@@ -4,11 +4,13 @@ using UnityEngine;
 
 public interface IAIController
 {
-    public void AIChangeState(CharacterStatus _status);
-    public void AIState(CharacterStatus _status);
-    public void AIPerception(CharacterStatus _status);
-    public void AIIdle(CharacterStatus _status);
-    public void AIChase(CharacterStatus _status);
-    public void AIAttack(CharacterStatus _status);
-    public IEnumerator AIDied(CharacterStatus _status);
+    public void AIChangeState();
+    public void AIState();
+    public void AIPerception();
+    public void AIIdle();
+    public void AIChase();
+    public void AIAttack();
+
+    public void AIUseSkill();
+    public IEnumerator AIDied();
 }
