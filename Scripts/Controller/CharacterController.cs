@@ -184,7 +184,7 @@ public class CharacterController : BaseController, IAIController
 
             }
         }
-        Debug.Log("����?");
+        Debug.Log("占쏙옙占쏙옙?");
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)

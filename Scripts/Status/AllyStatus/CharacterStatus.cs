@@ -9,7 +9,6 @@ public class CharacterStatus : Status
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
-    [SerializeField] protected float maxCastingSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
@@ -250,7 +249,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;

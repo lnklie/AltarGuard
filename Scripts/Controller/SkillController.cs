@@ -33,7 +33,7 @@ public class SkillController : MonoBehaviour
         }
     }
     public void AquireSkill(int _skillKey)
-    {
+    
         Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
 
         skills.Add(_newSkill);

@@ -44,7 +44,6 @@ public class RushEnemyStatus : EnemyStatus
         UpdateTotalAbility();
         totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
         totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
-
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
         itemDropKey.Add(rushEnemy.itemDropKey3);
@@ -60,7 +59,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public override void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
         totalPhysicalDamage = 1;

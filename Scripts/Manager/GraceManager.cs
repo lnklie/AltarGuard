@@ -34,7 +34,7 @@ public class GraceManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("ÆÈ½º");
+                Debug.Log("ï¿½È½ï¿½");
             }
 
         }
@@ -1336,13 +1336,13 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
+            Debug.Log("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("Ã¼Å©ÇÏ·Á´Â Å°´Â " + _key);
+        Debug.Log("Ã¼Å©ï¿½Ï·ï¿½ï¿½ Å°ï¿½ï¿½ " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)

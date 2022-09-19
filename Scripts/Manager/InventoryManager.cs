@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : InventoryManager.cs
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : 2022-06-09
+ * ï¿½Û¼ï¿½ï¿½ï¿½ : Inklie
+ * ï¿½ï¿½ï¿½Ï¸ï¿½ : InventoryManager.cs
 ==============================
 */
 public class InventoryManager : SingletonManager<InventoryManager>
@@ -119,7 +119,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
-        // ¸®½ºÆ®¿¡ ¾ÆÀÌÅÛ Ãß°¡ 
+        // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 
         _itemList.Add(_item);    
     }
     public Item AcquireItem(Item _item,int _count = 1)
@@ -220,7 +220,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public Item SelectItem(Item _selectItem)
     {
-        // ÀÎº¥Åä¸®¿¡¼­ ÇØ´ç ¾ÆÀÌÅÛ ¹ÝÈ¯
+        // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         Item _item = null;
 
         if (IndexOfItem(_selectItem) != -1)
@@ -254,13 +254,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
         } 
         else
         {
-            Debug.Log("¾ÆÀÌÅÛ ¾øÀ½");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
         }
         return _item;
     }
     public List<Item> KeyToItems(int _selectItemKey)
     {
-        // ÀÎº¥Åä¸®¿¡¼­ ÇØ´ç ¾ÆÀÌÅÛ ¹ÝÈ¯
+        // ï¿½Îºï¿½ï¿½ä¸®ï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         List<Item> _items = new List<Item>();
 
         switch (_selectItemKey / 1000)
@@ -326,27 +326,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void UseItem(CharacterStatus _character, Item _item)
     {
-        // ¼Ò¸ðÇ°¸¸ °¡´É UI¿¡¼­ ¼Ò¸ðÇ°¸¸ »ç¿ëÇÏ±â UI³ªÅ¸³ª±â
         if (IndexOfItem(_item) != -1)
         {
             SelectItem(_item).count--;
             UseEffect(_character, _item);
-            Debug.Log("¾ÆÀÌÅÛ »ç¿ë");
             if (SelectItem(_item).count == 0)
             {
                 inventroyConsumableItems.Remove(SelectItem(_item));
                 SetInventoryIndex(inventroyConsumableItems);
-                Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
             }
         }
         else
         {
-            Debug.Log("¾ÆÀÌÅÛ ¾øÀ½");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
         }
     }
     public void UseEffect(CharacterStatus _character , Item _item)
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         Consumables consumables = ((Consumables)inventroyConsumableItems[IndexOfItem( _item)]);
         if (consumables.useEffect == "Cure")
         {
@@ -354,7 +351,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         else if (consumables.useEffect == "Buff")
         {
-            Debug.Log("¹öÇÁ");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½");
         }
     }
     public void DiscardItem(Item _item,int _amount = 1)
@@ -362,95 +359,91 @@ public class InventoryManager : SingletonManager<InventoryManager>
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
 
-            // ¾ÆÀÌÅÛ ¹ö¸®±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             if (IndexOfItem(_item) != -1)
             {
                 if (!inventroyWeaponItems[IndexOfItem(_item)].isEquip)
                 {
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
-                    Debug.Log("¾ÆÀÌÅÛ ¹ö¸®±â");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyWeaponItems);
-                        Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
                     }
                 }
                 else
-                    Debug.Log("ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛ ÀÔ´Ï´Ù.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.");
             }
             else
             {
-                //Debug.Log("±×·± ¾ÆÀÌÅÛ ¾øÀ½");
+                //Debug.Log("ï¿½×·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
         else if (_item.itemType == (int)ItemType.Armor ||
             _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
             _item.itemType == (int)ItemType.Cloth)
         {
-            // ¾ÆÀÌÅÛ ¹ö¸®±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
-                    Debug.Log("¾ÆÀÌÅÛ ¹ö¸®±â");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyEquipmentItems);
-                        Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
                     }
                 }
                 else
-                    Debug.Log("ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛ ÀÔ´Ï´Ù.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.");
             }
             else
             {
-                //Debug.Log("±×·± ¾ÆÀÌÅÛ ¾øÀ½");
+                //Debug.Log("ï¿½×·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
         else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
         {
-            // ¾ÆÀÌÅÛ ¹ö¸®±â
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
-                    Debug.Log("¾ÆÀÌÅÛ ¹ö¸®±â");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyDecorationItems);
-                        Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
                     }
                 }
                 else
-                    Debug.Log("ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛ ÀÔ´Ï´Ù.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô´Ï´ï¿½.");
             }
             else
             {
-                //Debug.Log("±×·± ¾ÆÀÌÅÛ ¾øÀ½");
+                //Debug.Log("ï¿½×·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
         else if(_item.itemType == (int)ItemType.Consumables)
         {
             if (IndexOfItem(_item) != -1)
             {
-                Debug.Log("ÆÄ·Á´Â ¾ÆÀÌÅÛÀÇ ¼ö·®Àº " + _item.count);
+                Debug.Log("ï¿½Ä·ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ " + _item.count);
                 _item.count -= _amount;
-                Debug.Log("³²Àº ¾ÆÀÌÅÛÀÇ ¼ö·®Àº " + _item.count);
+                Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ " + _item.count);
                 if ( _item.count <= 0)
                 {
                     inventroyConsumableItems.Remove(_item);
                     SetInventoryIndex(inventroyConsumableItems);
-                    Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
                 }
             }
             else
             {
-                //Debug.Log("¾ÆÀÌÅÛ ¾øÀ½");
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
         else
@@ -462,18 +455,17 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyMiscellaneousItems.Remove(_item);
                     SetInventoryIndex(inventroyMiscellaneousItems);
-                    Debug.Log("¾ÆÀÌÅÛ ºñ¿öÁü");
                 }
             }
             else
             {
-                //Debug.Log("¾ÆÀÌÅÛ ¾øÀ½");
+                //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
     }
     public void SortInventoryByItemKey(List<Item> _inventory)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
@@ -483,7 +475,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;

@@ -25,7 +25,7 @@ public class BossEnemyStatus : EnemyStatus
     }
     public void CustomEnemy()
     {
-        Debug.Log("Ä¿½ºÅÒ ¿¡³Ê¹Ì 2");
+        Debug.Log("ì»¤ìŠ¤í…€ ì—ë„ˆë¯¸ 2");
         objectName = bossEnemy.objectName;
         str = bossEnemy.str;
         dex = bossEnemy.dex;
@@ -53,7 +53,7 @@ public class BossEnemyStatus : EnemyStatus
 
     public override void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         maxHp = bossEnemy.hp + str * 10;
         maxMp = bossEnemy.mp + wiz * 10;
         physicalDamage = str * 5 + equipedPhysicalDamage;

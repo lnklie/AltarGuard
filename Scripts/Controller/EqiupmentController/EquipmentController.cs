@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
@@ -66,7 +65,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        int magicDamage = 0;
+        int magicDamage = 0; 
 
         for (int i = 0; i < equipItems.Length; i++)
         {

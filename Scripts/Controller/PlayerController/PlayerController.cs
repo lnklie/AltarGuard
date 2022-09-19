@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : PlayerController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -113,7 +113,7 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("¾Æ±º Å¬¸¯");
+            Debug.Log("ì•„êµ° í´ë¦­");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -125,11 +125,11 @@ public class PlayerController : CharacterController
                     {
                         _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("¾Æ±º Å¸°ÙÆÃ " + hit.rigidbody.gameObject.name);
+                    Debug.Log("ì•„êµ° íƒ€ê²ŸíŒ… " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("´ë»óÀÌ ³Ê¹« ¸Ö¸®ÀÖ½À´Ï´Ù.");
+                    Debug.Log("ëŒ€ìƒì´ ë„ˆë¬´ ë©€ë¦¬ìˆìŠµë‹ˆë‹¤.");
             }
             else
             {
@@ -157,14 +157,14 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove(PlayerStatus _status)
     {
-        // ¿òÁ÷ÀÓ ½ÇÇà
+        // ì›€ì§ì„ ì‹¤í–‰
         _status.ActiveLayer(LayerName.WalkLayer);
         _status.Rig.velocity = _status.TotalSpeed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
     {
-        // Å°ÀÔ·Â
+        // í‚¤ì…ë ¥
         _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -195,7 +195,7 @@ public class PlayerController : CharacterController
     }
     public bool IsMove(PlayerStatus _status)
     {
-        // ¿òÁ÷ÀÌ°í ÀÖ´ÂÁö È®ÀÎ
+        // ì›€ì§ì´ê³  ìˆëŠ”ì§€ í™•ì¸
         if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
@@ -233,7 +233,7 @@ public class PlayerController : CharacterController
     public void DamageEnemy(PlayerStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // ¹üÀ§¾È¿¡ ÀÖ´Â Àûµé¿¡°Ô µ¥¹ÌÁö
+        // ë²”ìœ„ì•ˆì— ìˆëŠ” ì ë“¤ì—ê²Œ ë°ë¯¸ì§€
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -380,7 +380,7 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("Å¸°ÙÆÃ");
+        Debug.Log("íƒ€ê²ŸíŒ…");
         if (_allyTarget)
         {
             if (player.AllyTarget)
