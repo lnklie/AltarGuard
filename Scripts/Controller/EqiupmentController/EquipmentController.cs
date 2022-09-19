@@ -2,13 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-05
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : EquipmentController.cs
-==============================
-*/
+
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
@@ -44,25 +38,20 @@ public class EquipmentController : MonoBehaviour
         subWeaponSpace = this.GetComponentInChildren<SubWeaponSpace>();
         weaponSpace = this.GetComponentInChildren<WeaponSpace>();
     }
-    private void Start()
-    {
-    }
 
     public int GetEquipmentDefensivePower()
     {
-        // ì¥ë¹„ì— ë°©ì–´ë ¥ ì¶œë ¥
+        // Àåºñ¿¡ ¹æ¾î·Â Ãâ·Â
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
-        {
             equipmentDefensivePower += (equipItems[i] != null) ? (equipItems[i]).defensivePower : 0;
-        }
 
         return equipmentDefensivePower;
     }
     public int GetEquipmentPhysicDamage()
     {
-        // ì¥ë¹„ì— ë¬¼ë¦¬ë°ë¯¸ì§€ ì¶œë ¥
+        // Àåºñ¿¡ ¹°¸®µ¥¹ÌÁö Ãâ·Â
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,7 +63,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // ì¥ë¹„ì— ë§ˆë²•ë°ë¯¸ì§€ ì¶œë ¥
+        // Àåºñ¿¡ ¸¶¹ıµ¥¹ÌÁö Ãâ·Â
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -86,16 +75,17 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ë¬´ê¸° ì•„ì´í…œì— ë”°ë¥¸ ê³µê²© íƒ€ì… ë³€ê²½
-        if (checkEquipItems[7])
+        // ¹«±â ¾ÆÀÌÅÛ¿¡ µû¸¥ °ø°İ Å¸ÀÔ º¯°æ
+        if (checkEquipItems[8])
         {
-            status.AtkRange = equipItems[7].atkRange;
-            int num = equipItems[7].itemKey / 1000;
-            if (num == 7)
+            status.AtkRange = equipItems[8].atkRange;
+            int num = equipItems[8].itemKey / 1000;
+
+            if (equipItems[8].attackType == "Melee")
                 status.AttackType = 0f;
-            else if (num == 9)
+            else if (equipItems[8].attackType == "Ranged")
                 status.AttackType = 0.5f;
-            else if (num == 10)
+            else if (equipItems[8].attackType == "Magic")
                 status.AttackType = 1f;
         }
         else
@@ -106,13 +96,13 @@ public class EquipmentController : MonoBehaviour
     {
         if(!_item.isEquip)
         {
-            Debug.Log("ì¥ì°©!");
             status.IsSkillChange = true;
-            equipItems[_item.itemType] = _item;
-            equipItems[_item.itemType].isEquip = true;
             status.UpdateEquipAbility(equipItems);
             status.UpdateTotalAbility();
             status.TriggerStatusUpdate = true;
+
+            equipItems[_item.itemType] = _item;
+            equipItems[_item.itemType].isEquip = true;
             checkEquipItems[_item.itemType] = true;
             switch (_item.itemType)
             {
@@ -159,7 +149,7 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ì¥ì°© ì¤‘ì…ë‹ˆë‹¤.");
+            Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
         }
     }
     public void SkillChange()
@@ -168,11 +158,13 @@ public class EquipmentController : MonoBehaviour
         {
             skillController.AquireSkill(equipItems[8].skillKey1);
         }
-        else if(equipItems[8].skillKey2 != -1)
+
+        if(equipItems[8].skillKey2 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey2);
         }
-        else if (equipItems[8].skillKey3 != -1)
+        
+        if (equipItems[8].skillKey3 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey3);
         }
@@ -180,7 +172,9 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        // ì¥ì°©í•´ì œ
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateTotalAbility();
+
         switch (_item.itemType)
         {
             case 0:
@@ -288,7 +282,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ì¥ì°© ì œê±°
+        // ÀåÂø Á¦°Å
         switch (_index)
         {
             case 0:

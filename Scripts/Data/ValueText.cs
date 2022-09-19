@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageText : MonoBehaviour
+public class ValueText : MonoBehaviour
 {
     private TextMesh textMesh;
     [SerializeField]
@@ -22,10 +22,18 @@ public class DamageText : MonoBehaviour
     {
         this.transform.Translate(Vector2.up * 1f * Time.deltaTime);
     }
-    public void SetDamageText(int _damage)
+    public void InitText()
     {
-        textMesh.text = _damage.ToString();
+        textMesh.text = "";
+        textMesh.color = Color.white;
     }
+    public void SetText(int _value, Color _color)
+    {
+        InitText();
+        textMesh.text = _value.ToString();
+        textMesh.color = _color;
+    }
+    
     public void PersistDurationTime()
     {
         durationTime += Time.deltaTime;

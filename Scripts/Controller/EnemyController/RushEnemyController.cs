@@ -1,15 +1,10 @@
 using System.Collections;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-13
- * 작성자 : Inklie
- * 파일명 : RushEnemyAIController.cs
-==============================
-*/
+
 public class RushEnemyController : EnemyController
 {
     private RushEnemyStatus rushEnemyStatus = null;
+    private float returnTime = 1f;
     public override void Awake()
     {
         base.Awake();
@@ -23,9 +18,7 @@ public class RushEnemyController : EnemyController
             return false;
         }
         else
-        {
             return true;
-        }
     }
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
@@ -43,16 +36,16 @@ public class RushEnemyController : EnemyController
         yield return 0;
     }
 
-    public override IEnumerator AIDied(CharacterStatus _status)
+    public override IEnumerator AIDied()
     {
         rushEnemyStatus.UpdateEnemyHp();
-        _status.AIState = EAIState.Died;
-        _status.ActiveLayer(LayerName.DieLayer);
-        _status.Rig.velocity = Vector2.zero;
-        _status.Col.enabled = false;
-        yield return new WaitForSeconds(2f);
-        _status.transform.parent.localScale = new Vector3(1, 1, 1);
-        _status.transform.parent.gameObject.SetActive(false);
+        rushEnemyStatus.AIState = EAIState.Died;
+        rushEnemyStatus.ActiveLayer(LayerName.DieLayer);
+        rushEnemyStatus.Rig.velocity = Vector2.zero;
+        rushEnemyStatus.Col.enabled = false;
+        yield return new WaitForSeconds(returnTime);
+        rushEnemyStatus.transform.parent.localScale = new Vector3(1, 1, 1);
+        rushEnemyStatus.transform.parent.gameObject.SetActive(false);
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }

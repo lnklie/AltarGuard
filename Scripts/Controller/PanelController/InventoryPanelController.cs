@@ -82,7 +82,44 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void UpdateMoney()
     {
-        moneyText.text = playerStatus.Money.ToString("N0");
+        moneyText.text = ConvertMoney(playerStatus.Money);
+    }
+
+    public string ConvertMoney(int _money)
+    {
+        string _moneyText = null;
+        int _tempMoney = _money;
+        int _mark = 0;
+        //switch()
+        
+        while(_mark < 2)
+        {
+            if(_tempMoney >= Mathf.Pow(10, 12))
+            {
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "Á¶ ";
+                _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
+            }
+            else if (_tempMoney >= 100000000)
+            {
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "¾ï ";
+                _tempMoney = (_tempMoney % 100000000);
+            }
+            else if (_tempMoney >= 10000)
+            {
+
+                _moneyText += ((_tempMoney / 10000)).ToString() + "¸¸ ";
+                _tempMoney = (_tempMoney % 10000);
+
+            }
+            else if (_tempMoney >= 1)
+            {
+
+                _moneyText += _tempMoney.ToString();
+                _tempMoney = 0;
+            }
+            _mark++;
+        }
+        return _moneyText;
     }
     public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
     {
