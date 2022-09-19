@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class CharacterController : BaseController, IAIController
 {
-    [SerializeField]
-    protected SkillController skillController = null;
-    [SerializeField]
-    protected CharacterStatus characterStatus = null;
-    [SerializeField]
-    protected PathFindController pathFindController = null;
+    [SerializeField] protected SkillController skillController = null;
+    [SerializeField] protected CharacterStatus characterStatus = null;
+    [SerializeField] protected PathFindController pathFindController = null;
     
     public override void Awake()
     {
@@ -22,7 +19,10 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void Update()
     {
-        AIPerception(characterStatus);
+        if(!characterStatus.IsDied)
+        { 
+            AIPerception(characterStatus);
+        }
         AIChangeState(characterStatus);
         AIState(characterStatus);
     }
@@ -49,7 +49,7 @@ public class CharacterController : BaseController, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
@@ -59,11 +59,20 @@ public class CharacterController : BaseController, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (GetDistance(this.transform.position, a.transform.position) < GetDistance(this.transform.position, b.transform.position)) return -1;
             else if (GetDistance(this.transform.position, a.transform.position) > GetDistance(this.transform.position, b.transform.position)) return 1;
+            else return 0;
+        });
+    }
+    public void SortSightRayListByHp(List<Status> _sightRay)
+    {
+
+        _sightRay.Sort(delegate (Status a, Status b)
+        {
+            if (a.CurHp < b.CurHp) return -1;
+            else if (a.CurHp > b.CurHp) return 1;
             else return 0;
         });
     }
@@ -110,13 +119,11 @@ public class CharacterController : BaseController, IAIController
     }
     public void ShotArrow(CharacterStatus _status)
     {
-        // È°½î±â
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(_status, AttackTypeDamage(_status));
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
     }
     public bool IsDied(CharacterStatus _status)
     {
@@ -156,30 +163,28 @@ public class CharacterController : BaseController, IAIController
     public IEnumerator UseSkill(CharacterStatus _status)
     {
         skillController.IsSkillDelay = true;
-        if(skillController.ActiveSkills[0] != null)
+        yield return new WaitForSeconds(_status.TotalCastingSpeed);
+        if(skillController.Skills[0] != null)
         {
-            if (skillController.ActiveSkills[0].skillType == 0)
+            if (skillController.Skills[0].skillType == 0)
             {
                 if (_status.Target)
                 {
-                    skillController.UseSkill(_status.Target);
+                    skillController.UseSkill();
                 }
-                else
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                else   
             }
-            else if (skillController.ActiveSkills[0].skillType == 1)
+            else if (skillController.Skills[0].skillType == 1)
             {
-                if (_status.AllyTarget)
+                if (_status.AllyTarget != null)
                 {
-                    skillController.UseSkill(_status.AllyTarget);
+                    skillController.UseSkill();
                 }
                 else
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+
             }
         }
-        
-
-        yield return new WaitForSeconds(1f);
+        Debug.Log("å ì™ì˜™å ì™ì˜™?");
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage(CharacterStatus _status)
@@ -206,6 +211,9 @@ public class CharacterController : BaseController, IAIController
                 break;
             case EAIState.Attack:
                 AIAttack(_status);
+                break;
+            case EAIState.UseSkill:
+                AIUseSkill(_status);
                 break;
         }
     }
@@ -236,22 +244,25 @@ public class CharacterController : BaseController, IAIController
     }
     public virtual void AIAttack(CharacterStatus _status)
     {
-        if(skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay)
-        {
-            StartCoroutine(UseSkill(_status));
-        }
-        else
-        { 
-            _status.ActiveLayer(LayerName.AttackLayer);
-            _status.Ani.SetFloat("AtkType", _status.AttackType);
-            _status.Rig.velocity = Vector2.zero;
-            StartCoroutine(AttackByAttackType(_status));
-        }
-    }
 
+        _status.ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
+        _status.Rig.velocity = Vector2.zero;
+        StartCoroutine(AttackByAttackType(_status));
+
+    }
+    public virtual void AIUseSkill(CharacterStatus _status)
+    {
+        _status.ActiveLayer(LayerName.AttackLayer);
+        _status.Ani.SetFloat("AtkType", _status.AttackType);
+        _status.Rig.velocity = Vector2.zero;
+        StartCoroutine(UseSkill(_status));
+    }
     public virtual IEnumerator AIDied(CharacterStatus _status)
     {
         yield return null;
     }
+
+
     #endregion
 }

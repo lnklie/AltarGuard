@@ -14,7 +14,6 @@ public class GraceManager : MonoBehaviour
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
-
         {
             ActiveGrace();
         }
@@ -35,7 +34,7 @@ public class GraceManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("팔스");
+                Debug.Log("�Ƚ�");
             }
 
         }
@@ -1337,13 +1336,13 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("이미 배운 은총");
+            Debug.Log("�̹� ��� ���");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("체크하려는 키는 " + _key);
+        Debug.Log("üũ�Ϸ�� Ű�� " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * √÷¡æºˆ¡§¿œ : 2022-06-05
- * ¿€º∫¿⁄ : Inklie
- * ∆ƒ¿œ∏Ì : PlayerController.cs
+ * ÏµúÏ¢ÖÏàòÏ†ïÏùº : 2022-06-05
+ * ÏûëÏÑ±Ïûê : Inklie
+ * ÌååÏùºÎ™Ö : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -13,6 +13,7 @@ public class PlayerController : CharacterController
     private PlayerStatus player = null;
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
+    private FlagController hitFlag = null;
     [SerializeField] private GameObject rivivePoint = null;
 
     public override void Awake()
@@ -46,7 +47,7 @@ public class PlayerController : CharacterController
 
         if (!IsDelay(player))
         {
-            player.DelayTime = player.AtkSpeed;
+            player.DelayTime = player.TotalAtkSpeed;
         }
         else
         {
@@ -66,30 +67,28 @@ public class PlayerController : CharacterController
     }
     public void DragFlag()
     {
-        RaycastHit2D hit = default;
-        if (Input.GetMouseButton(0) && !player.IsUiOn)
+        if (Input.GetMouseButtonDown(0) && !player.IsUiOn)
         {
-            hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
-            
-            if (hit)
+            RaycastHit2D _hitFlag = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Flag"));
+            if (_hitFlag)
             {
-
-                Vector2 _mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                hit.transform.position = _mousePoint;
-                if (_mousePoint.x > 12f || _mousePoint.x < -12f
-                    || _mousePoint.y > 12f || _mousePoint.y < -12f)
-                {
-                    hit.transform.position = new Vector2(0f, -4f);
-                }
+                hitFlag = _hitFlag.collider.GetComponent<FlagController>();
+                hitFlag.IsSelect = true;
             }
         }
-    }
+        else if(Input.GetMouseButtonUp(0) && hitFlag != null &&hitFlag.IsSelect && !player.IsUiOn)
+        {
+            hitFlag.IsSelect = false;
+            hitFlag = null;
+        }
+    } 
     public void PlayerState()
     {
         switch(player.PlayerState)
         {
             case EPlayerState.Play:
-                Perception(player);
+                if(!player.IsDied)
+                    Perception(player);
                 if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
                     StartCoroutine(PlayerAttack(player));
@@ -114,7 +113,7 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("æ∆±∫ ≈¨∏Ø");
+            Debug.Log("ÏïÑÍµ∞ ÌÅ¥Î¶≠");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -126,11 +125,11 @@ public class PlayerController : CharacterController
                     {
                         _status.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("æ∆±∫ ≈∏∞Ÿ∆√ " + hit.rigidbody.gameObject.name);
+                    Debug.Log("ÏïÑÍµ∞ ÌÉÄÍ≤üÌåÖ " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("¥ÎªÛ¿Ã ≥ π´ ∏÷∏Æ¿÷Ω¿¥œ¥Ÿ.");
+                    Debug.Log("ÎåÄÏÉÅÏù¥ ÎÑàÎ¨¥ Î©ÄÎ¶¨ÏûàÏäµÎãàÎã§.");
             }
             else
             {
@@ -158,14 +157,14 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove(PlayerStatus _status)
     {
-        // øÚ¡˜¿” Ω««‡
+        // ÏõÄÏßÅÏûÑ Ïã§Ìñâ
         _status.ActiveLayer(LayerName.WalkLayer);
         _status.Rig.velocity = _status.TotalSpeed * _status.Dir;
         AnimationDirection(_status);
     }
     public bool InputArrowKey(PlayerStatus _status)
     {
-        // ≈∞¿‘∑¬
+        // ÌÇ§ÏûÖÎ†•
         _status.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -196,7 +195,7 @@ public class PlayerController : CharacterController
     }
     public bool IsMove(PlayerStatus _status)
     {
-        // øÚ¡˜¿Ã∞Ì ¿÷¥¬¡ˆ »Æ¿Œ
+        // ÏõÄÏßÅÏù¥Í≥† ÏûàÎäîÏßÄ ÌôïÏù∏
         if (Mathf.Abs(_status.Dir.x) > 0 || Mathf.Abs(_status.Dir.y) > 0)
             return true;
         else
@@ -234,7 +233,7 @@ public class PlayerController : CharacterController
     public void DamageEnemy(PlayerStatus _status)
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, _status.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // π¸¿ßæ»ø° ¿÷¥¬ ¿˚µÈø°∞‘ µ•πÃ¡ˆ
+        // Î≤îÏúÑÏïàÏóê ÏûàÎäî Ï†ÅÎì§ÏóêÍ≤å Îç∞ÎØ∏ÏßÄ
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -244,7 +243,7 @@ public class PlayerController : CharacterController
                 if (_enemy.IsLastHit())
                 {
                     _status.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, _status.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
@@ -283,25 +282,31 @@ public class PlayerController : CharacterController
 
     public void Perception(CharacterStatus _status)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if(_enemyHit)
+        RaycastHit2D[] _enemyHit = Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if(_enemyHit.Length > 0)
         {
-            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();
-            if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            for(int i = 0; i < _enemyHit.Length; i++)
             {
-                _status.EnemyRayList.Add(_enemyHitStatus);
-                _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                EnemyStatus _enemyHitStatus = _enemyHit[i].collider.GetComponent<EnemyStatus>();
+                if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+                {
+                    _status.EnemyRayList.Add(_enemyHitStatus);
+                    _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                }
             }
         }
 
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if(_allyHit)
+        RaycastHit2D[] _allyHit = Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if(_allyHit.Length > 0)
         {
-            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-            if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            for(int i =0; i < _allyHit.Length; i++)
             {
-                _status.AllyRayList.Add(_allyHitStatus);
-                _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                CharacterStatus _allyHitStatus = _allyHit[i].collider.GetComponent<CharacterStatus>();
+                if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+                {
+                    _status.AllyRayList.Add(_allyHitStatus);
+                    _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                }
             }
         }
 
@@ -311,7 +316,6 @@ public class PlayerController : CharacterController
             SortSightRayList(_status.EnemyRayList);
             for (int i = 0; i < _status.EnemyRayList.Count; i++)
             {
-                //Debug.Log("≈∏∞ŸµÈ∞˙¿« ∞≈∏Æ¥¬ " + GetDistance(this.transform.position, _status.SightRayList[i].transform.position));
                 if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
                     || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
                 {
@@ -331,12 +335,35 @@ public class PlayerController : CharacterController
         {
             _status.Target = null;
         }
+
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
     public void TargetEnemy(Status _target)
     {
         if(_target)
         {
-            if(player.Target)
+            if(player.Target) 
             {
                 player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
             }
@@ -344,9 +371,16 @@ public class PlayerController : CharacterController
             player.Target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
         }
     }
+    public void TargetAlly(Status _target)
+    {
+        if (_target)
+        {
+            player.AllyTarget = _target.TargetPos;
+        }
+    }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("≈∏∞Ÿ∆√");
+        Debug.Log("ÌÉÄÍ≤üÌåÖ");
         if (_allyTarget)
         {
             if (player.AllyTarget)
@@ -360,7 +394,7 @@ public class PlayerController : CharacterController
     #region AI
     public override void AIChangeState(CharacterStatus _status)
     {
-        if (_status.EnemyRayList.Count > 0)
+        if (_status.Target)
         {
             _status.Distance = _status.Target.position - _status.TargetPos.position;
             _status.TargetDir = _status.Distance.normalized;
@@ -383,7 +417,12 @@ public class PlayerController : CharacterController
             else
             {
                 _status.AIState = EAIState.Chase;
-                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.AtkRange)
+                if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
+                    GetDistance(this.transform.position, _status.Target.transform.position) <= skillController.SkillQueue[0].skillRange)
+                {
+                    _status.AIState = EAIState.UseSkill;
+                }
+                else if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.TotalAtkRange)
                 {
                     _status.AIState = EAIState.Attack;
                 }
@@ -411,25 +450,32 @@ public class PlayerController : CharacterController
 
     public override void AIPerception(CharacterStatus _status)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if(_enemyHit)
+        RaycastHit2D[] _enemyHit = Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if(_enemyHit.Length > 0)
         {
-            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();  
-            if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            for(int i =0; i < _enemyHit.Length; i++)
             {
-                _status.EnemyRayList.Add(_enemyHitStatus);
-                _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                EnemyStatus _enemyHitStatus = _enemyHit[i].collider.GetComponent<EnemyStatus>();  
+                if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+                {
+                    _status.EnemyRayList.Add(_enemyHitStatus);
+                    _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                }
             }
         }
 
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if(_allyHit)
+        RaycastHit2D[] _allyHit = Physics2D.CircleCastAll(this.transform.position, _status.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+        if (_allyHit.Length > 0)
         {
-            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-            if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            for(int i= 0; i < _allyHit.Length; i++)
             {
-                _status.AllyRayList.Add(_allyHitStatus);
-                _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                CharacterStatus _allyHitStatus = _allyHit[i].collider.GetComponent<CharacterStatus>();
+                if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+                {
+
+                    _status.AllyRayList.Add(_allyHitStatus);
+                    _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
+                }
             }
         }
         if (_status.EnemyRayList.Count > 0)
@@ -457,6 +503,30 @@ public class PlayerController : CharacterController
         {
             _status.Target = null;
         }
+
+          
+        if (_status.AllyRayList.Count > 0)
+        {
+            TargetAlly(_status.AllyRayList[0]);
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
 
 
@@ -474,7 +544,7 @@ public class PlayerController : CharacterController
                 if (_enemy.IsLastHit())
                 {
                     _status.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[i])

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-09
- * 작성자 : Inklie
- * 파일명 : InventoryManager.cs
+ * �������� : 2022-06-09
+ * �ۼ��� : Inklie
+ * ���ϸ� : InventoryManager.cs
 ==============================
 */
 public class InventoryManager : SingletonManager<InventoryManager>
@@ -119,13 +119,12 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
-        // 리스트에 아이템 추가 
+        // ����Ʈ�� ������ �߰� 
         _itemList.Add(_item);    
     }
     public Item AcquireItem(Item _item,int _count = 1)
     {
         _item.dateTime = System.DateTime.Now;
-        Debug.Log("��� �������� �̸�� " + _item.itemKorName + " ��� �ð�� " + _item.dateTime);
         if (_item != null)
         { 
             switch (_item.itemKey / 1000)
@@ -221,7 +220,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public Item SelectItem(Item _selectItem)
     {
-        // 인벤토리에서 해당 아이템 반환
+        // �κ��丮���� �ش� ������ ��ȯ
         Item _item = null;
 
         if (IndexOfItem(_selectItem) != -1)
@@ -255,13 +254,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
         } 
         else
         {
-            Debug.Log("아이템 없음");
+            Debug.Log("������ ���");
         }
         return _item;
     }
     public List<Item> KeyToItems(int _selectItemKey)
     {
-        // 인벤토리에서 해당 아이템 반환
+        // �κ��丮���� �ش� ������ ��ȯ
         List<Item> _items = new List<Item>();
 
         switch (_selectItemKey / 1000)
@@ -327,27 +326,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void UseItem(CharacterStatus _character, Item _item)
     {
-        // �Ҹ�ǰ�� ���� UI���� �Ҹ�ǰ�� ����ϱ� UI��Ÿ����
         if (IndexOfItem(_item) != -1)
         {
             SelectItem(_item).count--;
             UseEffect(_character, _item);
-            Debug.Log("������ ���");
             if (SelectItem(_item).count == 0)
             {
                 inventroyConsumableItems.Remove(SelectItem(_item));
                 SetInventoryIndex(inventroyConsumableItems);
-                Debug.Log("������ �����");
             }
         }
         else
         {
-            Debug.Log("아이템 없음");
+            Debug.Log("������ ���");
         }
     }
     public void UseEffect(CharacterStatus _character , Item _item)
     {
-        // 아이템 사용
+        // ������ ���
         Consumables consumables = ((Consumables)inventroyConsumableItems[IndexOfItem( _item)]);
         if (consumables.useEffect == "Cure")
         {
@@ -355,7 +351,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         else if (consumables.useEffect == "Buff")
         {
-            Debug.Log("버프");
+            Debug.Log("����");
         }
     }
     public void DiscardItem(Item _item,int _amount = 1)
@@ -363,95 +359,91 @@ public class InventoryManager : SingletonManager<InventoryManager>
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
 
-            // 아이템 버리기
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (!inventroyWeaponItems[IndexOfItem(_item)].isEquip)
                 {
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
-                    Debug.Log("아이템 버리기");
+                    Debug.Log("������ ���");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyWeaponItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
-                    Debug.Log("장착 중인 아이템 입니다.");
+                    Debug.Log("���� ���� ������ �Դϴ�.");
             }
             else
             {
-                //Debug.Log("그런 아이템 없음");
+                //Debug.Log("�׷� ������ ���");
             }
         }
         else if (_item.itemType == (int)ItemType.Armor ||
             _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
             _item.itemType == (int)ItemType.Cloth)
         {
-            // 아이템 버리기
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
-                    Debug.Log("아이템 버리기");
+                    Debug.Log("������ ���");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyEquipmentItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
-                    Debug.Log("장착 중인 아이템 입니다.");
+                    Debug.Log("���� ���� ������ �Դϴ�.");
             }
             else
             {
-                //Debug.Log("그런 아이템 없음");
+                //Debug.Log("�׷� ������ ���");
             }
         }
         else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
         {
-            // 아이템 버리기
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
-                    Debug.Log("아이템 버리기");
+                    Debug.Log("������ ���");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyDecorationItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
-                    Debug.Log("장착 중인 아이템 입니다.");
+                    Debug.Log("���� ���� ������ �Դϴ�.");
             }
             else
             {
-                //Debug.Log("그런 아이템 없음");
+                //Debug.Log("�׷� ������ ���");
             }
         }
         else if(_item.itemType == (int)ItemType.Consumables)
         {
             if (IndexOfItem(_item) != -1)
             {
-                Debug.Log("파려는 아이템의 수량은 " + _item.count);
+                Debug.Log("�ķ�� �������� ��� " + _item.count);
                 _item.count -= _amount;
-                Debug.Log("남은 아이템의 수량은 " + _item.count);
+                Debug.Log("��� �������� ��� " + _item.count);
                 if ( _item.count <= 0)
                 {
                     inventroyConsumableItems.Remove(_item);
                     SetInventoryIndex(inventroyConsumableItems);
-                    Debug.Log("������ �����");
                 }
             }
             else
             {
-                //Debug.Log("아이템 없음");
+                //Debug.Log("������ ���");
             }
         }
         else
@@ -463,18 +455,17 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyMiscellaneousItems.Remove(_item);
                     SetInventoryIndex(inventroyMiscellaneousItems);
-                    Debug.Log("������ �����");
                 }
             }
             else
             {
-                //Debug.Log("아이템 없음");
+                //Debug.Log("������ ���");
             }
         }
     }
     public void SortInventoryByItemKey(List<Item> _inventory)
     {
-        // 리스트 정렬
+        // ����Ʈ ���
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;

@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EquipmentController.cs
-==============================
-*/
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
@@ -50,7 +43,6 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // 장비에 방어력 출력
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -62,7 +54,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // 장비에 물리데미지 출력
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,8 +65,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // 장비에 마법데미지 출력
-        int magicDamage = 0;
+        int magicDamage = 0; 
 
         for (int i = 0; i < equipItems.Length; i++)
         {
@@ -86,7 +76,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[7])
         {
             status.AtkRange = equipItems[7].atkRange;
@@ -106,7 +95,6 @@ public class EquipmentController : MonoBehaviour
     {
         if(!_item.isEquip)
         {
-            Debug.Log("장착!");
             status.IsSkillChange = true;
             equipItems[_item.itemType] = _item;
             equipItems[_item.itemType].isEquip = true;
@@ -159,7 +147,6 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("장착 중입니다.");
         }
     }
     public void SkillChange()
@@ -168,11 +155,13 @@ public class EquipmentController : MonoBehaviour
         {
             skillController.AquireSkill(equipItems[8].skillKey1);
         }
-        else if(equipItems[8].skillKey2 != -1)
+
+        if(equipItems[8].skillKey2 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey2);
         }
-        else if (equipItems[8].skillKey3 != -1)
+        
+        if (equipItems[8].skillKey3 != -1)
         {
             skillController.AquireSkill(equipItems[8].skillKey3);
         }
@@ -180,7 +169,9 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        // 장착해제
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateTotalAbility();
+        // �������
         switch (_item.itemType)
         {
             case 0:
@@ -288,7 +279,6 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // 장착 제거
         switch (_index)
         {
             case 0:

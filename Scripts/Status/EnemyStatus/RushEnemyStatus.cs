@@ -41,10 +41,6 @@ public class RushEnemyStatus : EnemyStatus
         totalWiz = rushEnemy.wiz + equipedWiz; 
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.helmetKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.armorKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.pantKey));
-        //equipmentController.ChangeEquipment(DatabaseManager.Instance.SelectItem(rushEnemy.weaponKey));
         UpdateTotalAbility();
         totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
         totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
@@ -63,16 +59,15 @@ public class RushEnemyStatus : EnemyStatus
 
     public override void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // �ɷ� ����Ʈ
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
         totalPhysicalDamage = 1;
-        //totalPhysicalDamage = str * 5 + equipedPhysicalDamage;
+        //totalPhysicalDamage = str * 5 + equipedPhysicalDamage; 
         totalMagicalDamage = wiz * 5 + equipedMagicalDamage;
         totalDefensivePower = str * 3 + equipedDefensivePower;
         totalSpeed = rushEnemy.speed + dex * 0.1f;
         totalHpRegenValue = str * 1;
-
 
         curHp = totalMaxHp;
     }

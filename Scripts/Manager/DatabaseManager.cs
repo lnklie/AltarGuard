@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-09
- * 작성자 : Inklie
- * 파일명 : DatabaseManager.cs
+ * �������� : 2022-06-09
+ * �ۼ��� : Inklie
+ * ���ϸ� : DatabaseManager.cs
 ==============================
 */
 
@@ -38,8 +38,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Stage> stageList = new List<Stage>();
 
     [Header("Skill")]
-    public List<ActiveSkill> activeSkillList = new List<ActiveSkill>();
-    public List<PassiveSkill> passiveSkillList = new List<PassiveSkill>();
+    public List<Skill> skillList = new List<Skill>();
 
     [Header("Grace")]
     public List<Grace> warriorGraceList = new List<Grace>();
@@ -74,7 +73,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Ӹ� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -88,7 +87,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("경로에 얼굴 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -102,7 +101,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("경로에 옷 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -116,7 +115,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("경로에 바지 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -130,7 +129,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Ӹ� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -144,7 +143,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("경로에 갑옷 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -158,7 +157,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("경로에 망토 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -172,7 +171,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("7_Shield")))
         {
-            Debug.Log("경로에 방패 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -186,7 +185,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("8_Sword")))
         {
-            Debug.Log("경로에 검 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -201,7 +200,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("9_Exe")))
         {
-            Debug.Log("경로에 도끼 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -216,7 +215,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("10_Spear")))
         {
-            Debug.Log("경로에 창 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� â ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -231,7 +230,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("11_Bow")))
         {
-            Debug.Log("경로에 활 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� Ȱ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -246,7 +245,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("12_Wand")))
         {
-            Debug.Log("경로에 지팡이 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -261,7 +260,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("13_Consumables")))
         {
-            Debug.Log("경로에 소비품 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Һ�ǰ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -275,7 +274,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("14_Miscellaneous")))
         {
-            Debug.Log("경로에 기타템 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��Ÿ�� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -289,7 +288,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -308,7 +307,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("경로에 경험치 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ����ġ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -321,7 +320,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("경로에 스테이지 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �������� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -332,43 +331,26 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
-        if (!File.Exists(CombinePath("ActiveSkill")))
+        if (!File.Exists(CombinePath("Skill")))
         {
-            Debug.Log("경로에 액티브 스킬 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��ų ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ActiveSkill")));
-            ActiveSkill[] skill = JsonHelper.FromJson<ActiveSkill>(loadJson);
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill")));
+            Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
-                activeSkillList.Add(new ActiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel,skill[i].skillType, skill[i].skillVariable,
+                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillKorName,skill[i].skillExplain, skill[i].skillLevel, skill[i].skillVariable,skill[i].skillType, skill[i].skillRange, skill[i].maxCoolTime, skill[i].skillHitCount,
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10, skill[i].maxCoolTime, skill[i].skillHitCount));
-            }
-        }
-        if (!File.Exists(CombinePath("PassiveSkill")))
-        {
-            Debug.Log("경로에 패시브 스킬 데이터 베이스가 존재하지 않습니다.");
-        }
-        else
-        {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("PassiveSkill")));
-            PassiveSkill[] skill = JsonHelper.FromJson<PassiveSkill>(loadJson);
-            for (var i = 0; i < skill.Length; i++)
-            {
-                passiveSkillList.Add(new PassiveSkill(skill[i].skillKey, skill[i].skillName, skill[i].skillLevel, skill[i].skillVariable, skill[i].targetStatus,
-                    skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
-                    skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
-                    skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
-                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10)) ;
+                    skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
             }
         }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
-            Debug.Log("경로에 밀리 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �и� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -382,7 +364,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("RangedGrace")))
         {
-            Debug.Log("경로에 궁수 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �ü� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -397,7 +379,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("MagicGrace")))
         {
-            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -412,7 +394,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
         if (!File.Exists(CombinePath("CommanderGrace")))
         {
-            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -426,7 +408,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
         {
-            Debug.Log("경로에 제작 레시피 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -441,7 +423,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("AltarProperty")))
         {
-            Debug.Log("경로에 제단 특성 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� Ư�� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -459,7 +441,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("GameScript")))
         {
-            Debug.Log("��ο� �뺻 ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -669,24 +650,16 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     public Skill SelectSkill(int _key)
     {
-        Skill _skill = new Skill(-1,"",-1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
-        if(_key < 1000)
+        Skill _skill = new Skill(-1,"","","",-1,-1,-1, -1 ,1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+
+        for (int i = 0; i < skillList.Count; i++)
         {
-            for(int i =0; i< activeSkillList.Count; i++)
+            if (skillList[i].skillKey == _key)
             {
-                if (activeSkillList[i].skillKey == _key)
-                {
-                    ActiveSkill _activeSkill = new ActiveSkill(activeSkillList[i].skillKey, activeSkillList[i].skillName, activeSkillList[i].skillLevel, activeSkillList[i].skillType, activeSkillList[i].skillVariable, activeSkillList[i].skillValue1, activeSkillList[i].skillValue2, activeSkillList[i].skillValue3, activeSkillList[i].skillValue4, activeSkillList[i].skillValue5, activeSkillList[i].skillValue6, activeSkillList[i].skillValue7, activeSkillList[i].skillValue8, activeSkillList[i].skillValue9, activeSkillList[i].skillValue10, activeSkillList[i].skillFigures1, activeSkillList[i].skillFigures2, activeSkillList[i].skillFigures3, activeSkillList[i].skillFigures4, activeSkillList[i].skillFigures5, activeSkillList[i].skillFigures6, activeSkillList[i].skillFigures7, activeSkillList[i].skillFigures8, activeSkillList[i].skillFigures9, activeSkillList[i].skillFigures10, activeSkillList[i].maxCoolTime, activeSkillList[i].skillHitCount);
-                    _skill = _activeSkill;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < passiveSkillList.Count; i++)
-            {
-                if (passiveSkillList[i].skillKey == _key)
-                    _skill = passiveSkillList[i];
+                Skill _selectSkill = new Skill(skillList[i].skillKey, skillList[i].skillName, skillList[i].skillKorName, skillList[i].skillExplain, skillList[i].skillLevel, skillList[i].skillVariable, skillList[i].skillType, skillList[i].skillRange, skillList[i].maxCoolTime, skillList[i].skillHitCount,
+                    skillList[i].skillValue1, skillList[i].skillValue2, skillList[i].skillValue3, skillList[i].skillValue4, skillList[i].skillValue5, skillList[i].skillValue6, skillList[i].skillValue7, skillList[i].skillValue8, skillList[i].skillValue9, skillList[i].skillValue10,
+                    skillList[i].skillFigures1, skillList[i].skillFigures2, skillList[i].skillFigures3, skillList[i].skillFigures4, skillList[i].skillFigures5, skillList[i].skillFigures6, skillList[i].skillFigures7, skillList[i].skillFigures8, skillList[i].skillFigures9, skillList[i].skillFigures10);
+                _skill = _selectSkill;
             }
         }
         return _skill;
@@ -703,7 +676,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (warriorGraceList[i].graceKey == _key)
                         _grace = warriorGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 1:
@@ -712,7 +685,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (rangedGraceList[i].graceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 2:
@@ -721,7 +694,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (magicGraceList[i].graceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 3:
@@ -730,7 +703,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (commanderGraceList[i].graceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
 
@@ -745,7 +718,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
+                Debug.Log("�ش� ��� �����ǰ� ���ϴ�.");
         }
         return _craftRecipe;
     }
@@ -768,7 +741,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("�ش� ��� �����ǰ� ���ϴ�.");
         }
         return _gameScript;
     }

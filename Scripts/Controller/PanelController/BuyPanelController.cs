@@ -38,7 +38,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingInventorySlotChange(int _index)
     {
-        // 인벤토리 슬롯 바꾸기 
+        // �κ��丮 ���� �ٲٱ� 
         SellSlotsReset();
         SetActiveShopItemInfo(false);
         SetActiveEquipedItemInfo(false);
@@ -93,7 +93,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public string KeyToItemTypeText(int _key)
     {
-        // 키를 아이템 타입으로 변경
+        // Ű�� ������ Ÿ����� ����
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -135,7 +135,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingItemInfo()
     {
-        // 아이템 정보창 업데이트
+        // ������ ���â ����Ʈ
         isBuyingItemSelect = false;
         if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
         {
@@ -155,86 +155,86 @@ public class BuyPanelController : MonoBehaviour
 
         buyingiteminfoText[0].text = selectBuyingItem.itemKorName;
         buyingiteminfoText[1].text = KeyToItemTypeText(selectBuyingItem.itemKey);
-        buyingiteminfoText[3].text = "구매 가격: " + selectBuyingItem.buyPrice;
+        buyingiteminfoText[3].text = "���� ����: " + selectBuyingItem.buyPrice;
         switch (selectBuyingItem.itemKey / 1000)
         {
             case 0:
-                buyingiteminfoText[2].text = "머리 장식품";
+                buyingiteminfoText[2].text = "�Ӹ� ���ǰ";
                 break;
             case 1:
-                buyingiteminfoText[2].text = "안면 장식품";
+                buyingiteminfoText[2].text = "�ȸ� ���ǰ";
                 break;
             case 2:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "����: " + selectBuyingItem.defensivePower;
                 break;
             case 3:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "����: " + selectBuyingItem.defensivePower;
                 break;
             case 4:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "����: " + selectBuyingItem.defensivePower;
                 break;
             case 5:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "����: " + selectBuyingItem.defensivePower;
                 break;
             case 6:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingiteminfoText[2].text = "����: " + selectBuyingItem.defensivePower;
                 break;
             case 7:
                 buyingiteminfoText[2].text =
-                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
+                    "���� ��ݷ�: " + selectBuyingItem.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectBuyingItem.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 8:
                 buyingiteminfoText[2].text =
-                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType + "\n" +
-                    "방어력: " + selectBuyingItem.defensivePower;
+                    "���� ��ݷ�: " + selectBuyingItem.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectBuyingItem.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)selectBuyingItem).weaponType + "\n" +
+                    "����: " + selectBuyingItem.defensivePower;
                 break;
             case 9:
                 buyingiteminfoText[2].text =
-                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
+                    "���� ��ݷ�: " + selectBuyingItem.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectBuyingItem.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 10:
                 buyingiteminfoText[2].text =
-                    "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
-                    "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
-                    "공격 거리: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
-                    "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
+                    "���� ��ݷ�: " + selectBuyingItem.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectBuyingItem.magicalDamage + "\n" +
+                    "��� ���: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
+                    "��� �Ÿ�: " + ((Weapon)selectBuyingItem).atkDistance + "\n" +
+                    "���� ���: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 11:
                 buyingiteminfoText[2].text =
-                    "회복량 : " + selectBuyingItem.value + "\n";
+                    "ȸ���� : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
                 buyingiteminfoText[2].text =
-                     "이것은 퀘스트 아이템";
+                     "�̰�� ��Ʈ ������";
                 break;
         }
     }
     public void UpdateEquipedItemInfo()
     {
-        // 아이템 정보창 업데이트
+        // ������ ���â ����Ʈ
         int _index = selectBuyingItem.itemType;
         equipediteminfoText[0].text = playerEquipmentController.EquipItems[_index].itemKorName;
         equipediteminfoText[1].text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
         switch (playerEquipmentController.EquipItems[_index].itemKey / 1000)
         {
             case 0:
-                equipediteminfoText[2].text = "머리 장식품";
+                equipediteminfoText[2].text = "�Ӹ� ���ǰ";
                 break;
             case 1:
-                equipediteminfoText[2].text = "안면 장식품";
+                equipediteminfoText[2].text = "�ȸ� ���ǰ";
                 break;
             case 2:
                 equipediteminfoText[2].text = "����: " + playerEquipmentController.EquipItems[_index].defensivePower;
@@ -286,16 +286,16 @@ public class BuyPanelController : MonoBehaviour
                 break;
             case 11:
                 equipediteminfoText[2].text =
-                    "회복량 : " + selectBuyingItem.value + "\n";
+                    "ȸ���� : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
-                equipediteminfoText[2].text = "이것은 퀘스트 아이템";
+                equipediteminfoText[2].text = "�̰�� ��Ʈ ������";
                 break;
         }
     }
     public void UpdateBuyMoneyText()
     {
-        buyingiteminfoText[3].text = "구매 가격: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
+        buyingiteminfoText[3].text = "���� ����: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
     }
     public void BuyItem()
     {
@@ -316,7 +316,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SellSlotsReset()
     {
-        // 인벤토리 슬롯 리셋
+        // �κ��丮 ���� ����
         for (int i = 0; i < buySlots.Length; i++)
         {
             buySlots[i].SlotReset();
@@ -324,12 +324,12 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SetActiveShopItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
+        // ������ ���â Ȱ��ȭ ����
         shopItemInfo.SetActive(_bool);
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
+        // ������ ���â Ȱ��ȭ ����
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActivebuyPanel(bool _bool)
@@ -338,7 +338,7 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SelectSlotBuyItem(Item _item)
     {
-        // 슬롯에 선택한 아이템 
+        // ���Կ� ������ ������ 
         selectBuyingItem = _item;
         isBuyingItemSelect = true;
     }

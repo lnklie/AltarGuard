@@ -5,9 +5,9 @@ using System;
 using TMPro;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-10
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : UIManager.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-10
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : UIManager.cs
 ==============================
 */
 public class UIManager : SingletonManager<UIManager>
@@ -31,15 +31,16 @@ public class UIManager : SingletonManager<UIManager>
 
     [Header("Altar")]
     [SerializeField] private AltarStatus altar = null;
-    [SerializeField] private List<CharacterStatus> mercenary = new List<CharacterStatus>();
+    [SerializeField] private List<CharacterStatus> mercenaries = new List<CharacterStatus>();
     [SerializeField] private List<EquipmentController> characterList = new List<EquipmentController>();
+    [SerializeField] private List<SkillController> skillControllerList = new List<SkillController>();
 
     [Header("Panels")]
     [SerializeField] private InventoryPanelController inventoryPanelController = null;    
     [SerializeField] private ProfilePanelController profilePanelController = null;
     [SerializeField] private StatusPanelController statusPanelController = null;
     [SerializeField] private AltarInfoPanelController altarInfoPanelController = null;
-    [SerializeField] private SkillInfoPanelController skillInfoPanelController = null;
+    [SerializeField] private SkillPanelController skillPanelController = null;
     [SerializeField] private GracePanelController gracePanelController = null;
     [SerializeField] private LogPanelController logPanelController = null;
     [SerializeField] private GameObject shopSelectPanel = null;
@@ -63,10 +64,11 @@ public class UIManager : SingletonManager<UIManager>
 
     private void Start()
     {
+        characterList[0].ChangeEquipment(InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002)));
         UpdatePlayerProfile();
-        for (int i = 0; i < mercenary.Count; i++)
+        for (int i = 0; i < mercenaries.Count; i++)
         {
-            if(mercenary[i] != null)
+            if(mercenaries[i] != null)
             {
                 UpdateMercenaryProfile(i);
             }
@@ -81,12 +83,12 @@ public class UIManager : SingletonManager<UIManager>
             UpdatePlayerProfile();
             player.TriggerStatusUpdate = false;
         }
-        for(int i = 0; i < mercenary.Count; i++)
+        for(int i = 0; i < mercenaries.Count; i++)
         {
-            if (mercenary[i].TriggerStatusUpdate)
+            if (mercenaries[i].TriggerStatusUpdate)
             {
                 UpdateMercenaryProfile(i);
-                mercenary[i].TriggerStatusUpdate = false;
+                mercenaries[i].TriggerStatusUpdate = false;
             }
         }
         if(bossEnemy)
@@ -148,7 +150,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void AddMercenary(CharacterStatus _mercenary)
     {
-        mercenary.Add(_mercenary);
+        mercenaries.Add(_mercenary);
         AddMercenaryEquipmentController(_mercenary);
     }
     public void AddMercenaryEquipmentController(CharacterStatus _mercenary)
@@ -161,11 +163,11 @@ public class UIManager : SingletonManager<UIManager>
     }
     public int GetMercenaryNum()
     {
-        return mercenary.Count;
+        return mercenaries.Count;
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
+        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
         inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectSlotSellItem(Item _item)
@@ -179,7 +181,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UseSkill(Skill _skill)
     {
-        player.transform.parent.GetComponentInChildren<SkillController>().UseSkill(_skill, player.Target);
+        skillControllerList[0].UseSkill(_skill);
     }
     #region Profile
     public void UpdateBossInfo()
@@ -203,7 +205,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void UpdateMercenaryProfile(int _index)
     {
-        profilePanelController.UpdateMercenaryProfile(mercenary[_index], _index);
+        profilePanelController.UpdateMercenaryProfile(mercenaries[_index], _index);
     }
     public void SetActiveCharactersProfile(int _index, bool _bool)
     {
@@ -216,66 +218,64 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë³€ê²½
         inventoryPanelController.ChangeInventorySlot(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ¾ÆÀÌÅÛ ÀåÂø
+        // ì•„ì´í…œ ì¥ì°©
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
-        userControlPanelController.InitSkillSlot();
-        Debug.Log("¾×Æ¼ºê ½ºÅ³ÀÇ ±æÀÌ´Â " + player.transform.parent.GetComponentInChildren<SkillController>().ActiveSkills.Count);
-        userControlPanelController.SetSkillSlot(player.transform.parent.GetComponentInChildren<SkillController>().ActiveSkills);
+        userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
+        // ì•„ì´í…œ ì¥ì°© ìºë¦­í„° ì„ íƒ í™œì„±í™” ì—¬ë¶€ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
+        // ì„ íƒí•œ ì•„ì´í…œ í•´ì œ
         inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ì•„ì´í…œ ì‚¬ìš©
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ¾ÆÀÌÅÛ ¹ö¸®±â
+        // ì•„ì´í…œ ë²„ë¦¬ê¸°
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
+        // ì•„ì´í…œ ìˆ˜ëŸ‰ìœ¼ë¡œ ë²„ë¦¬ê¸°
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ìˆ˜ëŸ‰ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
+        // ì¥ë¹„ì°½ì—ì„œ ìºë¦­í„° ì„ íƒ
         inventoryPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
+        // ì¥ë¹„ì°½ ìºë¦­í„° ì´ë¦„ ì—…ë°ì´íŠ¸
         inventoryPanelController.UpdateEquipmentName();
     }
     public void SetItemQuickSlot(int _index)
@@ -302,7 +302,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // ½ºÅİ ¾÷
+        // ìŠ¤í…Ÿ ì—…
         statusPanelController.StatusUp(_index);
     }
     #endregion
@@ -319,12 +319,9 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region SkillPanel
-    public void LearnPassiveSkillBtn(int _skillKey)
+    public void SelectCharacterInSkillController(bool _isUp)
     {
-        if (playerSkillController.GetPassiveSkill(_skillKey) == null)
-            skillInfoPanelController.LearnSkill(playerSkillController, _skillKey);
-        else
-            skillInfoPanelController.LevelUpSkill(playerSkillController, _skillKey);
+        skillPanelController.SelectCharacterInSkillController(skillControllerList, _isUp);
     }
     #endregion
 
@@ -341,7 +338,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else
         {
-            Notice("ÀºÃÑ Æ÷ÀÎÆ®°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+            Notice("ì€ì´ í¬ì¸íŠ¸ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
         }
     }
     public void SelectGrace(int _index)
@@ -522,7 +519,7 @@ public class UIManager : SingletonManager<UIManager>
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI È°¼ºÈ­ 
+        // UI í™œì„±í™” 
 
         player.IsUiOn = true;
         if (_index == 0)
@@ -545,7 +542,9 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 3)
         {
-            skillInfoPanelController.ActiveSkillPanel(true);
+            skillPanelController.ActiveSkillPanel(true);
+            skillPanelController.SelectCharacter(skillControllerList[0], player);
+            skillPanelController.SetSkillInfo();
         }
         else if (_index == 4)
         {
@@ -582,7 +581,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ºñÈ°¼ºÈ­
+        // UI ë¹„í™œì„±í™”
         player.IsUiOn = false;
         if (_index == 0)
         {
@@ -598,7 +597,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else if (_index == 3)
         {
-            skillInfoPanelController.ActiveSkillPanel(false);
+            skillPanelController.ActiveSkillPanel(false);
         }
         else if (_index == 4)
         {
