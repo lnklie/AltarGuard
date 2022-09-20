@@ -1,14 +1,9 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : Item.cs
-==============================
-*/
+
 [System.Serializable]
 public class Item
 {
@@ -50,7 +45,11 @@ public class Item
     public bool isCoolTime = false;
     public int itemRank = -1;
     public int inventoryIndex = -1; 
-    public System.DateTime dateTime = default; 
+    public DateTime dateTime = default;
+    public BigGrace grace1 = null;
+    public BigGrace grace2 = null;
+    public BigGrace grace3 = null;
+
     public Item(int _itemKey, string _itemName,string _itemKorName, int _buyPrice, int _sellPrice, int _itemRank)
     {
         itemKey = _itemKey;

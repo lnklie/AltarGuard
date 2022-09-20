@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class GraceManager : MonoBehaviour
 {
-    [SerializeField] private List<Grace> graceList = new List<Grace>();
+    [SerializeField] private List<BigGrace> graceList = new List<BigGrace>();
     [SerializeField] private List<AllyStatus> characterStatuses = new List<AllyStatus>();
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
-    public List<Grace> GraceList
-    {
-        get { return graceList; }
-    }
+    public List<BigGrace> GraceList { get { return graceList; } }
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
@@ -39,7 +36,27 @@ public class GraceManager : MonoBehaviour
 
         }
     }
-    public bool CheckGraceCondition(Grace _grace)
+    public CompleteGrace CreateRandomGrace() 
+    {
+        int conditionWho = Random.Range(0, DatabaseManager.Instance.graceConditionWhoList.Count);
+        int conditionWhat = Random.Range(0, DatabaseManager.Instance.graceConditionWhatList.Count);
+        int conditionHow = -1;
+        if (conditionWhat < 13)
+            conditionHow = 0;
+        else if (conditionWhat < 15)
+            conditionHow = 1;
+        else
+            conditionHow = 2;
+        int resultWho = Random.Range(0, DatabaseManager.Instance.graceResultWhoList.Count);
+        int resultTarget = Random.Range(0, DatabaseManager.Instance.graceResultTargetList.Count);
+        int resultValue = Random.Range(0, 10);
+        int resultWhat = Random.Range(0, DatabaseManager.Instance.graceResultWhatList.Count);
+        //int resultHow = Random.Range(0, DatabaseManager.Instance.graceResultHowList.Count);
+        CompleteGrace _completeGrace = new CompleteGrace("", conditionWho, conditionWhat + 1000, -1, conditionHow + 2000, resultWho + 3000, resultTarget + 4000, resultWhat + 5000,
+            (int)(resultValue * DatabaseManager.Instance.SelectGrace(conditionWho).weightedValue * DatabaseManager.Instance.SelectGrace(conditionWhat + 1000).weightedValue), 6000);
+        return _completeGrace;
+    }
+    public bool CheckGraceCondition(BigGrace _grace)
     {
         bool _bool = false;
         if(_grace.conditionWho != -1)
@@ -612,7 +629,7 @@ public class GraceManager : MonoBehaviour
         }
         return _bool;
     }
-    public void OperateGrace(Grace _grace)
+    public void OperateGrace(BigGrace _grace)
     {
         int _value1 = 0;
         int _value2 = 0;
@@ -1331,7 +1348,7 @@ public class GraceManager : MonoBehaviour
     {
         if (!CheckIsActive(_key))
         {
-            graceList.Add(DatabaseManager.Instance.SelectGrace(_key));
+            graceList.Add(DatabaseManager.Instance.SelectBigGrace(_key));
             graceList[graceList.Count - 1].isActive = true;
             ActiveGrace();
         }

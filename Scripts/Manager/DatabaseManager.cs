@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : DatabaseManager.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : DatabaseManager.cs
 ==============================
 */
 
@@ -41,10 +41,20 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Skill> skillList = new List<Skill>();
 
     [Header("Grace")]
-    public List<Grace> warriorGraceList = new List<Grace>();
-    public List<Grace> rangedGraceList = new List<Grace>();
-    public List<Grace> magicGraceList = new List<Grace>();
-    public List<Grace> commanderGraceList = new List<Grace>();
+    public List<GraceConditionWho> graceConditionWhoList = new List<GraceConditionWho>();
+    public List<GraceConditionWhat> graceConditionWhatList = new List<GraceConditionWhat>();
+    public List<GraceConditionHow> graceConditionHowList = new List<GraceConditionHow>();
+    public List<GraceResultWho> graceResultWhoList = new List<GraceResultWho>();
+    public List<GraceResultTarget> graceResultTargetList = new List<GraceResultTarget>();
+    public List<GraceResultWhat> graceResultWhatList = new List<GraceResultWhat>();
+    public List<GraceResultHow> graceResultHowList = new List<GraceResultHow>();
+
+
+    [Header("BigGrace")]
+    public List<BigGrace> warriorGraceList = new List<BigGrace>();
+    public List<BigGrace> rangedGraceList = new List<BigGrace>();
+    public List<BigGrace> magicGraceList = new List<BigGrace>();
+    public List<BigGrace> commanderGraceList = new List<BigGrace>();
 
     [Header("CraftRecipe")]
     public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
@@ -73,7 +83,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -87,7 +97,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("°æ·Î¿¡ ¾ó±¼ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì–¼êµ´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -101,7 +111,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("°æ·Î¿¡ ¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -115,7 +125,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("°æ·Î¿¡ ¹ÙÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë°”ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -129,7 +139,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -143,7 +153,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("°æ·Î¿¡ °©¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê°‘ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -157,7 +167,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("°æ·Î¿¡ ¸ÁÅä µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë§í†  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -171,7 +181,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("7_Shield")))
         {
-            Debug.Log("°æ·Î¿¡ ¹æÆĞ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë°©íŒ¨ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -185,7 +195,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("8_Sword")))
         {
-            Debug.Log("°æ·Î¿¡ °Ë µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê²€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -200,7 +210,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("9_Exe")))
         {
-            Debug.Log("°æ·Î¿¡ µµ³¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë„ë¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -215,7 +225,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("10_Spear")))
         {
-            Debug.Log("°æ·Î¿¡ Ã¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì°½ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -230,7 +240,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("11_Bow")))
         {
-            Debug.Log("°æ·Î¿¡ È° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— í™œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -245,7 +255,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("12_Wand")))
         {
-            Debug.Log("°æ·Î¿¡ ÁöÆÎÀÌ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì§€íŒ¡ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -260,7 +270,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("13_Consumables")))
         {
-            Debug.Log("°æ·Î¿¡ ¼ÒºñÇ° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì†Œë¹„í’ˆ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -274,7 +284,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("14_Miscellaneous")))
         {
-            Debug.Log("°æ·Î¿¡ ±âÅ¸ÅÛ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê¸°íƒ€í…œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -288,7 +298,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("°æ·Î¿¡ Àû µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -307,7 +317,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("°æ·Î¿¡ °æÇèÄ¡ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê²½í—˜ì¹˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -320,7 +330,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("°æ·Î¿¡ ½ºÅ×ÀÌÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ìŠ¤í…Œì´ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -333,7 +343,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Skill")))
         {
-            Debug.Log("°æ·Î¿¡ ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -348,67 +358,158 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
             }
         }
+        if (!File.Exists(CombinePath("ConditionWho")))
+        {
+            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ëˆ„êµ¬ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWho")));
+            GraceConditionWho[] grace = JsonHelper.FromJson<GraceConditionWho>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionWhoList.Add(new GraceConditionWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ConditionWhat")))
+        {
+            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ë¬´ì—‡ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWhat")));
+            GraceConditionWhat[] grace = JsonHelper.FromJson<GraceConditionWhat>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionWhatList.Add(new GraceConditionWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ConditionHow")))
+        {
+            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ì–´ë–»ê²Œì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionHow")));
+            GraceConditionHow[] grace = JsonHelper.FromJson<GraceConditionHow>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionHowList.Add(new GraceConditionHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultWho")))
+        {
+            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ëˆ„êµ¬ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWho")));
+            GraceResultWho[] grace = JsonHelper.FromJson<GraceResultWho>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultWhoList.Add(new GraceResultWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultTarget")))
+        {
+            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ íƒ€ê²Ÿì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultTarget")));
+            GraceResultTarget[] grace = JsonHelper.FromJson<GraceResultTarget>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultTargetList.Add(new GraceResultTarget(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultWhat")))
+        {
+            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ë¬´ì—‡ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWhat")));
+            GraceResultWhat[] grace = JsonHelper.FromJson<GraceResultWhat>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultHow")))
+        {
+            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ì–´ë–»ê²Œì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultHow")));
+            GraceResultHow[] grace = JsonHelper.FromJson<GraceResultHow>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultHowList.Add(new GraceResultHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
-            Debug.Log("°æ·Î¿¡ ¹Ğ¸® ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ë°€ë¦¬ ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("WarriorGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                warriorGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                warriorGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("RangedGrace")))
         {
-            Debug.Log("°æ·Î¿¡ ±Ã¼ö ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ê¶ìˆ˜ ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("RangedGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                            
-                rangedGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("MagicGrace")))
         {
-            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("MagicGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                magicGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                magicGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
 
         if (!File.Exists(CombinePath("CommanderGrace")))
         {
-            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("CommanderGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                commanderGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                commanderGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
         {
-            Debug.Log("°æ·Î¿¡ Á¦ÀÛ ·¹½ÃÇÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì œì‘ ë ˆì‹œí”¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -423,7 +524,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("AltarProperty")))
         {
-            Debug.Log("°æ·Î¿¡ Á¦´Ü Æ¯¼º µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ì œë‹¨ íŠ¹ì„± ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -441,7 +542,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("GameScript")))
         {
-            Debug.Log("°æ·Î¿¡ ´ëº» µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log("ê²½ë¡œì— ëŒ€ë³¸ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
         else
         {
@@ -669,6 +770,78 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public Grace SelectGrace(int _key)
     {
         Grace _grace = null;
+        switch(_key/ 1000)
+        {
+            case 0:
+                for(int i = 0; i < graceConditionWhoList.Count; i++)
+                {
+                    if (graceConditionWhoList[i].graceKey == _key)
+                        _grace = graceConditionWhoList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 1:
+                for (int i = 0; i < graceConditionWhatList.Count; i++)
+                {
+                    if (graceConditionWhatList[i].graceKey == _key)
+                        _grace = graceConditionWhatList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 2:
+                for (int i = 0; i < graceConditionHowList.Count; i++)
+                {
+                    if (graceConditionHowList[i].graceKey == _key)
+                        _grace = graceConditionHowList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 3:
+                for (int i = 0; i < graceResultWhoList.Count; i++)
+                {
+                    if (graceResultWhoList[i].graceKey == _key)
+                        _grace = graceResultWhoList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 4:
+                for (int i = 0; i < graceResultTargetList.Count; i++)
+                {
+                    if (graceResultTargetList[i].graceKey == _key)
+                        _grace = graceResultTargetList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 5:
+                for (int i = 0; i < graceResultWhatList.Count; i++)
+                {
+                    if (graceResultWhatList[i].graceKey == _key)
+                        _grace = graceResultWhatList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+            case 6:
+                for (int i = 0; i < graceResultHowList.Count; i++)
+                {
+                    if (graceResultHowList[i].graceKey == _key)
+                        _grace = graceResultHowList[i];
+                    else
+                        Debug.Log("í•´ë‹¹ ì€ì´ êµ¬ì„±ë¶€ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                }
+                break;
+        }
+        return _grace;
+    }
+
+    public BigGrace SelectBigGrace(int _key)
+    {
+        BigGrace _grace = null;
         switch(_key / 1000)
         {
             case 0:
@@ -677,7 +850,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (warriorGraceList[i].graceKey == _key)
                         _grace = warriorGraceList[i];
                     else
-                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
                 }
                 break;
             case 1:
@@ -686,7 +859,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (rangedGraceList[i].graceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
                 }
                 break;
             case 2:
@@ -695,7 +868,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (magicGraceList[i].graceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
                 }
                 break;
             case 3:
@@ -704,7 +877,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (commanderGraceList[i].graceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
                 }
                 break;
 
@@ -719,7 +892,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
+                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
         }
         return _craftRecipe;
     }
@@ -731,7 +904,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("ÇØ´ç Á¦´Ü Æ¯¼ºÀÌ ¾ø½À´Ï´Ù.");
+                Debug.Log("í•´ë‹¹ ì œë‹¨ íŠ¹ì„±ì´ ì—†ìŠµë‹ˆë‹¤.");
         }
         return _altarProperty;
     }
@@ -743,7 +916,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
+                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
         }
         return _gameScript;
     }

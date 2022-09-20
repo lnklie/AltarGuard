@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Grace
+public class BigGrace
 {
     public int graceKey = -1;
     public string graceName = null;
@@ -23,7 +23,7 @@ public class Grace
     public int resultValue2 = -1;
     public int resultHow1 = -1;
     public int resultHow2 = -1;
-    public Grace(int _graceKey, string _graceName, string _explain, int _necessaryGraceKey, int _conditionWho, int _conditionWhat, int _conditionValue, int _conditionHow,
+    public BigGrace(int _graceKey, string _graceName, string _explain, int _necessaryGraceKey, int _conditionWho, int _conditionWhat, int _conditionValue, int _conditionHow,
         int _resultWho, int _resultTarget1, int _resultTarget2, int _resultWhat1, int _resultWhat2, int _resultValue1, int _resultValue2,int _resultHow1, int _resultHow2)
     {
         this.graceKey = _graceKey;
