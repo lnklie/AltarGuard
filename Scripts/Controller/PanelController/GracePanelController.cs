@@ -14,7 +14,7 @@ public class GracePanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
     [SerializeField] private TextMeshProUGUI remainingPoint = null;
 
-    private Grace selectGrace = null;
+    private BigGrace selectGrace = null;
 
     public delegate bool CheckIsActiveGrace(int _key);
     public delegate void AquireGraceDel(int _key);
@@ -34,7 +34,7 @@ public class GracePanelController : MonoBehaviour
         {
             if(DatabaseManager.Instance.SelectGrace(_egraceType + i) != null)
             {
-                slots[i].Grace = DatabaseManager.Instance.SelectGrace(_egraceType + i);
+                slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
             }
             else
                 Debug.Log("해당 은총이 없습니다.");

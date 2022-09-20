@@ -11,33 +11,22 @@ using UnityEngine.UI;
 */
 public class AltarStatus : Status
 {
-    [SerializeField]
-    private AltarState altarState = AltarState.Idle;
+    [SerializeField] private AltarState altarState = AltarState.Idle;
+    [SerializeField] protected int hpLevel = 1;
+    [SerializeField] private int defensivePowerLevel = 1;
 
-    [SerializeField]
-    protected int hpLevel = 1;
+    [SerializeField] private int buffRangeLevel = 1;
+    [SerializeField] private int buffDamageLevel = 1;
 
-    [SerializeField]
-    private int defensivePowerLevel = 1;
+    [SerializeField] private int buffDefensivePowerLevel = 1;
 
-    [SerializeField]
-    private int buffRangeLevel = 1;
-    [SerializeField]
-    private int buffDamageLevel = 1;
+    [SerializeField] private int buffSpeedLevel = 1;
 
-    [SerializeField]
-    private int buffDefensivePowerLevel = 1;
-
-    [SerializeField]
-    private int buffSpeedLevel = 1;
-
-    [SerializeField]
-    private int buffHpRegenLevel = 1;
+    [SerializeField] private int buffHpRegenLevel = 1;
 
     private bool isAltarStatusChange = false;
     private Image[] images = null;
-    [SerializeField]
-    private SpriteRenderer buffRangeSprite = null;
+    [SerializeField] private SpriteRenderer buffRangeSprite = null;
     #region Property
     public SpriteRenderer BuffRangeSprite
     {
@@ -83,7 +72,7 @@ public class AltarStatus : Status
         get { return buffHpRegenLevel; }
         set { buffHpRegenLevel = value; }
     }
-    public bool IsAltarStatusChange
+    public bool TriggerAltarStatusChange
     {
         get { return isAltarStatusChange; }
         set { isAltarStatusChange = value; }
@@ -94,14 +83,37 @@ public class AltarStatus : Status
         base.Awake();
         images = this.GetComponentsInChildren<Image>();
     }
-    public override void Damaged(int damage)
+    private void Start()
     {
-        base.Damaged(damage);
+        UpdateAltarStatus();
+        curHp = totalMaxHp;
+        UpdateAltarHp();
+    }
+    public void Update()
+    {
+        if(triggerStatusUpdate)
+        {
+            UpdateAltarStatus();
+            UpdateAltarHp();
+            triggerStatusUpdate = false;
+
+        }
+    }
+    public void UpdateAltarStatus()
+    {
+        totalMaxHp = maxHp + (hpLevel * 10);
+        totalDefensivePower = defensivePower + (defensivePowerLevel * 5);
+        
+    }
+    public override void Damaged(int _damage)
+    {
+        //Debug.Log("석상 맞는 중");
+        base.Damaged(_damage);
         UpdateAltarHp();
     }
     public void UpdateAltarHp()
     {
-        images[1].fillAmount = curHp / (float)maxHp;
+        images[1].fillAmount = (float)curHp / totalMaxHp;
     }
     public void SetActiveBuffRange(bool _bool)
     {

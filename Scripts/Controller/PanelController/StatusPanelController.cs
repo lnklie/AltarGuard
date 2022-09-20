@@ -13,14 +13,12 @@ using TMPro;
 public class StatusPanelController : MonoBehaviour
 {
     [Header("Status")]
-    [SerializeField]
-    private TextMeshProUGUI[] statusTexts = null;
+    [SerializeField] private TextMeshProUGUI[] statusTexts = null;
 
     private int selectNum = 0;
     private AllyStatus selectAllyStatus = null;
 
-    [SerializeField]
-    private Button[] statusButtons = null;
+    [SerializeField] private Button[] statusButtons = null;
 
     public void UpdateStatusText()
     {
@@ -33,8 +31,8 @@ public class StatusPanelController : MonoBehaviour
             "방어력: " + selectAllyStatus.DefensivePower.ToString(),
             "이동 속도: " + selectAllyStatus.Speed.ToString(),
             "공격 속도: " + selectAllyStatus.AtkSpeed.ToString(),
-            "드랍율: " + selectAllyStatus.DropProbability.ToString(),
-            "아이템 희귀도: " + selectAllyStatus.ItemRarity.ToString(),
+            "드랍율: " + selectAllyStatus.TotalDropProbability.ToString(),
+            "아이템 희귀도: " + selectAllyStatus.TotalItemRarity.ToString(),
             selectAllyStatus.ObjectName.ToString(),
             "힘: " + selectAllyStatus.TotalStr.ToString(),
             "민첩: " + selectAllyStatus.TotalDex.ToString(),

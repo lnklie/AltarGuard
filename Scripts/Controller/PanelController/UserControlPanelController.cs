@@ -5,15 +5,20 @@ using UnityEngine;
 public class UserControlPanelController : MonoBehaviour
 {
     [SerializeField] private SkillSlot[] skillSlots = null;
-
-    public void InitSkillSlot()
+    [SerializeField] private PlayerStatus playerStatus = null;
+    [SerializeField] private SkillController skillController = null;
+    private void Update()
     {
-        Debug.Log("이것의 길이는 " + skillSlots.Length);
-        for (int i = 0; i < skillSlots.Length; i++)
+        if(playerStatus.TriggerEquipmentChange)
         {
-
-                skillSlots[i].InitSlot();
-            
+            SetSkillSlot(skillController.Skills);
+        }
+    }
+    public void InitSkillSlot() 
+    {
+        for (int i = 0; i < skillSlots.Length; i++)
+        { 
+            skillSlots[i].InitSlot();
         }
     }
     public void SetSkillSlot(List<Skill> _skills)

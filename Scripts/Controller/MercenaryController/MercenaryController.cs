@@ -1,18 +1,11 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-/*
-==============================
- * ���������� : 2022-06-05
- * �ۼ��� : Inklie
- * ���ϸ� : MercenaryController.cs
-==============================
-*/
 public class MercenaryController : CharacterController
 {
     protected MercenaryStatus mercenary = null;
-    [SerializeField]
-    private GameObject rivivePoint = null;
+    [SerializeField] private GameObject rivivePoint = null;
 
     public override  void Awake()
     {
@@ -20,20 +13,20 @@ public class MercenaryController : CharacterController
         mercenary = this.GetComponent<MercenaryStatus>();
     }
 
-    private void Rivive(CharacterStatus _Status)
+    private void Rivive()
     {
         this.gameObject.transform.position = rivivePoint.transform.position;
 
-        _Status.Rig.isKinematic = false;
-        _Status.Col.enabled = true;
-        _Status.CurHp = mercenary.TotalMaxHp;
-        _Status.TriggerStatusUpdate = true;
-        _Status.AIState = EAIState.Idle;
+        mercenary.Rig.isKinematic = false;
+        mercenary.Col.enabled = true;
+        mercenary.CurHp = mercenary.TotalMaxHp;
+        mercenary.TriggerStatusUpdate = true;
+        mercenary.AIState = EAIState.Idle;
     }
 
-    public bool IsLastHit(EnemyStatus _enemy, CharacterStatus _Status)
+    public bool IsLastHit(CharacterStatus _status)
     {
-        if (_Status.IsAtk == true && _enemy.CurHp <= 0f)
+        if (_status.CurHp <= 0f)
             return true;
         else
             return false;
@@ -45,28 +38,26 @@ public class MercenaryController : CharacterController
     }
 
 
-    public override void AttackDamage(CharacterStatus _status)
+    public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position,_status.TotalAtkRange, _status.TargetDir, 1f, LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, mercenary.TotalAtkRange, mercenary.TargetDir, 1f, LayerMask.GetMask("Enemy"));
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
                 EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
-                _status.IsAtk = true;
+                mercenary.IsAtk = true;
 
-                _enemy.Damaged(AttackTypeDamage(_status));
+                _enemy.Damaged(AttackTypeDamage());
                 if(_enemy.IsLastHit())
                 {
-                    _status.AquireExp(_enemy);
+                    mercenary.AquireExp(_enemy);
 
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.DropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalDropProbability);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
                         {
-                            
-                            Debug.Log("얻다! " + _isDrops[j]);
                             InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
                         }
                     }
@@ -78,98 +69,134 @@ public class MercenaryController : CharacterController
 
 
 
-    public override void AIChangeState(CharacterStatus _status)
+    public override void AIChangeState()
     {
-        if (_status.Target)
+        if (mercenary.Target)
         {
-            _status.Distance = _status.Target.transform.position - _status.TargetPos.position;
-            _status.TargetDir = _status.Distance.normalized;
+            mercenary.Distance = mercenary.Target.transform.position - mercenary.TargetPos.position;
+            mercenary.TargetDir = mercenary.Distance.normalized;
         }
-        if (_status.CurHp < 0f && !_status.IsDied)
+        if (mercenary.CurHp < 0f && !mercenary.IsDied)
         {
-            StartCoroutine(AIDied(_status));
+            StartCoroutine(AIDied());
         }
 
-        if(!_status.IsDied)
+        if(!mercenary.IsDied)
         {
-            if (_status.Target == null)
+            if (mercenary.Target == null)
             {
-              
-                if(pathFindController.FinalNodeList.Count == 0)
-                    _status.AIState = EAIState.Idle;
+
+                if (pathFindController.FinalNodeList.Count == 0)
+                    mercenary.AIState = EAIState.Idle;
                 else
-                    _status.AIState = EAIState.Chase;
+                    mercenary.AIState = EAIState.Chase;
             }
             else
             {
-                _status.AIState = EAIState.Chase;
-                if (GetDistance(this.transform.position, _status.Target.transform.position) <= _status.TotalAtkRange)
+
+                if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
+                    mercenary.GetDistance(mercenary.Target.transform.position) <= skillController.SkillQueue[0].skillRange)
                 {
-                    _status.AIState = EAIState.Attack;
+                    mercenary.AIState = EAIState.UseSkill;
+                }
+                else if (mercenary.GetDistance(mercenary.Target.transform.position) <= mercenary.TotalAtkRange)
+                {
+                    mercenary.AIState = EAIState.Attack;
+                }
+                else
+                {
+                    mercenary.AIState = EAIState.Chase;
                 }
             }
 
         }
     }
-
-
-
-    public override void AIPerception(CharacterStatus _status)
+    public bool Targeting(int _layer, List<Status> _targetList)
     {
-        RaycastHit2D _enemyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, UnityEngine.Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if(_enemyHit)
+        bool _bool = false;
+        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, _layer);
+        if (_hit.Length > 0)
         {
-            EnemyStatus _enemyHitStatus = _enemyHit.collider.GetComponent<EnemyStatus>();  
-            if (!_enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
+            for (int i = 0; i < _hit.Length; i++)
             {
-                _status.EnemyRayList.Add(_enemyHitStatus);
-                _enemyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
-            }
-        }
-
-        RaycastHit2D _allyHit = Physics2D.CircleCast(this.transform.position, _status.SeeRange, UnityEngine.Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if(_allyHit)
-        {
-            CharacterStatus _allyHitStatus = _allyHit.collider.GetComponent<CharacterStatus>();
-            if (!_allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum])
-            {
-                _status.AllyRayList.Add(_allyHitStatus);
-                _allyHitStatus.IsAllyTargeted[((AllyStatus)_status).AllyNum] = true;
-            }
-        }
-        if (_status.EnemyRayList.Count > 0)
-        {
-            _status.Target = _status.EnemyRayList[0].TargetPos;
-            SortSightRayList(_status.EnemyRayList);
-            for (int i = 0; i < _status.EnemyRayList.Count; i++)
-            {
-                if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
-                    || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
+                CharacterStatus _hitStatus = _hit[i].collider.GetComponent<CharacterStatus>();
+                if (!_hitStatus.IsAllyTargeted[mercenary.AllyNum])
                 {
-                    _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
-                    _status.EnemyRayList.Remove(_status.EnemyRayList[i]);
+                    _targetList.Add(_hitStatus);
+                    _hitStatus.IsAllyTargeted[mercenary.AllyNum] = true;
                 }
             }
+            _bool = true;
+        }
+        return _bool;
+    }
+    public void ResortTarget(List<Status> _targetList,bool _isEnemy, Transform _defaultTransform = null)
+    {
+        if (_targetList.Count > 0)
+        {
+            SortSightRayList(_targetList);
+            if (_isEnemy)
+                mercenary.Target = _targetList[0].TargetPos;
+            else
+                mercenary.AllyTarget = _targetList[0].TargetPos;
+            for (int i = 0; i < _targetList.Count; i++)
+            {
+                if (mercenary.GetDistance(_targetList[i].transform.position) >= mercenary.SeeRange
+                    || _targetList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
+                {
+                    if (_isEnemy)
+                    {
+
+                        if (_targetList[i].TargetPos == mercenary.Target)
+                        {
+                            mercenary.Target = _defaultTransform;
+                        }
+                    }
+                    else
+                    {
+                        if (_targetList[i].TargetPos == mercenary.AllyTarget)
+                        {
+                            mercenary.AllyTarget = _defaultTransform;
+                        }
+                    }
+                    _targetList[i].transform.GetComponent<CharacterStatus>().IsAllyTargeted[mercenary.AllyNum] = false;
+                    _targetList.Remove(_targetList[i]);
+                }
+            }
+
         }
         else
         {
-            _status.Target = null;
+            if (_isEnemy)
+                mercenary.Target = _defaultTransform;
+            else
+                mercenary.AllyTarget = _defaultTransform;
         }
     }
 
 
-
-
-    public override IEnumerator AIDied(CharacterStatus _status)
+    public override void AIPerception()
     {
-        _status.AIState = EAIState.Died;
-        _status.IsDied = true;
-        _status.ActiveLayer(LayerName.DieLayer);
-        _status.Rig.velocity = Vector2.zero;
-        _status.Col.enabled = false;
+        if(Targeting(LayerMask.GetMask("Enemy"), mercenary.EnemyRayList))
+            ResortTarget(mercenary.EnemyRayList, true);
+
+        if(Targeting(LayerMask.GetMask("Ally"), mercenary.AllyRayList))
+        {
+            ResortTarget(mercenary.AllyRayList, false);
+            //mercenary.AllyTarget = mercenary.AllyRayList[0].TargetPos;
+        }
+    }
+
+    public override IEnumerator AIDied()
+    {
+        mercenary.AIState = EAIState.Died;
+        mercenary.IsDied = true;
+        mercenary.ActiveLayer(LayerName.DieLayer);
+        mercenary.Rig.velocity = Vector2.zero;
+        mercenary.Col.enabled = false;
         yield return new WaitForSeconds(mercenary.RevivalTime);
-        Rivive(_status);
-        _status.IsDied = false;
+        Rivive();
+        mercenary.IsDied = false;
     }
 
 }
