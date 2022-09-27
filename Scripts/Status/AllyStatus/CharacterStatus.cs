@@ -9,12 +9,13 @@ public class CharacterStatus : Status
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
+    [SerializeField] protected float maxCastingSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
 
     [Header("TotalStatus")]
-    [SerializeField] protected int totalMaxHp = 0;
+
     [SerializeField] protected int totalMaxMp = 0;
     [SerializeField] protected int totalStr = 0;
     [SerializeField] protected int totalDex = 0;
@@ -23,7 +24,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int totalHpRegenValue = 0;
     [SerializeField] protected int totalPhysicalDamage = 0;
     [SerializeField] protected int totalMagicalDamage = 0;
-    [SerializeField] protected int totalDefensivePower = 0;
+
     [SerializeField] protected float totalSpeed = 0;
     [SerializeField] protected float totalAtkSpeed = 0;
     [SerializeField] protected float totalAtkRange = 0;
@@ -73,6 +74,22 @@ public class CharacterStatus : Status
     [SerializeField] protected float graceAtkRange = 0f;
     [SerializeField] protected float graceCastingSpeed = 0f;
 
+    [Header("GraceMagnificationStatus")]
+    [SerializeField] protected int graceMagniMaxHp = 0;
+    [SerializeField] protected int graceMagniMaxMp = 0;
+    [SerializeField] protected int graceMagniHpRegenValue = 0;
+    [SerializeField] protected int graceMagniStr = 0;
+    [SerializeField] protected int graceMagniDex = 0;
+    [SerializeField] protected int graceMagniWiz = 0;
+    [SerializeField] protected int graceMagniLuck = 0;
+    [SerializeField] protected int graceMagniPhysicalDamage = 0;
+    [SerializeField] protected int graceMagniMagicalDamage = 0;
+    [SerializeField] protected int graceMagniDefensivePower = 0;
+    [SerializeField] protected int graceMagniSpeed = 0;
+    [SerializeField] protected int graceMagniAttackSpeed = 0;
+    [SerializeField] protected int graceMagniAtkRange = 0;
+    [SerializeField] protected int graceMagniCastingSpeed = 0;
+
 
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
@@ -97,15 +114,31 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
+    [SerializeField] protected List<Status> enemyRayList = new List<Status>();
     [SerializeField] protected List<Status> allyRayList = new List<Status>();
     protected bool isHPRegen = false;
-    protected float attackType = 0f;
+    [SerializeField] protected float attackType = 0f;
     [SerializeField] private bool[] isAllyTargeted = new bool[5];
     [SerializeField] private bool[] isEnemyTargeted = new bool[101];
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
+    private Debuff debuff = Debuff.Not;
     #region Properties
+    public int GraceMagniMaxHP { get { return graceMagniMaxHp; } set { graceMagniMaxHp = value; } }
+    public int GraceMagniMaxMp { get { return graceMagniMaxMp; } set { graceMagniMaxMp = value; } }
+    public int GraceMagniHpRegenValue { get { return graceMagniHpRegenValue; } set { graceMagniHpRegenValue = value; } }
+    public int GraceMagniStr { get { return graceMagniStr; } set { graceMagniStr = value; } }
+    public int GraceMagniDex { get { return graceMagniDex; } set { graceMagniDex = value; } }
+    public int GraceMagniWiz { get { return graceMagniWiz; } set { graceMagniWiz = value; } }
+    public int GraceMagniLuck { get { return graceMagniLuck; } set { graceMagniLuck = value; } }
+    public int GraceMagniPhysicalDamage { get { return graceMagniPhysicalDamage; } set { graceMagniPhysicalDamage = value; } }
+    public int GraceMagniMagicalDamage { get { return graceMagniMagicalDamage; } set {   graceMagniMagicalDamage = value;} }
+    public int GraceMagniDefensivePower { get { return graceMagniDefensivePower; } set { graceMagniDefensivePower = value; } }
+    public int GraceMagniSpeed {get { return graceMagniSpeed; } set { graceMagniSpeed = value; } }
+    public int GraceMagniAttackSpeed { get { return graceMagniAttackSpeed; } set { graceMagniAttackSpeed = value; } }
+    public int GraceMagniAtkRange { get { return graceMagniAtkRange; } set { graceMagniAtkRange = value; } }
+    public int GraceMagniCastingSpeed { get { return graceMagniCastingSpeed; } set { graceMagniCastingSpeed = value; } }
+    public Debuff Debuff { get { return debuff; } set { debuff = value; } }
     public bool TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
@@ -123,7 +156,7 @@ public class CharacterStatus : Status
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
-    public List<EnemyStatus> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
+    public List<Status> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
     public int GraceLuck { get { return graceLuck; } set { graceLuck = value; } }
@@ -146,7 +179,7 @@ public class CharacterStatus : Status
     public int TotalWiz { get { return totalWiz; } set { totalWiz = value; } }
     public int TotalDex { get { return totalDex; } set { totalDex = value; } }
     public int TotalStr { get { return totalStr; } set { totalStr = value; } }
-    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
+
     public int TotalMaxMp { get { return totalMaxMp; } set { totalMaxMp = value; } }
     public int TotalPhysicalDamage { get { return totalPhysicalDamage; } set { totalPhysicalDamage = value; } }
     public int TotalMagicalDamage { get { return totalMagicalDamage; } set { totalMagicalDamage = value; } }
@@ -193,9 +226,8 @@ public class CharacterStatus : Status
     {
         triggerStatusUpdate = true;
     }
-    public override void Update()
+    public virtual void Update()
     {
-        base.Update();
 
         if (triggerEquipmentChange)
         {
@@ -204,6 +236,8 @@ public class CharacterStatus : Status
         }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
+
+        delayTime += Time.deltaTime;
     }
     public void AquireExp(Status status)
     {
@@ -211,10 +245,11 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateBasicStatus()
     {
-        totalStr = str + equipedStr + graceStr;
-        totalDex = dex + equipedDex + graceDex;
-        totalWiz = wiz + equipedWiz + graceWiz;
-        totalLuck = luck + equipedLuck + graceLuck;
+        totalStr = (str + equipedStr + graceStr) + (str + equipedStr + graceStr) * graceMagniStr / 100;
+
+        totalDex = (dex + equipedDex + graceDex) + (dex + equipedDex + graceDex) * graceMagniDex / 100;
+        totalWiz = (wiz + equipedWiz + graceWiz) + (wiz + equipedWiz + graceWiz) * graceMagniWiz / 100;
+        totalLuck = (luck + equipedLuck + graceLuck) + (luck + equipedLuck + graceLuck) * graceMagniLuck / 100;
 
         maxHp = totalStr * 10;
         MaxMp = totalWiz * 10;
@@ -249,22 +284,38 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         UpdateBasicStatus();
-        totalMaxHp = maxHp + graceMaxHp;
-        totalMaxMp = maxMp + graceMaxMp;
+        totalMaxHp = (maxHp + graceMaxHp) + (maxHp + graceMaxHp) * graceMagniMaxHp / 100;
+        totalMaxMp = (maxMp + graceMaxMp) + (maxMp + graceMaxMp) * graceMagniMaxMp / 100;
 
-        totalDefensivePower = defensivePower + equipedDefensivePower + graceDefensivePower + buffDefensivePower;
+        totalDefensivePower = (defensivePower + equipedDefensivePower + graceDefensivePower) +
+            (defensivePower + equipedDefensivePower + graceDefensivePower) * graceMagniDefensivePower / 100 +
+            buffDefensivePower;
 
-        totalAtkSpeed = maxAtkSpeed - (atkSpeed + equipedAtkSpeed + graceAttackSpeed);
-        totalAtkRange = atkRange + equipedAtkRange + graceAtkRange;
-        totalCastingSpeed = maxCastingSpeed - (castingSpeed + equipedCastingSpeed + graceCastingSpeed);
+        totalAtkSpeed = maxAtkSpeed - ((atkSpeed + equipedAtkSpeed + graceAttackSpeed) +
+            (atkSpeed + equipedAtkSpeed + graceAttackSpeed) * graceMagniAttackSpeed / 100);
+
+        totalAtkRange = atkRange + equipedAtkRange;
+
+        totalCastingSpeed = maxCastingSpeed - ((castingSpeed + equipedCastingSpeed + graceCastingSpeed) 
+            + (castingSpeed + equipedCastingSpeed + graceCastingSpeed) * graceMagniCastingSpeed / 100);
         
-        totalPhysicalDamage = physicalDamage + equipedPhysicalDamage + gracePhysicalDamage + buffPhysicalDamage;
-        totalMagicalDamage = magicalDamage + equipedMagicalDamage + graceMagicalDamage + buffMagicalDamage;
+        totalPhysicalDamage = (physicalDamage + equipedPhysicalDamage + gracePhysicalDamage) +
+            (physicalDamage + equipedPhysicalDamage + gracePhysicalDamage) * graceMagniPhysicalDamage / 100 +
+            buffPhysicalDamage;
 
-        totalSpeed = speed + equipedSpeed + graceSpeed + buffSpeed;
-        totalHpRegenValue = hpRegenValue + equipedHpRegenValue + graceHpRegenValue + buffHpRegenValue;
+        totalMagicalDamage = (magicalDamage + equipedMagicalDamage + graceMagicalDamage) +
+            (magicalDamage + equipedMagicalDamage + graceMagicalDamage) * graceMagniMagicalDamage / 100 +
+            buffMagicalDamage;
+
+        totalSpeed = speed + equipedSpeed + graceSpeed +
+            (speed + equipedSpeed + graceSpeed)  * graceMagniSpeed / 100 +  
+            buffSpeed; 
+
+        totalHpRegenValue = (hpRegenValue + equipedHpRegenValue + graceHpRegenValue) +
+            (hpRegenValue + equipedHpRegenValue + graceHpRegenValue) * graceMagniHpRegenValue / 100 + 
+            buffHpRegenValue;
 
         delayTime = totalAtkSpeed;
     }
@@ -276,14 +327,14 @@ public class CharacterStatus : Status
         buffDefensivePower = 0;
         buffHpRegenValue = 0;
     }
-
+    
     public IEnumerator HpRegenarate()
     {
         isHPRegen = true;
         while (isHPRegen)
         {
             yield return new WaitForSeconds(2f);
-            if (curHp <= 0)
+            if (isDied)
             {
                 yield return null;
             }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using TMPro;
 public class SkillPanelController : MonoBehaviour
 {
@@ -44,15 +43,17 @@ public class SkillPanelController : MonoBehaviour
     }
     public void SelectCharacterInSkillController(List<SkillController> _charaterList, bool _isUp)
     {
-        // ìŠ¤í…Œì´í„°ìŠ¤ ì°½ ìºë¦­í„° ì„ íƒ
+        // ½ºÅ×ÀÌÅÍ½º Ã¢ Ä³¸¯ÅÍ ¼±ÅÃ
         if (_isUp)
         {
             selectNum++;
+            Debug.Log(selectNum + " ¾÷");
             if (selectNum == 5)
                 selectNum = 0;
         }
         else
         {
+            Debug.Log("´Ù¿î");
             selectNum--;
             if (selectNum < 0)
                 selectNum = 4;

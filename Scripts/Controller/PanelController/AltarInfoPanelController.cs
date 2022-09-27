@@ -110,7 +110,7 @@ public class AltarInfoPanelController : MonoBehaviour
         altarInfoSlots[_index].LevelUp();
         UpdateAltarInfo(_index);
         UpdateMoney();
-        altar.IsAltarStatusChange = true;
+        altar.TriggerAltarStatusChange = true;
         UpdateAltarStatus(_index);
     }
     //public void SetAltar(AltarStatus _altar)

@@ -99,31 +99,31 @@ public class ShopManager : SingletonManager<ShopManager>
                 break;
             case 8:
                 Sword _sword = new Sword(_item.itemKey, _item.itemName, _item.itemKorName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.skillKey3, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
                 inventroyWeaponItems.Add(_sword);
                 __item = _sword;
                 break;
             case 9:
                 Exe _exe = new Exe(_item.itemKey, _item.itemName, _item.itemKorName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.skillKey3, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
                 inventroyWeaponItems.Add(_exe);
                 __item = _exe;
                 break;
             case 10:
                 Spear _spear = new Spear(_item.itemKey, _item.itemName, _item.itemKorName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.skillKey3, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
                 inventroyWeaponItems.Add(_spear);
                 __item = _spear;
                 break;
             case 11:
                 Bow _bow = new Bow(_item.itemKey, _item.itemName, _item.itemKorName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.skillKey3, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
                 inventroyWeaponItems.Add(_bow);
                 __item = _bow;
                 break;
             case 12:
                 Wand _wand = new Wand(_item.itemKey, _item.itemName, _item.itemKorName, _item.buyPrice, _item.sellPrice, _item.attackType, _item.weaponType, _item.physicalDamage, _item.magicalDamage,
-                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.skillKey1, _item.skillKey2, _item.skillKey3, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
+                    _item.atkRange, _item.atkDistance, _item.atkSpeed, _item.equipLevel, _item.disassembleItemKey, _item.disassembleItemAmount, _item.itemRank);
                 inventroyWeaponItems.Add(_wand);
                 __item = _wand;
                 break;

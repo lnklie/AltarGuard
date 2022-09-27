@@ -32,17 +32,10 @@ public class SkillController : MonoBehaviour
             status.IsSkillChange = false;
         }
     }
-    public void AquireSkill(int _skillKey)
-    
-        Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
-
-        skills.Add(_newSkill);
-
-        skillQueue.Add(_newSkill);
-        
-
-        skillQueue.Add(_newSkill);
-        
+    public void AquireSkill(Skill _skill)
+    {
+        skills.Add(_skill);
+        skillQueue.Add(_skill);
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -53,18 +46,20 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
+        //    Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
 
     public void UseSkill(Skill _skill)
     {
         int index = skillQueue.IndexOf(_skill);
-        Debug.Log("ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ " + index);
+        Debug.Log("ÀÎµ¦½º´Â " + index);
         if (index != -1)
         {
 
@@ -83,7 +78,7 @@ public class SkillController : MonoBehaviour
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
                     }
                 }
                 else if (_skill.skillType == 1)
@@ -94,7 +89,7 @@ public class SkillController : MonoBehaviour
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
                     }
                     
                 }
@@ -106,7 +101,7 @@ public class SkillController : MonoBehaviour
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
                     } 
                 }
                 else if (_skill.skillType == 3)
@@ -117,22 +112,23 @@ public class SkillController : MonoBehaviour
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
                     }
                 }
                 skillQueue.RemoveAt(index);
             }
             else
-                Debug.Log("ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½");
+                Debug.Log("ÄðÅ¸ÀÓ Áß");
 
         }
         else
-            Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½Å³");
+            Debug.Log("¾ø´Â ½ºÅ³");
 
     }
     public void UseSkill()
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
+        // Debug.Log("ÀÎµ¦½º´Â " + index);
         if(status.Target !=null)
         {
             
@@ -165,6 +161,7 @@ public class SkillController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
         }
     }
     public void CalculateSkillCoolTime()
@@ -176,7 +173,7 @@ public class SkillController : MonoBehaviour
                 skills[i].coolTime += Time.deltaTime;
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
-                    Debug.Log("ï¿½ï¿½Å¸ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½Ï·ï¿½");
+                    Debug.Log("ÄðÅ¸ÀÓ È¸º¹ ¿Ï·á");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);

@@ -36,7 +36,7 @@ public class BattleSupportPanelController : MonoBehaviour
     }
     public void SetQuickSlots(int _index)
     {
-        quickSlots[_index].ResetSlot();
+        quickSlots[_index].InitSlot();
         quickSlots[_index].IsItemRegistered = true;
         quickSlots[_index].CurItem = player.QuickSlotItems[_index];
         quickSlots[_index].SetSlot();
