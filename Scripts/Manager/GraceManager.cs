@@ -31,7 +31,6 @@ public class GraceManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("팔스");
             }
 
         }
@@ -1353,13 +1352,11 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("이미 배운 은총");
     }
     
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("체크하려는 키는 " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             if (graceList[i].graceKey == _key)

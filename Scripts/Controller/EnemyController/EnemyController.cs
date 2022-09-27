@@ -109,6 +109,28 @@ public class EnemyController : CharacterController
             else
                 enemyStatus.AllyTarget = _defaultTransform;
         }
+        if (_status.EnemyRayList.Count > 0)
+        {
+            _status.AllyTarget = _status.EnemyRayList[0].TargetPos;
+            SortSightRayList(_status.EnemyRayList);
+            for (int i = 0; i < _status.EnemyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.EnemyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.EnemyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.EnemyRayList[i].transform.GetComponent<EnemyStatus>().IsEnemyTargeted[((EnemyStatus)_status).EnemyIndex] = false;
+                    _status.EnemyRayList.Remove(_status.EnemyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.Target = null;
+        }
     }
     public override void AIPerception()
     {
@@ -134,7 +156,7 @@ public class EnemyController : CharacterController
                 Status ally = hits[i].collider.GetComponent<Status>();
                 if(ally == null)
                 {
-                    Debug.Log("ππ¬°?? πª ∞¯∞›«—∞…±Ó?" + hits[i].collider.name);
+                    Debug.Log("Î≠êÏßï?? Î≠ò Í≥µÍ≤©ÌïúÍ±∏Íπå?" + hits[i].collider.name);
                 }
                 ally.Damaged(AttackTypeDamage());
             }

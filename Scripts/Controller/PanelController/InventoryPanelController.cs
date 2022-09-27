@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-09
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : InventoryPanelController.cs
+ * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-09
+ * ì‘ì„±ì : Inklie
+ * íŒŒì¼ëª… : InventoryPanelController.cs
 ==============================
 */
 public class InventoryPanelController : MonoBehaviour
@@ -74,7 +74,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ResetInventory()
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¦¬ì…‹
         for (int i = 0; i < inventorySlotList.Count; i++)
         {
             inventorySlotList[i].SlotReset();
@@ -96,18 +96,18 @@ public class InventoryPanelController : MonoBehaviour
         {
             if(_tempMoney >= Mathf.Pow(10, 12))
             {
-                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "Á¶ ";
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "ï¿½ ";
                 _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
             }
             else if (_tempMoney >= 100000000)
             {
-                _moneyText += ((_tempMoney / 100000000)).ToString() + "¾ï ";
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "ï¿½ï¿½ ";
                 _tempMoney = (_tempMoney % 100000000);
             }
             else if (_tempMoney >= 10000)
             {
 
-                _moneyText += ((_tempMoney / 10000)).ToString() + "¸¸ ";
+                _moneyText += ((_tempMoney / 10000)).ToString() + "ï¿½ï¿½ ";
                 _tempMoney = (_tempMoney % 10000);
 
             }
@@ -123,7 +123,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
@@ -133,7 +133,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ChangeInventorySlot(int _index)
     {
-        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë°”ê¾¸ê¸° 
         ResetInventory();
         SetActiveItemInfo(false);
         UpdateMoney();
@@ -201,7 +201,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         itemInfo.SetActive(_bool);
         if(!_bool)
             SetActiveEquipCharacterBox(false);
@@ -217,7 +217,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void UpdateItemInfo()
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
+        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
         isItemSelect = false;
         InventoryButtonReset();
         SetActiveItemInfo(true);
@@ -249,22 +249,22 @@ public class InventoryPanelController : MonoBehaviour
                 iteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 3:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 4:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 5:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 6:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 7:
-                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectItem.defensivePower;
                 break;
             case 8:
             case 9:
@@ -272,24 +272,24 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 iteminfoExplainText.text =
-                    "¹°¸® °ø°İ·Â: " + selectItem.physicalDamage + "\n" +
-                    "¸¶¹ı °ø°İ·Â: " + selectItem.magicalDamage + "\n" +
-                    "°ø°İ ¹üÀ§: " + ((Weapon)selectItem).atkRange + "\n" +
-                    "°ø°İ °Å¸®: " + ((Weapon)selectItem).atkDistance + "\n" +
-                    "¹«±â Á¾·ù: " + ((Weapon)selectItem).weaponType;
+                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectItem.physicalDamage + "\n" +
+                    "ë§ˆë²• ê³µê²©ë ¥: " + selectItem.magicalDamage + "\n" +
+                    "ê³µê²© ë²”ìœ„: " + ((Weapon)selectItem).atkRange + "\n" +
+                    "ê³µê²© ê±°ë¦¬: " + ((Weapon)selectItem).atkDistance + "\n" +
+                    "ë¬´ê¸° ì¢…ë¥˜: " + ((Weapon)selectItem).weaponType;
                 break;
             case 13:
                 iteminfoExplainText.text =
-                    "È¸º¹·® : " + selectItem.value + "\n";
+                    "íšŒë³µëŸ‰ : " + selectItem.value + "\n";
                 break;
             case 14:
-                iteminfoExplainText.text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
+                iteminfoExplainText.text = "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
                 break;
         }
     }
     public void InventoryButtonReset()
     {
-        // ÀÎº¥Åä¸® ¹öÆ° ¸®¼Â
+        // ì¸ë²¤í† ë¦¬ ë²„íŠ¼ ë¦¬ì…‹
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
             inventoryButtons[i].gameObject.SetActive(false);
@@ -318,7 +318,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public string KeyToItemType(int _key)
     {
-        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
+        // í‚¤ë¥¼ ì•„ì´í…œ íƒ€ì…ìœ¼ë¡œ ë³€ê²½
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -370,7 +370,7 @@ public class InventoryPanelController : MonoBehaviour
 
             if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
             {
-                // ÀåÂøÇÏ±â ¹öÆ°
+                // ì¥ì°©í•˜ê¸° ë²„íŠ¼
                 if (_characterList[_character].CheckEquipItems[selectItem.itemType])
                 {
                     _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
@@ -386,24 +386,24 @@ public class InventoryPanelController : MonoBehaviour
                 selectItem = null;
             }
             else
-                Debug.Log("·¹º§ÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
+                Debug.Log("ë ˆë²¨ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
         }
         else
         {
-            Debug.Log("ÄğÅ¸ÀÓ Áß");
+            Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
         }
     }
 
     public void TakeOffInventoryItem(List<EquipmentController> _characterList)
     {
-        // ÀåÂøÇØÁ¦
+        // ì¥ì°©í•´ì œ
         SelectCharacter(_characterList);
         if (selectItem.isEquip)
         {
             _characterList[selectItem.equipCharNum].TakeOffEquipment(selectItem);
         }
         else
-            Debug.Log("Âø¿ëÁßÀÌ ¾Æ´Ô");
+            Debug.Log("ì°©ìš©ì¤‘ì´ ì•„ë‹˜");
         SetActiveItemInfo(false);
         ChangeAllEquipmentImage();
         ChangeInventorySlot(selectInventoryIndex);
@@ -418,7 +418,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃÇÏ±â ¹öÆ° È°¼ºÈ­
+        // ì¥ì°© ìºë¦­í„° ì„ íƒí•˜ê¸° ë²„íŠ¼ í™œì„±í™”
         equipCharactersBtn[0].gameObject.SetActive(_bool);
         for (int i = 0; i < UIManager.Instance.GetMercenaryNum(); i++)
             equipCharactersBtn[i + 1].gameObject.SetActive(_bool);
@@ -426,14 +426,14 @@ public class InventoryPanelController : MonoBehaviour
 
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
+        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
         selectItem = _item;
         isItemSelect = true;
         selectInventorySlot = _slot;
     }
     public void ChangeAllEquipmentImage()
     { 
-        // ÀåºñÃ¢ ÀÌ¹ÌÁö ¹Ù²Ù±â
+        // ì¥ë¹„ì°½ ì´ë¯¸ì§€ ë°”ê¾¸ê¸°
         for (int i = 0; i < selectCharacterEqipment.EquipItems.Length; i++)
         {
             if (selectCharacterEqipment.CheckEquipItems[i])
@@ -454,14 +454,14 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void InitEquipmentSlotImage(int _index)
     {
-        // Àåºñ°¡ ¾øÀ» ½Ã Àåºñ ½½·Ô ºñ¿ì±â
+        // ì¥ë¹„ê°€ ì—†ì„ ì‹œ ì¥ë¹„ ìŠ¬ë¡¯ ë¹„ìš°ê¸°
         equipmentSlots[_index].CurItem = null;
         equipmentSlots[_index].ItemImages[1].sprite = UIMask;
         equipmentSlots[_index].InitImageSize();
     }
     public void SelectCharacterInEquipment(List<EquipmentController> _charaterList, bool _isUp)
     {
-        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
+        // ì¥ë¹„ì°½ì—ì„œ ìºë¦­í„° ì„ íƒ
         InitEquipment();
         if (_isUp)
         {
@@ -485,12 +485,12 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void UpdateEquipmentName()
     {
-        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ º¯°æ
+        // ì¥ë¹„ì°½ ìºë¦­í„° ì´ë¦„ ë³€ê²½
         equipmentNameText.text = selectCharStatus.ObjectName.ToString();
     }
     public void InitEquipment()
     {
-        // ÀåºñÃ¢ ¸®¼Â
+        // ì¥ë¹„ì°½ ë¦¬ì…‹
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
             equipmentSlots[i].CurItem = null;
@@ -499,7 +499,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void DiscardSelectItem()
     {
-        // ¾ÆÀÌÅÛ ¹ö¸®±â
+        // ì•„ì´í…œ ë²„ë¦¬ê¸°
         if (selectItem.itemType > 8)
         {
             SetActiveCheckDiscardAmount(true);
@@ -523,16 +523,16 @@ public class InventoryPanelController : MonoBehaviour
                 amount.text = null;
             }
             else
-                Debug.Log("¹ö¸®·Á´Â °ªÀ» ÃÊ°úÇÔ");
+                Debug.Log("ë²„ë¦¬ë ¤ëŠ” ê°’ì„ ì´ˆê³¼í•¨");
         }
         else
         {
-            UIManager.Instance.Notice("¿Ã¹Ù¸¥ °ªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+            UIManager.Instance.Notice("ì˜¬ë°”ë¥¸ ê°’ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
         }
     }
     public void UseSelectItem(PlayerStatus _player)
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ì•„ì´í…œ ì‚¬ìš©
         if (!selectItem.isCoolTime)
         {
             InventoryManager.Instance.IsConsumaableCoolTime = true;
@@ -542,7 +542,7 @@ public class InventoryPanelController : MonoBehaviour
             selectItem.isCoolTime = true;
         }
         else
-            Debug.Log("ÄğÅ¸ÀÓ Áß");
+            Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
     }
     public void SetItemQuickSlot(int _index)
     {
@@ -561,7 +561,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ActiveInventoryPanel(bool _bool)
     {
-        // UI È°¼ºÈ­ 
+        // UI í™œì„±í™” 
         UIImages.SetActive(_bool);
         if(_bool)
             ChangeAllEquipmentImage();

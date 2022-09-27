@@ -172,6 +172,29 @@ public class MercenaryController : CharacterController
             else
                 mercenary.AllyTarget = _defaultTransform;
         }
+
+        if (_status.AllyRayList.Count > 0)
+        {
+            _status.AllyTarget = _status.AllyRayList[0].TargetPos;
+            SortSightRayList(_status.AllyRayList);
+            for (int i = 0; i < _status.AllyRayList.Count; i++)
+            {
+                if (GetDistance(this.transform.position, _status.AllyRayList[i].transform.position) >= _status.SeeRange
+                    || _status.AllyRayList[i].transform.GetComponent<AllyStatus>().AIState == EAIState.Died)
+                {
+                    if (_status.AllyRayList[i].TargetPos == _status.AllyTarget)
+                    {
+                        _status.AllyTarget = null;
+                    }
+                    _status.AllyRayList[i].transform.GetComponent<AllyStatus>().IsAllyTargeted[((AllyStatus)_status).AllyNum] = false;
+                    _status.AllyRayList.Remove(_status.AllyRayList[i]);
+                }
+            }
+        }
+        else
+        {
+            _status.AllyTarget = null;
+        }
     }
 
 

@@ -3,9 +3,9 @@ using System.IO;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-09
- * 작성자 : Inklie
- * 파일명 : DatabaseManager.cs
+ * �������� : 2022-06-09
+ * �ۼ��� : Inklie
+ * ���ϸ� : DatabaseManager.cs
 ==============================
 */
 
@@ -83,7 +83,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         if (!File.Exists(CombinePath("0_Hair")))
         {
-            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Ӹ� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -97,7 +97,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("1_FaceHair")))
         {
-            Debug.Log("경로에 얼굴 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -111,7 +111,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("2_Cloth")))
         {
-            Debug.Log("경로에 옷 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -125,7 +125,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("3_Pant")))
         {
-            Debug.Log("경로에 바지 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -139,7 +139,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("4_Helmet")))
         {
-            Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Ӹ� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -153,7 +153,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("5_Armor")))
         {
-            Debug.Log("경로에 갑옷 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -167,7 +167,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("6_Back")))
         {
-            Debug.Log("경로에 망토 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -181,7 +181,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("7_Shield")))
         {
-            Debug.Log("경로에 방패 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -195,7 +195,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("8_Sword")))
         {
-            Debug.Log("경로에 검 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -210,7 +210,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("9_Exe")))
         {
-            Debug.Log("경로에 도끼 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -225,7 +225,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("10_Spear")))
         {
-            Debug.Log("경로에 창 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� â ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -240,7 +240,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("11_Bow")))
         {
-            Debug.Log("경로에 활 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� Ȱ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -255,7 +255,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("12_Wand")))
         {
-            Debug.Log("경로에 지팡이 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -270,7 +270,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("13_Consumables")))
         {
-            Debug.Log("경로에 소비품 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �Һ�ǰ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -284,7 +284,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("14_Miscellaneous")))
         {
-            Debug.Log("경로에 기타템 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��Ÿ�� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -298,7 +298,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Enemy")))
         {
-            Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -317,7 +317,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Exp")))
         {
-            Debug.Log("경로에 경험치 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ����ġ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -330,7 +330,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Stage")))
         {
-            Debug.Log("경로에 스테이지 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �������� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -451,7 +451,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
-            Debug.Log("경로에 밀리 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �и� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -465,7 +465,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("RangedGrace")))
         {
-            Debug.Log("경로에 궁수 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� �ü� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -480,7 +480,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("MagicGrace")))
         {
-            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -495,7 +495,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
         if (!File.Exists(CombinePath("CommanderGrace")))
         {
-            Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -509,7 +509,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
         {
-            Debug.Log("경로에 제작 레시피 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -524,7 +524,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("AltarProperty")))
         {
-            Debug.Log("경로에 제단 특성 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ��� Ư�� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -850,7 +850,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (warriorGraceList[i].graceKey == _key)
                         _grace = warriorGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 1:
@@ -859,7 +859,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (rangedGraceList[i].graceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 2:
@@ -868,7 +868,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (magicGraceList[i].graceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
             case 3:
@@ -877,7 +877,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     if (commanderGraceList[i].graceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("해당 은총이 없습니다.");
+                        Debug.Log("�ش� ����� ���ϴ�.");
                 }
                 break;
 
@@ -892,7 +892,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
+                Debug.Log("�ش� ��� �����ǰ� ���ϴ�.");
         }
         return _craftRecipe;
     }
