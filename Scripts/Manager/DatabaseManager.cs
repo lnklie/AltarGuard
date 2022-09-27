@@ -41,10 +41,20 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<Skill> skillList = new List<Skill>();
 
     [Header("Grace")]
-    public List<Grace> warriorGraceList = new List<Grace>();
-    public List<Grace> rangedGraceList = new List<Grace>();
-    public List<Grace> magicGraceList = new List<Grace>();
-    public List<Grace> commanderGraceList = new List<Grace>();
+    public List<GraceConditionWho> graceConditionWhoList = new List<GraceConditionWho>();
+    public List<GraceConditionWhat> graceConditionWhatList = new List<GraceConditionWhat>();
+    public List<GraceConditionHow> graceConditionHowList = new List<GraceConditionHow>();
+    public List<GraceResultWho> graceResultWhoList = new List<GraceResultWho>();
+    public List<GraceResultTarget> graceResultTargetList = new List<GraceResultTarget>();
+    public List<GraceResultWhat> graceResultWhatList = new List<GraceResultWhat>();
+    public List<GraceResultHow> graceResultHowList = new List<GraceResultHow>();
+
+
+    [Header("BigGrace")]
+    public List<BigGrace> warriorGraceList = new List<BigGrace>();
+    public List<BigGrace> rangedGraceList = new List<BigGrace>();
+    public List<BigGrace> magicGraceList = new List<BigGrace>();
+    public List<BigGrace> commanderGraceList = new List<BigGrace>();
 
     [Header("CraftRecipe")]
     public List<CraftRecipe> craftRecipeList = new List<CraftRecipe>();
@@ -333,7 +343,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Skill")))
         {
-            Debug.Log("��ο� ��ų ������ ���̽��� ������� �ʽ�ϴ�.");
+            Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -348,6 +358,97 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
             }
         }
+        if (!File.Exists(CombinePath("ConditionWho")))
+        {
+            Debug.Log("경로에 조건부 누구의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWho")));
+            GraceConditionWho[] grace = JsonHelper.FromJson<GraceConditionWho>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionWhoList.Add(new GraceConditionWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ConditionWhat")))
+        {
+            Debug.Log("경로에 조건부 무엇의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWhat")));
+            GraceConditionWhat[] grace = JsonHelper.FromJson<GraceConditionWhat>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionWhatList.Add(new GraceConditionWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ConditionHow")))
+        {
+            Debug.Log("경로에 조건부 어떻게의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionHow")));
+            GraceConditionHow[] grace = JsonHelper.FromJson<GraceConditionHow>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceConditionHowList.Add(new GraceConditionHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultWho")))
+        {
+            Debug.Log("경로에 결과부 누구의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWho")));
+            GraceResultWho[] grace = JsonHelper.FromJson<GraceResultWho>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultWhoList.Add(new GraceResultWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultTarget")))
+        {
+            Debug.Log("경로에 결과부 타겟의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultTarget")));
+            GraceResultTarget[] grace = JsonHelper.FromJson<GraceResultTarget>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultTargetList.Add(new GraceResultTarget(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultWhat")))
+        {
+            Debug.Log("경로에 결과부 무엇의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWhat")));
+            GraceResultWhat[] grace = JsonHelper.FromJson<GraceResultWhat>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
+        if (!File.Exists(CombinePath("ResultHow")))
+        {
+            Debug.Log("경로에 결과부 어떻게의 데이터 베이스가 존재하지 않습니다.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultHow")));
+            GraceResultHow[] grace = JsonHelper.FromJson<GraceResultHow>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultHowList.Add(new GraceResultHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
         if (!File.Exists(CombinePath("WarriorGrace")))
         {
             Debug.Log("��ο� �и� ��� ������ ���̽��� ������� �ʽ�ϴ�.");
@@ -355,10 +456,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("WarriorGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                warriorGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                warriorGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
@@ -369,11 +470,11 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("RangedGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                            
-                rangedGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
@@ -384,10 +485,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("MagicGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                magicGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                magicGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
@@ -399,10 +500,10 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         else
         {
             string loadJson = fixJson(File.ReadAllText(CombinePath("CommanderGrace")));
-            Grace[] grace = JsonHelper.FromJson<Grace>(loadJson);
+            BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                commanderGraceList.Add(new Grace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                commanderGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
@@ -441,6 +542,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("GameScript")))
         {
+            Debug.Log("경로에 대본 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -668,6 +770,78 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public Grace SelectGrace(int _key)
     {
         Grace _grace = null;
+        switch(_key/ 1000)
+        {
+            case 0:
+                for(int i = 0; i < graceConditionWhoList.Count; i++)
+                {
+                    if (graceConditionWhoList[i].graceKey == _key)
+                        _grace = graceConditionWhoList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 1:
+                for (int i = 0; i < graceConditionWhatList.Count; i++)
+                {
+                    if (graceConditionWhatList[i].graceKey == _key)
+                        _grace = graceConditionWhatList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 2:
+                for (int i = 0; i < graceConditionHowList.Count; i++)
+                {
+                    if (graceConditionHowList[i].graceKey == _key)
+                        _grace = graceConditionHowList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 3:
+                for (int i = 0; i < graceResultWhoList.Count; i++)
+                {
+                    if (graceResultWhoList[i].graceKey == _key)
+                        _grace = graceResultWhoList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 4:
+                for (int i = 0; i < graceResultTargetList.Count; i++)
+                {
+                    if (graceResultTargetList[i].graceKey == _key)
+                        _grace = graceResultTargetList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 5:
+                for (int i = 0; i < graceResultWhatList.Count; i++)
+                {
+                    if (graceResultWhatList[i].graceKey == _key)
+                        _grace = graceResultWhatList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 6:
+                for (int i = 0; i < graceResultHowList.Count; i++)
+                {
+                    if (graceResultHowList[i].graceKey == _key)
+                        _grace = graceResultHowList[i];
+                    else
+                        Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+        }
+        return _grace;
+    }
+
+    public BigGrace SelectBigGrace(int _key)
+    {
+        BigGrace _grace = null;
         switch(_key / 1000)
         {
             case 0:
@@ -730,6 +904,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
+                Debug.Log("해당 제단 특성이 없습니다.");
         }
         return _altarProperty;
     }
@@ -741,6 +916,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
+                Debug.Log("해당 제작 레시피가 없습니다.");
         }
         return _gameScript;
     }

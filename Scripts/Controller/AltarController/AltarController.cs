@@ -2,81 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-==============================
- * 최종수정일 : 2022-06-10
- * 작성자 : Inklie
- * 파일명 : AltarController.cs
-==============================
-*/
-public class AltarController : BaseController
+
+public class AltarController : MonoBehaviour
 {
+    [SerializeField] private List<AllyStatus> characters = new List<AllyStatus>();
     private AltarStatus altar = null;
-
-
-
-    [SerializeField]
-    private List<AllyStatus> characters = new List<AllyStatus>();
-    public override void Awake()
+    private void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
-        
-
     }
     private void Start()
     {
         SetHp();
+        //UpdateHp();
         UpdateBuffRange();
     }
     void Update()
     {
-        FindInBuffRangeAlly();
+
         ChangeState();
         State();
-        if (altar.IsAltarStatusChange)
-        {
-            UpdateBuff();
-            altar.IsAltarStatusChange = false;
-        }
+
     }
     public void SetHp()
     {
         if (altar != null)
         {
-            altar.MaxHp = altar.Hp;
-            altar.CurHp = altar.MaxHp;
+            //
         }
     }
- 
+
     public void ChangeState()
     {
-        // 조건에 맞게 상태변경
         if (IsDestroyed())
         {
             SetState(AltarState.Destroyed);
         }
         else
         {
-
             SetState(AltarState.Idle);     
-            
         }
 
     }
 
     public bool IsDestroyed()
     {
-        // 파괴되었는지 확인
-        if (altar.CurHp < 0f)
+
+        if (altar != null && altar.CurHp < 0f)
             return true;
         else
             return false;
     }
     public void SetState(AltarState _alterState)
     {
-        // 상태 할당
-        //altar.TriggerStateChange = true;
-        altar.AltarState = _alterState;
+        if(altar != null)
+            altar.AltarState = _alterState;
     }
     public void State()
     {
@@ -85,9 +65,6 @@ public class AltarController : BaseController
         {
             case AltarState.Idle:
                 Idle();
-                break;
-            case AltarState.Damaged:
-                Damaged();
                 break;
             case AltarState.Destroyed:
                 Destroyed();
@@ -100,30 +77,31 @@ public class AltarController : BaseController
 
     private void Idle()
     {
-        //altar.TriggerStateChange = false;
+        FindAllyInBuffRange();
+        UpdateBuff();
     }
-    private void Damaged()
-    {
-        //altar.TriggerStateChange = false;
-        altar.IsDamaged = false;
-    }
+
     private void Destroyed()
     {
-        //altar.TriggerStateChange = false;
+
     }
 
     public void UpdateBuff()
     {
-        for (int i = 0; i < characters.Count; i++)
+        if (altar.TriggerStatusUpdate)
         {
-            characters[i].IsAlterBuff = true;
-            characters[i].BuffPhysicalDamage = altar.BuffDamage;
-            characters[i].BuffMagicalDamage = altar.BuffDamage;
-            characters[i].BuffDefensivePower = altar.BuffDefensivePower;
-            characters[i].BuffSpeed = altar.BuffSpeed;
-            characters[i].BuffHpRegenValue = altar.BuffHpRegen;
-            characters[i].UpdateTotalAbility();
-            UpdateBuffRange();
+            for (int i = 0; i < characters.Count; i++)
+            {
+                characters[i].IsAlterBuff = true;
+                characters[i].BuffPhysicalDamage = altar.BuffDamage;
+                characters[i].BuffMagicalDamage = altar.BuffDamage;
+                characters[i].BuffDefensivePower = altar.BuffDefensivePower;
+                characters[i].BuffSpeed = altar.BuffSpeed;
+                characters[i].BuffHpRegenValue = altar.BuffHpRegen;
+                characters[i].UpdateTotalAbility();
+                UpdateBuffRange();
+            }
+            altar.TriggerStatusUpdate = false;
         }
     }
     public void RemoveBuff(AllyStatus _ally)
@@ -139,16 +117,16 @@ public class AltarController : BaseController
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
-        altar.BuffRangeSprite.transform.localScale = new Vector2(altar.BuffRange * 1f / 10, altar.BuffRange * 1f / 10);
+        float _diameter = altar.BuffRange * 1f / 10;
+        altar.BuffRangeSprite.transform.localScale = new Vector2(_diameter, _diameter);
     }
 
-    public void FindInBuffRangeAlly()
+    public void FindAllyInBuffRange()
     {
         // 동맹 찾기
         var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRange * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
         if (hits.Length > 0)
         {
-            
             AddBuffCharacterList(hits);
         }
         RemoveBuffCharacterList();
@@ -160,8 +138,9 @@ public class AltarController : BaseController
         {
             if (!_raycastHit2Ds[i].collider.CompareTag("Altar") && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
-                Debug.Log(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>() + "들어옴");
-                characters.Add(_raycastHit2Ds[i].collider.GetComponent<AllyStatus>());
+                AllyStatus _targetAlly = _raycastHit2Ds[i].collider.GetComponent<AllyStatus>();
+                Debug.Log(_targetAlly.ObjectName + " 들어옴");
+                characters.Add(_targetAlly);
                 UpdateBuff();
             }
         }
@@ -170,11 +149,11 @@ public class AltarController : BaseController
     {
         for (int i = 0; i < characters.Count; i++)
         {
-            if (GetDistance(this.transform.position, characters[i].transform.position) >= altar.BuffRange * 1f && characters[i].IsAlterBuff)
+            if (altar.GetDistance(characters[i].transform.position) >= altar.BuffRange * 1f && characters[i].IsAlterBuff)
             {
                 RemoveBuff(characters[i]);
                 characters.Remove(characters[i]);
-                Debug.Log("빠짐");
+                Debug.Log(characters[i].ObjectName + "버프 빠짐");
             }
         }
     }

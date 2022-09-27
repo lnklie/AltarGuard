@@ -38,7 +38,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingInventorySlotChange(int _index)
     {
-        // �κ��丮 ���� �ٲٱ� 
         SellSlotsReset();
         SetActiveShopItemInfo(false);
         SetActiveEquipedItemInfo(false);
@@ -93,7 +92,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public string KeyToItemTypeText(int _key)
     {
-        // Ű�� ������ Ÿ����� ����
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -135,7 +133,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateBuyingItemInfo()
     {
-        // ������ ���â ����Ʈ
         isBuyingItemSelect = false;
         if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
         {
@@ -224,7 +221,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public void UpdateEquipedItemInfo()
     {
-        // ������ ���â ����Ʈ
         int _index = selectBuyingItem.itemType;
         equipediteminfoText[0].text = playerEquipmentController.EquipItems[_index].itemKorName;
         equipediteminfoText[1].text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
@@ -316,7 +312,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SellSlotsReset()
     {
-        // �κ��丮 ���� ����
         for (int i = 0; i < buySlots.Length; i++)
         {
             buySlots[i].SlotReset();
@@ -324,12 +319,10 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SetActiveShopItemInfo(bool _bool)
     {
-        // ������ ���â Ȱ��ȭ ����
         shopItemInfo.SetActive(_bool);
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
-        // ������ ���â Ȱ��ȭ ����
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActivebuyPanel(bool _bool)
@@ -338,7 +331,6 @@ public class BuyPanelController : MonoBehaviour
     }
     public void SelectSlotBuyItem(Item _item)
     {
-        // ���Կ� ������ ������ 
         selectBuyingItem = _item;
         isBuyingItemSelect = true;
     }

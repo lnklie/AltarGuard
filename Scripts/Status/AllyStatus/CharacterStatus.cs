@@ -9,12 +9,13 @@ public class CharacterStatus : Status
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
+    [SerializeField] protected float maxCastingSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] protected int curLevel = 30;
 
     [Header("TotalStatus")]
-    [SerializeField] protected int totalMaxHp = 0;
+
     [SerializeField] protected int totalMaxMp = 0;
     [SerializeField] protected int totalStr = 0;
     [SerializeField] protected int totalDex = 0;
@@ -23,7 +24,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int totalHpRegenValue = 0;
     [SerializeField] protected int totalPhysicalDamage = 0;
     [SerializeField] protected int totalMagicalDamage = 0;
-    [SerializeField] protected int totalDefensivePower = 0;
+
     [SerializeField] protected float totalSpeed = 0;
     [SerializeField] protected float totalAtkSpeed = 0;
     [SerializeField] protected float totalAtkRange = 0;
@@ -97,15 +98,17 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
+    [SerializeField] protected List<Status> enemyRayList = new List<Status>();
     [SerializeField] protected List<Status> allyRayList = new List<Status>();
     protected bool isHPRegen = false;
-    protected float attackType = 0f;
+    [SerializeField] protected float attackType = 0f;
     [SerializeField] private bool[] isAllyTargeted = new bool[5];
     [SerializeField] private bool[] isEnemyTargeted = new bool[101];
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
+    private Debuff debuff = Debuff.Not;
     #region Properties
+    public Debuff Debuff { get { return debuff; } set { debuff = value; } }
     public bool TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public int GraceMaxHp { get { return graceMaxHp; } set { graceMaxHp = value; } }
@@ -123,7 +126,7 @@ public class CharacterStatus : Status
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
-    public List<EnemyStatus> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
+    public List<Status> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
     public int GraceLuck { get { return graceLuck; } set { graceLuck = value; } }
@@ -146,7 +149,7 @@ public class CharacterStatus : Status
     public int TotalWiz { get { return totalWiz; } set { totalWiz = value; } }
     public int TotalDex { get { return totalDex; } set { totalDex = value; } }
     public int TotalStr { get { return totalStr; } set { totalStr = value; } }
-    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
+
     public int TotalMaxMp { get { return totalMaxMp; } set { totalMaxMp = value; } }
     public int TotalPhysicalDamage { get { return totalPhysicalDamage; } set { totalPhysicalDamage = value; } }
     public int TotalMagicalDamage { get { return totalMagicalDamage; } set { totalMagicalDamage = value; } }
@@ -193,9 +196,8 @@ public class CharacterStatus : Status
     {
         triggerStatusUpdate = true;
     }
-    public override void Update()
+    public virtual void Update()
     {
-        base.Update();
 
         if (triggerEquipmentChange)
         {
@@ -249,7 +251,6 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // �ɷ� ����Ʈ
         UpdateBasicStatus();
         totalMaxHp = maxHp + graceMaxHp;
         totalMaxMp = maxMp + graceMaxMp;
@@ -276,14 +277,14 @@ public class CharacterStatus : Status
         buffDefensivePower = 0;
         buffHpRegenValue = 0;
     }
-
+    
     public IEnumerator HpRegenarate()
     {
         isHPRegen = true;
         while (isHPRegen)
         {
             yield return new WaitForSeconds(2f);
-            if (curHp <= 0)
+            if (isDied)
             {
                 yield return null;
             }

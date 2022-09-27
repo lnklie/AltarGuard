@@ -33,16 +33,12 @@ public class SkillController : MonoBehaviour
         }
     }
     public void AquireSkill(int _skillKey)
-    
+    {
         Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
 
         skills.Add(_newSkill);
 
         skillQueue.Add(_newSkill);
-        
-
-        skillQueue.Add(_newSkill);
-        
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -64,7 +60,6 @@ public class SkillController : MonoBehaviour
     public void UseSkill(Skill _skill)
     {
         int index = skillQueue.IndexOf(_skill);
-        Debug.Log("�ε����� " + index);
         if (index != -1)
         {
 
@@ -176,7 +171,6 @@ public class SkillController : MonoBehaviour
                 skills[i].coolTime += Time.deltaTime;
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
-                    Debug.Log("��Ÿ�� ȸ�� �Ϸ�");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);

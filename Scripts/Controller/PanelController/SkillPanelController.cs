@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using TMPro;
+
 public class SkillPanelController : MonoBehaviour
 {
     [SerializeField] private SkillController selectSkillController = null;
@@ -44,10 +44,11 @@ public class SkillPanelController : MonoBehaviour
     }
     public void SelectCharacterInSkillController(List<SkillController> _charaterList, bool _isUp)
     {
-        // 스테이터스 창 캐릭터 선택
+        // �������ͽ� â ĳ���� ����
         if (_isUp)
         {
             selectNum++;
+            Debug.Log(selectNum + " ��");
             if (selectNum == 5)
                 selectNum = 0;
         }

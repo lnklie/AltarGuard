@@ -96,18 +96,18 @@ public class InventoryPanelController : MonoBehaviour
         {
             if(_tempMoney >= Mathf.Pow(10, 12))
             {
-                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "조 ";
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "� ";
                 _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
             }
             else if (_tempMoney >= 100000000)
             {
-                _moneyText += ((_tempMoney / 100000000)).ToString() + "억 ";
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "�� ";
                 _tempMoney = (_tempMoney % 100000000);
             }
             else if (_tempMoney >= 10000)
             {
 
-                _moneyText += ((_tempMoney / 10000)).ToString() + "만 ";
+                _moneyText += ((_tempMoney / 10000)).ToString() + "�� ";
                 _tempMoney = (_tempMoney % 10000);
 
             }

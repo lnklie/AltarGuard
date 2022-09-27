@@ -109,7 +109,7 @@ public class SkillObject : MonoBehaviour
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)
-            ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally"));
+            ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally", "Altar"));
         else if (this.transform.parent.gameObject.layer == 8)
             ray = Physics2D.CircleCastAll(this.transform.position, col.radius, Vector2.zero, 0f, LayerMask.GetMask("Enemy"));
         return ray;
