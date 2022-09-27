@@ -134,7 +134,7 @@ public enum EGraceConditionWho
 }
 public enum EGraceConditionWhat
 {
-    Sword,
+    Sword = 1000,
     OnlySword,
     Spear,
     Exe,
@@ -151,13 +151,13 @@ public enum EGraceConditionWhat
 }
 public enum EGraceConditionHow
 {
-    Equip,
+    Equip = 2000,
     Use,
     SkillUse,
 }
 public enum EGraceResultWho
 {
-    Player,
+    Player = 3000,
     Mercenary1,
     Mercenary2,
     Mercenary3,
@@ -165,22 +165,10 @@ public enum EGraceResultWho
     AllMercenary,
     All
 }
-public enum EGraceResultTarget
-{
-    PlayerStr,
-    PlayerDex,
-    PlayerWiz,
-    PlayerLuck,
-    PlayerHpRegen,
-    PlayerPhysicalDamage,
-    PlayerMagicalDamage,
-    PlayerDefensivePower,
-    PlayerSpeed,
-    PlayerAtkSpeed
-}
+
 public enum EGraceResultWhat
 {
-    Str,
+    Str = 4000,
     Dex,
     Wiz,
     Luck,
@@ -194,6 +182,6 @@ public enum EGraceResultWhat
 }
 public enum EGraceResultHow
 {
-    Increase,
+    Increase = 6000,
     Decrease,
 }

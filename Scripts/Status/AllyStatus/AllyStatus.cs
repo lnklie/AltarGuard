@@ -23,6 +23,9 @@ public class AllyStatus : CharacterStatus
 
     [SerializeField] private int allyNum = 0;
     #region Properties
+
+    public float GraceDropProbability { get { return graceDropProbability; }  set { graceDropProbability = value; } }
+    public float GraceItemRarity { get { return graceItemRarity; } set { graceItemRarity = value; } }
     public int AllyNum { get{ return allyNum; } set{ allyNum = value; } }
     public float KnuckBackPower { get { return knuckBackPower; } set { knuckBackPower = value; } }
     public float RevivalTime { get { return revivalTime; } set { revivalTime = value; } }
@@ -53,7 +56,7 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ìŠ¤í…Ÿ ìƒìŠ¹
+        // ½ºÅİ »ó½Â
         if (statusPoint > 0)
         {
             switch (_index)
@@ -74,13 +77,13 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("ìŠ¤í…Œì´í„°ìŠ¤ í¬ì¸íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
+            Debug.Log("½ºÅ×ÀÌÅÍ½º Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
         UpdateTotalAbility();
     }
 
     private void UpLevel()
     {
-        // ë ˆë²¨ì—…
+        // ·¹º§¾÷
         curLevel++;
         curExp -= maxExp;
         statusPoint += 5;
@@ -90,7 +93,7 @@ public class AllyStatus : CharacterStatus
 
     private void LvToExp()
     {
-        // ë ˆë²¨ë³„ ê²½í—˜ì¹˜ ì „í™˜
+        // ·¹º§º° °æÇèÄ¡ ÀüÈ¯
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
             if (curLevel == DatabaseManager.Instance.expList[i].lv)
@@ -99,7 +102,7 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // ìµœëŒ€ ê²½í—˜ì¹˜ ì¸ì§€ í™•ì¸
+        // ÃÖ´ë °æÇèÄ¡ ÀÎÁö È®ÀÎ
         if (curExp >= maxExp)
             return true;
         else
@@ -128,9 +131,9 @@ public class AllyStatus : CharacterStatus
     }
     public override void UpdateTotalAbility()
     {
-        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         base.UpdateTotalAbility();
-        totalDropProbability = dropProbability + equipDropProbability + graceDropProbability;
+        totalDropProbability = dropProbability + equipDropProbability + graceDropProbability ;
         totalItemRarity = itemRarity + equipItemRarity + graceItemRarity;
     }
     public void InitGraceStatus()
@@ -150,5 +153,20 @@ public class AllyStatus : CharacterStatus
         graceAtkRange = 0f;
         graceDropProbability = 0f;
         graceItemRarity = 0f;
+
+        graceMagniMaxHp = 0;
+        graceMagniMaxMp = 0;
+        graceMagniHpRegenValue = 0;
+        graceMagniStr = 0;
+        graceMagniDex = 0;
+        graceMagniWiz = 0;
+        graceMagniLuck = 0;
+        graceMagniPhysicalDamage = 0;
+        graceMagniMagicalDamage = 0;
+        graceMagniDefensivePower = 0;
+        graceMagniSpeed = 0;
+        graceMagniAttackSpeed = 0;
+        graceMagniAtkRange = 0;
+        graceMagniCastingSpeed = 0;
     }
 }

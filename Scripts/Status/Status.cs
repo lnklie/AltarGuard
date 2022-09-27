@@ -15,7 +15,8 @@ public class Status : MonoBehaviour
     [SerializeField] protected int maxHp = 100;
     [SerializeField] protected int defensivePower = 0;
     [SerializeField] protected bool isDamaged = false;
-    //[SerializeField] protected bool triggerStateChange = false;
+    [SerializeField] protected int totalMaxHp = 0;
+    [SerializeField] protected int totalDefensivePower = 0;
     [SerializeField] protected bool triggerStatusUpdate = false;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
@@ -25,6 +26,8 @@ public class Status : MonoBehaviour
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     #region Property
+    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
+    public int TotalDefensivePower { get { return totalDefensivePower; } set { totalDefensivePower = value; } }
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
     public int DefeatExp { get { return defeatExp; } set { defeatExp = value; } }
     public Transform TargetPos { get { return targetPos; } }
@@ -48,11 +51,7 @@ public class Status : MonoBehaviour
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
-    public virtual void Update()
-    {
-        //if (TriggerStateChange)
-        //    TriggerStateChange = false;
-    }
+
     public void SetValueText(int _damage, Color _color)
     {
         damageTextController.SetText(_damage, _color);
@@ -98,5 +97,20 @@ public class Status : MonoBehaviour
             ani.SetLayerWeight(i, 0);
         }
         ani.SetLayerWeight((int)layerName, 1);
+    }
+    public float GetDistance(Vector2 _end)
+    {
+        // 대상과의 거리 측정
+        float x1 = transform.position.x;
+        float y1 = transform.position.y;
+        float x2 = _end.x;
+        float y2 = _end.y;
+        float width = x2 - x1;
+        float height = y2 - y1;
+
+        float distance = width * width + height * height;
+        distance = Mathf.Sqrt(distance);
+
+        return distance;
     }
 }

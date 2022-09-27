@@ -6,9 +6,9 @@ using UnityEngine.Networking;
 using System.IO;
 /*
 ==============================
- * ìµœì¢…ìˆ˜ì •ì¼ : 2022-06-10
- * ì‘ì„±ì : Inklie
- * íŒŒì¼ëª… : DataManager.cs
+ * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-10
+ * ÀÛ¼ºÀÚ : Inklie
+ * ÆÄÀÏ¸í : DataManager.cs
 ==============================
 */
 
@@ -35,12 +35,12 @@ public class DataManager : MonoBehaviour
     }
     public void JsonLoad()
     {
-        // ë°ì´í„° ë¡œë“œ
+        // µ¥ÀÌÅÍ ·Îµå
         Player playerData = new Player();
         if (!File.Exists(path))
         {
-            Debug.Log("ì²˜ìŒ ë¡œë“œ");
-            playerStatus.ObjectName = "í”Œë ˆì´ì–´";
+            Debug.Log("Ã³À½ ·Îµå");
+            playerStatus.ObjectName = "ÇÃ·¹ÀÌ¾î";
             playerStatus.Str = 5;
             playerStatus.Dex = 5;
             playerStatus.Wiz = 5;
@@ -54,7 +54,7 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(" ìˆëŠ” ë¡œë“œ");
+            Debug.Log(" ÀÖ´Â ·Îµå");
             string loadJson = File.ReadAllText(path);
             playerData = JsonUtility.FromJson<Player>(loadJson);
             if (playerData != null)
@@ -155,7 +155,7 @@ public class DataManager : MonoBehaviour
 
     public void JsonSave()
     {
-        // ë°ì´í„° ì„¸ì´ë¸Œ
+        // µ¥ÀÌÅÍ ¼¼ÀÌºê
         Debug.Log("Save");
         Player playerData = new Player();
 
@@ -220,7 +220,7 @@ public class DataManager : MonoBehaviour
     }
     public void AddItemList(List<Item> dataItem, List<Item> Inventory)
     {
-        // ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ ì¶”ê°€
+        // ¾ÆÀÌÅÛ ¸®½ºÆ® Ãß°¡
         for (int i = 0; i < Inventory.Count; i++)
         {
             dataItem.Add(Inventory[i]);
