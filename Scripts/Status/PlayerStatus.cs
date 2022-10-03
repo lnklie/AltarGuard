@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-10
- * 작성자 : Inklie
- * 파일명 : PlayerStatus.cs
-==============================
-*/
+
 public class PlayerStatus : AllyStatus
 {
     private RaycastHit2D[] itemSight = default;

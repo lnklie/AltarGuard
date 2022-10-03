@@ -28,18 +28,18 @@ public class GracePanelController : MonoBehaviour
         }
     }
 
-    public void SetSlotGrace(int _egraceType)
-    {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if(DatabaseManager.Instance.SelectGrace(_egraceType + i) != null)
-            {
-                slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
-            }
-            else
-                Debug.Log("해당 은총이 없습니다.");
-        }
-    }
+    //public void SetSlotGrace(int _egraceType)
+    //{
+    //    for (int i = 0; i < slots.Count; i++)
+    //    {
+    //        if(DatabaseManager.Instance.SelectGrace(_egraceType + i) != null)
+    //        {
+    //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
+    //        }
+    //        else
+    //            Debug.Log("해당 은총이 없습니다.");
+    //    }
+    //}
     public void UpdateGracePoint(int _gracePoint)
     {
         remainingPoint.text = "잔여 포인트: " + _gracePoint;

@@ -13,13 +13,12 @@ public class CompleteGrace
     public int conditionValue = -1;
     public int conditionHow = -1;
     public int resultWho = -1;
-    public int resultTarget = -1;
-    public int resultTarget2 = -1;
     public int resultWhat = -1;
     public int resultValue = -1;
+    public int resultValueIsPercent = -1;
     public int resultHow = -1;
-    public CompleteGrace(string _explain, int _conditionWho, int _conditionWhat, int _conditionValue, int _conditionHow,
-        int _resultWho, int _resultTarget, int _resultWhat, int _resultValue, int _resultHow)
+    public CompleteGrace(string _explain, int _conditionWho, int _conditionWhat, int _conditionValue , int _conditionHow,
+        int _resultWho, int _resultWhat, int _resultValue, int _resultValueIsPercent, int _resultHow)
     {
         this.explain = _explain;
         this.conditionWho = _conditionWho;
@@ -27,9 +26,9 @@ public class CompleteGrace
         this.conditionValue = _conditionValue;
         this.conditionHow = _conditionHow;
         this.resultWho = _resultWho;
-        this.resultTarget = _resultTarget;
         this.resultWhat = _resultWhat;
         this.resultValue = _resultValue;
+        this.resultValueIsPercent = _resultValueIsPercent;
         this.resultHow = _resultHow;
     }
 }
