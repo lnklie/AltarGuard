@@ -28,21 +28,21 @@ public class GracePanelController : MonoBehaviour
         }
     }
 
-    public void SetSlotGrace(int _egraceType)
-    {
-        for (int i = 0; i < slots.Count; i++)
-        {
-            if(DatabaseManager.Instance.SelectGrace(_egraceType + i) != null)
-            {
-                slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
-            }
-            else
-                Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
-        }
-    }
+    //public void SetSlotGrace(int _egraceType)
+    //{
+    //    for (int i = 0; i < slots.Count; i++)
+    //    {
+    //        if(DatabaseManager.Instance.SelectGrace(_egraceType + i) != null)
+    //        {
+    //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
+    //        }
+    //        else
+    //            Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+    //    }
+    //}
     public void UpdateGracePoint(int _gracePoint)
     {
-        remainingPoint.text = "ÀÜ¿© Æ÷ÀÎÆ®: " + _gracePoint;
+        remainingPoint.text = "ìž”ì—¬ í¬ì¸íŠ¸: " + _gracePoint;
     }
 
     public void SelectGrace(int _index, CheckIsActiveGrace _checkIsActiveGrace)
@@ -53,12 +53,12 @@ public class GracePanelController : MonoBehaviour
         if(_checkIsActiveGrace(selectGrace.graceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "ÀÌ¹Ì ¹ÞÀ½";
+            graceLearnButtonText.text = "ì´ë¯¸ ë°›ìŒ";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "¹Þ±â";
+            graceLearnButtonText.text = "ë°›ê¸°";
         }
         
     }

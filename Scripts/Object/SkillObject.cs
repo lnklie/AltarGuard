@@ -105,7 +105,7 @@ public class SkillObject : MonoBehaviour
     }
     private RaycastHit2D[] HitRay()
     {
-        // Â·Â¹Ã€ÃŒÂ¸Â¦ Â½Ã®Â´Ã‚ Â¿ÂªÃ‡Ã’
+        // ·¹ÀÌ¸¦ ½î´Â ¿ªÇÒ
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)

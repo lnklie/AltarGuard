@@ -99,7 +99,6 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
-        // 대상과의 거리 측정
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EquipmentController : MonoBehaviour
 {
     private CharacterStatus status = null;
@@ -40,6 +41,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
+        // ��� ���� ���
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -49,6 +51,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
+        // ��� ���������� ���
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -60,7 +63,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // ��� ������� ���
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -137,6 +139,8 @@ public class EquipmentController : MonoBehaviour
                     break;
                 case (int)ItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                    GraceManager.Instance.AquireGrace(equipItems[8].grace1);
+                    GraceManager.Instance.ActiveGrace();
                     ChangeAttackType();
                     SkillChange();
                     break;
@@ -145,23 +149,17 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
+            Debug.Log("���� ���Դϴ�.");
         }
     }
     public void SkillChange()
     {
-        if(equipItems[8].skillKey1 != -1)
+        for(int i = 0; i < equipItems[8].skills.Length; i++)
         {
-            skillController.AquireSkill(equipItems[8].skillKey1);
-        }
-
-        if(equipItems[8].skillKey2 != -1)
-        {
-            skillController.AquireSkill(equipItems[8].skillKey2);
-        }
-        
-        if (equipItems[8].skillKey3 != -1)
-        {
-            skillController.AquireSkill(equipItems[8].skillKey3);
+            if (equipItems[8].skills[i] != null)
+            {
+                skillController.AquireSkill(equipItems[8].skills[i]);
+            }
         }
     }
 
@@ -276,6 +274,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
+        // ���� ���
         switch (_index)
         {
             case 0:

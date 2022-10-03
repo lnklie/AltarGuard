@@ -54,6 +54,7 @@ public class SkillPanelController : MonoBehaviour
         }
         else
         {
+            Debug.Log("�ٿ�");
             selectNum--;
             if (selectNum < 0)
                 selectNum = 4;

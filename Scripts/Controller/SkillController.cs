@@ -32,13 +32,10 @@ public class SkillController : MonoBehaviour
             status.IsSkillChange = false;
         }
     }
-    public void AquireSkill(int _skillKey)
+    public void AquireSkill(Skill _skill)
     {
-        Skill _newSkill = DatabaseManager.Instance.SelectSkill(_skillKey);
-
-        skills.Add(_newSkill);
-
-        skillQueue.Add(_newSkill);
+        skills.Add(_skill);
+        skillQueue.Add(_skill);
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -49,12 +46,14 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
+        //    Debug.Log("��ų ������ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
+            Debug.Log("��� ��ų");
     }
 
     public void UseSkill(Skill _skill)
@@ -128,6 +127,7 @@ public class SkillController : MonoBehaviour
     public void UseSkill()
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
+        // Debug.Log("�ε����� " + index);
         if(status.Target !=null)
         {
             
@@ -160,6 +160,7 @@ public class SkillController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Ÿ���� ���");
         }
     }
     public void CalculateSkillCoolTime()

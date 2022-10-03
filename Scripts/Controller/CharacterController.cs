@@ -63,7 +63,7 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-
+        // ����Ʈ ���
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (characterStatus.GetDistance( a.transform.position) < characterStatus.GetDistance( b.transform.position)) return -1;
@@ -73,6 +73,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
+        // ����Ʈ ���
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
@@ -83,16 +84,6 @@ public class CharacterController : MonoBehaviour, IAIController
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
         // ����Ʈ ���
-        _sightRay.Sort(delegate (Status a, Status b)
-        {
-            if (a.CurHp < b.CurHp) return -1;
-            else if (a.CurHp > b.CurHp) return 1;
-            else return 0;
-        });
-    }
-    public void SortSightRayListByHp(List<Status> _sightRay)
-    {
-
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -143,11 +134,13 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
+        // Ȱ���
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(characterStatus, AttackTypeDamage());
         }
         else
+            Debug.Log("ȭ�� ���");
     }
     public bool IsDied()
     {
@@ -196,7 +189,6 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else   
-                    Debug.Log("Ÿ���� ���");
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -205,7 +197,7 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else
-
+                    Debug.Log("Ÿ���� ���");
             }
         }
         skillController.IsSkillDelay = false;
@@ -223,7 +215,6 @@ public class CharacterController : MonoBehaviour, IAIController
     public virtual void AIState()
     {
         AnimationDirection();
-        characterStatus.DelayTime += Time.deltaTime;
         switch (characterStatus.AIState)
         {
             case EAIState.Idle:
@@ -237,9 +228,6 @@ public class CharacterController : MonoBehaviour, IAIController
                 break;
             case EAIState.UseSkill:
                 AIUseSkill();
-                break;
-            case EAIState.UseSkill:
-                AIUseSkill(_status);
                 break;
         }
     }
@@ -265,8 +253,6 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             pathFindController.FinalNodeList.RemoveAt(0);
         }
-
-
     }
     public virtual void AIAttack()
     {

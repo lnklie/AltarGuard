@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : PlayerController.cs
+ * �������� : 2022-06-05
+ * �ۼ��� : Inklie
+ * ���ϸ� : PlayerController.cs
 ==============================
 */
 public class PlayerController : CharacterController
@@ -113,7 +113,7 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("아군 클릭");
+            Debug.Log("�Ʊ� Ŭ��");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -125,11 +125,11 @@ public class PlayerController : CharacterController
                     {
                         player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("아군 타겟팅 " + hit.rigidbody.gameObject.name);
+                    Debug.Log("�Ʊ� Ÿ���� " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("대상이 너무 멀리있습니다.");
+                    Debug.Log("����� �ʹ� �ָ��ֽ�ϴ�.");
             }
             else
             {
@@ -157,14 +157,12 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove()
     {
-        // ������ ����
         player.ActiveLayer(LayerName.WalkLayer);
         player.Rig.velocity = player.TotalSpeed * player.Dir;
         AnimationDirection();
     }
     public bool InputArrowKey()
     {
-        // Ű�Է�
         player.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -195,7 +193,6 @@ public class PlayerController : CharacterController
     }
     public bool IsMove()
     {
-        // �����̰� �ִ��� Ȯ��
         if (Mathf.Abs(player.Dir.x) > 0 || Mathf.Abs(player.Dir.y) > 0)
             return true;
         else
@@ -233,7 +230,6 @@ public class PlayerController : CharacterController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // ����ȿ� �ִ� ��鿡�� ������
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -339,6 +335,11 @@ public class PlayerController : CharacterController
             else
                 player.AllyTarget = _defaultTransform;
         }
+
+        _target = _object;
+        if(_isTargetingBox)
+            _target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+
     }
     public void Perception()
     {
@@ -368,16 +369,9 @@ public class PlayerController : CharacterController
             player.AllyTarget = _target.TargetPos;
         }
     }
-    public void TargetAlly(Status _target)
-    {
-        if (_target)
-        {
-            player.AllyTarget = _target.TargetPos;
-        }
-    }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("타겟팅");
+        Debug.Log("Ÿ����");
         if (_allyTarget)
         {
             if (player.AllyTarget)

@@ -1,13 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GraceManager : MonoBehaviour
+public class GraceManager : SingletonManager<GraceManager>
 {
-    [SerializeField] private List<BigGrace> graceList = new List<BigGrace>();
+    [Header("Grace")]
+    [SerializeField] private List<GraceConditionWho> graceConditionWhoList = new List<GraceConditionWho>();
+    [SerializeField] private List<GraceConditionWhat> graceConditionWhatList = new List<GraceConditionWhat>();
+    [SerializeField] private List<GraceConditionHow> graceConditionHowList = new List<GraceConditionHow>();
+    [SerializeField] private List<GraceResultWho> graceResultWhoList = new List<GraceResultWho>();
+    [SerializeField] private List<GraceResultWhat> graceResultWhatList = new List<GraceResultWhat>();
+    [SerializeField] private List<GraceResultIsPercent> graceResultIsPercentList = new List<GraceResultIsPercent>();
+    [SerializeField] private List<GraceResultHow> graceResultHowList = new List<GraceResultHow>();
+
+    [SerializeField] private List<CompleteGrace> graceList = new List<CompleteGrace>();
+    [SerializeField] private List<BigGrace> bigGraceList = new List<BigGrace>();
     [SerializeField] private List<AllyStatus> characterStatuses = new List<AllyStatus>();
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
-    public List<BigGrace> GraceList { get { return graceList; } }
+    public List<CompleteGrace> GraceList { get { return graceList; } }
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
@@ -16,18 +26,107 @@ public class GraceManager : MonoBehaviour
         }
 
     }
+    public void SetGraceList()
+    {
+        graceConditionWhoList = DatabaseManager.Instance.graceConditionWhoList;
+        graceConditionWhatList = DatabaseManager.Instance.graceConditionWhatList;
+        graceConditionHowList = DatabaseManager.Instance.graceConditionHowList;
+        graceResultWhoList = DatabaseManager.Instance.graceResultWhoList;
+        graceResultWhatList = DatabaseManager.Instance.graceResultWhatList;
+        graceResultIsPercentList = DatabaseManager.Instance.graceResultIsPercentList;
+        graceResultHowList = DatabaseManager.Instance.graceResultHowList;
+    }
+    public BigGrace SelectBigGrace(int _key)
+    {
+        BigGrace bigGrace = null;
+        return bigGrace;
+    }
+    public Grace SelectGrace(int _key)
+    {
+        Grace _grace = null;
+        switch (_key / 1000)
+        {
+            case 0:
+                for (int i = 0; i < graceConditionWhoList.Count; i++)
+                {
+                    if (graceConditionWhoList[i].graceKey == _key)
+                        _grace = graceConditionWhoList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 1:
+                for (int i = 0; i < graceConditionWhatList.Count; i++)
+                {
+                    if (graceConditionWhatList[i].graceKey == _key)
+                        _grace = graceConditionWhatList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 2:
+                for (int i = 0; i < graceConditionHowList.Count; i++)
+                {
+                    if (graceConditionHowList[i].graceKey == _key)
+                        _grace = graceConditionHowList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 3:
+                for (int i = 0; i < graceResultWhoList.Count; i++)
+                {
+                    if (graceResultWhoList[i].graceKey == _key)
+                        _grace = graceResultWhoList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 4:
+                for (int i = 0; i < graceResultWhatList.Count; i++)
+                {
+                    if (graceResultWhatList[i].graceKey == _key)
+                        _grace = graceResultWhatList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 5:
+                for (int i = 0; i < graceResultIsPercentList.Count; i++)
+                {
+                    if (graceResultIsPercentList[i].graceKey == _key)
+                        _grace = graceResultIsPercentList[i];
+                    //else
+                        //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+            case 6:
+                for (int i = 0; i < graceResultHowList.Count; i++)
+                {
+                    if (graceResultHowList[i].graceKey == _key)
+                        _grace = graceResultHowList[i];
+                    //else
+                       //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
+                }
+                break;
+        }
+        return _grace;
+    }
     public void ActiveGrace()
     {
-        for(int i = 0; i< characterStatuses.Count;i++)
+        for (int i = 0; i < characterStatuses.Count; i++)
         {
-            characterStatuses[i].InitGraceStatus();
+            characterStatuses[i].InitGraceStatus(); 
         }
 
+        Debug.Log("����� ��� " + graceList.Count);
         for (int i = 0; i < graceList.Count; i++)
         {
+
             if (CheckGraceCondition(graceList[i]))
             {
                 OperateGrace(graceList[i]);
+                Debug.Log("�۵�");
             }
             else
             {
@@ -37,25 +136,71 @@ public class GraceManager : MonoBehaviour
     }
     public CompleteGrace CreateRandomGrace() 
     {
-        int conditionWho = Random.Range(0, DatabaseManager.Instance.graceConditionWhoList.Count);
-        int conditionWhat = Random.Range(0, DatabaseManager.Instance.graceConditionWhatList.Count);
+        int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
+        int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
+        int conditionValue = -1;
         int conditionHow = -1;
-        if (conditionWhat < 13)
-            conditionHow = 0;
-        else if (conditionWhat < 15)
+        if (conditionWhat > 13)
+        {
+            conditionHow = 3; 
+            conditionValue = Random.Range(0, 10);
+        }
+        else if (conditionWhat > 12)
+            conditionHow = 2;
+        else if(conditionWhat > 10)
             conditionHow = 1;
         else
-            conditionHow = 2;
-        int resultWho = Random.Range(0, DatabaseManager.Instance.graceResultWhoList.Count);
-        int resultTarget = Random.Range(0, DatabaseManager.Instance.graceResultTargetList.Count);
+            conditionHow = 0;
+        int resultWho = Random.Range(0, graceResultWhoList.Count);
         int resultValue = Random.Range(0, 10);
-        int resultWhat = Random.Range(0, DatabaseManager.Instance.graceResultWhatList.Count);
+        int resultWhat = Random.Range(0, graceResultWhatList.Count);
+        int resultValueIsPercent = Random.Range(0, 2);
         //int resultHow = Random.Range(0, DatabaseManager.Instance.graceResultHowList.Count);
-        CompleteGrace _completeGrace = new CompleteGrace("", conditionWho, conditionWhat + 1000, -1, conditionHow + 2000, resultWho + 3000, resultTarget + 4000, resultWhat + 5000,
-            (int)(resultValue * DatabaseManager.Instance.SelectGrace(conditionWho).weightedValue * DatabaseManager.Instance.SelectGrace(conditionWhat + 1000).weightedValue), 6000);
+        float weightedValue = 0;
+        if(conditionWho != -1)
+        {
+            weightedValue =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho + 3000).weightedValue * SelectGrace(resultWhat + 4000).weightedValue * SelectGrace(resultValueIsPercent + 5000).weightedValue;
+        }
+        else
+        {
+            weightedValue = SelectGrace(resultWho + 3000).weightedValue * SelectGrace(resultWhat + 4000).weightedValue * SelectGrace(resultValueIsPercent + 5000).weightedValue;
+        }
+        CompleteGrace _completeGrace = new CompleteGrace(
+            "", conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho + 3000, resultWhat + 4000,
+            Mathf.CeilToInt(resultValue * weightedValue), resultValueIsPercent ,6000);
+        _completeGrace.explain = AddGraceExplain(_completeGrace); 
+
         return _completeGrace;
     }
-    public bool CheckGraceCondition(BigGrace _grace)
+    public string AddGraceExplain(CompleteGrace _completeGrace)
+    {
+        string _explain = null;
+        if(_completeGrace.conditionWho != -1)
+        {
+            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "��(��) ";
+            if (_completeGrace.conditionWhat < 1014)
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "�(��) ";
+            }
+            else
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "�� ";
+                _explain += _completeGrace.conditionValue;
+            }
+            _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
+        }
+        _explain += SelectGrace(_completeGrace.resultWho).graceKorName + "�� ";
+        _explain += SelectGrace(_completeGrace.resultWhat).graceKorName + "�(��) ";
+        if(_completeGrace.resultValueIsPercent == 0)
+            _explain += _completeGrace.resultValue + " ��ŭ ";
+        else
+            _explain += _completeGrace.resultValue + "% ��ŭ ";
+        _explain += SelectGrace(_completeGrace.resultHow).graceKorName;
+        return _explain;
+    }
+    public bool CheckGraceCondition(CompleteGrace _grace)
     {
         bool _bool = false;
         if(_grace.conditionWho != -1)
@@ -628,107 +773,10 @@ public class GraceManager : MonoBehaviour
         }
         return _bool;
     }
-    public void OperateGrace(BigGrace _grace)
+    public void OperateGrace(CompleteGrace _grace)
     {
-        int _value1 = 0;
-        int _value2 = 0;
         if (_grace.resultWho != -1)
         {
-            if(_grace.resultTarget1 != -1)
-                switch ((EGraceResultTarget)_grace.resultTarget1)
-                    {
-
-                        case EGraceResultTarget.PlayerStr:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerDex:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerWiz:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerLuck:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerHpRegen:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerPhysicalDamage:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerMagicalDamage:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerDefensivePower:
-                            _value1 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue1));
-
-                            break;
-                        case EGraceResultTarget.PlayerSpeed:
-                            _value1 = 0;
-
-                            break;
-                        case EGraceResultTarget.PlayerAtkSpeed:
-                            _value1 = 0;
-
-                            break;
-                    }
-            else
-                _value1 = _grace.resultValue1;
-            if (_grace.resultTarget2 != -1)
-                switch ((EGraceResultTarget)_grace.resultTarget2)
-                    {
-
-                        case EGraceResultTarget.PlayerStr:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Str * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerDex:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Dex * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerWiz:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Wiz * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerLuck:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].Luck * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerHpRegen:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].HpRegenValue * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerPhysicalDamage:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].PhysicalDamage * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerMagicalDamage:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].MagicalDamage * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerDefensivePower:
-                            _value2 = Mathf.CeilToInt(characterStatuses[(int)ECharacter.Player].DefensivePower * (1f / _grace.resultValue2));
-
-                            break;
-                        case EGraceResultTarget.PlayerSpeed:
-                            _value2 = 0;
-
-                            break;
-                        case EGraceResultTarget.PlayerAtkSpeed:
-                            _value2 = 0;
-
-                            break;
-                    }
-            else
-                _value2 = _grace.resultValue2;
-
             switch ((EGraceResultWho)_grace.resultWho)
             {
                 case EGraceResultWho.Player:
@@ -736,630 +784,620 @@ public class GraceManager : MonoBehaviour
                 case EGraceResultWho.Mercenary2:
                 case EGraceResultWho.Mercenary3:
                 case EGraceResultWho.Mercenary4:
-                    if (_grace.resultWhat1 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
-                    {
+                    if (_grace.resultWhat != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat)
+                        {
                         case EGraceResultWhat.Str:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceStr -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceStr += _value1;
-
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceStr += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceStr -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniStr += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniStr -= _grace.resultValue;
+                                }
                             break;
                         case EGraceResultWhat.Dex:
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceDex += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceDex -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDex += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDex -= _grace.resultValue;
+                                }
 
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceDex -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceDex += _value1;
-
-                            break;
+                                break;
                         case EGraceResultWhat.Wiz:
-
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceWiz -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceWiz += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceWiz += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceWiz -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniWiz += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniWiz -= _grace.resultValue;
+                                }
+                                break;
 
                         case EGraceResultWhat.Luck:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceLuck -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceLuck += _value1;
-                            break;
-
-
-
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceLuck += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceLuck -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniLuck += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniLuck -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.HpRegen:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value1;
-                            break;
-
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceHpRegenValue += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceHpRegenValue -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniHpRegenValue += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniHpRegenValue -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.PhysicalDamage:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GracePhysicalDamage += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GracePhysicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniPhysicalDamage += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniPhysicalDamage -= _grace.resultValue;
+                                }
+                                break;
 
                         case EGraceResultWhat.MagicalDamage:
 
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagicalDamage += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniMagicalDamage += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniMagicalDamage -= _grace.resultValue;
+                                }
+                                break;
 
                         case EGraceResultWhat.DefensivePower:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceDefensivePower -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceDefensivePower += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceDefensivePower += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceDefensivePower -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDefensivePower += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDefensivePower -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Speed:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceSpeed -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceSpeed += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceSpeed += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniSpeed += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniSpeed -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.AtkSpeed:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceAttackSpeed -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceAttackSpeed += _value1;
-                            break;
-                        case EGraceResultWhat.AtkRange:
-
-                            if (_grace.resultHow1 == 0)
-                                characterStatuses[_grace.resultWho].GraceAtkRange -= _value1;
-                            else
-                                characterStatuses[_grace.resultWho].GraceAtkRange += _value1;
-                            break;
-                    }
-
-                    if(_grace.resultWhat2 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
-                    {
-                        case EGraceResultWhat.Str:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceStr -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceStr += _value2;
-
-                            break;
-                        case EGraceResultWhat.Dex:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceDex -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceDex += _value2;
-
-                            break;
-                        case EGraceResultWhat.Wiz:
-
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceWiz -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceWiz += _value2;
-                            break;
-
-                        case EGraceResultWhat.Luck:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceLuck -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceLuck += _value2;
-                            break;
-
-
-
-                        case EGraceResultWhat.HpRegen:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceHpRegenValue -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceHpRegenValue += _value2;
-                            break;
-
-                        case EGraceResultWhat.PhysicalDamage:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GracePhysicalDamage -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GracePhysicalDamage += _value2;
-                            break;
-
-                        case EGraceResultWhat.MagicalDamage:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceMagicalDamage -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceMagicalDamage += _value2;
-                            break;
-
-                        case EGraceResultWhat.DefensivePower:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceDefensivePower -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceDefensivePower += _value2;
-                            break;
-                        case EGraceResultWhat.Speed:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceSpeed -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceSpeed += _value2;
-                            break;
-                        case EGraceResultWhat.AtkSpeed:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceAttackSpeed -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceAttackSpeed += _value2;
-                            break;
-                        case EGraceResultWhat.AtkRange:
-
-                            if (_grace.resultHow2 == 0)
-                                characterStatuses[_grace.resultWho].GraceAtkRange -= _value2;
-                            else
-                                characterStatuses[_grace.resultWho].GraceAtkRange += _value2;
-                            break;
-                    }
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceAttackSpeed += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceAttackSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniAtkRange += _grace.resultValue;
+                                    else
+                                        characterStatuses[_grace.resultWho - 3000].GraceMagniAtkRange -= _grace.resultValue;
+                                }
+                                break;
+                        }
                     break;
                 case EGraceResultWho.AllMercenary:
-                    if (_grace.resultWhat1 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
+                    if (_grace.resultWhat != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat)
                     {
                         case EGraceResultWhat.Str:
-
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStr -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStr += _value1;
-
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceStr += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceStr -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniStr +=  _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniStr -= _grace.resultValue;
+                                }
                             break;
                         case EGraceResultWhat.Dex:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDex -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDex += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDex += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDex -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDex += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDex -=  _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Wiz:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceWiz -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceWiz += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceWiz += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceWiz -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniWiz += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniWiz -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Luck:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceLuck -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceLuck += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceLuck += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceLuck -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniLuck += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniLuck -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.HpRegen:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceHpRegenValue -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceHpRegenValue += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceHpRegenValue += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceHpRegenValue -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniHpRegenValue += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniHpRegenValue -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.PhysicalDamage:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GracePhysicalDamage -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GracePhysicalDamage += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GracePhysicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GracePhysicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniPhysicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniPhysicalDamage -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.MagicalDamage:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagicalDamage -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagicalDamage += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniMagicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniMagicalDamage -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.DefensivePower:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDefensivePower -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDefensivePower += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDefensivePower += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDefensivePower -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDefensivePower += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDefensivePower -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Speed:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceSpeed -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceSpeed += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniSpeed -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.AtkSpeed:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAttackSpeed -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAttackSpeed += _value1;
-                            break;
-                        case EGraceResultWhat.AtkRange:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAtkRange -= _value1;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAtkRange += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceAttackSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceAttackSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniAttackSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 1; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniAttackSpeed -= _grace.resultValue;
+                                }
+                                break;
                     }
-
-                    if (_grace.resultWhat2 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
-                        {
-                            case EGraceResultWhat.Str:
-
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStr -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStr += _value2;
-
-                                break;
-                            case EGraceResultWhat.Dex:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDex -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDex += _value2;
-
-                                break;
-                            case EGraceResultWhat.Wiz:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceWiz -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceWiz += _value2;
-
-                                break;
-                            case EGraceResultWhat.Luck:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceLuck -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceLuck += _value2;
-
-                                break;
-                            case EGraceResultWhat.HpRegen:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceHpRegenValue -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceHpRegenValue += _value2;
-
-                                break;
-                            case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GracePhysicalDamage -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GracePhysicalDamage += _value2;
-                                break;
-                            case EGraceResultWhat.MagicalDamage:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagicalDamage -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagicalDamage += _value2;
-                                break;
-                            case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDefensivePower -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDefensivePower += _value2;
-                                break;
-                            case EGraceResultWhat.Speed:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceSpeed -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceSpeed += _value2;
-                                break;
-                            case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAttackSpeed -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAttackSpeed += _value2;
-                                break;
-                            case EGraceResultWhat.AtkRange:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAtkRange -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAtkRange += _value2;
-                                break;
-                        }
                     break;
                 case EGraceResultWho.All:
-                    if (_grace.resultWhat1 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
-                    {
+                    if (_grace.resultWhat != -1)
+                        switch ((EGraceResultWhat)_grace.resultWhat)
+                        {
                         case EGraceResultWhat.Str:
 
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStr -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStr += _value1;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceStr += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceStr -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniStr += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniStr -= _grace.resultValue;
+                                }
 
-                            break;
+                                break;
                         case EGraceResultWhat.Dex:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDex -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDex += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDex += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDex -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDex += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDex -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Wiz:
 
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceWiz -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceWiz += _value1;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceWiz += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceWiz -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniWiz += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniWiz -= _grace.resultValue;
+                                }
 
-                            break;
+                                break;
                         case EGraceResultWhat.Luck:
 
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceLuck -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceLuck += _value1;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceLuck += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceLuck -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniLuck += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniLuck -= _grace.resultValue;
+                                }
 
-                            break;
+                                break;
                         case EGraceResultWhat.HpRegen:
-
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceHpRegenValue -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceHpRegenValue += _value1;
-
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceHpRegenValue += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceHpRegenValue -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniHpRegenValue += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniHpRegenValue -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.PhysicalDamage:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GracePhysicalDamage -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GracePhysicalDamage += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GracePhysicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GracePhysicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniPhysicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniPhysicalDamage -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.MagicalDamage:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagicalDamage -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagicalDamage += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagicalDamage -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniMagicalDamage += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniMagicalDamage -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.DefensivePower:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDefensivePower -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceDefensivePower += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDefensivePower += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceDefensivePower -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDefensivePower += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniDefensivePower -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.Speed:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceSpeed -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceSpeed += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniSpeed -= _grace.resultValue;
+                                }
+                                break;
                         case EGraceResultWhat.AtkSpeed:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAttackSpeed -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAttackSpeed += _value1;
-                            break;
-                        case EGraceResultWhat.AtkRange:
-                            if (_grace.resultHow1 == 0)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAtkRange -= _value1;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceAtkRange += _value1;
-                            break;
+                                if (_grace.resultValueIsPercent == 0)
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceAttackSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceAttackSpeed -= _grace.resultValue;
+                                }
+                                else
+                                {
+                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniAttackSpeed += _grace.resultValue;
+                                    else
+                                        for (int i = 0; i < characterStatuses.Count; i++)
+                                            characterStatuses[i].GraceMagniAttackSpeed -= _grace.resultValue;
+                                }
+                                break;
                     }
-
-                    if (_grace.resultWhat2 != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat1)
-                        {
-                            case EGraceResultWhat.Str:
-
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStr -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStr += _value2;
-
-                                break;
-                            case EGraceResultWhat.Dex:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDex -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDex += _value2;
-
-                                break;
-                            case EGraceResultWhat.Wiz:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceWiz -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceWiz += _value2;
-
-                                break;
-                            case EGraceResultWhat.Luck:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceLuck -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceLuck += _value2;
-
-                                break;
-                            case EGraceResultWhat.HpRegen:
-
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceHpRegenValue -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceHpRegenValue += _value2;
-
-                                break;
-                            case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GracePhysicalDamage -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GracePhysicalDamage += _value2;
-                                break;
-                            case EGraceResultWhat.MagicalDamage:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagicalDamage -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagicalDamage += _value2;
-                                break;
-                            case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDefensivePower -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceDefensivePower += _value2;
-                                break;
-                            case EGraceResultWhat.Speed:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceSpeed -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceSpeed += _value2;
-                                break;
-                            case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAttackSpeed -= _value2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAttackSpeed += _value2;
-                                break;
-                            case EGraceResultWhat.AtkRange:
-                                if (_grace.resultHow2 == 0)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAtkRange -= _value2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceAtkRange += _value2;
-                                break;
-                        }
                     break;
             }
         }
-        else
-        {
-        }
     }
-    public void AquireGrace(int _key)
+    public void AquireGrace(CompleteGrace _grace)
+    {
+        graceList.Add(_grace);
+        graceList[graceList.Count - 1].isActive = true;
+        ActiveGrace();
+    }
+    public void AquireBigGrace(int _key)
     {
         if (!CheckIsActive(_key))
         {
-            graceList.Add(DatabaseManager.Instance.SelectBigGrace(_key));
-            graceList[graceList.Count - 1].isActive = true;
+            bigGraceList.Add(SelectBigGrace(_key));
+            bigGraceList[graceList.Count - 1].isActive = true;
             ActiveGrace();
         }
         else
+            Debug.Log("�̹� ��� ���");
     }
-    
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
         for(int i = 0; i < graceList.Count; i++)
         {
-            if (graceList[i].graceKey == _key)
+            //if (graceList[i].graceKey == _key)
             {
                 if (graceList[i].isActive)
                     isActive = true;

@@ -246,7 +246,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
         } 
         else
         {
-
         }
         return _item;
     }
@@ -317,14 +316,17 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void UseItem(CharacterStatus _character, Item _item)
     {
+        // �Ҹ�ǰ�� ���� UI���� �Ҹ�ǰ�� ����ϱ� UI��Ÿ����
         if (IndexOfItem(_item) != -1)
         {
             SelectItem(_item).count--;
             UseEffect(_character, _item);
+            Debug.Log("������ ���");
             if (SelectItem(_item).count == 0)
             {
                 inventroyConsumableItems.Remove(SelectItem(_item));
                 SetInventoryIndex(inventroyConsumableItems);
+                Debug.Log("������ �����");
             }
         }
         else
@@ -355,7 +357,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyWeaponItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -379,7 +380,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyEquipmentItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -401,7 +401,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
                         SetInventoryIndex(inventroyDecorationItems);
-                        Debug.Log("������ �����");
                     }
                 }
                 else
@@ -423,6 +422,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyConsumableItems.Remove(_item);
                     SetInventoryIndex(inventroyConsumableItems);
+                    Debug.Log("������ �����");
                 }
             }
             else
@@ -438,6 +438,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyMiscellaneousItems.Remove(_item);
                     SetInventoryIndex(inventroyMiscellaneousItems);
+                    Debug.Log("������ �����");
                 }
             }
             else
@@ -447,7 +448,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void SortInventoryByItemKey(List<Item> _inventory)
     {
-
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;

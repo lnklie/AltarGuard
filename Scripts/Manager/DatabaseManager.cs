@@ -1,13 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-/*
-==============================
- * �������� : 2022-06-09
- * �ۼ��� : Inklie
- * ���ϸ� : DatabaseManager.cs
-==============================
-*/
+
 
 public class DatabaseManager : SingletonManager<DatabaseManager>
 {
@@ -45,8 +39,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     public List<GraceConditionWhat> graceConditionWhatList = new List<GraceConditionWhat>();
     public List<GraceConditionHow> graceConditionHowList = new List<GraceConditionHow>();
     public List<GraceResultWho> graceResultWhoList = new List<GraceResultWho>();
-    public List<GraceResultTarget> graceResultTargetList = new List<GraceResultTarget>();
     public List<GraceResultWhat> graceResultWhatList = new List<GraceResultWhat>();
+    public List<GraceResultIsPercent> graceResultIsPercentList = new List<GraceResultIsPercent>();
     public List<GraceResultHow> graceResultHowList = new List<GraceResultHow>();
 
 
@@ -68,6 +62,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     {
         ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
         JsonLoad();
+        GraceManager.Instance.SetGraceList();
     }
     string fixJson(string value)
     {
@@ -204,7 +199,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 swordList.Add(new Sword(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType,items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
@@ -219,7 +214,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 exeList.Add(new Exe(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
@@ -234,7 +229,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 spearList.Add(new Spear(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
@@ -249,7 +244,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 bowList.Add(new Bow(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage,
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
@@ -264,7 +259,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < items.Length; i++)
             {
                 wandList.Add(new Wand(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].attackType, items[i].weaponType, items[i].physicalDamage, 
-                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].skillKey1, items[i].skillKey2, items[i].skillKey3, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
+                    items[i].magicalDamage, items[i].atkRange, items[i].atkDistance, items[i].atkSpeed, items[i].equipLevel, items[i].disassembleItemKey, items[i].disassembleItemAmount, items[i].itemRank));
             }
 
         }
@@ -343,7 +338,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Skill")))
         {
-            Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -360,7 +354,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionWho")))
         {
-            Debug.Log("경로에 조건부 누구의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -373,7 +366,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionWhat")))
         {
-            Debug.Log("경로에 조건부 무엇의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -386,7 +378,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionHow")))
         {
-            Debug.Log("경로에 조건부 어떻게의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -399,7 +390,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ResultWho")))
         {
-            Debug.Log("경로에 결과부 누구의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -410,22 +400,9 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 graceResultWhoList.Add(new GraceResultWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ResultTarget")))
-        {
-            Debug.Log("경로에 결과부 타겟의 데이터 베이스가 존재하지 않습니다.");
-        }
-        else
-        {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultTarget")));
-            GraceResultTarget[] grace = JsonHelper.FromJson<GraceResultTarget>(loadJson);
-            for (var i = 0; i < grace.Length; i++)
-            {
-                graceResultTargetList.Add(new GraceResultTarget(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
-            }
-        }
         if (!File.Exists(CombinePath("ResultWhat")))
         {
-            Debug.Log("경로에 결과부 무엇의 데이터 베이스가 존재하지 않습니다.");
+            Debug.Log("��ο� ���� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -436,9 +413,21 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                 graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
+        if (!File.Exists(CombinePath("ResultValueIsPercent")))
+        {
+            Debug.Log("��ο� ���� ��ġ �ۼ�Ʈ Ȯ���� ������ ���̽��� ������� �ʽ�ϴ�.");
+        }
+        else
+        {
+            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultValueIsPercent")));
+            GraceResultHow[] grace = JsonHelper.FromJson<GraceResultHow>(loadJson);
+            for (var i = 0; i < grace.Length; i++)
+            {
+                graceResultIsPercentList.Add(new GraceResultIsPercent(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+            }
+        }
         if (!File.Exists(CombinePath("ResultHow")))
         {
-            Debug.Log("경로에 결과부 어떻게의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -473,7 +462,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                           
                 rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
@@ -542,7 +530,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("GameScript")))
         {
-            Debug.Log("경로에 대본 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
@@ -656,7 +643,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         if (_key == swordList[i].itemKey)
                         {
                             Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].itemKorName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
-                        swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].skillKey1, swordList[i].skillKey2, swordList[i].skillKey3, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
+                        swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
+                            _sword.grace1 = GraceManager.Instance.CreateRandomGrace();
                             _item = _sword;
                         }
                     }
@@ -668,7 +656,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         if (_key == exeList[i].itemKey)
                         {
                             Exe _exe = new Exe(exeList[i].itemKey, exeList[i].itemName, exeList[i].itemKorName, exeList[i].buyPrice, exeList[i].sellPrice, exeList[i].attackType, exeList[i].weaponType, exeList[i].physicalDamage, exeList[i].magicalDamage,
-                        exeList[i].atkRange, exeList[i].atkDistance, exeList[i].atkSpeed, exeList[i].skillKey1, exeList[i].skillKey2, exeList[i].skillKey3, exeList[i].equipLevel, exeList[i].disassembleItemKey, exeList[i].disassembleItemAmount, exeList[i].itemRank);
+                        exeList[i].atkRange, exeList[i].atkDistance, exeList[i].atkSpeed, exeList[i].equipLevel, exeList[i].disassembleItemKey, exeList[i].disassembleItemAmount, exeList[i].itemRank);
                             _item = _exe;
                         }
                     }
@@ -679,7 +667,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         if (_key == spearList[i].itemKey)
                         {
                             Spear _spear = new Spear(spearList[i].itemKey, spearList[i].itemName, spearList[i].itemKorName, spearList[i].buyPrice, spearList[i].sellPrice, spearList[i].attackType, spearList[i].weaponType, spearList[i].physicalDamage, spearList[i].magicalDamage,
-                        spearList[i].atkRange, spearList[i].atkDistance, spearList[i].atkSpeed, spearList[i].skillKey1, spearList[i].skillKey2, spearList[i].skillKey3, spearList[i].equipLevel, spearList[i].disassembleItemKey, spearList[i].disassembleItemAmount, spearList[i].itemRank);
+                        spearList[i].atkRange, spearList[i].atkDistance, spearList[i].atkSpeed, spearList[i].equipLevel, spearList[i].disassembleItemKey, spearList[i].disassembleItemAmount, spearList[i].itemRank);
                             _item = _spear;
                         }
                     }
@@ -691,7 +679,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         {
                             Bow _bow = new Bow(
                                 bowList[i].itemKey, bowList[i].itemName, bowList[i].itemKorName, bowList[i].buyPrice, bowList[i].sellPrice, bowList[i].attackType, bowList[i].weaponType, bowList[i].physicalDamage, bowList[i].magicalDamage,
-                                bowList[i].atkRange, bowList[i].atkDistance, bowList[i].atkSpeed, bowList[i].skillKey1, bowList[i].skillKey2, bowList[i].skillKey3, bowList[i].equipLevel, bowList[i].disassembleItemKey, bowList[i].disassembleItemAmount, bowList[i].itemRank);
+                                bowList[i].atkRange, bowList[i].atkDistance, bowList[i].atkSpeed, bowList[i].equipLevel, bowList[i].disassembleItemKey, bowList[i].disassembleItemAmount, bowList[i].itemRank);
                             _item = _bow;
                         }
                     }
@@ -703,7 +691,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         {
                             Wand _wand = new Wand(
                                 wandList[i].itemKey, wandList[i].itemName, wandList[i].itemKorName, wandList[i].buyPrice, wandList[i].sellPrice, wandList[i].attackType, wandList[i].weaponType, wandList[i].physicalDamage, wandList[i].magicalDamage,
-                                wandList[i].atkRange, wandList[i].atkDistance, wandList[i].atkSpeed, wandList[i].skillKey1, wandList[i].skillKey2, wandList[i].skillKey3, wandList[i].equipLevel, wandList[i].disassembleItemKey, wandList[i].disassembleItemAmount, wandList[i].itemRank);
+                                wandList[i].atkRange, wandList[i].atkDistance, wandList[i].atkSpeed, wandList[i].equipLevel, wandList[i].disassembleItemKey, wandList[i].disassembleItemAmount, wandList[i].itemRank);
                             _item = _wand;
                         }
                     }
@@ -767,77 +755,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         return _skill;
     }
 
-    public Grace SelectGrace(int _key)
-    {
-        Grace _grace = null;
-        switch(_key/ 1000)
-        {
-            case 0:
-                for(int i = 0; i < graceConditionWhoList.Count; i++)
-                {
-                    if (graceConditionWhoList[i].graceKey == _key)
-                        _grace = graceConditionWhoList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 1:
-                for (int i = 0; i < graceConditionWhatList.Count; i++)
-                {
-                    if (graceConditionWhatList[i].graceKey == _key)
-                        _grace = graceConditionWhatList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 2:
-                for (int i = 0; i < graceConditionHowList.Count; i++)
-                {
-                    if (graceConditionHowList[i].graceKey == _key)
-                        _grace = graceConditionHowList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 3:
-                for (int i = 0; i < graceResultWhoList.Count; i++)
-                {
-                    if (graceResultWhoList[i].graceKey == _key)
-                        _grace = graceResultWhoList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 4:
-                for (int i = 0; i < graceResultTargetList.Count; i++)
-                {
-                    if (graceResultTargetList[i].graceKey == _key)
-                        _grace = graceResultTargetList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 5:
-                for (int i = 0; i < graceResultWhatList.Count; i++)
-                {
-                    if (graceResultWhatList[i].graceKey == _key)
-                        _grace = graceResultWhatList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-            case 6:
-                for (int i = 0; i < graceResultHowList.Count; i++)
-                {
-                    if (graceResultHowList[i].graceKey == _key)
-                        _grace = graceResultHowList[i];
-                    else
-                        Debug.Log("해당 은총 구성부가 없습니다.");
-                }
-                break;
-        }
-        return _grace;
-    }
+ 
 
     public BigGrace SelectBigGrace(int _key)
     {
@@ -904,7 +822,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("해당 제단 특성이 없습니다.");
         }
         return _altarProperty;
     }
@@ -916,7 +833,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
         }
         return _gameScript;
     }
