@@ -56,7 +56,7 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ½ºÅÝ »ó½Â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         if (statusPoint > 0)
         {
             switch (_index)
@@ -77,13 +77,13 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("½ºÅ×ÀÌÅÍ½º Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
         UpdateTotalAbility();
     }
 
     private void UpLevel()
     {
-        // ·¹º§¾÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         curLevel++;
         curExp -= maxExp;
         statusPoint += 5;
@@ -93,7 +93,7 @@ public class AllyStatus : CharacterStatus
 
     private void LvToExp()
     {
-        // ·¹º§º° °æÇèÄ¡ ÀüÈ¯
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½È¯
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
             if (curLevel == DatabaseManager.Instance.expList[i].lv)
@@ -102,7 +102,7 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // ÃÖ´ë °æÇèÄ¡ ÀÎÁö È®ÀÎ
+        // ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (curExp >= maxExp)
             return true;
         else
@@ -131,7 +131,6 @@ public class AllyStatus : CharacterStatus
     }
     public override void UpdateTotalAbility()
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
         base.UpdateTotalAbility();
         totalDropProbability = dropProbability + equipDropProbability + graceDropProbability ;
         totalItemRarity = itemRarity + equipItemRarity + graceItemRarity;

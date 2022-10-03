@@ -63,7 +63,7 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (characterStatus.GetDistance( a.transform.position) < characterStatus.GetDistance( b.transform.position)) return -1;
@@ -73,7 +73,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
@@ -83,7 +83,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -134,13 +134,13 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
-        // È°½î±â
+        // È°ï¿½ï¿½ï¿½
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(characterStatus, AttackTypeDamage());
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("È­ï¿½ï¿½ ï¿½ï¿½ï¿½");
     }
     public bool IsDied()
     {
@@ -189,7 +189,6 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else   
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -198,10 +197,9 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else
-                    Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+                    Debug.Log("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
             }
         }
-
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage()

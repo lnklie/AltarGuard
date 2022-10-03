@@ -284,7 +284,6 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility()
     {
-        // 능력 업데이트
         UpdateBasicStatus();
         totalMaxHp = (maxHp + graceMaxHp) + (maxHp + graceMaxHp) * graceMagniMaxHp / 100;
         totalMaxMp = (maxMp + graceMaxMp) + (maxMp + graceMaxMp) * graceMagniMaxMp / 100;

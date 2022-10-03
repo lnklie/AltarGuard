@@ -18,7 +18,6 @@ public class GraceManager : SingletonManager<GraceManager>
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<CompleteGrace> GraceList { get { return graceList; } }
-
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
@@ -53,7 +52,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceConditionWhoList[i].graceKey == _key)
                         _grace = graceConditionWhoList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 1:
@@ -62,7 +61,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceConditionWhatList[i].graceKey == _key)
                         _grace = graceConditionWhatList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 2:
@@ -71,7 +70,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceConditionHowList[i].graceKey == _key)
                         _grace = graceConditionHowList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 3:
@@ -80,7 +79,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceResultWhoList[i].graceKey == _key)
                         _grace = graceResultWhoList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 4:
@@ -89,7 +88,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceResultWhatList[i].graceKey == _key)
                         _grace = graceResultWhatList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 5:
@@ -98,7 +97,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceResultIsPercentList[i].graceKey == _key)
                         _grace = graceResultIsPercentList[i];
                     //else
-                        //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                        //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
             case 6:
@@ -107,7 +106,7 @@ public class GraceManager : SingletonManager<GraceManager>
                     if (graceResultHowList[i].graceKey == _key)
                         _grace = graceResultHowList[i];
                     //else
-                       //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                       //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
                 }
                 break;
         }
@@ -120,18 +119,17 @@ public class GraceManager : SingletonManager<GraceManager>
             characterStatuses[i].InitGraceStatus(); 
         }
 
-        Debug.Log("ÀºÃÑÀÇ ¼ö´Â " + graceList.Count);
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ " + graceList.Count);
         for (int i = 0; i < graceList.Count; i++)
         {
 
             if (CheckGraceCondition(graceList[i]))
             {
                 OperateGrace(graceList[i]);
-                Debug.Log("ÀÛµ¿");
+                Debug.Log("ï¿½Ûµï¿½");
             }
             else
             {
-                Debug.Log("ÆÈ½º");
             }
 
         }
@@ -181,24 +179,24 @@ public class GraceManager : SingletonManager<GraceManager>
         string _explain = null;
         if(_completeGrace.conditionWho != -1)
         {
-            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "°¡(ÀÌ) ";
+            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "ï¿½ï¿½(ï¿½ï¿½) ";
             if (_completeGrace.conditionWhat < 1014)
             {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "À»(¸¦) ";
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ï¿½(ï¿½ï¿½) ";
             }
             else
             {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ÀÌ ";
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ï¿½ï¿½ ";
                 _explain += _completeGrace.conditionValue;
             }
             _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
         }
-        _explain += SelectGrace(_completeGrace.resultWho).graceKorName + "ÀÇ ";
-        _explain += SelectGrace(_completeGrace.resultWhat).graceKorName + "À»(¸¦) ";
+        _explain += SelectGrace(_completeGrace.resultWho).graceKorName + "ï¿½ï¿½ ";
+        _explain += SelectGrace(_completeGrace.resultWhat).graceKorName + "ï¿½(ï¿½ï¿½) ";
         if(_completeGrace.resultValueIsPercent == 0)
-            _explain += _completeGrace.resultValue + " ¸¸Å­ ";
+            _explain += _completeGrace.resultValue + " ï¿½ï¿½Å­ ";
         else
-            _explain += _completeGrace.resultValue + "% ¸¸Å­ ";
+            _explain += _completeGrace.resultValue + "% ï¿½ï¿½Å­ ";
         _explain += SelectGrace(_completeGrace.resultHow).graceKorName;
         return _explain;
     }
@@ -1392,12 +1390,11 @@ public class GraceManager : SingletonManager<GraceManager>
             ActiveGrace();
         }
         else
-            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
+            Debug.Log("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
     }
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
-        Debug.Log("Ã¼Å©ÇÏ·Á´Â Å°´Â " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             //if (graceList[i].graceKey == _key)

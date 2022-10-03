@@ -41,7 +41,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // Àåºñ¿¡ ¹æ¾î·Â Ãâ·Â
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -51,7 +51,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // Àåºñ¿¡ ¹°¸®µ¥¹ÌÁö Ãâ·Â
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -63,7 +63,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // Àåºñ¿¡ ¸¶¹ýµ¥¹ÌÁö Ãâ·Â
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -75,7 +74,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ¹«±â ¾ÆÀÌÅÛ¿¡ µû¸¥ °ø°Ý Å¸ÀÔ º¯°æ
         if (checkEquipItems[8])
         {
             status.AtkRange = equipItems[8].atkRange;
@@ -151,7 +149,7 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ï´ï¿½.");
         }
     }
     public void SkillChange()
@@ -169,7 +167,6 @@ public class EquipmentController : MonoBehaviour
     {
         status.UpdateEquipAbility(equipItems);
         status.UpdateTotalAbility();
-
         switch (_item.itemType)
         {
             case 0:
@@ -277,7 +274,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ÀåÂø Á¦°Å
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         switch (_index)
         {
             case 0:
