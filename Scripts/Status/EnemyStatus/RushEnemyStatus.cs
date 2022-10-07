@@ -60,6 +60,7 @@ public class RushEnemyStatus : EnemyStatus
 
     public override void UpdateTotalAbility()
     {
+        // 능력 업데이트
         totalMaxHp = rushEnemy.hp + str * 10;
         totalMaxMp = rushEnemy.mp + wiz * 10;
         totalPhysicalDamage = 1;

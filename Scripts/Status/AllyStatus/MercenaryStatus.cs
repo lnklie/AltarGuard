@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class MercenaryStatus : AllyStatus
 {
-    [SerializeField]
-    private int mercenaryNum = 0;
+    [SerializeField] private int mercenaryNum = 0;
 
-    public int MercenaryNum
-    {
-        get { return mercenaryNum; }
-        set { mercenaryNum = value; }
-    }
+    public int MercenaryNum { get { return mercenaryNum; } set { mercenaryNum = value; } }
 }
