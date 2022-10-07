@@ -23,6 +23,7 @@ public class EquipmentController : MonoBehaviour
 
     #region Property
     public Item[] EquipItems { get { return equipItems; } set { equipItems = value; } }
+    public CharacterStatus Status { get { return status; } }
     public bool[] CheckEquipItems { get { return checkEquipItems; } set { checkEquipItems = value; } }
     #endregion
     private void Awake()
