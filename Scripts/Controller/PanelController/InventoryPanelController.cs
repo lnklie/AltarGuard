@@ -94,7 +94,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ResetInventory()
     {
-        // 인벤토리 슬롯 리셋
+        // �κ��丮 ���� ����
         for (int i = 0; i < inventorySlotList.Count; i++)
         {
             inventorySlotList[i].SlotReset();
@@ -142,7 +142,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
     {
-        // 리스트 정렬
+        // ����Ʈ ���
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
@@ -152,7 +152,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ChangeInventorySlot(int _index)
     {
-        // 인벤토리 슬롯 바꾸기 
+        // �κ��丮 ���� �ٲٱ� 
         ResetInventory();
         SetActiveItemInfo(false);
         SetActiveEquipedItemInfo(false);
@@ -219,7 +219,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
+        // ������ ���â Ȱ��ȭ ����
         itemInfo.SetActive(_bool);
         if(!_bool)
         {
@@ -329,22 +329,22 @@ public class InventoryPanelController : MonoBehaviour
                 iteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 3:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 4:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 5:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 6:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 7:
-                iteminfoExplainText.text = "방어력: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "����: " + selectItem.defensivePower;
                 break;
             case 8:
             case 9:
@@ -368,10 +368,10 @@ public class InventoryPanelController : MonoBehaviour
                 break;
             case 13:
                 iteminfoExplainText.text =
-                    "회복량 : " + selectItem.value + "\n";
+                    "ȸ���� : " + selectItem.value + "\n";
                 break;
             case 14:
-                iteminfoExplainText.text = "이것은 퀘스트 아이템";
+                iteminfoExplainText.text = "�̰�� ��Ʈ ������";
                 break;
         }
     }
@@ -459,7 +459,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ResetInventoryButtons()
     {
-        // 인벤토리 버튼 리셋
+        // �κ��丮 ��ư ����
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
             inventoryButtons[i].gameObject.SetActive(false);
@@ -501,7 +501,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public string KeyToItemType(int _key)
     {
-        // 키를 아이템 타입으로 변경
+        // Ű�� ������ Ÿ����� ����
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -553,7 +553,7 @@ public class InventoryPanelController : MonoBehaviour
 
             if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
             {
-                // 장착하기 버튼
+                // �����ϱ� ��ư
                 if (_characterList[_character].CheckEquipItems[selectItem.itemType])
                 {
                     _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
@@ -568,23 +568,22 @@ public class InventoryPanelController : MonoBehaviour
                 selectItem = null;
             }
             else
-                Debug.Log("레벨이 부족합니다.");
+                Debug.Log("������ ����մϴ�.");
         }
         else
         {
-            Debug.Log("쿨타임 중");
+            Debug.Log("��Ÿ�� ��");
         }
     }
 
     public void TakeOffInventoryItem(List<EquipmentController> _characterList)
     {
-        // 장착해제
         if (selectItem.isEquip)
         {
             _characterList[selectItem.equipCharNum].TakeOffEquipment(selectItem);
         }
         else
-            Debug.Log("착용중이 아님");
+            Debug.Log("������� �ƴ�");
         SetActiveItemInfo(false);
         ChangeInventorySlot(selectInventoryIndex);
 
@@ -603,7 +602,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // 슬롯에 선택한 아이템 
+        // ���Կ� ������ ������ 
         selectItem = _item;
         isItemSelect = true;
         selectInventorySlot = _slot;
@@ -613,7 +612,7 @@ public class InventoryPanelController : MonoBehaviour
 
     public void DiscardSelectItem()
     {
-        // 아이템 버리기
+        // ������ ���
         if (selectItem.itemType > 8)
         {
             SetActiveCheckDiscardAmount(true);
@@ -637,16 +636,16 @@ public class InventoryPanelController : MonoBehaviour
                 amount.text = null;
             }
             else
-                Debug.Log("버리려는 값을 초과함");
+                Debug.Log("���� ��� �ʰ���");
         }
         else
         {
-            UIManager.Instance.Notice("올바른 값을 입력해주세요.");
+            UIManager.Instance.Notice("�ùٸ� ��� �Է����ּ���.");
         }
     }
     public void UseSelectItem(PlayerStatus _player)
     {
-        // 아이템 사용
+        // ������ ���
         if (!selectItem.isCoolTime)
         {
             InventoryManager.Instance.IsConsumaableCoolTime = true;
@@ -656,7 +655,7 @@ public class InventoryPanelController : MonoBehaviour
             selectItem.isCoolTime = true;
         }
         else
-            Debug.Log("쿨타임 중");
+            Debug.Log("��Ÿ�� ��");
     }
     public void SetItemQuickSlot(int _index)
     {
@@ -675,7 +674,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ActiveInventoryPanel(bool _bool)
     {
-        // UI 활성화 
+        // UI Ȱ��ȭ 
         UIImages.SetActive(_bool);
         SetActiveItemInfo(_bool);
         SetActiveFalseQuickSlotSelectButtons();

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-11
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : Status.cs
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : 2022-06-11
+ * ï¿½Û¼ï¿½ï¿½ï¿½ : Inklie
+ * ï¿½ï¿½ï¿½Ï¸ï¿½ : Status.cs
 ==============================
 */
 public class Status : MonoBehaviour
@@ -63,7 +63,7 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
-        // ¸Å°³º¯¼ö°¡ ¸¶Áö¸· °ø°ÝÀ» Çß´ÂÁö Ã¼Å©
+        // ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½ï¿½ï¿½ Ã¼Å©
         if (curHp <= 0f)
             return true;
         else
@@ -71,7 +71,7 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
-        //Debug.Log("ÀÌ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§Àº " + ObjectName + " µ¥¹ÌÁö ¹ÞÀ½ " + "µ¥¹ÌÁö´Â " + ReviseDamage(_damage, defensivePower) + " ÇöÀç Ã¼·ÂÀº " + curHp);
+        //Debug.Log("ï¿½Ì¿ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ " + ObjectName + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ " + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ " + ReviseDamage(_damage, defensivePower) + " ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
@@ -91,7 +91,7 @@ public class Status : MonoBehaviour
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // ¾Ö´Ï¸ÞÀÌ¼Ç ·¹ÀÌ¾î °¡ÁßÄ¡ Á¶Àý
+        // ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);
@@ -100,7 +100,6 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
-        // ´ë»ó°úÀÇ °Å¸® ÃøÁ¤
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

@@ -43,17 +43,16 @@ public class SkillPanelController : MonoBehaviour
     }
     public void SelectCharacterInSkillController(List<SkillController> _charaterList, bool _isUp)
     {
-        // ½ºÅ×ÀÌÅÍ½º Ã¢ Ä³¸¯ÅÍ ¼±ÅÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ Ã¢ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (_isUp)
         {
             selectNum++;
-            Debug.Log(selectNum + " ¾÷");
+            Debug.Log(selectNum + " ï¿½ï¿½");
             if (selectNum == 5)
                 selectNum = 0;
         }
         else
         {
-            Debug.Log("´Ù¿î");
             selectNum--;
             if (selectNum < 0)
                 selectNum = 4;

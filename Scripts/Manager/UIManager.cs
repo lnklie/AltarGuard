@@ -223,7 +223,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetActiveInventoryEquipedItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
+        // 댄 �蹂댁갹 깊 щ
         inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
@@ -299,12 +299,12 @@ public class UIManager : SingletonManager<UIManager>
     #region Equipment Panel
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // 장비창에서 캐릭터 선택
+        // λ李쎌 罹由� 
         equipmentPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // 장비창 캐릭터 이름 업데이트
+        // λ李 罹由� 대 곗댄
         equipmentPanelController.UpdateEquipmentName();
     }
     #endregion

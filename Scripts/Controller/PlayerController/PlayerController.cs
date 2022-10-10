@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * ÃÖÁ¾¼öÁ¤ÀÏ : 2022-06-05
- * ÀÛ¼ºÀÚ : Inklie
- * ÆÄÀÏ¸í : PlayerController.cs
-==============================
-*/
+
 public class PlayerController : CharacterController
 {
     private PlayerStatus player = null;
@@ -113,7 +107,6 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("¾Æ±º Å¬¸¯");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -125,11 +118,11 @@ public class PlayerController : CharacterController
                     {
                         player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
                     }
-                    Debug.Log("¾Æ±º Å¸°ÙÆÃ " + hit.rigidbody.gameObject.name);
+                    Debug.Log("ï¿½Æ±ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ " + hit.rigidbody.gameObject.name);
                     TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
                 }
                 else
-                    Debug.Log("´ë»óÀÌ ³Ê¹« ¸Ö¸®ÀÖ½À´Ï´Ù.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¹ï¿½ ï¿½Ö¸ï¿½ï¿½Ö½ï¿½Ï´ï¿½.");
             }
             else
             {
@@ -157,14 +150,12 @@ public class PlayerController : CharacterController
     }
     public void PlayerMove()
     {
-        // ¿òÁ÷ÀÓ ½ÇÇà
         player.ActiveLayer(LayerName.WalkLayer);
         player.Rig.velocity = player.TotalSpeed * player.Dir;
         AnimationDirection();
     }
     public bool InputArrowKey()
     {
-        // Å°ÀÔ·Â
         player.Dir = new Vector2(0, 0);
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -195,7 +186,6 @@ public class PlayerController : CharacterController
     }
     public bool IsMove()
     {
-        // ¿òÁ÷ÀÌ°í ÀÖ´ÂÁö È®ÀÎ
         if (Mathf.Abs(player.Dir.x) > 0 || Mathf.Abs(player.Dir.y) > 0)
             return true;
         else
@@ -233,7 +223,6 @@ public class PlayerController : CharacterController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // ¹üÀ§¾È¿¡ ÀÖ´Â Àûµé¿¡°Ô µ¥¹ÌÁö
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -339,6 +328,11 @@ public class PlayerController : CharacterController
             else
                 player.AllyTarget = _defaultTransform;
         }
+
+        _target = _object;
+        if(_isTargetingBox)
+            _target.gameObject.transform.parent.GetComponentInChildren<TargetingBoxController>().IsTargeting = true;
+
     }
     public void Perception()
     {
@@ -370,7 +364,6 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("Å¸°ÙÆÃ");
         if (_allyTarget)
         {
             if (player.AllyTarget)

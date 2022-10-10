@@ -134,7 +134,6 @@ public class EnemyController : CharacterController
                 Status ally = hits[i].collider.GetComponent<Status>();
                 if(ally == null)
                 {
-                    Debug.Log("¹¹Â¡?? ¹» °ø°ÝÇÑ°É±î?" + hits[i].collider.name);
                 }
                 ally.Damaged(AttackTypeDamage());
             }
