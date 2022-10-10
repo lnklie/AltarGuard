@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
 public class SkillPanelController : MonoBehaviour
 {
     [SerializeField] private SkillController selectSkillController = null;
@@ -54,7 +53,6 @@ public class SkillPanelController : MonoBehaviour
         }
         else
         {
-            Debug.Log("�ٿ�");
             selectNum--;
             if (selectNum < 0)
                 selectNum = 4;

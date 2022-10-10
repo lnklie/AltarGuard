@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * �������� : 2022-06-05
- * �ۼ��� : Inklie
- * ���ϸ� : PlayerController.cs
-==============================
-*/
+
 public class PlayerController : CharacterController
 {
     private PlayerStatus player = null;
@@ -113,7 +107,6 @@ public class PlayerController : CharacterController
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("�Ʊ� Ŭ��");
 
             RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -371,7 +364,6 @@ public class PlayerController : CharacterController
     }
     public void TargetAlly(CharacterStatus _allyTarget)
     {
-        Debug.Log("Ÿ����");
         if (_allyTarget)
         {
             if (player.AllyTarget)

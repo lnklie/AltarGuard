@@ -63,7 +63,6 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public void SortSightRayList(List<EnemyStatus> _sightRay)
     {
-        // ����Ʈ ���
         _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (characterStatus.GetDistance( a.transform.position) < characterStatus.GetDistance( b.transform.position)) return -1;
@@ -73,7 +72,6 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayList(List<Status> _sightRay)
     {
-        // ����Ʈ ���
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
@@ -83,7 +81,6 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ����Ʈ ���
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -134,13 +131,11 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
-        // Ȱ���
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(characterStatus, AttackTypeDamage());
         }
         else
-            Debug.Log("ȭ�� ���");
     }
     public bool IsDied()
     {
@@ -189,6 +184,7 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else   
+
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -197,9 +193,9 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else
-                    Debug.Log("Ÿ���� ���");
             }
         }
+
         skillController.IsSkillDelay = false;
     }
     public virtual void AttackDamage()

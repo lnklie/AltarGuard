@@ -18,6 +18,7 @@ public class GraceManager : SingletonManager<GraceManager>
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<CompleteGrace> GraceList { get { return graceList; } }
+
     private void Update()
     {
         if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
@@ -118,7 +119,6 @@ public class GraceManager : SingletonManager<GraceManager>
         {
             characterStatuses[i].InitGraceStatus(); 
         }
-
         Debug.Log("����� ��� " + graceList.Count);
         for (int i = 0; i < graceList.Count; i++)
         {
@@ -126,10 +126,10 @@ public class GraceManager : SingletonManager<GraceManager>
             if (CheckGraceCondition(graceList[i]))
             {
                 OperateGrace(graceList[i]);
-                Debug.Log("�۵�");
             }
             else
             {
+                Debug.Log("�Ƚ�");
             }
 
         }
@@ -1395,6 +1395,7 @@ public class GraceManager : SingletonManager<GraceManager>
     public bool CheckIsActive(int _key)
     {
         bool isActive = false;
+        Debug.Log("üũ�Ϸ�� Ű�� " + _key);
         for(int i = 0; i < graceList.Count; i++)
         {
             //if (graceList[i].graceKey == _key)

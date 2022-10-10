@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 /*
 ==============================
- * 최종수정일 : 2022-06-11
- * 작성자 : Inklie
- * 파일명 : Status.cs
+ * �������� : 2022-06-11
+ * �ۼ��� : Inklie
+ * ���ϸ� : Status.cs
 ==============================
 */
 public class Status : MonoBehaviour
@@ -51,6 +51,7 @@ public class Status : MonoBehaviour
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
+
     public void SetValueText(int _damage, Color _color)
     {
         damageTextController.SetText(_damage, _color);
@@ -62,7 +63,7 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
-        // 매개변수가 마지막 공격을 했는지 체크
+        // �Ű����� ���� ���� �ߴ��� üũ
         if (curHp <= 0f)
             return true;
         else
@@ -70,7 +71,7 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
-        //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
+        //Debug.Log("�̿���Ʈ�� �̸�� " + ObjectName + " ������ ��� " + "������� " + ReviseDamage(_damage, defensivePower) + " ���� ü��� " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
@@ -90,7 +91,7 @@ public class Status : MonoBehaviour
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // 애니메이션 레이어 가중치 조절
+        // �ִϸ��̼� ���̾� ����ġ ���
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);

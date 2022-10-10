@@ -37,7 +37,6 @@ public class GracePanelController : MonoBehaviour
     //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
     //        }
     //        else
-    //            Debug.Log("해당 은총이 없습니다.");
     //    }
     //}
     public void UpdateGracePoint(int _gracePoint)

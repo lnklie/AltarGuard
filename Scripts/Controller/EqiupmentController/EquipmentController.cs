@@ -23,6 +23,7 @@ public class EquipmentController : MonoBehaviour
 
     #region Property
     public Item[] EquipItems { get { return equipItems; } set { equipItems = value; } }
+    public CharacterStatus Status { get { return status; } }
     public bool[] CheckEquipItems { get { return checkEquipItems; } set { checkEquipItems = value; } }
     #endregion
     private void Awake()
@@ -41,7 +42,6 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // ��� ���� ���
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -51,7 +51,6 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // ��� ���������� ���
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,6 +73,7 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
+        // ���� �����ۿ� �� ��� Ÿ�� ����
         if (checkEquipItems[8])
         {
             status.AtkRange = equipItems[8].atkRange;
@@ -149,7 +149,6 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("���� ���Դϴ�.");
         }
     }
     public void SkillChange()
@@ -167,6 +166,7 @@ public class EquipmentController : MonoBehaviour
     {
         status.UpdateEquipAbility(equipItems);
         status.UpdateTotalAbility();
+
         switch (_item.itemType)
         {
             case 0:
@@ -274,7 +274,6 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ���� ���
         switch (_index)
         {
             case 0:

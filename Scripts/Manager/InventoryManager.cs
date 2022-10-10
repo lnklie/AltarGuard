@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+==============================
+ * �������� : 2022-06-09
+ * �ۼ��� : Inklie
+ * ���ϸ� : InventoryManager.cs
+==============================
+*/
 public class InventoryManager : SingletonManager<InventoryManager>
 {
     [SerializeField] private List<Item> inventroyWeaponItems = new List<Item>();
@@ -113,6 +119,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void AddItem(List<Item> _itemList, Item _item)
     {
+        // ����Ʈ�� ������ �߰� 
         _itemList.Add(_item);    
     }
     public Item AcquireItem(Item _item,int _count = 1)
@@ -213,6 +220,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public Item SelectItem(Item _selectItem)
     {
+        // �κ��丮���� �ش� ������ ��ȯ
         Item _item = null;
 
         if (IndexOfItem(_selectItem) != -1)
@@ -251,6 +259,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public List<Item> KeyToItems(int _selectItemKey)
     {
+        // �κ��丮���� �ش� ������ ��ȯ
         List<Item> _items = new List<Item>();
 
         switch (_selectItemKey / 1000)
@@ -316,25 +325,24 @@ public class InventoryManager : SingletonManager<InventoryManager>
     }
     public void UseItem(CharacterStatus _character, Item _item)
     {
-        // �Ҹ�ǰ�� ���� UI���� �Ҹ�ǰ�� ����ϱ� UI��Ÿ����
         if (IndexOfItem(_item) != -1)
         {
             SelectItem(_item).count--;
             UseEffect(_character, _item);
-            Debug.Log("������ ���");
             if (SelectItem(_item).count == 0)
             {
                 inventroyConsumableItems.Remove(SelectItem(_item));
                 SetInventoryIndex(inventroyConsumableItems);
-                Debug.Log("������ �����");
             }
         }
         else
         {
+            Debug.Log("������ ���");
         }
     }
     public void UseEffect(CharacterStatus _character , Item _item)
     {
+        // ������ ���
         Consumables consumables = ((Consumables)inventroyConsumableItems[IndexOfItem( _item)]);
         if (consumables.useEffect == "Cure")
         {
@@ -342,17 +350,21 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         else if (consumables.useEffect == "Buff")
         {
+            Debug.Log("����");
         }
     }
     public void DiscardItem(Item _item,int _amount = 1)
     {
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
+
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (!inventroyWeaponItems[IndexOfItem(_item)].isEquip)
                 {
                     inventroyWeaponItems[IndexOfItem( _item)].count--;
+                    Debug.Log("������ ���");
                     if (inventroyWeaponItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyWeaponItems.Remove(inventroyWeaponItems[IndexOfItem(_item)]);
@@ -371,11 +383,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
             _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
             _item.itemType == (int)ItemType.Cloth)
         {
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyEquipmentItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyEquipmentItems[IndexOfItem( _item)].count--;
+                    Debug.Log("������ ���");
                     if (inventroyEquipmentItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyEquipmentItems.Remove(inventroyEquipmentItems[IndexOfItem(_item)]);
@@ -392,11 +406,13 @@ public class InventoryManager : SingletonManager<InventoryManager>
         }
         else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
         {
+            // ������ ���
             if (IndexOfItem(_item) != -1)
             {
                 if (inventroyDecorationItems[IndexOfItem(_item)].isEquip != true)
                 {
                     inventroyDecorationItems[IndexOfItem(_item)].count--;
+                    Debug.Log("������ ���");
                     if (inventroyDecorationItems[IndexOfItem(_item)].count <= 0)
                     {
                         inventroyDecorationItems.Remove(inventroyDecorationItems[IndexOfItem(_item)]);
@@ -422,11 +438,11 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyConsumableItems.Remove(_item);
                     SetInventoryIndex(inventroyConsumableItems);
-                    Debug.Log("������ �����");
                 }
             }
             else
             {
+                //Debug.Log("������ ���");
             }
         }
         else
@@ -438,11 +454,11 @@ public class InventoryManager : SingletonManager<InventoryManager>
                 {
                     inventroyMiscellaneousItems.Remove(_item);
                     SetInventoryIndex(inventroyMiscellaneousItems);
-                    Debug.Log("������ �����");
                 }
             }
             else
             {
+                //Debug.Log("������ ���");
             }
         }
     }

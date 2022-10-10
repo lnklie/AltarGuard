@@ -402,7 +402,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ResultWhat")))
         {
-            Debug.Log("��ο� ���� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -415,7 +414,6 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ResultValueIsPercent")))
         {
-            Debug.Log("��ο� ���� ��ġ �ۼ�Ʈ Ȯ���� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -822,6 +820,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
+                Debug.Log("�ش� ��� Ư���� ���ϴ�.");
         }
         return _altarProperty;
     }
@@ -833,6 +832,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
+                Debug.Log("�ش� ��� �����ǰ� ���ϴ�.");
         }
         return _gameScript;
     }

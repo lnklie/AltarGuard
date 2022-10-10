@@ -46,7 +46,6 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
-        //    Debug.Log("��ų ������ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
@@ -59,6 +58,7 @@ public class SkillController : MonoBehaviour
     public void UseSkill(Skill _skill)
     {
         int index = skillQueue.IndexOf(_skill);
+        Debug.Log("�ε����� " + index);
         if (index != -1)
         {
 
@@ -127,7 +127,6 @@ public class SkillController : MonoBehaviour
     public void UseSkill()
     {
         //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("�ε����� " + index);
         if(status.Target !=null)
         {
             
@@ -160,7 +159,6 @@ public class SkillController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ÿ���� ���");
         }
     }
     public void CalculateSkillCoolTime()
@@ -172,6 +170,7 @@ public class SkillController : MonoBehaviour
                 skills[i].coolTime += Time.deltaTime;
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
+                    Debug.Log("��Ÿ�� ȸ�� �Ϸ�");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);

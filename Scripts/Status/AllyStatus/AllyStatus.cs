@@ -56,7 +56,6 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ���� ���
         if (statusPoint > 0)
         {
             switch (_index)
@@ -83,7 +82,6 @@ public class AllyStatus : CharacterStatus
 
     private void UpLevel()
     {
-        // ������
         curLevel++;
         curExp -= maxExp;
         statusPoint += 5;
@@ -93,7 +91,6 @@ public class AllyStatus : CharacterStatus
 
     private void LvToExp()
     {
-        // ������ ����ġ ��ȯ
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
             if (curLevel == DatabaseManager.Instance.expList[i].lv)
@@ -102,7 +99,6 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // �ִ� ����ġ ���� Ȯ��
         if (curExp >= maxExp)
             return true;
         else
