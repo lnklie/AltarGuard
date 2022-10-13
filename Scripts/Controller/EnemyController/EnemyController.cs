@@ -6,7 +6,7 @@ public class EnemyController : CharacterController
 { 
     [SerializeField] private Status altar = null;
     [SerializeField] protected EnemyStatus enemyStatus = null;
-
+    [SerializeField] private TargetingBoxController targetingBoxController = null;
     public override void Awake()
     {
         base.Awake();
@@ -52,7 +52,7 @@ public class EnemyController : CharacterController
         }
     }
 
-    public void Targeting(int _layer, List<Status> _targetList)
+    public void Targeting(int _layer, List<CharacterStatus> _targetList)
     {
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, _layer);
         if (_hit.Length > 0)
@@ -68,7 +68,7 @@ public class EnemyController : CharacterController
             }
         }
     }
-    public void ResortTarget(List<Status> _targetList, bool _isEnemy, Transform _defaultTransform = null)
+    public void ResortTarget(List<CharacterStatus> _targetList, bool _isEnemy, Transform _defaultTransform = null)
     {
         if (_targetList.Count > 0)
         {
@@ -110,16 +110,21 @@ public class EnemyController : CharacterController
                 enemyStatus.AllyTarget = _defaultTransform;
         }
     }
-    public override void AIPerception()
+    public override IEnumerator AIPerception()
     {
-        Targeting(LayerMask.GetMask("Ally"), enemyStatus.AllyRayList);
-        if (!altar)
-            enemyStatus.Target = null;
-        else
-            ResortTarget(enemyStatus.AllyRayList,true, altar.TargetPos);
+        while(true)
+        {
+            Targeting(LayerMask.GetMask("Ally"), enemyStatus.AllyRayList);
+            if (!altar)
+                enemyStatus.Target = null;
+            else
+                ResortTarget(enemyStatus.AllyRayList,true, altar.TargetPos);
         
-        Targeting(LayerMask.GetMask("Enemy"), enemyStatus.EnemyRayList);
-        ResortTarget(enemyStatus.EnemyRayList, false);
+            Targeting(LayerMask.GetMask("Enemy"), enemyStatus.EnemyRayList);
+            ResortTarget(enemyStatus.EnemyRayList, false);
+
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
 
@@ -134,9 +139,15 @@ public class EnemyController : CharacterController
                 Status ally = hits[i].collider.GetComponent<Status>();
                 if(ally == null)
                 {
+                    Debug.Log("¹¹Â¡?? ¹» °ø°ÝÇÑ°É±î?" + hits[i].collider.name);
                 }
                 ally.Damaged(AttackTypeDamage());
             }
         }
+    }
+
+    public void SetTargetingBox(bool _bool)
+    {
+        targetingBoxController.IsTargeting = _bool;
     }
 }

@@ -46,121 +46,125 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
-        //    Debug.Log("ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MAX");
+        //    Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½Å³");
+            Debug.Log("¾ø´Â ½ºÅ³");
     }
 
     public void UseSkill(Skill _skill)
     {
-        int index = skillQueue.IndexOf(_skill);
-        if (index != -1)
+        if(!status.IsDied)
         {
-
-            if (!_skill.isCoolTime)
+            int index = skillQueue.IndexOf(_skill);
+            if (index != -1)
             {
 
-                SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                _skill.isCoolTime = true;
-                _skill.coolTime = 0f;
+                if (!_skill.isCoolTime)
+                {
 
-                if (_skill.skillType == 0)
-                {
-                    if (status.Target != null)
+                    SkillObject _skillObject = skillPrefabs[_skill.skillKey];
+                    _skill.isCoolTime = true;
+                    _skill.coolTime = 0f;
+
+                    if (_skill.skillType == 0)
                     {
-                        _skillObject.SetSkill(status.Target, _skill, status);
+                        if (status.Target != null)
+                        {
+                            _skillObject.SetSkill(status.Target, _skill, status);
+                        }
+                        else
+                        {
+                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        }
                     }
-                    else
+                    else if (_skill.skillType == 1)
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
-                    }
-                }
-                else if (_skill.skillType == 1)
-                {
-                    if (status.AllyTarget != null)
-                    {
-                        _skillObject.SetSkill(status.AllyTarget, _skill, status);
-                    }
-                    else
-                    {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
-                    }
+                        if (status.AllyTarget != null)
+                        {
+                            _skillObject.SetSkill(status.AllyTarget, _skill, status);
+                        }
+                        else
+                        {
+                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        }
                     
-                }
-                else if (_skill.skillType == 2)
-                {
-                    if (status.AllyTarget != null)
-                    {
-                        _skillObject.SetSkill(status.AllyTarget, _skill, status);
                     }
-                    else
+                    else if (_skill.skillType == 2)
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
-                    } 
-                }
-                else if (_skill.skillType == 3)
-                {
-                    if (status.Target != null)
-                    {
-                        _skillObject.SetSkill(status.Target, _skill, status);
+                        if (status.AllyTarget != null)
+                        {
+                            _skillObject.SetSkill(status.AllyTarget, _skill, status);
+                        }
+                        else
+                        {
+                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        } 
                     }
-                    else
+                    else if (_skill.skillType == 3)
                     {
-                        UIManager.Instance.Notice("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                        if (status.Target != null)
+                        {
+                            _skillObject.SetSkill(status.Target, _skill, status);
+                        }
+                        else
+                        {
+                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        }
                     }
+                    skillQueue.RemoveAt(index);
                 }
-                skillQueue.RemoveAt(index);
+                else
+                    Debug.Log("ÄðÅ¸ÀÓ Áß");
+
             }
             else
-                Debug.Log("ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½");
-
+                Debug.Log("¾ø´Â ½ºÅ³");
         }
-        else
-            Debug.Log("ï¿½ï¿½ï¿½ ï¿½ï¿½Å³");
 
     }
     public void UseSkill()
     {
-        //int index = activeSkills.IndexOf(skillQueue[0]);
-        // Debug.Log("ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ " + index);
-        if(status.Target !=null)
+        if (!status.IsDied)
         {
-            
-            if (skillQueue.Count > 0)
+            if (status.Target != null)
             {
 
-                skillQueue[0].isCoolTime = true;
-                skillQueue[0].coolTime = 0;
-                //status.IsAtk = true;
-                SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                if(skillQueue[0].skillType == 0)
+                if (skillQueue.Count > 0)
                 {
-                    _skillObject.SetSkill(status.Target, skillQueue[0],status);
+
+                    skillQueue[0].isCoolTime = true;
+                    skillQueue[0].coolTime = 0;
+                    //status.IsAtk = true;
+                    SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                    if (skillQueue[0].skillType == 0)
+                    {
+                        _skillObject.SetSkill(status.Target, skillQueue[0], status);
+                    }
+                    else if (skillQueue[0].skillType == 1)
+                    {
+                        _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
+                    }
+                    else if (skillQueue[0].skillType == 2)
+                    {
+                        _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
+                    }
+                    else if (skillQueue[0].skillType == 3)
+                    {
+                        _skillObject.SetSkill(status.Target, skillQueue[0], status);
+                    }
+                    skillQueue.RemoveAt(0);
                 }
-                else if(skillQueue[0].skillType == 1)
-                {
-                    _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
-                }
-                else if (skillQueue[0].skillType == 2)
-                {
-                    _skillObject.SetSkill(status.AllyTarget, skillQueue[0], status);
-                }
-                else if (skillQueue[0].skillType == 3)
-                {
-                    _skillObject.SetSkill(status.Target, skillQueue[0], status);
-                }
-                skillQueue.RemoveAt(0);
+                //else if()
             }
-            //else if()
-        }
-        else
-        {
-            Debug.Log("Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+            else
+            {
+                Debug.Log("Å¸°ÙÀÌ ¾øÀ½");
+            }
         }
     }
     public void CalculateSkillCoolTime()
@@ -172,6 +176,7 @@ public class SkillController : MonoBehaviour
                 skills[i].coolTime += Time.deltaTime;
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
+                    Debug.Log("ÄðÅ¸ÀÓ È¸º¹ ¿Ï·á");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);
