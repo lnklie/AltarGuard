@@ -51,12 +51,13 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
     [SerializeField] private bool isNotice = false;
+    [SerializeField] private bool isUIOn = false;
 
 
     private Coroutine preNotice = null;
 
-
-
+    public bool IsUIOn { get { return isUIOn; } set { isUIOn = value; } }
+    public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
     private void Start()
     {
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
@@ -214,12 +215,24 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region Button
+    #region Log Panel
+    public void SetLogSizeLevel(bool _bool)
+    {
+        logPanelController.SetLogSizeLevel(_bool);
+    }
+    #endregion
+
 
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
         // 아이템 정보창 활성화 여부
         inventoryPanelController.SetActiveItemInfo(_bool);
+    }
+    public void SetActiveInventoryEquipedItemInfo(bool _bool)
+    {
+        // 아이템 정보창 활성화 여부
+        inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
@@ -277,6 +290,18 @@ public class UIManager : SingletonManager<UIManager>
     {
         
         inventoryPanelController.SetActiveQuickSlotSelectButtons();
+    }
+    public void SetActiveItemSkillInfo(int _index)
+    {
+        inventoryPanelController.SetItemSkillExplain(_index);
+    }
+    public void SetActiveEquipedItemSkillInfo(int _index)
+    {
+        inventoryPanelController.SetEquipedItemSkillExplain(_index);
+    }
+    public void SelectCharacterEquipment(bool _isUp)
+    {
+        inventoryPanelController.SelectCharacterEquipment(_isUp);
     }
     #endregion
     #region Equipment Panel
@@ -522,10 +547,9 @@ public class UIManager : SingletonManager<UIManager>
     {
         // UI 활성화 
 
-        player.IsUiOn = true;
+        isUIOn = true;
         if (_index == 0)
         {
-            inventoryPanelController.SetPlayer();
             inventoryPanelController.ActiveInventoryPanel(true);
             inventoryPanelController.ChangeInventorySlot(0);
 
@@ -588,7 +612,7 @@ public class UIManager : SingletonManager<UIManager>
     public void DeactiveUIBtn(int _index)
     {
         // UI 비활성화
-        player.IsUiOn = false;
+        isUIOn = false;
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);
