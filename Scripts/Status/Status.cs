@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-11
- * 작성자 : Inklie
- * 파일명 : Status.cs
-==============================
-*/
+
 public class Status : MonoBehaviour
 {
     [SerializeField] protected string objectName = "";
@@ -63,7 +57,6 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
-        // 매개변수가 마지막 공격을 했는지 체크
         if (curHp <= 0f)
             return true;
         else
@@ -71,7 +64,6 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
-        //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
@@ -91,7 +83,6 @@ public class Status : MonoBehaviour
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // 애니메이션 레이어 가중치 조절
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);
@@ -100,7 +91,7 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
-        // 대상과의 거리 측정
+        // 占쏙옙占쏙옙占쏙옙 占신몌옙 占쏙옙占�
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

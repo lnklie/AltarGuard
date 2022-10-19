@@ -37,12 +37,12 @@ public class GracePanelController : MonoBehaviour
     //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
     //        }
     //        else
-    //            Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
+    //            Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
     //    }
     //}
     public void UpdateGracePoint(int _gracePoint)
     {
-        remainingPoint.text = "ÀÜ¿© Æ÷ÀÎÆ®: " + _gracePoint;
+        remainingPoint.text = "ï¿½Ü¿ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®: " + _gracePoint;
     }
 
     public void SelectGrace(int _index, CheckIsActiveGrace _checkIsActiveGrace)
@@ -53,12 +53,12 @@ public class GracePanelController : MonoBehaviour
         if(_checkIsActiveGrace(selectGrace.graceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "ÀÌ¹Ì ¹ÞÀ½";
+            graceLearnButtonText.text = "ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "¹Þ±â";
+            graceLearnButtonText.text = "ï¿½Þ±ï¿½";
         }
         
     }
