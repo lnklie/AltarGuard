@@ -10,16 +10,6 @@ public class RushEnemyController : EnemyController
         base.Awake();
         rushEnemyStatus = this.GetComponent<RushEnemyStatus>();
     }
-    public bool IsDelay(EnemyStatus _status)
-    {
-        if (_status.DelayTime >= _status.TotalAtkSpeed)
-        {
-            _status.DelayTime = _status.TotalAtkSpeed;
-            return false;
-        }
-        else
-            return true;
-    }
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
@@ -40,7 +30,7 @@ public class RushEnemyController : EnemyController
     {
         rushEnemyStatus.UpdateEnemyHp();
         rushEnemyStatus.AIState = EAIState.Died;
-        rushEnemyStatus.ActiveLayer(LayerName.DieLayer);
+        rushEnemyStatus.ActiveLayer(ELayerName.DieLayer);
         rushEnemyStatus.Rig.velocity = Vector2.zero;
         rushEnemyStatus.Col.enabled = false;
         yield return new WaitForSeconds(returnTime);

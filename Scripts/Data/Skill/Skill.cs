@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Skill
 {
-    public int skillKey;
+    public int skillKey = -1;
     public string skillName;
     public string skillKorName;
     public string skillExplain;

@@ -5,7 +5,8 @@ using UnityEngine;
 public class CharacterStatus : Status
 {
     [SerializeField] protected bool isAtk = false;
-    [SerializeField] protected Transform target = null;
+    [SerializeField] protected EnemyController enemyTarget = null;
+    [SerializeField] protected AllyController allyTarget = null;
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
@@ -95,7 +96,6 @@ public class CharacterStatus : Status
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
     [SerializeField] protected bool triggerEquipmentChange = false;
     //[SerializeField] protected EquipmentController equipmentController = null;
-    [SerializeField] protected Transform allyTarget = null;
     protected int curExp = 0;
     protected int maxExp = 0;
 
@@ -114,12 +114,11 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<Status> enemyRayList = new List<Status>();
-    [SerializeField] protected List<Status> allyRayList = new List<Status>();
+    [SerializeField] protected List<EnemyController> enemyRayList = new List<EnemyController>();
+    [SerializeField] protected List<AllyController> allyRayList = new List<AllyController>();
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
-    [SerializeField] private bool[] isAllyTargeted = new bool[5];
-    [SerializeField] private bool[] isEnemyTargeted = new bool[101];
+
     [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
     private Debuff debuff = Debuff.Not;
@@ -146,17 +145,16 @@ public class CharacterStatus : Status
     public int GraceDefensivePower { get { return graceDefensivePower; } set { graceDefensivePower = value; } }
     public int GraceHpRegenValue { get { return graceHpRegenValue; } set { graceHpRegenValue = value; } }
     public bool IsDied { get { return isDied; } set { isDied = value; } }
-    public bool[] IsAllyTargeted { get { return isAllyTargeted; } set { isAllyTargeted = value; } }
-    public bool[] IsEnemyTargeted { get { return isEnemyTargeted; } set { isEnemyTargeted = value; } }
+
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
     public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }
-    public List<Status> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
+    public List<AllyController> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
     public bool IsAtk { get { return isAtk; } set { isAtk = value; } }
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
-    public List<Status> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
+    public List<EnemyController> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
     public int GraceLuck { get { return graceLuck; } set { graceLuck = value; } }
@@ -200,9 +198,9 @@ public class CharacterStatus : Status
     public float AtkRange { get { return atkRange; } set { atkRange = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
     public float CastingSpeed { get { return castingSpeed; } set { castingSpeed = value; } }
-    public Transform Target { get { return target; } set { target = value; } }
-    //public EquipmentController EquipmentController { get { return equipmentController; } set { equipmentController = value; } }
-    public Transform AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
+    public EnemyController EnemyTarget { get { return enemyTarget; } set { enemyTarget = value; } }
+
+    public AllyController AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
     public int CurExp { get { return curExp; } set { curExp = value; } }
     public int MaxExp { get { return maxExp; } set { maxExp = value; } }
     public int BuffPhysicalDamage { get { return buffPhysicalDamage; } set { buffPhysicalDamage = value; } }

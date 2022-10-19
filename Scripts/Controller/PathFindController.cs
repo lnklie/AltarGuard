@@ -19,15 +19,15 @@ public class PathFindController : MonoBehaviour
     {
         status = this.gameObject.transform.parent.GetComponentInChildren<CharacterStatus>();
     }
+    public void SetTargetPos(Vector2 _pos)
+    {
+        targetPos = Vector2Int.RoundToInt(_pos);
+    }
 
     public void PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입
         startPos = Vector2Int.RoundToInt(status.transform.position);
-        if (status.Target)
-            targetPos = Vector2Int.RoundToInt(status.Target.position);
-        else
-            targetPos = Vector2Int.RoundToInt(status.Flag.transform.position);
         bottomLeft = Vector2Int.RoundToInt(new Vector3(-25f, -25f));
         topRight = Vector2Int.RoundToInt(new Vector3(25f, 25f));
 

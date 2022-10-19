@@ -30,6 +30,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private List<SkillController> skillControllerList = new List<SkillController>();
 
     [Header("Panels")]
+    [SerializeField] private SetUpPanelController setUpPanelController = null;
     [SerializeField] private InventoryPanelController inventoryPanelController = null;
     [SerializeField] private EquipmentPanelController equipmentPanelController = null;
     [SerializeField] private ProfilePanelController profilePanelController = null;
@@ -51,12 +52,13 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
     [SerializeField] private bool isNotice = false;
+    [SerializeField] private bool isUIOn = false;
 
 
     private Coroutine preNotice = null;
 
-
-
+    public bool IsUIOn { get { return isUIOn; } set { isUIOn = value; } }
+    public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
     private void Start()
     {
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
@@ -167,7 +169,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectSlotSellItem(Item _item)
@@ -214,63 +216,80 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region Button
+    #region Set-Up Panel
+    public void SetSoundVolume(int _index)
+    {
+        setUpPanelController.SetSoundVolume(_index);
+    }
+    public void SetSleepMode(int _index)
+    {
+        setUpPanelController.SetSleepMode(_index);
+    }
+    #endregion
+
+    #region Log Panel
+    public void SetLogSizeLevel(bool _bool)
+    {
+        logPanelController.SetLogSizeLevel(_bool);
+    }
+    #endregion
 
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void SetActiveInventoryEquipedItemInfo(bool _bool)
     {
-        // Â•Â„ÂëŒ„Â…Âœ ï¿½Â•è¹‚ëŒê°¹ Â™ÂœÂ„ê¹ŠÂ™Â” Â—Ñ‰Â€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë³€ê²½
+        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
         inventoryPanelController.ChangeInventorySlot(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ì•„ì´í…œ ì¥ì°©
+        // ¾ÆÀÌÅÛ ÀåÂø
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
         userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ì•„ì´í…œ ì¥ì°© ìºë¦­í„° ì„ íƒ í™œì„±í™” ì—¬ë¶€ 
+        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ì„ íƒí•œ ì•„ì´í…œ í•´ì œ
+        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
         inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ì•„ì´í…œ ì‚¬ìš©
+        // ¾ÆÀÌÅÛ »ç¿ë
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¹ö¸®±â
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ìœ¼ë¡œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SetItemQuickSlot(int _index)
@@ -296,18 +315,20 @@ public class UIManager : SingletonManager<UIManager>
         inventoryPanelController.SelectCharacterEquipment(_isUp);
     }
     #endregion
+
     #region Equipment Panel
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ÂÎ»Â„ï§¡ìŒÂ—ÂÂ„Âœ ï§¦Âç”±ï¿½Â„ Â„ÂƒÂ
+        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
         equipmentPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ÂÎ»Â„ï§¡ ï§¦Âç”±ï¿½Â„ ÂëŒ€Â„ Â—Â…Âê³—ÂëŒ„ÂŠ
+        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
         equipmentPanelController.UpdateEquipmentName();
     }
     #endregion
+
     #region Status Panel
     public void UpdateStatus()
     {
@@ -320,10 +341,10 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // ìŠ¤í…Ÿ ì—…
+        // ½ºÅİ ¾÷
         statusPanelController.StatusUp(_index);
     }
-    #endregion
+    #endregion 
 
     #region Altar Panel
     public void UpdateAltarInfo()
@@ -356,7 +377,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else
         {
-            Notice("ì€ì´ í¬ì¸íŠ¸ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+            Notice("ÀºÃÑ Æ÷ÀÎÆ®°¡ ºÎÁ·ÇÕ´Ï´Ù.");
         }
     }
     public void SelectGrace(int _index)
@@ -537,9 +558,9 @@ public class UIManager : SingletonManager<UIManager>
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI í™œì„±í™” 
+        // UI È°¼ºÈ­ 
 
-        player.IsUiOn = true;
+        isUIOn = true;
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(true);
@@ -599,12 +620,16 @@ public class UIManager : SingletonManager<UIManager>
             disassemblePanelController.SetActiveDisassemblePanel(true);
             disassemblePanelController.UpdateDisassembleInventorySlot(0);
         }
+        else if(_index == 12)
+        {
+            setUpPanelController.SetActiveSetUpPanel(true);
+        }
     }
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ë¹„í™œì„±í™”
-        player.IsUiOn = false;
+        // UI ºñÈ°¼ºÈ­
+        isUIOn = false;
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);
@@ -657,7 +682,10 @@ public class UIManager : SingletonManager<UIManager>
 
             disassemblePanelController.SetActiveDisassemblePanel(false);
             disassemblePanelController.CancelAllRegisteredItem();
-
+        }
+        else if(_index == 12)
+        {
+            setUpPanelController.SetActiveSetUpPanel(false);
         }
     }
     #endregion

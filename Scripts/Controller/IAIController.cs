@@ -6,7 +6,7 @@ public interface IAIController
 {
     public void AIChangeState();
     public void AIState();
-    public void AIPerception();
+    public IEnumerator AIPerception();
     public void AIIdle();
     public void AIChase();
     public void AIAttack();
