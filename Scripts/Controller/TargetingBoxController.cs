@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TargetingBoxController : MonoBehaviour
 {
-    [SerializeField]
-    private bool isTargeting;
+    [SerializeField] private bool isTargeting;
     public bool IsTargeting
     {
         set { isTargeting = value; }

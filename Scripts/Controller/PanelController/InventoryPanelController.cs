@@ -21,6 +21,7 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI equipedItemSkillExplain = null;
     [SerializeField] private TextMeshProUGUI equipedItemCharacterName = null;
 
+
     [Header("CheckDiscard")]
     [SerializeField] private GameObject checkDiscard = null;
     [SerializeField] private GameObject checkAmount = null;
@@ -94,7 +95,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ResetInventory()
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // ÀÎº¥Åä¸® ½½·Ô ¸®¼Â
         for (int i = 0; i < inventorySlotList.Count; i++)
         {
             inventorySlotList[i].SlotReset();
@@ -115,18 +116,18 @@ public class InventoryPanelController : MonoBehaviour
         {
             if(_tempMoney >= Mathf.Pow(10, 12))
             {
-                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "ì¡° ";
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "Á¶ ";
                 _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
             }
             else if (_tempMoney >= 100000000)
             {
-                _moneyText += ((_tempMoney / 100000000)).ToString() + "ì–µ ";
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "¾ï ";
                 _tempMoney = (_tempMoney % 100000000);
             }
             else if (_tempMoney >= 10000)
             {
 
-                _moneyText += ((_tempMoney / 10000)).ToString() + "ë§Œ ";
+                _moneyText += ((_tempMoney / 10000)).ToString() + "¸¸ ";
                 _tempMoney = (_tempMoney % 10000);
 
             }
@@ -142,7 +143,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SortInventoryByKeyAndInventoryIndex(List<Item> _inventory)
     {
-        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
+        // ¸®½ºÆ® Á¤·Ä
         _inventory.Sort(delegate (Item a, Item b)
         {
             if (a.itemKey < b.itemKey) return -1;
@@ -152,7 +153,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ChangeInventorySlot(int _index)
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²Ù±ï¿½ 
+        // ÀÎº¥Åä¸® ½½·Ô ¹Ù²Ù±â 
         ResetInventory();
         SetActiveItemInfo(false);
         SetActiveEquipedItemInfo(false);
@@ -219,7 +220,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveItemInfo(bool _bool)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¢ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         itemInfo.SetActive(_bool);
         if(!_bool)
         {
@@ -228,7 +229,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActiveCheckDiscard(bool _bool)
@@ -259,9 +260,11 @@ public class InventoryPanelController : MonoBehaviour
                 selectEquipmentController.Add(characterEquipmentController[i]);
             }
         }
+
     }
     public void SelectCharacterEquipment(bool _isUp)
     {
+        ResetEquipedItemInfoSkillButtons();
         if(_isUp)
         {
             selectCharNum++;
@@ -274,13 +277,12 @@ public class InventoryPanelController : MonoBehaviour
             if (selectCharNum == -1)
                 selectCharNum = selectEquipmentController.Count - 1;
         }
-        ResetEquipedItemInfoSkillButtons();
         SetEquipedItemInfoPanel();
     }
 
     public void UpdateItemInfo()
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ ì—…ë°ì´íŠ¸
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ ¾÷µ¥ÀÌÆ®
         selectCharNum = 0;
         isItemSelect = false;
         selectEquipmentController.Clear();
@@ -329,22 +331,22 @@ public class InventoryPanelController : MonoBehaviour
                 iteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 3:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 4:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 5:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 6:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 7:
-                iteminfoExplainText.text = "ï¿½ï¿½ï¿½ï¿½: " + selectItem.defensivePower;
+                iteminfoExplainText.text = "¹æ¾î·Â: " + selectItem.defensivePower;
                 break;
             case 8:
             case 9:
@@ -352,26 +354,26 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 iteminfoExplainText.text =
-                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectItem.physicalDamage + "\n" +
-                    "ë§ˆë²• ê³µê²©ë ¥: " + selectItem.magicalDamage + "\n" +
-                    "ê³µê²© ë²”ìœ„: " + selectItem.atkRange + "\n" +
-                    "ê³µê²© ê±°ë¦¬: " + selectItem.atkDistance + "\n" +
-                    "ë¬´ê¸° ì¢…ë¥˜: " + selectItem.weaponType + "\n";
+                    "¹°¸® °ø°İ·Â: " + selectItem.physicalDamage + "\n" +
+                    "¸¶¹ı °ø°İ·Â: " + selectItem.magicalDamage + "\n" +
+                    "°ø°İ ¹üÀ§: " + selectItem.atkRange + "\n" +
+                    "°ø°İ °Å¸®: " + selectItem.atkDistance + "\n" +
+                    "¹«±â Á¾·ù: " + selectItem.weaponType + "\n";
                 if (selectItem.grace1 != null)
-                    iteminfoExplainText.text += "ì²« ë²ˆì§¸ ì€ì´: " + selectItem.grace1.explain;
+                    iteminfoExplainText.text += "Ã¹ ¹øÂ° ÀºÃÑ: " + selectItem.grace1.explain;
                 if (selectItem.grace2 != null)
-                    iteminfoExplainText.text += "ë‘ ë²ˆì§¸ ì€ì´: " + selectItem.grace2.explain;
+                    iteminfoExplainText.text += "µÎ ¹øÂ° ÀºÃÑ: " + selectItem.grace2.explain;
                 if (selectItem.grace3 != null)
-                    iteminfoExplainText.text += "ì„¸ ë²ˆì§¸ ì€ì´: " + selectItem.grace3.explain;
+                    iteminfoExplainText.text += "¼¼ ¹øÂ° ÀºÃÑ: " + selectItem.grace3.explain;
                 SetItemSkillIcon();
 
                 break;
             case 13:
                 iteminfoExplainText.text =
-                    "È¸ï¿½ï¿½ï¿½ï¿½ : " + selectItem.value + "\n";
+                    "È¸º¹·® : " + selectItem.value + "\n";
                 break;
             case 14:
-                iteminfoExplainText.text = "ï¿½Ì°ï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+                iteminfoExplainText.text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
                 break;
         }
     }
@@ -390,22 +392,22 @@ public class InventoryPanelController : MonoBehaviour
                 equipedIteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 3:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 4:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 5:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 6:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 7:
-                equipedIteminfoExplainText.text = "ë°©ì–´ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "¹æ¾î·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 8:
             case 9:
@@ -413,25 +415,25 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 equipedIteminfoExplainText.text =
-                    "ë¬¼ë¦¬ ê³µê²©ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].physicalDamage + "\n" +
-                    "ë§ˆë²• ê³µê²©ë ¥: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].magicalDamage + "\n" +
-                    "ê³µê²© ë²”ìœ„: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
-                    "ê³µê²© ê±°ë¦¬: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
-                    "ë¬´ê¸° ì¢…ë¥˜: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
-                if (selectItem.grace1 != null)
-                    equipedIteminfoExplainText.text += "ì²« ë²ˆì§¸ ì€ì´: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1.explain;
-                if (selectItem.grace2 != null)
-                    equipedIteminfoExplainText.text += "ë‘ ë²ˆì§¸ ì€ì´: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2.explain;
-                if (selectItem.grace3 != null)
-                    equipedIteminfoExplainText.text += "ì„¸ ë²ˆì§¸ ì€ì´: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3.explain;
+                    "¹°¸® °ø°İ·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].physicalDamage + "\n" +
+                    "¸¶¹ı °ø°İ·Â: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].magicalDamage + "\n" +
+                    "°ø°İ ¹üÀ§: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
+                    "°ø°İ °Å¸®: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
+                    "¹«±â Á¾·ù: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1 != null)
+                    equipedIteminfoExplainText.text += "Ã¹ ¹øÂ° ÀºÃÑ: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1.explain;
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2 != null)
+                    equipedIteminfoExplainText.text += "µÎ ¹øÂ° ÀºÃÑ: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2.explain;
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3 != null)
+                    equipedIteminfoExplainText.text += "¼¼ ¹øÂ° ÀºÃÑ: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3.explain;
                 SetEquipedItemSkillIcon();
                 break;
             case 13:
                 equipedIteminfoExplainText.text =
-                    "íšŒë³µëŸ‰ : " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].value + "\n";
+                    "È¸º¹·® : " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].value + "\n";
                 break;
             case 14:
-                equipedIteminfoExplainText.text = "ì´ê²ƒì€ í€˜ìŠ¤íŠ¸ ì•„ì´í…œ";
+                equipedIteminfoExplainText.text = "ÀÌ°ÍÀº Äù½ºÆ® ¾ÆÀÌÅÛ";
                 break;
         }
     }
@@ -459,7 +461,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ResetInventoryButtons()
     {
-        // ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½Æ° ï¿½ï¿½ï¿½ï¿½
+        // ÀÎº¥Åä¸® ¹öÆ° ¸®¼Â
         for (int i = 0; i < inventoryButtons.Length; i++)
         {
             inventoryButtons[i].gameObject.SetActive(false);
@@ -501,7 +503,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public string KeyToItemType(int _key)
     {
-        // Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // Å°¸¦ ¾ÆÀÌÅÛ Å¸ÀÔÀ¸·Î º¯°æ
         string _itemtype = null;
         switch (_key / 1000)
         {
@@ -553,7 +555,7 @@ public class InventoryPanelController : MonoBehaviour
 
             if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
             {
-                // ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½Æ°
+                // ÀåÂøÇÏ±â ¹öÆ°
                 if (_characterList[_character].CheckEquipItems[selectItem.itemType])
                 {
                     _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
@@ -568,22 +570,23 @@ public class InventoryPanelController : MonoBehaviour
                 selectItem = null;
             }
             else
-                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½.");
+                Debug.Log("·¹º§ÀÌ ºÎÁ·ÇÕ´Ï´Ù.");
         }
         else
         {
-            Debug.Log("ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½");
+            Debug.Log("ÄğÅ¸ÀÓ Áß");
         }
     }
 
     public void TakeOffInventoryItem(List<EquipmentController> _characterList)
     {
+        // ÀåÂøÇØÁ¦
         if (selectItem.isEquip)
         {
             _characterList[selectItem.equipCharNum].TakeOffEquipment(selectItem);
         }
         else
-            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½");
+            Debug.Log("Âø¿ëÁßÀÌ ¾Æ´Ô");
         SetActiveItemInfo(false);
         ChangeInventorySlot(selectInventoryIndex);
 
@@ -592,7 +595,7 @@ public class InventoryPanelController : MonoBehaviour
  
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ì¥ì°© ìºë¦­í„° ì„ íƒí•˜ê¸° ë²„íŠ¼ í™œì„±í™”
+        // ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃÇÏ±â ¹öÆ° È°¼ºÈ­
         for (int i = 0; i < equipCharactersBtn.Length; i++)
             equipCharactersBtn[i].gameObject.SetActive(_bool);
     }
@@ -602,7 +605,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         selectItem = _item;
         isItemSelect = true;
         selectInventorySlot = _slot;
@@ -612,7 +615,7 @@ public class InventoryPanelController : MonoBehaviour
 
     public void DiscardSelectItem()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ ¹ö¸®±â
         if (selectItem.itemType > 8)
         {
             SetActiveCheckDiscardAmount(true);
@@ -636,16 +639,16 @@ public class InventoryPanelController : MonoBehaviour
                 amount.text = null;
             }
             else
-                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ï¿½ï¿½");
+                Debug.Log("¹ö¸®·Á´Â °ªÀ» ÃÊ°úÇÔ");
         }
         else
         {
-            UIManager.Instance.Notice("ï¿½Ã¹Ù¸ï¿½ ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.");
+            UIManager.Instance.Notice("¿Ã¹Ù¸¥ °ªÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
         }
     }
     public void UseSelectItem(PlayerStatus _player)
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+        // ¾ÆÀÌÅÛ »ç¿ë
         if (!selectItem.isCoolTime)
         {
             InventoryManager.Instance.IsConsumaableCoolTime = true;
@@ -655,7 +658,7 @@ public class InventoryPanelController : MonoBehaviour
             selectItem.isCoolTime = true;
         }
         else
-            Debug.Log("ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½");
+            Debug.Log("ÄğÅ¸ÀÓ Áß");
     }
     public void SetItemQuickSlot(int _index)
     {
@@ -674,7 +677,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void ActiveInventoryPanel(bool _bool)
     {
-        // UI È°ï¿½ï¿½È­ 
+        // UI È°¼ºÈ­ 
         UIImages.SetActive(_bool);
         SetActiveItemInfo(_bool);
         SetActiveFalseQuickSlotSelectButtons();

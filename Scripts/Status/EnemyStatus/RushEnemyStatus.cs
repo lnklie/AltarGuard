@@ -6,7 +6,6 @@ public class RushEnemyStatus : EnemyStatus
 {
     [SerializeField] protected Enemy rushEnemy = null;
 
-
     private Image[] images = null;
     public Enemy RushEnemy { get { return rushEnemy; } set { rushEnemy = value; } }
 

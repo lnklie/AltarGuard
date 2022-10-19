@@ -78,8 +78,8 @@ public class SkillObject : MonoBehaviour
         }
         else if(skill.skillType == 1)
         {
-            Status _status = target.parent.gameObject.GetComponent<Status>();
-            for (int j = 0; j < skillHitCount; j++)
+            Status _status = target.gameObject.GetComponent<Status>();
+            for (int j = 0; j < skillHitCount; j++) 
             {
                 _status.recovered(value);
                 yield return new WaitForSeconds(maxDurationTime / skillHitCount);

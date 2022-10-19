@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EnumTypeManager.cs
-==============================
-*/
-public enum LayerName
+
+public enum ESound
+{
+    BackGround,
+    Effect
+}
+public enum ESleepModeTime
+{
+    TurnOff,
+    FiveMin,
+    TenMin,
+    ThirtyMin,
+    SixtyMin
+}
+public enum ELayerName
 {
     IdleLayer = 0,
     WalkLayer = 1,
