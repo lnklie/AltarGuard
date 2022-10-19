@@ -114,8 +114,8 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<Status> enemyRayList = new List<Status>();
-    [SerializeField] protected List<Status> allyRayList = new List<Status>();
+    [SerializeField] protected List<CharacterStatus> enemyRayList = new List<CharacterStatus>();
+    [SerializeField] protected List<CharacterStatus> allyRayList = new List<CharacterStatus>();
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
     [SerializeField] private bool[] isAllyTargeted = new bool[5];
@@ -151,12 +151,12 @@ public class CharacterStatus : Status
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
     public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }
-    public List<Status> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
+    public List<CharacterStatus> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
     public bool IsAtk { get { return isAtk; } set { isAtk = value; } }
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
-    public List<Status> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
+    public List<CharacterStatus> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
     public int GraceLuck { get { return graceLuck; } set { graceLuck = value; } }

@@ -37,11 +37,12 @@ public class GracePanelController : MonoBehaviour
     //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
     //        }
     //        else
+    //            Debug.Log("�ش� ����� ���ϴ�.");
     //    }
     //}
     public void UpdateGracePoint(int _gracePoint)
     {
-        remainingPoint.text = "잔여 포인트: " + _gracePoint;
+        remainingPoint.text = "�ܿ� ����Ʈ: " + _gracePoint;
     }
 
     public void SelectGrace(int _index, CheckIsActiveGrace _checkIsActiveGrace)
@@ -52,12 +53,12 @@ public class GracePanelController : MonoBehaviour
         if(_checkIsActiveGrace(selectGrace.graceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "이미 받음";
+            graceLearnButtonText.text = "�̹� ���";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "받기";
+            graceLearnButtonText.text = "�ޱ�";
         }
         
     }

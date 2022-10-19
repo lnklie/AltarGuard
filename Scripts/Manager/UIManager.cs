@@ -51,12 +51,13 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
     [SerializeField] private bool isNotice = false;
+    [SerializeField] private bool isUIOn = false;
 
 
     private Coroutine preNotice = null;
 
-
-
+    public bool IsUIOn { get { return isUIOn; } set { isUIOn = value; } }
+    public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
     private void Start()
     {
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
@@ -214,6 +215,13 @@ public class UIManager : SingletonManager<UIManager>
     #endregion
 
     #region Button
+    #region Log Panel
+    public void SetLogSizeLevel(bool _bool)
+    {
+        logPanelController.SetLogSizeLevel(_bool);
+    }
+    #endregion
+
 
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
@@ -223,7 +231,6 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SetActiveInventoryEquipedItemInfo(bool _bool)
     {
-        // 댄 �蹂댁갹 깊 щ
         inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
@@ -539,7 +546,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         // UI 활성화 
 
-        player.IsUiOn = true;
+        isUIOn = true;
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(true);
@@ -603,8 +610,8 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI 비활성화
-        player.IsUiOn = false;
+        // UI ��Ȱ��ȭ
+        isUIOn = false;
         if (_index == 0)
         {
             inventoryPanelController.ActiveInventoryPanel(false);

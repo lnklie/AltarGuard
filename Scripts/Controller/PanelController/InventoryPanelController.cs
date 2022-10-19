@@ -115,18 +115,18 @@ public class InventoryPanelController : MonoBehaviour
         {
             if(_tempMoney >= Mathf.Pow(10, 12))
             {
-                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "조 ";
+                _moneyText += ((int)(_tempMoney / Mathf.Pow(10, 12))).ToString() + "� ";
                 _tempMoney = (int)(_tempMoney % Mathf.Pow(10, 12));
             }
             else if (_tempMoney >= 100000000)
             {
-                _moneyText += ((_tempMoney / 100000000)).ToString() + "억 ";
+                _moneyText += ((_tempMoney / 100000000)).ToString() + "�� ";
                 _tempMoney = (_tempMoney % 100000000);
             }
             else if (_tempMoney >= 10000)
             {
 
-                _moneyText += ((_tempMoney / 10000)).ToString() + "만 ";
+                _moneyText += ((_tempMoney / 10000)).ToString() + "�� ";
                 _tempMoney = (_tempMoney % 10000);
 
             }
@@ -228,7 +228,6 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
-        // 아이템 정보창 활성화 여부
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActiveCheckDiscard(bool _bool)
@@ -280,7 +279,6 @@ public class InventoryPanelController : MonoBehaviour
 
     public void UpdateItemInfo()
     {
-        // 아이템 정보창 업데이트
         selectCharNum = 0;
         isItemSelect = false;
         selectEquipmentController.Clear();
@@ -352,17 +350,17 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 iteminfoExplainText.text =
-                    "물리 공격력: " + selectItem.physicalDamage + "\n" +
-                    "마법 공격력: " + selectItem.magicalDamage + "\n" +
-                    "공격 범위: " + selectItem.atkRange + "\n" +
-                    "공격 거리: " + selectItem.atkDistance + "\n" +
-                    "무기 종류: " + selectItem.weaponType + "\n";
+                    "���� ��ݷ�: " + selectItem.physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectItem.magicalDamage + "\n" +
+                    "��� ���: " + selectItem.atkRange + "\n" +
+                    "��� �Ÿ�: " + selectItem.atkDistance + "\n" +
+                    "���� ���: " + selectItem.weaponType + "\n";
                 if (selectItem.grace1 != null)
-                    iteminfoExplainText.text += "첫 번째 은총: " + selectItem.grace1.explain;
+                    iteminfoExplainText.text += "ù ��° ���: " + selectItem.grace1.explain;
                 if (selectItem.grace2 != null)
-                    iteminfoExplainText.text += "두 번째 은총: " + selectItem.grace2.explain;
+                    iteminfoExplainText.text += "�� ��° ���: " + selectItem.grace2.explain;
                 if (selectItem.grace3 != null)
-                    iteminfoExplainText.text += "세 번째 은총: " + selectItem.grace3.explain;
+                    iteminfoExplainText.text += "�� ��° ���: " + selectItem.grace3.explain;
                 SetItemSkillIcon();
 
                 break;
@@ -390,22 +388,22 @@ public class InventoryPanelController : MonoBehaviour
                 equipedIteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 3:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 4:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 5:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 6:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 7:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "����: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
                 break;
             case 8:
             case 9:
@@ -413,25 +411,25 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 equipedIteminfoExplainText.text =
-                    "물리 공격력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].physicalDamage + "\n" +
-                    "마법 공격력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].magicalDamage + "\n" +
-                    "공격 범위: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
-                    "공격 거리: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
-                    "무기 종류: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
+                    "���� ��ݷ�: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].physicalDamage + "\n" +
+                    "���� ��ݷ�: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].magicalDamage + "\n" +
+                    "��� ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
+                    "��� �Ÿ�: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
+                    "���� ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
                 if (selectItem.grace1 != null)
-                    equipedIteminfoExplainText.text += "첫 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1.explain;
+                    equipedIteminfoExplainText.text += "ù ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1.explain;
                 if (selectItem.grace2 != null)
-                    equipedIteminfoExplainText.text += "두 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2.explain;
+                    equipedIteminfoExplainText.text += "�� ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2.explain;
                 if (selectItem.grace3 != null)
-                    equipedIteminfoExplainText.text += "세 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3.explain;
+                    equipedIteminfoExplainText.text += "�� ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3.explain;
                 SetEquipedItemSkillIcon();
                 break;
             case 13:
                 equipedIteminfoExplainText.text =
-                    "회복량 : " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].value + "\n";
+                    "ȸ���� : " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].value + "\n";
                 break;
             case 14:
-                equipedIteminfoExplainText.text = "이것은 퀘스트 아이템";
+                equipedIteminfoExplainText.text = "�̰�� ��Ʈ ������";
                 break;
         }
     }
@@ -592,7 +590,6 @@ public class InventoryPanelController : MonoBehaviour
  
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // 장착 캐릭터 선택하기 버튼 활성화
         for (int i = 0; i < equipCharactersBtn.Length; i++)
             equipCharactersBtn[i].gameObject.SetActive(_bool);
     }

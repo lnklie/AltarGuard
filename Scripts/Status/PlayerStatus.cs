@@ -12,13 +12,11 @@ public class PlayerStatus : AllyStatus
     private EPlayerState playerState = EPlayerState.Play;
 
     [SerializeField] private AltarStatus altarStatus = null;
-    [SerializeField] private bool isUiOn = false;
     [SerializeField] private bool isAutoMode = false;
     [SerializeField] private bool isPlayMode = false;
     [SerializeField] private Item[] quickSlotItems = new Item[4];
     [SerializeField] private bool isQuickSlotRegister = false;
     #region Property
-    public bool IsUiOn { get { return isUiOn; } set { isUiOn = value; } }
     public int GracePoint {  get { return gracePoint; } set { gracePoint = value; } }
     public EPlayerState PlayerState { get { return playerState; } set { playerState = value; } }
     public Vector2 Dir { get { return dir; } set { dir = value; } }

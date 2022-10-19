@@ -119,13 +119,13 @@ public class GraceManager : SingletonManager<GraceManager>
         {
             characterStatuses[i].InitGraceStatus(); 
         }
-        Debug.Log("����� ��� " + graceList.Count);
         for (int i = 0; i < graceList.Count; i++)
         {
 
             if (CheckGraceCondition(graceList[i]))
             {
                 OperateGrace(graceList[i]);
+                Debug.Log("�۵�");
             }
             else
             {

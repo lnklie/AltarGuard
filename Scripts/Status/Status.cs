@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * �������� : 2022-06-11
- * �ۼ��� : Inklie
- * ���ϸ� : Status.cs
-==============================
-*/
+
 public class Status : MonoBehaviour
 {
     [SerializeField] protected string objectName = "";
@@ -63,7 +57,6 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
-        // �Ű����� ���� ���� �ߴ��� üũ
         if (curHp <= 0f)
             return true;
         else
@@ -71,7 +64,6 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
-        //Debug.Log("�̿���Ʈ�� �̸�� " + ObjectName + " ������ ��� " + "������� " + ReviseDamage(_damage, defensivePower) + " ���� ü��� " + curHp);
         curHp -= ReviseDamage(_damage, defensivePower);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
@@ -91,7 +83,6 @@ public class Status : MonoBehaviour
     }
     public void ActiveLayer(LayerName layerName)
     {
-        // �ִϸ��̼� ���̾� ����ġ ���
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);
@@ -100,6 +91,7 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
+        // ������ �Ÿ� ���
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

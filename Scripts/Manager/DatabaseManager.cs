@@ -338,6 +338,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("Skill")))
         {
+            Debug.Log("��ο� ��ų ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -354,6 +355,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionWho")))
         {
+            Debug.Log("��ο� ��Ǻ� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -366,6 +368,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionWhat")))
         {
+            Debug.Log("��ο� ��Ǻ� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -378,6 +381,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ConditionHow")))
         {
+            Debug.Log("��ο� ��Ǻ� ����� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -390,6 +394,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ResultWho")))
         {
+            Debug.Log("��ο� ���� ������ ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -426,6 +431,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("ResultHow")))
         {
+            Debug.Log("��ο� ���� ����� ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {
@@ -460,6 +466,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
+
                 rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
             }
@@ -528,6 +535,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
         }
         if (!File.Exists(CombinePath("GameScript")))
         {
+            Debug.Log("��ο� �뺻 ������ ���̽��� ������� �ʽ�ϴ�.");
         }
         else
         {

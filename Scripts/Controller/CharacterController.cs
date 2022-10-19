@@ -11,18 +11,14 @@ public class CharacterController : MonoBehaviour, IAIController
     public virtual void Awake()
     {
         characterStatus = this.GetComponent<CharacterStatus>();
-
     }
     public virtual void Start()
     {
         StartCoroutine(FindPath());
+        StartCoroutine(AIPerception());
     }
     public virtual void Update()
     {
-        if(!characterStatus.IsDied)
-        { 
-            AIPerception();
-        }
         AIChangeState();
         AIState();
     }
@@ -70,9 +66,10 @@ public class CharacterController : MonoBehaviour, IAIController
             else return 0;
         });
     }
-    public void SortSightRayList(List<Status> _sightRay)
+    public void SortSightRayList(List<CharacterStatus> _sightRay)
     {
-        _sightRay.Sort(delegate (Status a, Status b)
+
+        _sightRay.Sort(delegate (CharacterStatus a, CharacterStatus b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
             else if (characterStatus.GetDistance(a.transform.position) > characterStatus.GetDistance(b.transform.position)) return 1;
@@ -136,6 +133,7 @@ public class CharacterController : MonoBehaviour, IAIController
             ProjectionSpawner.Instance.ShotArrow(characterStatus, AttackTypeDamage());
         }
         else
+            Debug.Log("ȭ�� ���");
     }
     public bool IsDied()
     {
@@ -184,7 +182,7 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else   
-
+                    Debug.Log("Ÿ���� ���");
             }
             else if (skillController.Skills[0].skillType == 1)
             {
@@ -193,6 +191,7 @@ public class CharacterController : MonoBehaviour, IAIController
                     skillController.UseSkill();
                 }
                 else
+                    Debug.Log("Ÿ���� ���");
             }
         }
 
@@ -227,9 +226,9 @@ public class CharacterController : MonoBehaviour, IAIController
                 break;
         }
     }
-    public virtual void AIPerception()
+    public virtual IEnumerator AIPerception()
     {
-        //
+        yield return null;
     }
     public virtual void AIIdle()
     {

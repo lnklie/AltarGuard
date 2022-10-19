@@ -111,7 +111,7 @@ public class MercenaryController : CharacterController
 
         }
     }
-    public bool Targeting(int _layer, List<Status> _targetList)
+    public bool Targeting(int _layer, List<CharacterStatus> _targetList)
     {
         bool _bool = false;
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, _layer);
@@ -130,7 +130,7 @@ public class MercenaryController : CharacterController
         }
         return _bool;
     }
-    public void ResortTarget(List<Status> _targetList,bool _isEnemy, Transform _defaultTransform = null)
+    public void ResortTarget(List<CharacterStatus> _targetList,bool _isEnemy, Transform _defaultTransform = null)
     {
         if (_targetList.Count > 0)
         {
@@ -175,15 +175,17 @@ public class MercenaryController : CharacterController
     }
 
 
-    public override void AIPerception()
+    public override IEnumerator AIPerception()
     {
-        if(Targeting(LayerMask.GetMask("Enemy"), mercenary.EnemyRayList))
-            ResortTarget(mercenary.EnemyRayList, true);
-
-        if(Targeting(LayerMask.GetMask("Ally"), mercenary.AllyRayList))
+        while(true)
         {
-            ResortTarget(mercenary.AllyRayList, false);
-            //mercenary.AllyTarget = mercenary.AllyRayList[0].TargetPos;
+            if(Targeting(LayerMask.GetMask("Enemy"), mercenary.EnemyRayList))
+                ResortTarget(mercenary.EnemyRayList, true);
+
+            if(Targeting(LayerMask.GetMask("Ally"), mercenary.AllyRayList))
+                ResortTarget(mercenary.AllyRayList, false);
+
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

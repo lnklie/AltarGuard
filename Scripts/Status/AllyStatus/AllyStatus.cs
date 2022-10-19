@@ -127,6 +127,7 @@ public class AllyStatus : CharacterStatus
     }
     public override void UpdateTotalAbility()
     {
+        // �ɷ� ����Ʈ
         base.UpdateTotalAbility();
         totalDropProbability = dropProbability + equipDropProbability + graceDropProbability ;
         totalItemRarity = itemRarity + equipItemRarity + graceItemRarity;

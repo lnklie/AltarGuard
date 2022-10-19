@@ -62,6 +62,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
+        // ��� ������� ���
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -73,7 +74,6 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ���� �����ۿ� �� ��� Ÿ�� ����
         if (checkEquipItems[8])
         {
             status.AtkRange = equipItems[8].atkRange;
@@ -139,10 +139,13 @@ public class EquipmentController : MonoBehaviour
                     break;
                 case (int)ItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
-                    GraceManager.Instance.AquireGrace(equipItems[8].grace1);
-                    GraceManager.Instance.ActiveGrace();
                     ChangeAttackType();
                     SkillChange();
+                    if(equipItems[8].grace1 !=  null)
+                    {
+                        GraceManager.Instance.AquireGrace(equipItems[8].grace1);
+                        GraceManager.Instance.ActiveGrace();
+                    }
                     break;
             }
             status.TriggerEquipmentChange = true;
