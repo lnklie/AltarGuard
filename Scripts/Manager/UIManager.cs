@@ -61,6 +61,7 @@ public class UIManager : SingletonManager<UIManager>
     public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
     private void Start()
     {
+        InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(13000,100));
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
         item.skills[0] = DatabaseManager.Instance.SelectSkill(0);
         item.skills[1] = DatabaseManager.Instance.SelectSkill(1);
@@ -217,13 +218,14 @@ public class UIManager : SingletonManager<UIManager>
 
     #region Button
     #region Set-Up Panel
-    public void SetSoundVolume(int _index)
-    {
-        setUpPanelController.SetSoundVolume(_index);
-    }
+
     public void SetSleepMode(int _index)
     {
         setUpPanelController.SetSleepMode(_index);
+    }
+    public void SetSleeModeImmediately()
+    {
+        setUpPanelController.SetSleeModeImmediately();
     }
     #endregion
 
@@ -687,6 +689,20 @@ public class UIManager : SingletonManager<UIManager>
         {
             setUpPanelController.SetActiveSetUpPanel(false);
         }
+    }
+    #endregion
+
+    #endregion
+    #region Slider
+
+    #region Set-Up Panel
+    public void SetSoundVolume(int _index)
+    {
+        setUpPanelController.SetSoundVolume(_index);
+    }
+    public void SetPortionUseCondition(int _index)
+    {
+        setUpPanelController.SetPortionUseCondition(_index);
     }
     #endregion
 

@@ -153,7 +153,7 @@ public class MercenaryController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
             mercenary.EnemyTarget = _targetList[0];
             for (int i = 0; i < _targetList.Count; i++)
             {
@@ -180,7 +180,7 @@ public class MercenaryController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
 
             mercenary.AllyTarget = _targetList[0];
             for (int i = 0; i < _targetList.Count; i++)

@@ -16,6 +16,7 @@ public class PlayerStatus : AllyStatus
     [SerializeField] private bool isPlayMode = false;
     [SerializeField] private Item[] quickSlotItems = new Item[4];
     [SerializeField] private bool isQuickSlotRegister = false;
+    [SerializeField] private int[] portionAutoUsePercent = new int[2];
     #region Property
     public int GracePoint {  get { return gracePoint; } set { gracePoint = value; } }
     public EPlayerState PlayerState { get { return playerState; } set { playerState = value; } }
@@ -28,6 +29,7 @@ public class PlayerStatus : AllyStatus
     public int Money { get { return money; } set { money = value; } }
     public Item[] QuickSlotItems { get { return quickSlotItems; } set { quickSlotItems = value; } }
     public bool IsQuickSlotRegister { get { return isQuickSlotRegister; } set { isQuickSlotRegister = value; } }
+    public int[] PortionAutoUsePercent { get { return portionAutoUsePercent; } set { portionAutoUsePercent = value; } }
     #endregion
 
 }

@@ -350,7 +350,20 @@ public class InventoryManager : SingletonManager<InventoryManager>
         Consumables consumables = ((Consumables)inventroyConsumableItems[IndexOfItem( _item)]);
         if (consumables.useEffect == "Cure")
         {
-            _character.CurHp += consumables.value;
+            if(consumables.target == "Hp")
+            {
+                if (_character.CurHp + consumables.value >= _character.MaxHp)
+                    _character.CurHp = _character.MaxHp;
+                else
+                    _character.CurHp += consumables.value;
+            }
+            else
+            {
+                if (_character.CurMp + consumables.value >= _character.MaxMp)
+                    _character.CurMp = _character.MaxMp;
+                else
+                    _character.CurMp += consumables.value;
+            }
         }
         else if (consumables.useEffect == "Buff")
         {
