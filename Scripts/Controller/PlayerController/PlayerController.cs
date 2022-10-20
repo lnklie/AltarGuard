@@ -20,13 +20,14 @@ public class PlayerController : AllyController
 
     public override void Update()
     {
+        DragFlag();
         if (characterStatus.EnemyTarget)
             destination = characterStatus.EnemyTarget.transform.position;
         
         else
             destination = characterStatus.Flag.transform.position;
 
-        if (player.CurHp < 0f && !player.IsDied )
+        if (player.CurHp <= 0f && !player.IsDied )
         {
             StartCoroutine(Died());
         }
@@ -43,7 +44,6 @@ public class PlayerController : AllyController
         }
 
 
-        DragFlag();
         if(player.IsAutoMode)
         {
             player.Flag.transform.position = this.transform.position;
@@ -302,7 +302,7 @@ public class PlayerController : AllyController
     {
         if (_targetList.Count > 0)
         {
-
+            SortSightRayListByDistance(_targetList);
             player.EnemyTarget = _targetList[0];
 
             if (preEnemyTarget != null && preEnemyTarget != player.EnemyTarget)
@@ -310,7 +310,6 @@ public class PlayerController : AllyController
 
             preEnemyTarget = player.EnemyTarget;
             player.EnemyTarget.SetTargetingBox(true);
-            SortSightRayList(_targetList);
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
@@ -338,8 +337,25 @@ public class PlayerController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            player.AllyTarget = _targetList[0];
-            SortSightRayList(_targetList);
+            switch(player.AllyTargetIndex)
+            {
+                case EAllyTargetingSetUp.OneSelf:
+                    player.AllyTarget = this;
+                    break;
+                case EAllyTargetingSetUp.CloseAlly:
+                    SortSightRayListByDistance(_targetList);
+                    player.AllyTarget = _targetList[1];
+                    break;
+                case EAllyTargetingSetUp.Random:
+                    player.AllyTarget = ChooseSightRayListByRandom(_targetList);
+                    break;
+                case EAllyTargetingSetUp.WeakAlly:
+                    SortSightRayListByCurHp(_targetList);
+                    player.AllyTarget = _targetList[0];
+                    break;
+            }
+           
+            
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange

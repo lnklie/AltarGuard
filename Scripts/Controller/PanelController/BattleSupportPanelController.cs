@@ -47,7 +47,12 @@ public class BattleSupportPanelController : MonoBehaviour
         {
             if (quickSlots[i].IsAutoUse)
             {
-                quickSlots[i].UseItem();
+                if((quickSlots[i].CurItem.target == "Hp" && ((float)player.CurHp / player.MaxHp) * 100 <= player.PortionAutoUsePercent[0])
+                    || quickSlots[i].CurItem.target == "Mp" && ((float)player.CurMp / player.MaxMp) <= player.PortionAutoUsePercent[1])
+                {
+                    Debug.Log("현재 HP 비율은 " + ((float)player.CurHp / player.MaxHp * 100) + " 포션 퍼센트는 " + player.PortionAutoUsePercent[0]);
+                    quickSlots[i].UseItem();
+                }
             }
         }
     }

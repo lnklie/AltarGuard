@@ -15,6 +15,13 @@ public enum ESleepModeTime
     ThirtyMin,
     SixtyMin
 }
+public enum EAllyTargetingSetUp
+{
+     OneSelf,
+     CloseAlly,
+     Random,
+     WeakAlly
+}
 public enum ELayerName
 {
     IdleLayer = 0,
