@@ -72,7 +72,7 @@ public class CharacterController : MonoBehaviour, IAIController
             return false;
     }
 
-    public void SortSightRayList(List<EnemyController> _sightRay)
+    public void SortSightRayListByDistance(List<EnemyController> _sightRay)
     {
         // 리스트 정렬
         _sightRay.Sort(delegate (EnemyController a, EnemyController b)
@@ -82,15 +82,28 @@ public class CharacterController : MonoBehaviour, IAIController
             else return 0;
         });
     }
-    public void SortSightRayList(List<AllyController> _sightRay)
+    public void SortSightRayListByDistance(List<AllyController> _sightRay)
     {
-        // 리스트 정렬
         _sightRay.Sort(delegate (AllyController a, AllyController b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
             else if (characterStatus.GetDistance(a.transform.position) > characterStatus.GetDistance(b.transform.position)) return 1;
             else return 0;
         });
+    }
+    public void SortSightRayListByCurHp(List<AllyController> _sightRay)
+    {
+        _sightRay.Sort(delegate (AllyController a, AllyController b)
+        {
+            if (a.characterStatus.CurHp < b.characterStatus.CurHp) return -1;
+            else if (a.characterStatus.CurHp > b.characterStatus.CurHp) return 1;
+            else return 0;
+        });
+    }
+    public AllyController ChooseSightRayListByRandom(List<AllyController> _sightRay)
+    {
+        int _randomIndex = Random.Range(0, _sightRay.Count);
+        return _sightRay[_randomIndex];
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {

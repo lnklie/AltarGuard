@@ -61,6 +61,7 @@ public class UIManager : SingletonManager<UIManager>
     public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
     private void Start()
     {
+        InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(13000,100));
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
         item.skills[0] = DatabaseManager.Instance.SelectSkill(0);
         item.skills[1] = DatabaseManager.Instance.SelectSkill(1);
@@ -101,8 +102,7 @@ public class UIManager : SingletonManager<UIManager>
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.V))
-            StartCoroutine(profilePanelController.Conversation(DatabaseManager.Instance.SelectGameScript(0)));
+
     }
     public void SetBossInfo(bool _bool)
     {
@@ -217,13 +217,14 @@ public class UIManager : SingletonManager<UIManager>
 
     #region Button
     #region Set-Up Panel
-    public void SetSoundVolume(int _index)
-    {
-        setUpPanelController.SetSoundVolume(_index);
-    }
+
     public void SetSleepMode(int _index)
     {
         setUpPanelController.SetSleepMode(_index);
+    }
+    public void SetSleeModeImmediately()
+    {
+        setUpPanelController.SetSleeModeImmediately();
     }
     #endregion
 
@@ -690,5 +691,32 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #endregion
+    #region Slider
+
+    #region Set-Up Panel
+    public void SetSoundVolume(int _index)
+    {
+        setUpPanelController.SetSoundVolume(_index);
+    }
+    public void SetPortionUseCondition(int _index)
+    {
+        setUpPanelController.SetPortionUseCondition(_index);
+    }
+    #endregion
+
+    #endregion
+
+    #region Toggle
+    #region Set-Up Panel
+    public void SetActiveConversation(bool _bool)
+    {
+        profilePanelController.ChooseTriggerConversationActive(_bool);
+    }
+    public void SetCheckControlOnAutoPlay(bool _bool)
+    {
+        setUpPanelController.SetCheckControlOnAutoPlay(_bool);
+    }
+    #endregion
     #endregion
 }

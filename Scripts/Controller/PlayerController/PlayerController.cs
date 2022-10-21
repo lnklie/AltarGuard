@@ -9,24 +9,28 @@ public class PlayerController : AllyController
     private Vector2 lookDir = Vector2.down;
     private FlagController hitFlag = null;
     private EnemyController preEnemyTarget = null;
+    [SerializeField] private bool isControlOnAutoPlay = false;
+    [SerializeField] private bool checkControlOnAutoPlay = true;
     [SerializeField] private GameObject rivivePoint = null;
 
+
+    public bool CheckControlOnAutoPlay { set { checkControlOnAutoPlay = value; } }
     public override void Awake()
     {
         base.Awake();
         player = this.GetComponent<PlayerStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
-
+     
     public override void Update()
     {
+        DragFlag();
         if (characterStatus.EnemyTarget)
             destination = characterStatus.EnemyTarget.transform.position;
-        
         else
             destination = characterStatus.Flag.transform.position;
 
-        if (player.CurHp < 0f && !player.IsDied )
+        if (player.CurHp <= 0f && !player.IsDied )
         {
             StartCoroutine(Died());
         }
@@ -34,6 +38,7 @@ public class PlayerController : AllyController
         if(!player.IsDied)
         {
             PlayerState();
+            PlayerStateCondition();
         }
 
         if (player.EnemyTarget)
@@ -43,17 +48,7 @@ public class PlayerController : AllyController
         }
 
 
-        DragFlag();
-        if(player.IsAutoMode)
-        {
-            player.Flag.transform.position = this.transform.position;
-            player.IsAutoMode = false;
-        }
 
-        if(player.IsPlayMode)
-        {
-            player.IsPlayMode = false;
-        }
     }
     public void DragFlag()
     {
@@ -71,7 +66,18 @@ public class PlayerController : AllyController
             hitFlag.IsSelect = false;
             hitFlag = null;
         }
-    } 
+    }
+    public void PlayerStateCondition()
+    {
+        if (player.IsAutoMode && !isControlOnAutoPlay)
+        {
+            player.PlayerState = EPlayerState.AutoPlay;
+        }
+        else
+        {
+            player.PlayerState = EPlayerState.Play;
+        }
+    }
     public void PlayerState()
     {
         switch(player.PlayerState)
@@ -84,12 +90,26 @@ public class PlayerController : AllyController
                 if (!player.IsAtk)
                 {
                     if (InputArrowKey())
+                    {
                         PlayerMove();
+                        if (checkControlOnAutoPlay)
+                            player.Flag.transform.position = this.transform.position;
+                    }
                     else
+                    {
+                        if (checkControlOnAutoPlay)
+                            isControlOnAutoPlay = InputArrowKey();
                         PlayerIdle();
+                    }
                 }
                 break;
             case EPlayerState.AutoPlay:
+                Debug.Log("현재 " + checkControlOnAutoPlay);
+                if(checkControlOnAutoPlay)
+                {
+                    isControlOnAutoPlay = InputArrowKey();
+                    Debug.Log("여기 " + isControlOnAutoPlay);
+                }    
                 AIChangeState();
                 AIState();
                 break;
@@ -153,32 +173,30 @@ public class PlayerController : AllyController
     {
         // 키입력
         player.Dir = new Vector2(0, 0);
+        bool _bool = true;
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             lookDir = Vector2.left;
             player.Dir = Vector2.left;
-
-            return true;
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             lookDir = Vector2.right;
             player.Dir = Vector2.right;
-            return true;
         }
         else if (Input.GetKey(KeyCode.UpArrow))
         {
             lookDir = Vector2.up;
             player.Dir = Vector2.up;
-            return true;
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
             lookDir = Vector2.down;
             player.Dir = Vector2.down;
-            return true;
         }
-        return false;
+        else
+            _bool = false;
+        return _bool;
     }
     public bool IsMove()
     {
@@ -302,7 +320,7 @@ public class PlayerController : AllyController
     {
         if (_targetList.Count > 0)
         {
-
+            SortSightRayListByDistance(_targetList);
             player.EnemyTarget = _targetList[0];
 
             if (preEnemyTarget != null && preEnemyTarget != player.EnemyTarget)
@@ -310,7 +328,6 @@ public class PlayerController : AllyController
 
             preEnemyTarget = player.EnemyTarget;
             player.EnemyTarget.SetTargetingBox(true);
-            SortSightRayList(_targetList);
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
@@ -338,8 +355,25 @@ public class PlayerController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            player.AllyTarget = _targetList[0];
-            SortSightRayList(_targetList);
+            switch(player.AllyTargetIndex)
+            {
+                case EAllyTargetingSetUp.OneSelf:
+                    player.AllyTarget = this;
+                    break;
+                case EAllyTargetingSetUp.CloseAlly:
+                    SortSightRayListByDistance(_targetList);
+                    player.AllyTarget = _targetList[1];
+                    break;
+                case EAllyTargetingSetUp.Random:
+                    player.AllyTarget = ChooseSightRayListByRandom(_targetList);
+                    break;
+                case EAllyTargetingSetUp.WeakAlly:
+                    SortSightRayListByCurHp(_targetList);
+                    player.AllyTarget = _targetList[0];
+                    break;
+            }
+           
+            
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
@@ -426,7 +460,7 @@ public class PlayerController : AllyController
     {
         if (player.AIState != EAIState.Died)
         {
-            if(player.IsAutoMode)
+            if(player.IsAutoMode && !isControlOnAutoPlay)
             {
                 if (player.TargetDir.x > 0) this.transform.localScale = new Vector3(-1, 1, 1);
                 else if (player.TargetDir.x < 0) this.transform.localScale = new Vector3(1, 1, 1);

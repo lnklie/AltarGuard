@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class CharacterStatus : Status
 {
+    [SerializeField] protected int curMp = 0;
+    [SerializeField] protected int curLevel = 30;
     [SerializeField] protected bool isAtk = false;
     [SerializeField] protected EnemyController enemyTarget = null;
     [SerializeField] protected AllyController allyTarget = null;
     [SerializeField] protected float seeRange = 8f;
-    [SerializeField] protected int curMp = 0;
     [SerializeField] protected float maxAtkSpeed = 8f;
     [SerializeField] protected float maxCastingSpeed = 8f;
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
-    [SerializeField] protected int curLevel = 30;
+    [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
 
     [Header("TotalStatus")]
 
@@ -146,6 +147,7 @@ public class CharacterStatus : Status
     public int GraceHpRegenValue { get { return graceHpRegenValue; } set { graceHpRegenValue = value; } }
     public bool IsDied { get { return isDied; } set { isDied = value; } }
 
+    public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
     public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }

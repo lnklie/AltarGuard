@@ -21,16 +21,14 @@ public class BattleSupportPanelController : MonoBehaviour
 
     public void SetAutoPlay()
     {
-        if(player.PlayerState != EPlayerState.AutoPlay)
+        player.IsAutoMode = !player.IsAutoMode;
+        if (player.IsAutoMode)
         {
-            player.IsAutoMode = true;
-            player.PlayerState = EPlayerState.AutoPlay;
+            player.Flag.transform.position = player.transform.position;
             autoPlayTextImage.color = Color.red;
         }
         else
         {
-            player.IsPlayMode = true;
-            player.PlayerState = EPlayerState.Play;
             autoPlayTextImage.color = Color.white;
         }
     }
@@ -47,7 +45,12 @@ public class BattleSupportPanelController : MonoBehaviour
         {
             if (quickSlots[i].IsAutoUse)
             {
-                quickSlots[i].UseItem();
+                if((quickSlots[i].CurItem.target == "Hp" && ((float)player.CurHp / player.MaxHp) * 100 <= player.PortionAutoUsePercent[0])
+                    || quickSlots[i].CurItem.target == "Mp" && ((float)player.CurMp / player.MaxMp) <= player.PortionAutoUsePercent[1])
+                {
+                    Debug.Log("현재 HP 비율은 " + ((float)player.CurHp / player.MaxHp * 100) + " 포션 퍼센트는 " + player.PortionAutoUsePercent[0]);
+                    quickSlots[i].UseItem();
+                }
             }
         }
     }
