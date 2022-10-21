@@ -6,10 +6,18 @@ using TMPro;
 public class SetUpPanelController : MonoBehaviour
 {
     [SerializeField] private PlayerStatus player = null;
+    [SerializeField] private PlayerController playerController = null;
     [SerializeField] private Slider[] soundSliders = null;
     [SerializeField] private Slider[] portionUseConditonSliders = null;
     [SerializeField] private TextMeshProUGUI[] textMeshProUGUIs;
     [SerializeField] private TextMeshProUGUI[] portionUseConditionPercents;
+    
+
+    public void SetCheckControlOnAutoPlay(bool _bool)
+    {
+        playerController.CheckControlOnAutoPlay = _bool;
+    }
+
     public void SetSoundVolume(int _index)
     {
         SoundManager.Instance.SetSoundOption((ESound)_index, soundSliders[_index].value);

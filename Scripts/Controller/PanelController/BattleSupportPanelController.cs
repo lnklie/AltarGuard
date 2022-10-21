@@ -21,16 +21,14 @@ public class BattleSupportPanelController : MonoBehaviour
 
     public void SetAutoPlay()
     {
-        if(player.PlayerState != EPlayerState.AutoPlay)
+        player.IsAutoMode = !player.IsAutoMode;
+        if (player.IsAutoMode)
         {
-            player.IsAutoMode = true;
-            player.PlayerState = EPlayerState.AutoPlay;
+            player.Flag.transform.position = player.transform.position;
             autoPlayTextImage.color = Color.red;
         }
         else
         {
-            player.IsPlayMode = true;
-            player.PlayerState = EPlayerState.Play;
             autoPlayTextImage.color = Color.white;
         }
     }
