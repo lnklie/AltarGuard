@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class AllyStatus : CharacterStatus
 {
-    [SerializeField] private float totalDropProbability = 0;
-    [SerializeField] private float totalItemRarity = 0;
 
-    [SerializeField] private float dropProbability = 0;
-    [SerializeField] private float itemRarity = 0;
+    [Header("GraceStatus")]
+    [SerializeField] private float[] graceStatuses = new float[16];
 
-    [SerializeField] private float equipDropProbability = 0;
-    [SerializeField] private float equipItemRarity = 0;
 
-    [SerializeField] private float graceDropProbability = 0;
-    [SerializeField] private float graceItemRarity = 0;
+    [Header("GraceMagnificationStatus")]
+    [SerializeField] private int[] graceMagniStatuses = new int[16];
+
+
 
     private int statusPoint = 10;
     [SerializeField] private bool isAlterBuff = false;
@@ -22,10 +20,11 @@ public class AllyStatus : CharacterStatus
     private float knuckBackPower = 1;
 
     [SerializeField] private int allyNum = 0;
-    #region Properties
 
-    public float GraceDropProbability { get { return graceDropProbability; }  set { graceDropProbability = value; } }
-    public float GraceItemRarity { get { return graceItemRarity; } set { graceItemRarity = value; } }
+    #region Properties
+    public float[] GraceStatuses { get { return graceStatuses; } set { graceStatuses = value; } }
+    public int[] GraceMagniStatuses { get { return graceMagniStatuses; } set { graceMagniStatuses = value; } }
+
     public int AllyNum { get{ return allyNum; } set{ allyNum = value; } }
     public float KnuckBackPower { get { return knuckBackPower; } set { knuckBackPower = value; } }
     public float RevivalTime { get { return revivalTime; } set { revivalTime = value; } }
@@ -33,8 +32,6 @@ public class AllyStatus : CharacterStatus
     public int StatusPoint { get { return statusPoint; } set { statusPoint = value; } }
 
     public bool IsAlterBuff {get { return isAlterBuff; } set { isAlterBuff = value; } }
-    public float TotalDropProbability { get { return totalDropProbability; } }
-    public float TotalItemRarity { get { return totalItemRarity; } }
 
     #endregion
     public override void Start()
@@ -62,23 +59,26 @@ public class AllyStatus : CharacterStatus
             switch (_index)
             {
                 case 0:
-                    str++;
+                    basicStatus[(int)EStatus.Str]++;
+                    UpdateTotalAbility(EStatus.Str);
                     break;
                 case 1:
-                    dex++;
+                    basicStatus[(int)EStatus.Dex]++;
+                    UpdateTotalAbility(EStatus.Dex);
                     break;
                 case 2:
-                    wiz++;
+                    basicStatus[(int)EStatus.Wiz]++;
+                    UpdateTotalAbility(EStatus.Wiz);
                     break;
                 case 3:
-                    luck++;
+                    basicStatus[(int)EStatus.Luck]++;
+                    UpdateTotalAbility(EStatus.Luck);
                     break;
             }
             statusPoint--;
         }
         else
             Debug.Log("스테이터스 포인트가 없습니다.");
-        UpdateTotalAbility();
     }
 
     private void UpLevel()
@@ -88,7 +88,6 @@ public class AllyStatus : CharacterStatus
         curExp -= maxExp;
         statusPoint += 5;
         LvToExp();
-        UpdateTotalAbility();
     }
 
     private void LvToExp()
@@ -108,65 +107,57 @@ public class AllyStatus : CharacterStatus
         else
             return false;
     }
-    public override void UpdateBasicStatus()
+    public override void UpdateBasicStatus(EStatus _eStatus)
     {
-        base.UpdateBasicStatus();
-
-        dropProbability = totalLuck * 0.001f;
-        itemRarity = totalLuck * 0.001f;
+        switch (_eStatus)
+        {
+            case EStatus.Str:
+                basicStatus[(int)EStatus.MaxHp] = totalStatus[(int)EStatus.Str] * 10;
+                UpdateTotalAbility(EStatus.MaxHp);
+                break;
+            case EStatus.Dex:
+                basicStatus[(int)EStatus.Speed] = totalStatus[(int)EStatus.Dex] * 0.1f;
+                UpdateTotalAbility(EStatus.Speed);
+                break;
+            case EStatus.Wiz:
+                basicStatus[(int)EStatus.MaxMp] = totalStatus[(int)EStatus.Wiz] * 10f;
+                UpdateTotalAbility(EStatus.MaxMp);
+                break;
+            case EStatus.Luck:
+                basicStatus[(int)EStatus.DropProbability] = totalStatus[(int)EStatus.Luck] * 0.001f;
+                basicStatus[(int)EStatus.ItemRarity] = totalStatus[(int)EStatus.Luck] * 0.001f;
+                UpdateTotalAbility(EStatus.DropProbability);
+                UpdateTotalAbility(EStatus.ItemRarity);
+                break;
+        }
+        
     }
     public override void UpdateEquipAbility(Item[] _items)
     {
-        InitEquipAbility();
+        base.UpdateEquipAbility(_items);
         for (int i = 0; i < _items.Length; i++)
         {
-            equipedPhysicalDamage += _items[i].physicalDamage;
-            equipedMagicalDamage += _items[i].magicalDamage;
-            equipedDefensivePower += _items[i].defensivePower;
-            equipedAtkRange += _items[i].atkRange;
-            equipedAtkSpeed += _items[i].atkSpeed;
-            //equipDropProbability += _items[i].;
-            //equipItemRarity += _items[i].;
+            //equipStatus[(int)EStatus.DropProbability] += _items[i].;
+            //equipStatus[(int)EStatus.ItemRarity] += _items[i].magicalDamage;
         }
     }
-    public override void UpdateTotalAbility()
+  
+    public override void UpdateTotalAbility(EStatus _eStatus)
     {
         // 능력 업데이트
-        base.UpdateTotalAbility();
-        totalDropProbability = dropProbability + equipDropProbability + graceDropProbability ;
-        totalItemRarity = itemRarity + equipItemRarity + graceItemRarity;
+        totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
+            + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
+            + buffStatus[(int)_eStatus];
+
+        delayTime = totalStatus[(int)EStatus.AttackSpeed];
     }
+
     public void InitGraceStatus()
     {
-        graceMaxHp = 0;
-        graceMaxMp = 0;
-        graceHpRegenValue = 0;
-        graceStr = 0;
-        graceDex = 0;
-        graceWiz = 0;
-        graceDex = 0;
-        gracePhysicalDamage = 0;
-        graceMagicalDamage = 0;
-        graceDefensivePower = 0;
-        graceSpeed = 0f;
-        graceAttackSpeed = 0f;
-        graceAtkRange = 0f;
-        graceDropProbability = 0f;
-        graceItemRarity = 0f;
-
-        graceMagniMaxHp = 0;
-        graceMagniMaxMp = 0;
-        graceMagniHpRegenValue = 0;
-        graceMagniStr = 0;
-        graceMagniDex = 0;
-        graceMagniWiz = 0;
-        graceMagniLuck = 0;
-        graceMagniPhysicalDamage = 0;
-        graceMagniMagicalDamage = 0;
-        graceMagniDefensivePower = 0;
-        graceMagniSpeed = 0;
-        graceMagniAttackSpeed = 0;
-        graceMagniAtkRange = 0;
-        graceMagniCastingSpeed = 0;
+        for(int i = 0; i < 16; i++)
+        {
+            graceStatuses[i] = 0f;
+            graceMagniStatuses[i] = 0;
+        }
     }
 }

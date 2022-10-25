@@ -19,7 +19,7 @@ public class MercenaryController : AllyController
 
         mercenary.Rig.isKinematic = false;
         mercenary.Col.enabled = true;
-        mercenary.CurHp = mercenary.TotalMaxHp;
+        mercenary.CurHp = (int)mercenary.TotalStatus[(int)EStatus.MaxHp];
         mercenary.TriggerStatusUpdate = true;
         mercenary.AIState = EAIState.Idle;
     }
@@ -40,7 +40,7 @@ public class MercenaryController : AllyController
 
     public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, mercenary.TotalAtkRange, mercenary.TargetDir, 1f, LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, mercenary.TotalStatus[(int)EStatus.AtkRange], mercenary.TargetDir, 1f, LayerMask.GetMask("Enemy"));
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
@@ -53,7 +53,7 @@ public class MercenaryController : AllyController
                 {
                     mercenary.AquireExp(_enemy);
 
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalDropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
@@ -99,7 +99,7 @@ public class MercenaryController : AllyController
                 {
                     mercenary.AIState = EAIState.UseSkill;
                 }
-                else if (mercenary.GetDistance(mercenary.EnemyTarget.transform.position) <= mercenary.TotalAtkRange)
+                else if (mercenary.GetDistance(mercenary.EnemyTarget.transform.position) <= mercenary.TotalStatus[(int)EStatus.AtkRange])
                 {
                     mercenary.AIState = EAIState.Attack;
                 }
@@ -153,7 +153,7 @@ public class MercenaryController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
             mercenary.EnemyTarget = _targetList[0];
             for (int i = 0; i < _targetList.Count; i++)
             {
@@ -180,7 +180,7 @@ public class MercenaryController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
 
             mercenary.AllyTarget = _targetList[0];
             for (int i = 0; i < _targetList.Count; i++)

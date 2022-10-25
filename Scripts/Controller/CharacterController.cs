@@ -27,7 +27,7 @@ public class CharacterController : MonoBehaviour, IAIController
         AIState();
         if (!IsDelay())
         {
-            characterStatus.DelayTime = characterStatus.TotalAtkSpeed;
+            characterStatus.DelayTime = characterStatus.TotalStatus[(int)EStatus.AttackSpeed];
         }
         else
         {
@@ -52,7 +52,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public bool IsAtkRange(CharacterController _target)
     {
-        if (characterStatus.GetDistance(_target.transform.position) <= characterStatus.TotalAtkRange)
+        if (characterStatus.GetDistance(_target.transform.position) <= characterStatus.TotalStatus[(int)EStatus.AtkRange])
             return true;
         else
             return false;
@@ -72,7 +72,7 @@ public class CharacterController : MonoBehaviour, IAIController
             return false;
     }
 
-    public void SortSightRayList(List<EnemyController> _sightRay)
+    public void SortSightRayListByDistance(List<EnemyController> _sightRay)
     {
         // 리스트 정렬
         _sightRay.Sort(delegate (EnemyController a, EnemyController b)
@@ -82,15 +82,28 @@ public class CharacterController : MonoBehaviour, IAIController
             else return 0;
         });
     }
-    public void SortSightRayList(List<AllyController> _sightRay)
+    public void SortSightRayListByDistance(List<AllyController> _sightRay)
     {
-        // 리스트 정렬
         _sightRay.Sort(delegate (AllyController a, AllyController b)
         {
             if (characterStatus.GetDistance(a.transform.position) < characterStatus.GetDistance(b.transform.position)) return -1;
             else if (characterStatus.GetDistance(a.transform.position) > characterStatus.GetDistance(b.transform.position)) return 1;
             else return 0;
         });
+    }
+    public void SortSightRayListByCurHp(List<AllyController> _sightRay)
+    {
+        _sightRay.Sort(delegate (AllyController a, AllyController b)
+        {
+            if (a.characterStatus.CurHp < b.characterStatus.CurHp) return -1;
+            else if (a.characterStatus.CurHp > b.characterStatus.CurHp) return 1;
+            else return 0;
+        });
+    }
+    public AllyController ChooseSightRayListByRandom(List<AllyController> _sightRay)
+    {
+        int _randomIndex = Random.Range(0, _sightRay.Count);
+        return _sightRay[_randomIndex];
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
@@ -126,7 +139,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public bool IsDelay()
     {
-        float atkSpeed = characterStatus.TotalAtkSpeed;
+        float atkSpeed = characterStatus.TotalStatus[(int)EStatus.AttackSpeed];
         if (characterStatus.DelayTime <= atkSpeed)
         {
             return true;
@@ -139,9 +152,9 @@ public class CharacterController : MonoBehaviour, IAIController
     public int AttackTypeDamage()
     {
         if (characterStatus.AttackType < 1f)
-            return characterStatus.TotalPhysicalDamage;
+            return (int)characterStatus.TotalStatus[(int)EStatus.PhysicalDamage];
         else
-            return characterStatus.TotalMagicalDamage;
+            return (int)characterStatus.TotalStatus[(int)EStatus.MagicalDamage];
     }
     public void ShotArrow()
     {
@@ -190,7 +203,7 @@ public class CharacterController : MonoBehaviour, IAIController
     public IEnumerator UseSkill()
     {
         skillController.IsSkillDelay = true;
-        yield return new WaitForSeconds(characterStatus.TotalCastingSpeed);
+        yield return new WaitForSeconds(characterStatus.TotalStatus[(int)EStatus.CastingSpeed]);
         if(skillController.Skills[0] != null)
         {
             skillController.UseSkill();
@@ -243,7 +256,7 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
             characterStatus.ActiveLayer(ELayerName.WalkLayer);
-            characterStatus.transform.position = Vector2.MoveTowards(characterStatus.transform.position, _moveDir, characterStatus.TotalSpeed * Time.deltaTime);
+            characterStatus.transform.position = Vector2.MoveTowards(characterStatus.transform.position, _moveDir, characterStatus.TotalStatus[(int)EStatus.Speed] * Time.deltaTime);
         }
         else if (pathFindController.FinalNodeList.Count == 1)
         {

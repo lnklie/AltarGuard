@@ -37,11 +37,7 @@ public class GraceManager : SingletonManager<GraceManager>
         graceResultIsPercentList = DatabaseManager.Instance.graceResultIsPercentList;
         graceResultHowList = DatabaseManager.Instance.graceResultHowList;
     }
-    public BigGrace SelectBigGrace(int _key)
-    {
-        BigGrace bigGrace = null;
-        return bigGrace;
-    }
+
     public Grace SelectGrace(int _key)
     {
         Grace _grace = null;
@@ -120,20 +116,36 @@ public class GraceManager : SingletonManager<GraceManager>
             characterStatuses[i].InitGraceStatus(); 
         }
 
-        Debug.Log("은총의 수는 " + graceList.Count);
         for (int i = 0; i < graceList.Count; i++)
         {
 
             if (CheckGraceCondition(graceList[i]))
             {
                 OperateGrace(graceList[i]);
+                graceList[i].isActive = true;
                 Debug.Log("작동");
             }
             else
             {
+                graceList[i].isActive = false;
                 Debug.Log("팔스");
             }
 
+        }
+
+        for(int i = 0; i < bigGraceList.Count; i++)
+        {
+            if (CheckGraceCondition(bigGraceList[i]))
+            {
+                OperateGrace(bigGraceList[i]);
+                bigGraceList[i].isActive = true;
+                Debug.Log("작동");
+            }
+            else
+            {
+                bigGraceList[i].isActive = false;
+                Debug.Log("팔스");
+            }
         }
     }
     public CompleteGrace CreateRandomGrace() 
@@ -153,25 +165,34 @@ public class GraceManager : SingletonManager<GraceManager>
             conditionHow = 1;
         else
             conditionHow = 0;
-        int resultWho = Random.Range(0, graceResultWhoList.Count);
-        int resultValue = Random.Range(0, 10);
-        int resultWhat = Random.Range(0, graceResultWhatList.Count);
-        int resultValueIsPercent = Random.Range(0, 2);
-        //int resultHow = Random.Range(0, DatabaseManager.Instance.graceResultHowList.Count);
-        float weightedValue = 0;
-        if(conditionWho != -1)
+        int resultWho1 = Random.Range(0, graceResultWhoList.Count);
+        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
+        int resultValue1 = Random.Range(0, 10);
+        int resultValue2 = Random.Range(0, 10);
+        int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
+        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
+        int resultValueIsPercent1 = Random.Range(0, 2);
+        int resultValueIsPercent2 = Random.Range(0, 2);
+        int relationOfGraces = Random.Range(0, 2);
+        float weightedValue1 = 0;
+        float weightedValue2 = 0;
+        if (conditionWho != -1)
         {
-            weightedValue =
+            weightedValue1 =
                 SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
-             * SelectGrace(resultWho + 3000).weightedValue * SelectGrace(resultWhat + 4000).weightedValue * SelectGrace(resultValueIsPercent + 5000).weightedValue;
+             * SelectGrace(resultWho1+ 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
         }
         else
         {
-            weightedValue = SelectGrace(resultWho + 3000).weightedValue * SelectGrace(resultWhat + 4000).weightedValue * SelectGrace(resultValueIsPercent + 5000).weightedValue;
+            weightedValue1 = SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 = SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
         }
         CompleteGrace _completeGrace = new CompleteGrace(
-            "", conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho + 3000, resultWhat + 4000,
-            Mathf.CeilToInt(resultValue * weightedValue), resultValueIsPercent ,6000);
+            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
+            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 6000,6000, relationOfGraces + 7000);
         _completeGrace.explain = AddGraceExplain(_completeGrace); 
 
         return _completeGrace;
@@ -193,13 +214,43 @@ public class GraceManager : SingletonManager<GraceManager>
             }
             _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
         }
-        _explain += SelectGrace(_completeGrace.resultWho).graceKorName + "의 ";
-        _explain += SelectGrace(_completeGrace.resultWhat).graceKorName + "을(를) ";
-        if(_completeGrace.resultValueIsPercent == 0)
-            _explain += _completeGrace.resultValue + " 만큼 ";
+        if(_completeGrace.relationOfGraces == 7000)
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            if(_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " 만큼 ";
+            else
+                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+            if(_completeGrace.resultWho2 == -1)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시킨다";
+            else
+            {
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 ";
+                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
+                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+                if (_completeGrace.resultValueIsPercent2 == 0)
+                    _explain += _completeGrace.resultValue2 + " 만큼 ";
+                else
+                    _explain += _completeGrace.resultValue2 + "% 만큼 ";
+                    _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+                } 
+        }
         else
-            _explain += _completeGrace.resultValue + "% 만큼 ";
-        _explain += SelectGrace(_completeGrace.resultHow).graceKorName;
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            if (_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " 만큼 ";
+            else
+                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+            if (_completeGrace.resultHow1 == 6001)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 그 만큼 ";
+
+            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+        }
         return _explain;
     }
     public bool CheckGraceCondition(CompleteGrace _grace)
@@ -222,7 +273,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -237,8 +288,8 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[7] == false)
                                         {
                                             _bool = true;
                                         }
@@ -253,7 +304,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -264,7 +315,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -275,7 +326,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -287,7 +338,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -299,7 +350,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -310,8 +361,8 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[8] == false)
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].CheckEquipItems[7] == false)
                                         {
                                             _bool = true;
                                         }
@@ -322,8 +373,8 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -335,8 +386,8 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -347,8 +398,8 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[_grace.conditionWho].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[_grace.conditionWho].EquipItems[7].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -369,10 +420,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -387,14 +438,14 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[7] == false))
                                         {
                                             _bool = true;
                                         }
@@ -409,10 +460,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -423,10 +474,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Axe" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Axe" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Axe" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Axe")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Axe" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Axe" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Axe" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Axe")
                                         {
                                             _bool = true;
                                         }
@@ -437,10 +488,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -452,10 +503,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -467,10 +518,10 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -481,14 +532,14 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[7] == false))
                                         {
                                             _bool = true;
                                         }
@@ -499,14 +550,14 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[1].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -518,14 +569,14 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -536,14 +587,14 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -564,11 +615,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Sword")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Sword")
                                         {
                                             _bool = true;
                                         }
@@ -583,16 +634,16 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].CheckEquipItems[8] == false))
+                                        if ((characterEquipmentController[0].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[0].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[1].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].CheckEquipItems[7] == false))
                                         {
                                             _bool = true;
                                         }
@@ -607,11 +658,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Spear" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Spear")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Spear" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Spear")
                                         {
                                             _bool = true;
                                         }
@@ -622,11 +673,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Exe" &&
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Exe" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Exe" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Exe" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Exe" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Exe")
                                         {
                                             _bool = true;
                                         }
@@ -637,11 +688,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield")
+                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield")
                                         {
                                             _bool = true;
                                         }
@@ -653,11 +704,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Bow" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Bow")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Bow" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Bow")
                                         {
                                             _bool = true;
                                         }
@@ -669,11 +720,11 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if (characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Wand")
+                                        if (characterEquipmentController[0].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Wand")
                                         {
                                             _bool = true;
                                         }
@@ -684,16 +735,16 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[0].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[1].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].CheckEquipItems[8] == false) &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].CheckEquipItems[8] == false)
+                                        if ((characterEquipmentController[0].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[0].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[1].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].CheckEquipItems[7] == false) &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].CheckEquipItems[7] == false)
                                             )
                                         {
                                             _bool = true;
@@ -705,16 +756,16 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[0].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[1].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[2].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[3].EquipItems[7].weaponType == "Exe") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Spear" ||
-                                            characterEquipmentController[4].EquipItems[7].weaponType == "Exe"))
+                                        if ((characterEquipmentController[0].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[0].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[1].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[1].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[2].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[3].EquipItems[8].weaponType == "Exe") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Spear" ||
+                                            characterEquipmentController[4].EquipItems[8].weaponType == "Exe"))
                                         {
                                             _bool = true;
                                         }
@@ -726,16 +777,16 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Sword" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[0].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Sword" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -746,16 +797,16 @@ public class GraceManager : SingletonManager<GraceManager>
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.Equip:
-                                        if ((characterEquipmentController[0].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[0].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[1].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[1].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[2].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[2].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[3].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[3].EquipItems[8].weaponType == "Shield") &&
-                                            (characterEquipmentController[4].EquipItems[7].weaponType == "Wand" &&
-                                            characterEquipmentController[4].EquipItems[8].weaponType == "Shield"))
+                                        if ((characterEquipmentController[0].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[0].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[1].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[1].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[2].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[2].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[3].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[3].EquipItems[7].weaponType == "Shield") &&
+                                            (characterEquipmentController[4].EquipItems[8].weaponType == "Wand" &&
+                                            characterEquipmentController[4].EquipItems[7].weaponType == "Shield"))
                                         {
                                             _bool = true;
                                         }
@@ -777,669 +828,616 @@ public class GraceManager : SingletonManager<GraceManager>
     }
     public void OperateGrace(CompleteGrace _grace)
     {
-        if (_grace.resultWho != -1)
+        if (_grace.relationOfGraces == 7000)
         {
-            switch ((EGraceResultWho)_grace.resultWho)
+
+            if (_grace.resultWho1 != -1)
+            {
+                switch ((EGraceResultWho)_grace.resultWho1)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
+
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+
+                    case EGraceResultWho.All:
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+                }
+            }
+        }
+        if (_grace.resultWho2 != -1)
+        {
+            switch ((EGraceResultWho)_grace.resultWho2)
             {
                 case EGraceResultWho.Player:
                 case EGraceResultWho.Mercenary1:
                 case EGraceResultWho.Mercenary2:
                 case EGraceResultWho.Mercenary3:
                 case EGraceResultWho.Mercenary4:
-                    if (_grace.resultWhat != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat)
+
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
                         {
-                        case EGraceResultWhat.Str:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceStr += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceStr -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniStr += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniStr -= _grace.resultValue;
-                                }
-                            break;
-                        case EGraceResultWhat.Dex:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceDex += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceDex -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDex += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDex -= _grace.resultValue;
-                                }
-
-                                break;
-                        case EGraceResultWhat.Wiz:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceWiz += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceWiz -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniWiz += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniWiz -= _grace.resultValue;
-                                }
-                                break;
-
-                        case EGraceResultWhat.Luck:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceLuck += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceLuck -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniLuck += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniLuck -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.HpRegen:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceHpRegenValue += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceHpRegenValue -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniHpRegenValue += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniHpRegenValue -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GracePhysicalDamage += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GracePhysicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniPhysicalDamage += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniPhysicalDamage -= _grace.resultValue;
-                                }
-                                break;
-
-                        case EGraceResultWhat.MagicalDamage:
-
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagicalDamage += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniMagicalDamage += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniMagicalDamage -= _grace.resultValue;
-                                }
-                                break;
-
-                        case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceDefensivePower += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceDefensivePower -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDefensivePower += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniDefensivePower -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Speed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceSpeed += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniSpeed += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniSpeed -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceAttackSpeed += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceAttackSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniAtkRange += _grace.resultValue;
-                                    else
-                                        characterStatuses[_grace.resultWho - 3000].GraceMagniAtkRange -= _grace.resultValue;
-                                }
-                                break;
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
                         }
                     break;
                 case EGraceResultWho.AllMercenary:
-                    if (_grace.resultWhat != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat)
-                    {
-                        case EGraceResultWhat.Str:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceStr += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceStr -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniStr +=  _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniStr -= _grace.resultValue;
-                                }
-                            break;
-                        case EGraceResultWhat.Dex:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDex += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDex -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDex += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDex -=  _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Wiz:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceWiz += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceWiz -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniWiz += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniWiz -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Luck:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceLuck += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceLuck -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniLuck += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniLuck -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.HpRegen:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceHpRegenValue += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceHpRegenValue -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniHpRegenValue += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniHpRegenValue -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GracePhysicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GracePhysicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniPhysicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniPhysicalDamage -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.MagicalDamage:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniMagicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniMagicalDamage -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDefensivePower += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDefensivePower -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDefensivePower += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDefensivePower -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Speed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniSpeed -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceAttackSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceAttackSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniAttackSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 1; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniAttackSpeed -= _grace.resultValue;
-                                }
-                                break;
-                    }
-                    break;
-                case EGraceResultWho.All:
-                    if (_grace.resultWhat != -1)
-                        switch ((EGraceResultWhat)_grace.resultWhat)
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
                         {
-                        case EGraceResultWhat.Str:
-
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceStr += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceStr -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniStr += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniStr -= _grace.resultValue;
-                                }
-
-                                break;
-                        case EGraceResultWhat.Dex:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDex += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDex -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDex += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDex -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Wiz:
-
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceWiz += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceWiz -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniWiz += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniWiz -= _grace.resultValue;
-                                }
-
-                                break;
-                        case EGraceResultWhat.Luck:
-
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceLuck += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceLuck -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniLuck += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniLuck -= _grace.resultValue;
-                                }
-
-                                break;
-                        case EGraceResultWhat.HpRegen:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceHpRegenValue += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceHpRegenValue -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniHpRegenValue += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniHpRegenValue -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.PhysicalDamage:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GracePhysicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GracePhysicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniPhysicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniPhysicalDamage -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.MagicalDamage:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagicalDamage -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniMagicalDamage += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniMagicalDamage -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.DefensivePower:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDefensivePower += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceDefensivePower -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDefensivePower += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniDefensivePower -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.Speed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniSpeed -= _grace.resultValue;
-                                }
-                                break;
-                        case EGraceResultWhat.AtkSpeed:
-                                if (_grace.resultValueIsPercent == 0)
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceAttackSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceAttackSpeed -= _grace.resultValue;
-                                }
-                                else
-                                {
-                                    if (_grace.resultHow == (int)EGraceResultHow.Increase)
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniAttackSpeed += _grace.resultValue;
-                                    else
-                                        for (int i = 0; i < characterStatuses.Count; i++)
-                                            characterStatuses[i].GraceMagniAttackSpeed -= _grace.resultValue;
-                                }
-                                break;
-                    }
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
                     break;
+
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+            }
+        }
+        else
+        {
+            if (_grace.resultWho2 != -1)
+            {
+                switch ((EGraceResultWho)_grace.resultWho1)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
+                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                        {
+                            _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                        }
+                        else
+                        {
+                            characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                            _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                        }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                        {
+                            for (int i = 1; i < characterStatuses.Count; i++)
+                                _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                        }
+                        else
+                        {
+                            for (int i = 1; i < characterStatuses.Count; i++)
+                            {
+                                characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                            }
+                        }
+                        break;
+                    case EGraceResultWho.All:
+                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                        {
+                            for (int i = 0; i < characterStatuses.Count; i++)
+                                _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                        }
+                        else
+                        {
+                            for (int i = 0; i < characterStatuses.Count; i++)
+                            {
+                                characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                            }
+                        }
+                        break;
+
+                }
+
+                switch ((EGraceResultWho)_grace.resultWho2)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
+
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+
+                    case EGraceResultWho.All:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                }
+            }
+        }
+    }
+    public void OperateGrace(BigGrace _grace)
+    {
+        if (_grace.relationOfGraces == 7000)
+        {
+
+            if (_grace.resultWho1 != -1)
+            {
+                switch ((EGraceResultWho)_grace.resultWho1)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
+                    
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+
+                    case EGraceResultWho.All:
+                        if (_grace.resultWhat1 != -1)
+                            if (_grace.resultValueIsPercent1 == 5000)
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                            }
+                        break;
+                }
+            }
+        }
+        if (_grace.resultWho2 != -1)
+        {
+            switch ((EGraceResultWho)_grace.resultWho2)
+            {
+                case EGraceResultWho.Player:
+                case EGraceResultWho.Mercenary1:
+                case EGraceResultWho.Mercenary2:
+                case EGraceResultWho.Mercenary3:
+                case EGraceResultWho.Mercenary4:
+
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+                case EGraceResultWho.AllMercenary:
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+            }
+        }
+        else
+        {
+            if (_grace.resultWho2 != -1)
+            {
+                switch ((EGraceResultWho)_grace.resultWho1)
+                                    {
+                                        case EGraceResultWho.Player:
+                                        case EGraceResultWho.Mercenary1:
+                                        case EGraceResultWho.Mercenary2:
+                                        case EGraceResultWho.Mercenary3:
+                                        case EGraceResultWho.Mercenary4:
+                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                            {
+                                                _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                            }
+                                            else
+                                            {
+                                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                                    (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                                _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                            }
+                                            break;
+                                        case EGraceResultWho.AllMercenary:
+                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                            {
+                                                for (int i = 1; i < characterStatuses.Count; i++)
+                                                    _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                            }
+                                            else
+                                            {
+                                                for (int i = 1; i < characterStatuses.Count; i++)
+                                                {
+                                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                                    (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                                   _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                                }
+                                            }
+                                            break;
+                                        case EGraceResultWho.All:
+                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                            {
+                                                for (int i = 0; i < characterStatuses.Count; i++)
+                                                    _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                            }
+                                            else
+                                            {
+                                                for (int i = 0; i < characterStatuses.Count; i++)
+                                                {
+                                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
+                                                    (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                                    _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
+                                                }
+                                            }
+                                            break;
+
+                                    }
+
+                switch ((EGraceResultWho)_grace.resultWho2)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
+
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+
+                    case EGraceResultWho.All:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                            else
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                }
             }
         }
     }
     public void AquireGrace(CompleteGrace _grace)
     {
         graceList.Add(_grace);
-        graceList[graceList.Count - 1].isActive = true;
         ActiveGrace();
     }
     public void AquireBigGrace(int _key)
     {
-        if (!CheckIsActive(_key))
+        if (!CheckIsReceive(_key))
         {
-            bigGraceList.Add(SelectBigGrace(_key));
-            bigGraceList[graceList.Count - 1].isActive = true;
+            bigGraceList.Add(DatabaseManager.Instance.SelectBigGrace(_key));
             ActiveGrace();
         }
         else
             Debug.Log("이미 배운 은총");
     }
-    public bool CheckIsActive(int _key)
+    public bool CheckIsReceive(int _key)
     {
-        bool isActive = false;
+        bool isReceive = false;
         Debug.Log("체크하려는 키는 " + _key);
-        for(int i = 0; i < graceList.Count; i++)
-        {
-            //if (graceList[i].graceKey == _key)
+        if(bigGraceList.Count > 0)
+            for(int i = 0; i < bigGraceList.Count; i++)
             {
-                if (graceList[i].isActive)
-                    isActive = true;
-                else
-                    isActive = false;
+                if (bigGraceList[i].bigGraceKey == _key)
+                {
+                    isReceive = true;
+                }
             }
-        }
-        return isActive;
+        return isReceive;
     }
 
-    //public void SetGraceAbility()
-    //{
-    //    characterStatuses[0].InitGraceStatus();
-    //    for (int i = 0; i < graceList.Count; i++)
-    //    {
-    //        switch(graceList[i].graceKey)
-    //        {
-    //            case 0:
-    //                if (characterStatuses[0].EquipmentController.EquipItems[7].attackType == "Melee")
-    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-    //                break;
-    //            case 1:
-    //                if(characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-    //                break;
-    //            case 2:
-    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Axe" ||
-    //                    characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear")
-    //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-    //                break;
-    //            case 3:
-    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-    //                    characterStatuses[0].GraceAttackSpeed += 0.1f;
-    //                break;
-    //            case 4:
-    //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-    //                    characterStatuses[0].GracePhysicalDamage += 0.2f;
-    //                break;
-    //        }
-    //    }
-    //}
+        //public void SetGraceAbility()
+        //{
+        //    characterStatuses[0].InitGraceStatus();
+        //    for (int i = 0; i < graceList.Count; i++)
+        //    {
+        //        switch(graceList[i].graceKey)
+        //        {
+        //            case 0:
+        //                if (characterStatuses[0].EquipmentController.EquipItems[7].attackType == "Melee")
+        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+        //                break;
+        //            case 1:
+        //                if(characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+        //                break;
+        //            case 2:
+        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Axe" ||
+        //                    characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear")
+        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
+        //                break;
+        //            case 3:
+        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+        //                    characterStatuses[0].GraceAttackSpeed += 0.1f;
+        //                break;
+        //            case 4:
+        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
+        //                    characterStatuses[0].GracePhysicalDamage += 0.2f;
+        //                break;
+        //        }
+        //    }
+        //}
+        
 }

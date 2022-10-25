@@ -454,8 +454,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                warriorGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                warriorGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfGraces));
             }
         }
         if (!File.Exists(CombinePath("RangedGrace")))
@@ -469,8 +469,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
 
-                rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfGraces));
             }
         }
         if (!File.Exists(CombinePath("MagicGrace")))
@@ -483,8 +483,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                magicGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                magicGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2 ,grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfGraces));
             }
         }
 
@@ -498,8 +498,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                commanderGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                   grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                commanderGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                   grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfGraces));
             }
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
@@ -773,7 +773,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 0:
                 for (int i = 0; i < warriorGraceList.Count; i++)
                 {
-                    if (warriorGraceList[i].graceKey == _key)
+                    if (warriorGraceList[i].bigGraceKey == _key)
                         _grace = warriorGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -782,7 +782,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 1:
                 for (int i = 0; i < rangedGraceList.Count; i++)
                 {
-                    if (rangedGraceList[i].graceKey == _key)
+                    if (rangedGraceList[i].bigGraceKey == _key)
                         _grace = rangedGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -791,7 +791,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 2:
                 for (int i = 0; i < magicGraceList.Count; i++)
                 {
-                    if (magicGraceList[i].graceKey == _key)
+                    if (magicGraceList[i].bigGraceKey == _key)
                         _grace = magicGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -800,7 +800,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 3:
                 for (int i = 0; i < commanderGraceList.Count; i++)
                 {
-                    if (commanderGraceList[i].graceKey == _key)
+                    if (commanderGraceList[i].bigGraceKey == _key)
                         _grace = commanderGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");

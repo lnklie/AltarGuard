@@ -79,7 +79,7 @@ public class EquipmentController : MonoBehaviour
         // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[8])
         {
-            status.AtkRange = equipItems[8].atkRange;
+            status.EquipStatus[(int)EStatus.AtkRange] = equipItems[8].atkRange;
             int num = equipItems[8].itemKey / 1000;
 
             if (equipItems[8].attackType == "Melee")
@@ -98,8 +98,8 @@ public class EquipmentController : MonoBehaviour
         if(!_item.isEquip)
         {
             status.IsSkillChange = true;
-            status.UpdateEquipAbility(equipItems);
-            status.UpdateTotalAbility();
+            
+            
             status.TriggerStatusUpdate = true;
 
             equipItems[_item.itemType] = _item;
@@ -151,7 +151,8 @@ public class EquipmentController : MonoBehaviour
                     }
                     break;
             }
-            status.TriggerEquipmentChange = true;
+            status.UpdateEquipAbility(equipItems);
+            status.UpdateAllStatus();
         }
         else
         {
@@ -171,9 +172,8 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        status.UpdateEquipAbility(equipItems);
-        status.UpdateTotalAbility();
-
+        
+      
         switch (_item.itemType)
         {
             case 0:
@@ -277,7 +277,8 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
         }
-        status.TriggerEquipmentChange = true;
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateAllStatus();
     }
     public void RemoveEquipment(int _index)
     {

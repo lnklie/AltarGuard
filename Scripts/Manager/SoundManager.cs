@@ -52,9 +52,14 @@ public class SoundManager : SingletonManager<SoundManager>
 
     public void SetSoundOption(ESound _soundType, float _value)
     {
-        // 사운드 옵션 세팅
-        audioSources[(int)_soundType].volume = _value;
-        Debug.Log("현재 볼륨은 " + audioSources[(int)_soundType].volume);
+        if(audioSources[(int)_soundType])
+        {
+            // 사운드 옵션 세팅
+            audioSources[(int)_soundType].volume = _value;
+            Debug.Log("현재 볼륨은 " + audioSources[(int)_soundType].volume);
+        }
+        else
+            Debug.Log("오디오 없음");
     }
 
     public void SoundPlay(AudioClip _audioClip, ESound _soundType = ESound.Effect, float _pitch = 1.0f)

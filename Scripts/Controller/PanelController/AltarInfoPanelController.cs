@@ -36,22 +36,22 @@ public class AltarInfoPanelController : MonoBehaviour
                 altar.Hp = altarInfoSlots[_index].PropertyValue;
                 break;
             case 1:
-                altar.DefensivePower = altarInfoSlots[_index].PropertyValue;
+                altar.BasicStatus[(int)EStatus.DefensivePower] = altarInfoSlots[_index].PropertyValue;
                 break;
             case 2:
-                altar.BuffRange = altarInfoSlots[_index].PropertyValue;
+                altar.BuffRangeLevel = altarInfoSlots[_index].PropertyValue;
                 break;
             case 3:
-                altar.BuffDamage = altarInfoSlots[_index].PropertyValue;
+                altar.BuffDamageLevel = altarInfoSlots[_index].PropertyValue;
                 break;
             case 4:
-                altar.BuffDefensivePower = altarInfoSlots[_index].PropertyValue;
+                altar.BuffDefensivePowerLevel = altarInfoSlots[_index].PropertyValue;
                 break;
             case 5:
-                altar.BuffSpeed = altarInfoSlots[_index].PropertyValue;
+                altar.BuffSpeedLevel = altarInfoSlots[_index].PropertyValue;
                 break;
             case 6:
-                altar.BuffHpRegen = altarInfoSlots[_index].PropertyValue;
+                altar.BuffHpRegenLevel = altarInfoSlots[_index].PropertyValue;
                 break;
         }
         
