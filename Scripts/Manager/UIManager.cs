@@ -169,7 +169,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
+        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
         inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectSlotSellItem(Item _item)
@@ -238,59 +238,59 @@ public class UIManager : SingletonManager<UIManager>
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void SetActiveInventoryEquipedItemInfo(bool _bool)
     {
-        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë³€ê²½
         inventoryPanelController.ChangeInventorySlot(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ¾ÆÀÌÅÛ ÀåÂø
+        // ì•„ì´í…œ ì¥ì°©
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
         userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
+        // ì•„ì´í…œ ì¥ì°© ìºë¦­í„° ì„ íƒ í™œì„±í™” ì—¬ë¶€ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
+        // ì„ íƒí•œ ì•„ì´í…œ í•´ì œ
         inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ì•„ì´í…œ ì‚¬ìš©
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ¾ÆÀÌÅÛ ¹ö¸®±â
+        // ì•„ì´í…œ ë²„ë¦¬ê¸°
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
+        // ì•„ì´í…œ ìˆ˜ëŸ‰ìœ¼ë¡œ ë²„ë¦¬ê¸°
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
+        // ì•„ì´í…œ ìˆ˜ëŸ‰ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SetItemQuickSlot(int _index)
@@ -320,12 +320,12 @@ public class UIManager : SingletonManager<UIManager>
     #region Equipment Panel
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
+        // ì¥ë¹„ì°½ì—ì„œ ìºë¦­í„° ì„ íƒ
         equipmentPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
+        // ì¥ë¹„ì°½ ìºë¦­í„° ì´ë¦„ ì—…ë°ì´íŠ¸
         equipmentPanelController.UpdateEquipmentName();
     }
     #endregion
@@ -342,7 +342,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void StatusUp(int _index)
     {
-        // ½ºÅİ ¾÷
+        // ìŠ¤í…Ÿ ì—…
         statusPanelController.StatusUp(_index);
     }
     #endregion 
@@ -378,7 +378,7 @@ public class UIManager : SingletonManager<UIManager>
         }
         else
         {
-            Notice("ÀºÃÑ Æ÷ÀÎÆ®°¡ ºÎÁ·ÇÕ´Ï´Ù.");
+            Notice("ì€ì´ í¬ì¸íŠ¸ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
         }
     }
     public void SelectGrace(int _index)
@@ -559,7 +559,7 @@ public class UIManager : SingletonManager<UIManager>
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI È°¼ºÈ­ 
+        // UI í™œì„±í™” 
 
         isUIOn = true;
         if (_index == 0)
@@ -629,7 +629,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ºñÈ°¼ºÈ­
+        // UI ë¹„í™œì„±í™”
         isUIOn = false;
         if (_index == 0)
         {
