@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-/*
-==============================
- * 최종수정일 : 2022-06-08
- * 작성자 : Inklie
- * 파일명 : StatusPanelController.cs
-==============================
-*/
+
 public class StatusPanelController : MonoBehaviour
 {
     [Header("Status")]
@@ -24,20 +18,20 @@ public class StatusPanelController : MonoBehaviour
     {
         // 상태 텍스트 업데이트
         string[] status = {
-            "체력: " + selectAllyStatus.MaxHp.ToString(),
-            "마력: " + selectAllyStatus.MaxMp.ToString(),
-            "물리 공격력: " + selectAllyStatus.PhysicalDamage.ToString(),
-            "마법 공격력: " + selectAllyStatus.MagicalDamage.ToString(),
-            "방어력: " + selectAllyStatus.DefensivePower.ToString(),
-            "이동 속도: " + selectAllyStatus.Speed.ToString(),
-            "공격 속도: " + selectAllyStatus.AtkSpeed.ToString(),
-            "드랍율: " + selectAllyStatus.TotalDropProbability.ToString(),
-            "아이템 희귀도: " + selectAllyStatus.TotalItemRarity.ToString(),
+            "체력: " + selectAllyStatus.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            "마력: " + selectAllyStatus.TotalStatus[(int)EStatus.MaxMp].ToString(),
+            "물리 공격력: " + selectAllyStatus.TotalStatus[(int)EStatus.PhysicalDamage].ToString(),
+            "마법 공격력: " + selectAllyStatus.TotalStatus[(int)EStatus.MagicalDamage].ToString(),
+            "방어력: " + selectAllyStatus.TotalStatus[(int)EStatus.DefensivePower].ToString(),
+            "이동 속도: " + selectAllyStatus.TotalStatus[(int)EStatus.Speed].ToString(),
+            "공격 속도: " + selectAllyStatus.TotalStatus[(int)EStatus.AttackSpeed].ToString(),
+            "드랍율: " + selectAllyStatus.TotalStatus[(int)EStatus.DropProbability].ToString(),
+            "아이템 희귀도: " + selectAllyStatus.TotalStatus[(int)EStatus.ItemRarity].ToString(),
             selectAllyStatus.ObjectName.ToString(),
-            "힘: " + selectAllyStatus.TotalStr.ToString(),
-            "민첩: " + selectAllyStatus.TotalDex.ToString(),
-            "지력: " + selectAllyStatus.TotalWiz.ToString(),
-            "행운: " + selectAllyStatus.TotalLuck.ToString(),
+            "힘: " + selectAllyStatus.TotalStatus[(int)EStatus.Str].ToString(),
+            "민첩: " + selectAllyStatus.TotalStatus[(int)EStatus.Dex].ToString(),
+            "지력: " + selectAllyStatus.TotalStatus[(int)EStatus.Wiz].ToString(),
+            "행운: " + selectAllyStatus.TotalStatus[(int)EStatus.Luck].ToString(),
             "잔여 포인트: " + selectAllyStatus.StatusPoint.ToString(),
             "LV: " + selectAllyStatus.CurLevel.ToString()
         };
@@ -83,7 +77,7 @@ public class StatusPanelController : MonoBehaviour
     {
         // 스텟 업
         selectAllyStatus.UpStatus(_index);
-        selectAllyStatus.UpdateTotalAbility();
+        //selectAllyStatus.UpdateTotalAbility();
         UpdateStatusText();
         Debug.Log("지점 3");
     }

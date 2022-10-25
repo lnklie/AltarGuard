@@ -184,7 +184,7 @@ public class EnemyController : CharacterController
     //}
     public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalAtkRange, enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalStatus[(int)EStatus.AtkRange], enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
 
         if(hits.Length > 0)
         {

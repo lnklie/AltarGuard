@@ -86,6 +86,25 @@ public enum EnemyType
     BowOrc,
     WizardOrc
 }
+public enum EStatus
+{
+    Str,
+    Dex,
+    Wiz,
+    Luck,
+    MaxHp,
+    MaxMp,
+    HpRegenValue,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    Speed,
+    AttackSpeed,
+    CastingSpeed,
+    AtkRange,
+    DropProbability,
+    ItemRarity
+}
 public enum BossEnemyType
 {
     KingSlime
@@ -198,4 +217,9 @@ public enum EGraceResultHow
 {
     Increase = 6000,
     Decrease,
+}
+public enum ERelationOfGraces
+{
+    Independence = 7000,
+    Subordination
 }

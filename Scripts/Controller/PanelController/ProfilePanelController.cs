@@ -79,10 +79,10 @@ public class ProfilePanelController : MonoBehaviour
     }
     public void BossUpdate(BossEnemyStatus _bossEnemy)
     {
-        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.MaxHp.ToString();
+        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.TotalStatus[(int)EStatus.MaxHp].ToString();
         bossTexts[1].text = _bossEnemy.ObjectName.ToString();
 
-        bossStateImages.fillAmount = (float)_bossEnemy.CurHp / _bossEnemy.MaxHp;
+        bossStateImages.fillAmount = (float)_bossEnemy.CurHp / _bossEnemy.TotalStatus[(int)EStatus.MaxHp];
     }
     #endregion
 
@@ -91,14 +91,14 @@ public class ProfilePanelController : MonoBehaviour
     {
         string[] infoText = new string[]
             {
-            _player.CurHp.ToString() + " / " + _player.MaxHp.ToString(),
-            _player.CurMp.ToString() + " / " + _player.MaxMp.ToString(),
+            _player.CurHp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _player.CurMp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxMp].ToString(),
             _player.CurExp.ToString() + " / " + _player.MaxExp.ToString(),
             "Lv. " + _player.CurLevel.ToString(),
         };
         float[] infoImage ={
-            _player.CurHp / (float)_player.MaxHp ,
-            _player.CurMp / (float)_player.MaxMp,
+            _player.CurHp / (float)_player.TotalStatus[(int)EStatus.MaxHp] ,
+            _player.CurMp / (float)_player.TotalStatus[(int)EStatus.MaxMp],
             _player.CurExp / (float)_player.MaxExp
         };
         for (int i = 0; i < 4; i++)
@@ -113,13 +113,13 @@ public class ProfilePanelController : MonoBehaviour
     public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
     {
         string[] infoText = {
-            _mercenary.CurHp.ToString() + " / " + _mercenary.MaxHp.ToString(),
-            _mercenary.CurMp.ToString() + " / " + _mercenary.MaxMp.ToString(),
+            _mercenary.CurHp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _mercenary.CurMp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxMp].ToString(),
             _mercenary.CurExp.ToString() + " / " + _mercenary.MaxExp.ToString(),
             "Lv. " + _mercenary.CurLevel.ToString()};
         float[] infoImage = {
-            _mercenary.CurHp / (float)_mercenary.MaxHp ,
-            _mercenary.CurMp / (float)_mercenary.MaxMp,
+            _mercenary.CurHp / (float)_mercenary.TotalStatus[(int)EStatus.MaxHp] ,
+            _mercenary.CurMp / (float)_mercenary.TotalStatus[(int)EStatus.MaxMp],
             _mercenary.CurExp / (float)_mercenary.MaxExp
         };
 

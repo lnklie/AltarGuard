@@ -143,7 +143,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        gracePanelController.UpdateSlots(graceManager.CheckIsActive);
+        gracePanelController.UpdateSlots();
         UpdateGracePoint();
     }
     public void UpdateGracePoint()
@@ -371,7 +371,7 @@ public class UIManager : SingletonManager<UIManager>
 
         if(player.GracePoint > 0)
         {
-            gracePanelController.AquireGrace(graceManager.AquireBigGrace);
+            gracePanelController.AquireGrace();
             ActiveGraceInfo(false);
             player.GracePoint--;
             UpdateGracePanel();
@@ -383,7 +383,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectGrace(int _index)
     {
-        gracePanelController.SelectGrace(_index,graceManager.CheckIsActive);
+        gracePanelController.SelectGrace(_index);
         ActiveGraceInfo(true);
     }
     public void ActiveGraceInfo(bool _bool)

@@ -11,11 +11,7 @@ public class MercenaryManager : MonoBehaviour
     private GameObject characterPrefab = null;
     [SerializeField]
     private GameObject revialZone = null;
-    public List<GameObject> Mercenarys
-    {
-        get { return mercenarys; }
-        set { mercenarys = value; }
-    }
+    public List<GameObject> Mercenarys{get { return mercenarys; }set { mercenarys = value; } }
 
     private void Start()
     {

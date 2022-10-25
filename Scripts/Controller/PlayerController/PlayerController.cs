@@ -47,7 +47,6 @@ public class PlayerController : AllyController
             player.TargetDir = player.Distance.normalized;
         }
 
-
     }
     public void DragFlag()
     {
@@ -103,11 +102,11 @@ public class PlayerController : AllyController
                 }
                 break;
             case EPlayerState.AutoPlay:
-                Debug.Log("현재 " + checkControlOnAutoPlay);
+                Debug.Log("���� " + checkControlOnAutoPlay);
                 if(checkControlOnAutoPlay)
                 {
                     isControlOnAutoPlay = InputArrowKey();
-                    Debug.Log("여기 " + isControlOnAutoPlay);
+                    Debug.Log("���� " + isControlOnAutoPlay);
                 }    
                 AIChangeState();
                 AIState();
@@ -165,7 +164,7 @@ public class PlayerController : AllyController
     {
         // 움직임 실행
         player.ActiveLayer(ELayerName.WalkLayer);
-        player.Rig.velocity = player.TotalSpeed * player.Dir;
+        player.Rig.velocity = player.TotalStatus[(int)EStatus.Speed] * player.Dir;
         AnimationDirection();
     }
     public bool InputArrowKey()
@@ -236,8 +235,8 @@ public class PlayerController : AllyController
 
     public void DamageEnemy()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, player.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // 범위안에 있는 적들에게 데미지
+        var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
+        // ����ȿ� �ִ� ��鿡�� ������
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -247,7 +246,7 @@ public class PlayerController : AllyController
                 if (_enemy.IsLastHit())
                 {
                     player.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalDropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[j])
@@ -280,7 +279,7 @@ public class PlayerController : AllyController
         this.gameObject.transform.position = rivivePoint.transform.position;
         player.Rig.isKinematic = false;
         player.Col.enabled = true;
-        player.CurHp = player.TotalMaxHp;
+        player.CurHp = (int)player.TotalStatus[(int)EStatus.MaxHp];
         player.AIState = EAIState.Idle;
     }
     public void Targeting(List<EnemyController> _targetList)
@@ -446,7 +445,7 @@ public class PlayerController : AllyController
                 {
                     player.AIState = EAIState.UseSkill;
                 }
-                else if (player.GetDistance(player.EnemyTarget.transform.position) <= player.TotalAtkRange)
+                else if (player.GetDistance(player.EnemyTarget.transform.position) <= player.TotalStatus[(int)EStatus.AtkRange])
                 {
                     player.AIState = EAIState.Attack;
                 }
@@ -488,7 +487,7 @@ public class PlayerController : AllyController
 
     public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, player.AtkRange, lookDir, 1f, LayerMask.GetMask("Enemy"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
@@ -500,7 +499,7 @@ public class PlayerController : AllyController
                 if (_enemy.IsLastHit())
                 {
                     player.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalDropProbability);
+                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)
                     {
                         if (_isDrops[i])

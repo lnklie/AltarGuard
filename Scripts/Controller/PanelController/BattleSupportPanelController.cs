@@ -13,7 +13,7 @@ public class BattleSupportPanelController : MonoBehaviour
 
     private void Update()
     {
-        if(player.CurHp / player.TotalMaxHp * 1f <= 1.0f)
+        if(player.CurHp / player.TotalStatus[(int)EStatus.MaxHp] * 1f <= 1.0f)
         {
             AutoUse();
         }
@@ -45,10 +45,9 @@ public class BattleSupportPanelController : MonoBehaviour
         {
             if (quickSlots[i].IsAutoUse)
             {
-                if((quickSlots[i].CurItem.target == "Hp" && ((float)player.CurHp / player.MaxHp) * 100 <= player.PortionAutoUsePercent[0])
-                    || quickSlots[i].CurItem.target == "Mp" && ((float)player.CurMp / player.MaxMp) <= player.PortionAutoUsePercent[1])
+                if((quickSlots[i].CurItem.target == "Hp" && (player.CurHp / player.TotalStatus[(int)EStatus.MaxHp]) * 100 <= player.PortionAutoUsePercent[0])
+                    || quickSlots[i].CurItem.target == "Mp" && (player.CurMp / player.TotalStatus[(int)EStatus.MaxMp]) <= player.PortionAutoUsePercent[1])
                 {
-                    Debug.Log("ÇöÀç HP ºñÀ²Àº " + ((float)player.CurHp / player.MaxHp * 100) + " Æ÷¼Ç ÆÛ¼¾Æ®´Â " + player.PortionAutoUsePercent[0]);
                     quickSlots[i].UseItem();
                 }
             }
@@ -56,7 +55,7 @@ public class BattleSupportPanelController : MonoBehaviour
     }
     public void UseQuickSlotItem(Item _item, int _slotIndex)
     {
-        // ¾ÆÀÌÅÛ »ç¿ë
+        // ì•„ì´í…œ ì‚¬ìš©
         if (_item.itemType == (int)ItemType.Consumables)
         {
             InventoryManager.Instance.UseItem(player, _item);
@@ -79,11 +78,11 @@ public class BattleSupportPanelController : MonoBehaviour
                 _item.equipCharNum = 0;
             }
             else
-                Debug.Log("ÀÌ¹Ì ÀåÂø ÁßÀÎ ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
+                Debug.Log("ì´ë¯¸ ìž¥ì°© ì¤‘ì¸ ì•„ì´í…œìž…ë‹ˆë‹¤.");
         }
         else
         {
-            Debug.Log("»ç¿ëÇÏ½Ç ¼ö ¾ø´Â ¾ÆÀÌÅÛÀÔ´Ï´Ù.");
+            Debug.Log("ì‚¬ìš©í•˜ì‹¤ ìˆ˜ ì—†ëŠ” ì•„ì´í…œìž…ë‹ˆë‹¤.");
         }
 
         quickSlots[_slotIndex].UpdateQuickSlotItem();

@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-==============================
- * 최종수정일 : 2022-06-10
- * 작성자 : Inklie
- * 파일명 : AltarStatus.cs
-==============================
-*/
+
 public class AltarStatus : Status
 {
     [SerializeField] private AltarState altarState = AltarState.Idle;
     [SerializeField] protected int hpLevel = 1;
     [SerializeField] private int defensivePowerLevel = 1;
-
     [SerializeField] private int buffRangeLevel = 1;
+
+
     [SerializeField] private int buffDamageLevel = 1;
 
     [SerializeField] private int buffDefensivePowerLevel = 1;
@@ -47,27 +42,27 @@ public class AltarStatus : Status
         get { return defensivePowerLevel; }
         set { defensivePowerLevel = value; }
     }
-    public int BuffRange
+    public int BuffRangeLevel
     {
         get { return buffRangeLevel; }
         set { buffRangeLevel = value; }
     }
-    public int BuffDamage
+    public int BuffDamageLevel
     {
         get { return buffDamageLevel; }
         set { buffDamageLevel = value; }
     }
-    public int BuffDefensivePower
+    public int BuffDefensivePowerLevel
     {
         get { return buffDefensivePowerLevel; }
         set { buffDefensivePowerLevel = value; }
     }
-    public int BuffSpeed
+    public int BuffSpeedLevel
     {
         get { return buffSpeedLevel; }
         set { buffSpeedLevel = value; }
     }
-    public int BuffHpRegen
+    public int BuffHpRegenLevel
     {
         get { return buffHpRegenLevel; }
         set { buffHpRegenLevel = value; }
@@ -86,7 +81,7 @@ public class AltarStatus : Status
     private void Start()
     {
         UpdateAltarStatus();
-        curHp = totalMaxHp;
+        curHp = (int)totalStatus[(int)EStatus.MaxHp];
         UpdateAltarHp();
     }
     public void Update()
@@ -101,8 +96,8 @@ public class AltarStatus : Status
     }
     public void UpdateAltarStatus()
     {
-        totalMaxHp = maxHp + (hpLevel * 10);
-        totalDefensivePower = defensivePower + (defensivePowerLevel * 5);
+        totalStatus[(int)EStatus.MaxHp] = basicStatus[(int)EStatus.MaxHp] + (hpLevel * 10);
+        totalStatus[(int)EStatus.DefensivePower] = basicStatus[(int)EStatus.DefensivePower] + (defensivePowerLevel * 5);
         
     }
     public override void Damaged(int _damage)
@@ -113,7 +108,7 @@ public class AltarStatus : Status
     }
     public void UpdateAltarHp()
     {
-        images[1].fillAmount = (float)curHp / totalMaxHp;
+        images[1].fillAmount = curHp / totalStatus[(int)EStatus.MaxHp];
     }
     public void SetActiveBuffRange(bool _bool)
     {
