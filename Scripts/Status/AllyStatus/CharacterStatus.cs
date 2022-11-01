@@ -51,8 +51,6 @@ public class CharacterStatus : Status
 
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
 
-
-
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
@@ -91,12 +89,14 @@ public class CharacterStatus : Status
     {
         UpdateAllStatus();
         UpdateAllBasicStatus();
+
         curHp = (int)totalStatus[(int)EStatus.MaxHp];
         curMp = (int)totalStatus[(int)EStatus.MaxMp];
         triggerStatusUpdate = true;
     }
     public virtual void Update()
     {
+
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
 
@@ -119,7 +119,7 @@ public class CharacterStatus : Status
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
 
-        // Èû, ¹Î, Áö ¿Ã¸±¶§ ¹Ù²î´Â °Íµé
+        // í˜, ë¯¼, ì§€ ì˜¬ë¦´ë•Œ ë°”ë€ŒëŠ” ê²ƒë“¤
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -159,7 +159,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         
     }
     public void RemoveBuff()

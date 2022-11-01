@@ -50,7 +50,7 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ½ºÅİ »ó½Â
+        // ìŠ¤í…Ÿ ìƒìŠ¹
         if (statusPoint > 0)
         {
             switch (_index)
@@ -75,22 +75,22 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("½ºÅ×ÀÌÅÍ½º Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ìŠ¤í…Œì´í„°ìŠ¤ í¬ì¸íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     private void UpLevel()
     {
-        // ·¹º§¾÷
+        // ë ˆë²¨ì—…
         curLevel++;
         curExp = 0;
         statusPoint += 5;
-        Debug.Log("exp¸®½ºÆ® ¼ö´Â " + DatabaseManager.Instance.expList.Count);
+        Debug.Log("expë¦¬ìŠ¤íŠ¸ ìˆ˜ëŠ” " + DatabaseManager.Instance.expList.Count);
         LvToExp();
     }
 
     private void LvToExp()
     {
-        // ·¹º§º° °æÇèÄ¡ ÀüÈ¯
+        // ë ˆë²¨ë³„ ê²½í—˜ì¹˜ ì „í™˜
         
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
@@ -100,7 +100,7 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // ÃÖ´ë °æÇèÄ¡ ÀÎÁö È®ÀÎ
+        // ìµœëŒ€ ê²½í—˜ì¹˜ ì¸ì§€ í™•ì¸
         if (curExp >= maxExp)
             return true;
         else
@@ -143,8 +143,8 @@ public class AllyStatus : CharacterStatus
   
     public override void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
-        //Debug.Log("¿ÀºêÁ§Æ® ÀÌ¸§: " + ObjectName + " ÇØ´ç º£ÀÌÁ÷ ½ºÅ×ÀÌÅÍ½º "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " ÇØ´ç ÀåÂø½ºÅ×ÀÌÅÍ½º " + equipStatus[(int)_eStatus]);
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
+        //Debug.Log("ì˜¤ë¸Œì íŠ¸ ì´ë¦„: " + ObjectName + " í•´ë‹¹ ë² ì´ì§ ìŠ¤í…Œì´í„°ìŠ¤ "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " í•´ë‹¹ ì¥ì°©ìŠ¤í…Œì´í„°ìŠ¤ " + equipStatus[(int)_eStatus]);
         totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
             + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
             + buffStatus[(int)_eStatus];

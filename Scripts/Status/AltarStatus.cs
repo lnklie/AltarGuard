@@ -26,6 +26,7 @@ public class AltarStatus : Status
 
 
     #region Property
+
     public bool TriggerDestroyed { get { return triggerDestroyed; } set { triggerDestroyed = value; } }
     public SpriteRenderer BuffRangeSprite { get { return buffRangeSprite; } }
     public AltarState AltarState { get { return altarState; } set { altarState = value; } }
@@ -68,7 +69,7 @@ public class AltarStatus : Status
     }
     public override void Damaged(int _damage)
     {
-        //Debug.Log("¼®»ó ¸Â´Â Áß");
+        //Debug.Log("ì„ìƒ ë§ëŠ” ì¤‘");
         base.Damaged(_damage);
         UpdateAltarHp();
     }
@@ -82,7 +83,7 @@ public class AltarStatus : Status
     }
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
-        // Á¦´Ü ¾÷±×·¹ÀÌµå
+        // ì œë‹¨ ì—…ê·¸ë ˆì´ë“œ
         switch (_altarAbility)
         {
             case AltarAbility.Hp:

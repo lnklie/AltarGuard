@@ -5,7 +5,6 @@ using UnityEngine;
 public class MercenaryManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> mercenarys = new List<GameObject>();
-
     [SerializeField] private GameObject characterPrefab = null;
     [SerializeField] private GameObject revialZone = null;
     public List<GameObject> Mercenarys {get { return mercenarys; }set { mercenarys = value; } }

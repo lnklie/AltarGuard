@@ -43,4 +43,8 @@ public class SetUpPanelController : MonoBehaviour
     {
         GameManager.Instance.OperateSleepMode();
     }
+    public void SetSleeModeImmediately()
+    {
+        GameManager.Instance.OperateSleepMode();
+    }
 }

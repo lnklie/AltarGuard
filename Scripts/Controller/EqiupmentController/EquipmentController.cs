@@ -43,7 +43,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // Àåºñ¿¡ ¹æ¾î·Â Ãâ·Â
+        // ì¥ë¹„ì— ë°©ì–´ë ¥ ì¶œë ¥
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -53,7 +53,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // Àåºñ¿¡ ¹°¸®µ¥¹ÌÁö Ãâ·Â
+        // ì¥ë¹„ì— ë¬¼ë¦¬ë°ë¯¸ì§€ ì¶œë ¥
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -65,7 +65,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // Àåºñ¿¡ ¸¶¹ıµ¥¹ÌÁö Ãâ·Â
+        // ì¥ë¹„ì— ë§ˆë²•ë°ë¯¸ì§€ ì¶œë ¥
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -77,7 +77,7 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ¹«±â ¾ÆÀÌÅÛ¿¡ µû¸¥ °ø°İ Å¸ÀÔ º¯°æ
+        // ë¬´ê¸° ì•„ì´í…œì— ë”°ë¥¸ ê³µê²© íƒ€ì… ë³€ê²½
         if (checkEquipItems[8])
         {
             status.EquipStatus[(int)EStatus.AtkRange] = equipItems[8].atkRange;
@@ -100,8 +100,6 @@ public class EquipmentController : MonoBehaviour
         {
             status.IsSkillChange = true;
             TriggerEquipmentChange[_item.itemType] = true;
-
-
             status.TriggerStatusUpdate = true;
 
             equipItems[_item.itemType] = _item;
@@ -154,7 +152,7 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
+            Debug.Log("ì¥ì°© ì¤‘ì…ë‹ˆë‹¤.");
         }
     }
     public void SkillChange()
@@ -280,7 +278,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ÀåÂø Á¦°Å
+        // ì¥ì°© ì œê±°
         switch (_index)
         {
             case 0:
