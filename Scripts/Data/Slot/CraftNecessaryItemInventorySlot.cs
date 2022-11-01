@@ -5,21 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 public class CraftNecessaryItemInventorySlot : MonoBehaviour
 {
-    [SerializeField]
-    private Item necessaryRegisterItem = null;
-    [SerializeField]
-    private Image[] necessaryRegisterItemImage = null;
-    [SerializeField]
-    private TextMeshProUGUI countText = null;
-    [SerializeField]
-    private bool isNecessaryInventoryItem = false;
-    [SerializeField]
-    private Sprite defaultSprite = null;
-    public Item NecessaryRegisterItem
-    {
-        get { return necessaryRegisterItem; }
-        set { necessaryRegisterItem = value; }
-    }
+    [SerializeField] private Item necessaryRegisterItem = null;
+    [SerializeField] private Image[] necessaryRegisterItemImage = null;
+    [SerializeField] private TextMeshProUGUI countText = null;
+    [SerializeField] private bool isNecessaryInventoryItem = false;
+    [SerializeField] private Sprite defaultSprite = null;
+    public Item NecessaryRegisterItem { get { return necessaryRegisterItem; } set { necessaryRegisterItem = value; } }
 
     public void Awake()
     {

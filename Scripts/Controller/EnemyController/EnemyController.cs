@@ -46,16 +46,14 @@ public class EnemyController : CharacterController
         }
         enemyStatus.TargetDir = enemyStatus.Distance.normalized;
         if (enemyStatus.IsDied)
+        {
             StartCoroutine(AIDied());
+        }
         if (!enemyStatus.IsDied)
         {
             if (enemyStatus.AllyTarget == null)
             {
-
                 enemyStatus.AIState = EAIState.Chase;
-                Debug.Log("¦i´ÂÁß");
-
-
             }
             else
             {
@@ -104,10 +102,10 @@ public class EnemyController : CharacterController
     }
     public void ResortTarget(List<AllyController> _targetList )
     {
-        if (_targetList.Count > 0)
+        if (_targetList.Count > 0) 
         {
             enemyStatus.AllyTarget = _targetList[0];
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
@@ -135,7 +133,7 @@ public class EnemyController : CharacterController
         {
             enemyStatus.EnemyTarget = _targetList[0];
 
-            SortSightRayList(_targetList);
+            SortSightRayListByDistance(_targetList);
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
@@ -184,18 +182,18 @@ public class EnemyController : CharacterController
     //}
     public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalAtkRange, enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalStatus[(int)EStatus.AtkRange], enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
 
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
                 Status ally = hits[i].collider.GetComponent<Status>();
-                if(ally == null)
-                {
-                    Debug.Log("¹¹Â¡?? ¹» °ø°ÝÇÑ°É±î?" + hits[i].collider.name);
-                }
                 ally.Damaged(AttackTypeDamage());
+                if (ally.IsLastHit())
+                {
+                    ally.IsDied = true;
+                }
             }
         }
     }

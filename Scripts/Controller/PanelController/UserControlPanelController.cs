@@ -7,9 +7,10 @@ public class UserControlPanelController : MonoBehaviour
     [SerializeField] private SkillSlot[] skillSlots = null;
     [SerializeField] private PlayerStatus playerStatus = null;
     [SerializeField] private SkillController skillController = null;
+    [SerializeField] private EquipmentController playerEquipmentController = null;
     private void Update()
     {
-        if(playerStatus.TriggerEquipmentChange)
+        if (playerEquipmentController.TriggerEquipmentChange[8])
         {
             SetSkillSlot(skillController.Skills);
         }

@@ -39,7 +39,7 @@ public class EnemyCustomizer : MonoBehaviour
     public void SetEnemyStatus(Enemy _rushenemy)
     {
         rushEnemyStatus.RushEnemy = _rushenemy;
-        rushEnemyStatus.CurHp = rushEnemyStatus.MaxHp;
+        rushEnemyStatus.CurHp = (int)rushEnemyStatus.TotalStatus[(int)EStatus.MaxHp];
         rushEnemyStatus.IsEnemyChange = true;
     }
     public void SetAnimator(RuntimeAnimatorController _ani)

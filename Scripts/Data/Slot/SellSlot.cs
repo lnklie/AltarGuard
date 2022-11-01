@@ -5,32 +5,16 @@ using UnityEngine.UI;
 using TMPro;
 public class SellSlot : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI itemCount = null;
-    [SerializeField]
-    private Image[] itemImages = null;
-    [SerializeField]
-    private Item curItem = null;
-    private bool isItemChange = false;
-    [SerializeField]
-    private Sprite uiMask = null;
+    [SerializeField] private TextMeshProUGUI itemCount = null;
+    [SerializeField] private Image[] itemImages = null;
+    [SerializeField] private Item curItem = null;
+    [SerializeField] private Sprite uiMask = null;
 
+    private bool isItemChange = false; 
     #region Property
-    public Image[] ItemImages
-    {
-        get { return itemImages; }
-        set { itemImages = value; }
-    }
-    public Item CurItem
-    {
-        get { return curItem; }
-        set { curItem = value; }
-    }
-    public bool IsItemChange
-    {
-        get { return isItemChange; }
-        set { isItemChange = value; }
-    }
+    public Image[] ItemImages { get { return itemImages; } set { itemImages = value; } }
+    public Item CurItem { get { return curItem; } set { curItem = value; } }
+    public bool IsItemChange { get { return isItemChange; } set { isItemChange = value; } }
     #endregion
 
 

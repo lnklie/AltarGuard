@@ -1,22 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-11
- * 작성자 : Inklie
- * 파일명 : Status.cs
-==============================
-*/
+
 public class Status : MonoBehaviour
 {
+    [SerializeField] private EStatus previewStatus = EStatus.Str;
     [SerializeField] protected string objectName = "";
     [SerializeField] protected int curHp = 0;
-    [SerializeField] protected int maxHp = 100;
-    [SerializeField] protected int defensivePower = 0;
     [SerializeField] protected bool isDamaged = false;
-    [SerializeField] protected int totalMaxHp = 0;
-    [SerializeField] protected int totalDefensivePower = 0;
+    [SerializeField] protected bool isDied = false;
     [SerializeField] protected bool triggerStatusUpdate = false;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
@@ -25,23 +17,23 @@ public class Status : MonoBehaviour
     [SerializeField] private ValueTextController damageTextController;
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
+    [SerializeField] protected float[] totalStatus = new float[16];
+    [SerializeField] protected float[] basicStatus = new float[16];
     #region Property
-    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
-    public int TotalDefensivePower { get { return totalDefensivePower; } set { totalDefensivePower = value; } }
+    public float[] TotalStatus { get { return totalStatus; } set { totalStatus = value; } }
+    public float[] BasicStatus { get { return basicStatus; } set { basicStatus = value; } }
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
     public int DefeatExp { get { return defeatExp; } set { defeatExp = value; } }
     public Transform TargetPos { get { return targetPos; } }
     public string ObjectName { get { return objectName; } set { objectName = value; } }
     public int CurHp { get { return curHp; } set { curHp = value; } }
-    public int MaxHp { get { return maxHp; } set { maxHp = value; } }
-    public int DefensivePower { get { return defensivePower; } set { defensivePower = value; } }
     public bool IsDamaged { get { return isDamaged; } set { isDamaged = value; } }
     //public bool TriggerStateChange { get { return triggerStateChange; } set { triggerStateChange = value; } }
     public BoxCollider2D Col { get { return col; } }
     public Rigidbody2D Rig { get { return rig; } }
     public Animator Ani { get { return ani; } }
+    public bool IsDied { get { return isDied; } set { isDied = value; } }
     #endregion
-
 
 
     public virtual void Awake()
@@ -51,6 +43,7 @@ public class Status : MonoBehaviour
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
+
 
     public void SetValueText(int _damage, Color _color)
     {
@@ -65,17 +58,19 @@ public class Status : MonoBehaviour
     {
         // 매개변수가 마지막 공격을 했는지 체크
         if (curHp <= 0f)
+        {
             return true;
+        }
         else
             return false;
     }
     public virtual void Damaged(int _damage)
     {
         //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
-        curHp -= ReviseDamage(_damage, defensivePower);
+        curHp -= ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
-        SetValueText(ReviseDamage(_damage, defensivePower),Color.red);
+        SetValueText(ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]),Color.red);
     }
     public virtual void recovered(int _value)
     {

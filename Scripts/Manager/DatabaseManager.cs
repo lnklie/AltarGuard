@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 
 
-public class DatabaseManager : SingletonManager<DatabaseManager>
+public class DatabaseManager : MonoBehaviour
 {
     [Header("Items")]
     public List<Hair> hairList = new List<Hair>();
@@ -58,11 +58,15 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
 
     [Header("GameScript")]
     public List<GameScript> gameScriptList = new List<GameScript>();
+    public static DatabaseManager Instance = null;
     private void Awake()
     {
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/ExcelFile", Application.dataPath + "/JsonFile");
+        Instance = this;
+        Debug.Log("여기1");
+        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/Resources/ExcelFile/", Application.dataPath + "/Resources/JsonFile/");
+        Debug.Log("여기2");
         JsonLoad();
-        GraceManager.Instance.SetGraceList();
+        Debug.Log("여기3");
     }
     string fixJson(string value)
     {
@@ -71,7 +75,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
     }
     private string CombinePath(string _excelName)
     {
-        return Application.dataPath + "/JsonFile/" + _excelName +".json";
+        return Application.dataPath + "/Resources/JsonFile/" + _excelName +".json";
     }
 
     public void JsonLoad()
@@ -454,8 +458,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                warriorGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                warriorGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
         if (!File.Exists(CombinePath("RangedGrace")))
@@ -469,8 +473,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             for (var i = 0; i < grace.Length; i++)
             {
 
-                rangedGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
         if (!File.Exists(CombinePath("MagicGrace")))
@@ -483,8 +487,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                magicGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                magicGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2 ,grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
 
@@ -498,8 +502,8 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                commanderGraceList.Add(new BigGrace(grace[i].graceKey, grace[i].graceName, grace[i].explain, grace[i].necessaryGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                   grace[i].resultWho, grace[i].resultTarget1, grace[i].resultTarget2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultHow1, grace[i].resultHow2));
+                commanderGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
+                   grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
         if (!File.Exists(CombinePath("CraftRecipe")))
@@ -552,6 +556,182 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                     gameScripts[i].timeLag0, gameScripts[i].timeLag1, gameScripts[i].timeLag2, gameScripts[i].timeLag3, gameScripts[i].timeLag4, gameScripts[i].timeLag5, gameScripts[i].timeLag6, gameScripts[i].timeLag7, gameScripts[i].timeLag8));
             }
         }
+    }
+    public Grace SelectGrace(int _key)
+    {
+        Grace _grace = null;
+        switch (_key / 1000)
+        {
+            case 0:
+                for (int i = 0; i < graceConditionWhoList.Count; i++)
+                {
+                    if (graceConditionWhoList[i].graceKey == _key)
+                        _grace = graceConditionWhoList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 1:
+                for (int i = 0; i < graceConditionWhatList.Count; i++)
+                {
+                    if (graceConditionWhatList[i].graceKey == _key)
+                        _grace = graceConditionWhatList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 2:
+                for (int i = 0; i < graceConditionHowList.Count; i++)
+                {
+                    if (graceConditionHowList[i].graceKey == _key)
+                        _grace = graceConditionHowList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 3:
+                for (int i = 0; i < graceResultWhoList.Count; i++)
+                {
+                    if (graceResultWhoList[i].graceKey == _key)
+                        _grace = graceResultWhoList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 4:
+                for (int i = 0; i < graceResultWhatList.Count; i++)
+                {
+                    if (graceResultWhatList[i].graceKey == _key)
+                        _grace = graceResultWhatList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 5:
+                for (int i = 0; i < graceResultIsPercentList.Count; i++)
+                {
+                    if (graceResultIsPercentList[i].graceKey == _key)
+                        _grace = graceResultIsPercentList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+            case 6:
+                for (int i = 0; i < graceResultHowList.Count; i++)
+                {
+                    if (graceResultHowList[i].graceKey == _key)
+                        _grace = graceResultHowList[i];
+                    //else
+                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                }
+                break;
+        }
+        return _grace;
+    }
+    public string AddGraceExplain(CompleteGrace _completeGrace)
+    {
+        string _explain = null;
+        if (_completeGrace.conditionWho != -1)
+        {
+            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "가(이) ";
+            if (_completeGrace.conditionWhat < 1014)
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "을(를) ";
+            }
+            else
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "이 ";
+                _explain += _completeGrace.conditionValue;
+            }
+            _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
+        }
+        if (_completeGrace.relationOfVariables == 7000)
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            if (_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " 만큼 ";
+            else
+                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+            if (_completeGrace.resultWho2 == -1)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시킨다";
+            else
+            {
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 ";
+                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
+                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+                if (_completeGrace.resultValueIsPercent2 == 0)
+                    _explain += _completeGrace.resultValue2 + " 만큼 ";
+                else
+                    _explain += _completeGrace.resultValue2 + "% 만큼 ";
+                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+            }
+        }
+        else
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            if (_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " 만큼 ";
+            else
+                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+            if (_completeGrace.resultHow1 == 6001)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 그 만큼 ";
+
+            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
+            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+        }
+        return _explain;
+    }
+    public CompleteGrace CreateRandomGrace()
+    {
+        int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
+        int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
+        int conditionValue = -1;
+        int conditionHow = -1;
+        if (conditionWhat > 13)
+        {
+            conditionHow = 3;
+            conditionValue = Random.Range(0, 10);
+        }
+        else if (conditionWhat > 12)
+            conditionHow = 2;
+        else if (conditionWhat > 10)
+            conditionHow = 1;
+        else
+            conditionHow = 0;
+        int resultWho1 = Random.Range(0, graceResultWhoList.Count);
+        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
+        int resultValue1 = Random.Range(0, 10);
+        int resultValue2 = Random.Range(0, 10);
+        int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
+        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
+        int resultValueIsPercent1 = Random.Range(0, 2);
+        int resultValueIsPercent2 = Random.Range(0, 2);
+        int relationOfGraces = Random.Range(0, 2);
+        float weightedValue1 = 0;
+        float weightedValue2 = 0;
+        if (conditionWho != -1)
+        {
+            weightedValue1 =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
+        }
+        else
+        {
+            weightedValue1 = SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 = SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
+        }
+        CompleteGrace _completeGrace = new CompleteGrace(
+            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
+            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 6000, 6000, relationOfGraces + 7000);
+        _completeGrace.explain = AddGraceExplain(_completeGrace);
+
+        return _completeGrace;
     }
     public Item SelectItem(int _key, int _amount = 1)
     {
@@ -652,7 +832,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
                         {
                             Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].itemKorName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
                         swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
-                            _sword.grace1 = GraceManager.Instance.CreateRandomGrace();
+                            _sword.grace1 = CreateRandomGrace();
                             _item = _sword;
                         }
                     }
@@ -773,7 +953,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 0:
                 for (int i = 0; i < warriorGraceList.Count; i++)
                 {
-                    if (warriorGraceList[i].graceKey == _key)
+                    if (warriorGraceList[i].bigGraceKey == _key)
                         _grace = warriorGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -782,7 +962,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 1:
                 for (int i = 0; i < rangedGraceList.Count; i++)
                 {
-                    if (rangedGraceList[i].graceKey == _key)
+                    if (rangedGraceList[i].bigGraceKey == _key)
                         _grace = rangedGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -791,7 +971,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 2:
                 for (int i = 0; i < magicGraceList.Count; i++)
                 {
-                    if (magicGraceList[i].graceKey == _key)
+                    if (magicGraceList[i].bigGraceKey == _key)
                         _grace = magicGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -800,7 +980,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             case 3:
                 for (int i = 0; i < commanderGraceList.Count; i++)
                 {
-                    if (commanderGraceList[i].graceKey == _key)
+                    if (commanderGraceList[i].bigGraceKey == _key)
                         _grace = commanderGraceList[i];
                     else
                         Debug.Log("해당 은총이 없습니다.");
@@ -842,7 +1022,7 @@ public class DatabaseManager : SingletonManager<DatabaseManager>
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("해당 제작 레시피가 없습니다.");
+                Debug.Log("해당 스크립트가 없습니다.");
         }
         return _gameScript;
     }

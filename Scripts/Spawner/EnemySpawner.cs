@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EnemySpawner.cs
-==============================
-*/
 
-public class EnemySpawner : SingletonManager<EnemySpawner>
+
+public class EnemySpawner : MonoBehaviour
 {
 
-    [Header("RushEnemyPrefabs")]
+    [Header("RushEnemyPrefabs")] 
     [SerializeField] private GameObject rushOrcPrefab = null;
 
 
@@ -31,12 +25,13 @@ public class EnemySpawner : SingletonManager<EnemySpawner>
 
     public BossEnemyStatus CurBoss { get { return curBoss; } }
     public Queue<Vector2> EnemyPos { get { return enemyPos; } }
+    public static EnemySpawner Instance = null;
+    [SerializeField] private GameObject bossOrcs = null;
 
-
-
-
-    [SerializeField]
-    private GameObject bossOrcs = null;
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

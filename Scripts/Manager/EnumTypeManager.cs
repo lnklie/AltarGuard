@@ -15,6 +15,13 @@ public enum ESleepModeTime
     ThirtyMin,
     SixtyMin
 }
+public enum EAllyTargetingSetUp
+{
+     OneSelf,
+     CloseAlly,
+     Random,
+     WeakAlly
+}
 public enum ELayerName
 {
     IdleLayer = 0,
@@ -78,6 +85,25 @@ public enum EnemyType
     SwordOrc,
     BowOrc,
     WizardOrc
+}
+public enum EStatus
+{
+    Str,
+    Dex,
+    Wiz,
+    Luck,
+    MaxHp,
+    MaxMp,
+    HpRegenValue,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    Speed,
+    AttackSpeed,
+    CastingSpeed,
+    AtkRange,
+    DropProbability,
+    ItemRarity
 }
 public enum BossEnemyType
 {
@@ -152,6 +178,10 @@ public enum EGraceConditionWhat
     SpearOrExe,
     SwordAndShield,
     WandAndShiled,
+    Str,
+    Dex,
+    Wiz,
+    Luck,
     HpPortion,
     MpPortion,
     Skill
@@ -161,6 +191,9 @@ public enum EGraceConditionHow
     Equip = 2000,
     Use,
     SkillUse,
+    More,
+    Same,
+    Less
 }
 public enum EGraceResultWho
 {
@@ -191,4 +224,9 @@ public enum EGraceResultHow
 {
     Increase = 6000,
     Decrease,
+}
+public enum ERelationOfGraces
+{
+    Independence = 7000,
+    Subordination
 }

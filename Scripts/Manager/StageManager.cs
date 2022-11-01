@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : SingletonManager<StageManager>
+public class StageManager : MonoBehaviour
 {
 
     [SerializeField] private bool isStart = false;
@@ -12,16 +12,22 @@ public class StageManager : SingletonManager<StageManager>
     [SerializeField] private Stage curStage = null;
     [SerializeField] private int spawnedEneies = 0;
 
+    public static StageManager Instance = null;
     public bool IsStart { get { return isStart; } }
     public bool IsStage { get { return isStage; } }
     public int SpawnedEneies { get { return spawnedEneies;} set { spawnedEneies = value; } }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            isStart = true;
-            isStage = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.F1))
+        //{
+        //    StartStage();
+        //}
         if (isStart)
         {
             CheckStage();
@@ -36,6 +42,11 @@ public class StageManager : SingletonManager<StageManager>
         //    if (spawnedEneies <= 0)
         //        enemySpawner.BossEnemySpawn(curStage.bossKey);
         //}
+    }
+    public void StartStage()
+    {
+        isStart = true;
+        isStage = true;
     }
     public void CheckStage()
     {

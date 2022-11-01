@@ -121,85 +121,86 @@ public class SkillObject : MonoBehaviour
         {
             case 1:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures1);
+                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures1);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures1);
+                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures1);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures1);
+                    _skillDamage = skill.skillValue1 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures1);
                 break;
             case 2:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures2);
+                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures2);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures2);
+                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures2);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures2);
+                    _skillDamage = skill.skillValue2 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures2);
                 break;
             case 3:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures3);
+                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures3);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures3);
+                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures3);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures3);
+                    _skillDamage = skill.skillValue3 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures3);
                 break;
             case 4:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures4);
+                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures4);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures4);
+                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures4);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures4);
+                    _skillDamage = skill.skillValue4 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures4);
                 break;
             case 5:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures5);
+                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures5);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures5);
+                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures5);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures5);
+                    _skillDamage = skill.skillValue5 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures5);
                 break;
             case 6:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures6);
+                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures6);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures6);
+                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures6);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures6);
+                    _skillDamage = skill.skillValue6 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures6);
                 break;
             case 7:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures7);
+                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures7);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures7);
+                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures7);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures7);
+                    _skillDamage = skill.skillValue7 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures7);
                 break;
             case 8:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures8);
+                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures8);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures8);
+                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures8);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures8);
+                    _skillDamage = skill.skillValue8 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures8);
                 break;
             case 9:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures9);
+                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures9);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures9);
+                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures9);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures9);
+                    _skillDamage = skill.skillValue9 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures9);
                 break;
             case 10:
                 if (skill.skillVariable == 0)
-                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalStr * skill.skillFigures10);
+                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures10);
                 else if (skill.skillVariable == 1)
-                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalDex * skill.skillFigures10);
+                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures10);
                 else if (skill.skillVariable == 2)
-                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalWiz * skill.skillFigures10);
+                    _skillDamage = skill.skillValue10 + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures10);
                 break;
         }
         return _skillDamage;
     }
+    
 }

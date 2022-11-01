@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : ProjectionSpawner.cs
-==============================
-*/
-public class ProjectionSpawner : SingletonManager<ProjectionSpawner>
-{
-    private Queue<Arrow> arrows = new Queue<Arrow>();
-    [SerializeField] 
-    private Arrow arrowPrefab = null;
 
+public class ProjectionSpawner : MonoBehaviour
+{
+    [SerializeField] private Arrow arrowPrefab = null;
+    private Queue<Arrow> arrows = new Queue<Arrow>();
+    public static ProjectionSpawner Instance;
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         for (int i = 0; i < 100; i++)

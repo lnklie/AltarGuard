@@ -2,40 +2,40 @@ using TMPro;
 using UnityEngine;
 public class CraftPanelController : MonoBehaviour
 {
-    [SerializeField] private GameObject craftInfo = null;
-    [SerializeField] private GameObject necessaryItemRegisterInventory = null; 
+    [Header("NecessaryItem")]
     [SerializeField] private GameObject necessaryIteminfoPanel = null;
-    [SerializeField] private GameObject necessaryItemRegiterPanel = null;
-
-
-    [SerializeField] private TextMeshProUGUI craftItemName = null;
-    [SerializeField] private TextMeshProUGUI craftItemInfo = null;
-
     [SerializeField] private TextMeshProUGUI necessaryItemName = null;
     [SerializeField] private TextMeshProUGUI necessaryItemType = null;
     [SerializeField] private TextMeshProUGUI necessaryItemInfo = null;
 
+    [Header("CraftItem")]
+    [SerializeField] private GameObject craftInfo = null;
+    [SerializeField] private TextMeshProUGUI craftItemInfo = null;
+    [SerializeField] private TextMeshProUGUI craftItemName = null;
+
+    [Header("NecessaryItemResgister")]
+    [SerializeField] private GameObject necessaryItemRegisterInventory = null; 
+    [SerializeField] private GameObject necessaryItemRegiterPanel = null;
 
 
+    [Header("Slots")]
+    [SerializeField] private CraftNecessaryItemSlot[] craftNecessaryItemSlots = null;
+    [SerializeField] private CraftNecessaryItemInventorySlot[] craftNecessaryItemInventorySlots = null;
+
+    [Header("Current")]
     [SerializeField] private CraftRecipe selectCraftRecipe = null;
     [SerializeField] private Item selectNeedItemInfo = null;
     [SerializeField] private Item selectRegisterItem = null;
     [SerializeField] private Item selectRegisterInventoryItem = null;
+    [SerializeField] private int selectNecessaryItemIndex = -1; 
+    [SerializeField] private bool[] isAbleCraft = new bool[4];
+    [SerializeField] private Item[] craftResources = new Item[4];
 
-    [SerializeField] private GameObject needsItems = null;
-    [SerializeField] private CraftNecessaryItemSlot[] craftNecessaryItemSlots = null;
-    [SerializeField] private CraftNecessaryItemInventorySlot[] craftNecessaryItemInventorySlots = null;
-
-    //[SerializeField]
-    //private TextMeshProUGUI[] needsItemCountTexts = null;
     private bool isSelected = false;
     private bool isNeedItemInfoSelected = false;
     private bool isRegisterNecessaryItemSelect = false;
     private bool isRegisterInventoryItemSelect = false;
-    [SerializeField] private bool[] isAbleCraft = new bool[4];
-    [SerializeField] private Item[] craftResources = new Item[4];
 
-    [SerializeField] private int selectNecessaryItemIndex = -1; 
 
     public int SelectNecessaryItemIndex { get { return selectNecessaryItemIndex; } set { selectNecessaryItemIndex = value; } }
     public CraftRecipe SelectCraftRecipe { get { return selectCraftRecipe; }set { selectCraftRecipe = value; } }

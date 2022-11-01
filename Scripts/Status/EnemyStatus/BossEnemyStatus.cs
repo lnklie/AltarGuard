@@ -27,14 +27,21 @@ public class BossEnemyStatus : EnemyStatus
     {
         Debug.Log("커스텀 에너미 2");
         objectName = bossEnemy.objectName;
-        str = bossEnemy.str;
-        dex = bossEnemy.dex;
-        wiz = bossEnemy.wiz;
         seeRange = bossEnemy.seeRange;
         defeatExp = bossEnemy.defeatExp;
-        atkRange = equipedAtkRange;
-        atkSpeed = equipedAtkSpeed;
-        UpdateTotalAbility();
+
+        totalStatus[(int)EStatus.Str] = bossEnemy.str + equipStatus[(int)EStatus.Str];
+        totalStatus[(int)EStatus.Dex] = bossEnemy.dex + equipStatus[(int)EStatus.Dex];
+        totalStatus[(int)EStatus.Wiz] = bossEnemy.str + equipStatus[(int)EStatus.Wiz];
+        totalStatus[(int)EStatus.MaxHp] = bossEnemy.hp + totalStatus[(int)EStatus.Str] + equipStatus[(int)EStatus.MaxHp];
+        totalStatus[(int)EStatus.MaxMp] = bossEnemy.mp + totalStatus[(int)EStatus.Wiz] + equipStatus[(int)EStatus.MaxMp];
+        totalStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] + 5 + equipStatus[(int)EStatus.PhysicalDamage];
+        totalStatus[(int)EStatus.MagicalDamage] = totalStatus[(int)EStatus.Wiz] + 5 + equipStatus[(int)EStatus.MagicalDamage];
+        totalStatus[(int)EStatus.DefensivePower] = totalStatus[(int)EStatus.Str] + 3 + equipStatus[(int)EStatus.DefensivePower];
+        totalStatus[(int)EStatus.Speed] = bossEnemy.speed + totalStatus[(int)EStatus.Dex] * 0.1f;
+        totalStatus[(int)EStatus.HpRegenValue] = totalStatus[(int)EStatus.Str] * 0.5f;
+        totalStatus[(int)EStatus.AtkRange] = bossEnemy.atkRange + totalStatus[(int)EStatus.AtkRange];
+        totalStatus[(int)EStatus.AttackSpeed] = maxAtkSpeed - (bossEnemy.atkSpeed + totalStatus[(int)EStatus.AttackSpeed]);
 
         itemDropKey.Add(bossEnemy.itemDropKey1);
         itemDropKey.Add(bossEnemy.itemDropKey2);
@@ -47,19 +54,8 @@ public class BossEnemyStatus : EnemyStatus
         itemDropProb.Add(bossEnemy.itemDropProb4);
         itemDropProb.Add(bossEnemy.itemDropProb5);
 
-        curHp = maxHp;
+        curHp = (int)totalStatus[(int)EStatus.MaxHp];
         isEnemyChange = false;
     }
 
-    public override void UpdateTotalAbility()
-    {
-        // 능력 업데이트
-        maxHp = bossEnemy.hp + str * 10;
-        maxMp = bossEnemy.mp + wiz * 10;
-        physicalDamage = str * 5 + equipedPhysicalDamage;
-        magicalDamage = wiz * 5 + equipedMagicalDamage;
-        defensivePower = str * 3 + equipedDefensivePower;
-        speed = bossEnemy.speed + dex * 1f;
-        graceHpRegenValue = str * 1;
-    }
 }
