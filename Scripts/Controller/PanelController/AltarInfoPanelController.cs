@@ -5,14 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 public class AltarInfoPanelController : MonoBehaviour
 {
-    [SerializeField]
-    private PlayerStatus player = null;
-    [SerializeField]
-    private AltarStatus altar = null;
-    [SerializeField]
-    private AltarInfoSlot[] altarInfoSlots = null;
-    [SerializeField]
-    private TextMeshProUGUI moneyText = null;
+    [SerializeField] private PlayerStatus player = null;
+    [SerializeField] private AltarStatus altar = null;
+    [SerializeField] private AltarInfoSlot[] altarInfoSlots = null;
+    [SerializeField] private TextMeshProUGUI moneyText = null;
     private void Awake()
     {
         altarInfoSlots = GetComponentsInChildren<AltarInfoSlot>();

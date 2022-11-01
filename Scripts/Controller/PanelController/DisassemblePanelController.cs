@@ -5,46 +5,31 @@ using TMPro;
 public class DisassemblePanelController : MonoBehaviour
 {
     [Header("DisassembleItemInfo")]
-    [SerializeField]
-    private GameObject DisassembleItemInfo = null;
+    [SerializeField] private GameObject DisassembleItemInfo = null;
 
     [Header("DisassembleCheckPanel")]
-    [SerializeField]
-    private GameObject disassembleCheckPanel = null;
+    [SerializeField] private GameObject disassembleCheckPanel = null;
+    [SerializeField] private TextMeshProUGUI disassembleCheckPanelAquireResourcesText = null;
 
-    [SerializeField]
-    private List<DisassembleSlot> disassembleSlots = new List<DisassembleSlot>();
+    [Header("Slots")]
+    [SerializeField] private List<DisassembleSlot> disassembleSlots = new List<DisassembleSlot>();
+    [SerializeField] private List<DisassembleInventorySlot> disassembleInventorySlots = new List<DisassembleInventorySlot>();
 
-    [SerializeField]
-    private Item selectDisassembleItem = null;
-    [SerializeField]
-    private List<DisassembleInventorySlot> disassembleInventorySlots = new List<DisassembleInventorySlot>();
+
+    [Header("Current")]
+    [SerializeField] private Item selectDisassembleItem = null;
+    [SerializeField] private List<Item> disassembleItemList = new List<Item>();
+    [SerializeField] private List<Item> disassembleItemResourcesList = new List<Item>();
+
+
+
     private TextMeshProUGUI[] disassembleItemInfoText = null;
-
-    [SerializeField]
-    private TextMeshProUGUI disassembleCheckPanelAquireResourcesText = null;
-
-    [SerializeField]
-    private List<Item> disassembleItemList = new List<Item>();
-    [SerializeField]
-    private List<Item> disassembleItemResourcesList = new List<Item>();
-
     private bool isDisassembleItemSelect = false;
     private int selectInventoryIndex = 0;
-    public bool IsDisassembleItemSelect
-    {
-        get { return isDisassembleItemSelect; }
-        set { isDisassembleItemSelect = value; }
-    }
-    public Item SelectDisassembleItem
-    {
-        get { return selectDisassembleItem; }
-        set { selectDisassembleItem = value; }
-    }
-    public List<Item> DisassembleItemList
-    {
-        get { return disassembleItemList; }
-    }
+    public bool IsDisassembleItemSelect { get { return isDisassembleItemSelect; } set { isDisassembleItemSelect = value; } }
+    public Item SelectDisassembleItem { get { return selectDisassembleItem; } set { selectDisassembleItem = value; } }
+    public List<Item> DisassembleItemList { get { return disassembleItemList; } }
+
     private void Awake()
     {
         disassembleItemInfoText = DisassembleItemInfo.GetComponentsInChildren<TextMeshProUGUI>();

@@ -1,4 +1,4 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,15 +17,14 @@ public class ProfilePanelController : MonoBehaviour
 
     [Header("ProfileImages")]
     [SerializeField] private GameObject bossProfile = null;
-    [SerializeField] private List<GameObject> profiles = new List<GameObject>();
 
-    [SerializeField] private Sprite UIMask;
+
 
     [SerializeField] private Conversation[] conversations = null;
     [SerializeField] private bool isconversationActive = true;
     [SerializeField] private bool triggerConversationDeActive = false;
     [SerializeField] private bool triggerConversationActive = false;
-    public List<GameObject> Profiles { get { return profiles; } set { profiles = value; } }
+
     public bool IsconversationActive { get { return isconversationActive; } set { isconversationActive = value; } }
 
     private void Start()
@@ -52,6 +51,7 @@ public class ProfilePanelController : MonoBehaviour
             StartCoroutine(Conversation(DatabaseManager.Instance.SelectGameScript(0)));
         }
     }
+
     public void ChooseTriggerConversationActive(bool _bool)
     {
         if (_bool)
@@ -63,76 +63,9 @@ public class ProfilePanelController : MonoBehaviour
     {
         for(int i = 0; i < 4; i++)
         {
-            if (_bool == false && conversations[i].CurLines != null)
-            {
-                conversations[i].StopTalk();
-                yield return new WaitForSeconds(conversations[i].CurLines.scriptAniSpeed);
-            }
             conversations[i].gameObject.SetActive(_bool);
+            yield return null;
         }
-    }
-
-    #region "º¸½º ¾÷µ¥ÀÌÆ®"
-    public void SetBossProfile(bool _bool)
-    {
-        bossProfile.SetActive(_bool);
-    }
-    public void BossUpdate(BossEnemyStatus _bossEnemy)
-    {
-        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.TotalStatus[(int)EStatus.MaxHp].ToString();
-        bossTexts[1].text = _bossEnemy.ObjectName.ToString();
-
-        bossStateImages.fillAmount = (float)_bossEnemy.CurHp / _bossEnemy.TotalStatus[(int)EStatus.MaxHp];
-    }
-    #endregion
-
-    #region "ÇÁ·ÎÇÊ ¾÷µ¥ÀÌÆ®"
-    public void UpdatePlayerProfile(PlayerStatus _player)
-    {
-        string[] infoText = new string[]
-            {
-            _player.CurHp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxHp].ToString(),
-            _player.CurMp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxMp].ToString(),
-            _player.CurExp.ToString() + " / " + _player.MaxExp.ToString(),
-            "Lv. " + _player.CurLevel.ToString(),
-        };
-        float[] infoImage ={
-            _player.CurHp / (float)_player.TotalStatus[(int)EStatus.MaxHp] ,
-            _player.CurMp / (float)_player.TotalStatus[(int)EStatus.MaxMp],
-            _player.CurExp / (float)_player.MaxExp
-        };
-        for (int i = 0; i < 4; i++)
-        {
-            playerTexts[i].text = infoText[i];
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            playerStateImages[i].fillAmount = infoImage[i];
-        }
-    }
-    public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
-    {
-        string[] infoText = {
-            _mercenary.CurHp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxHp].ToString(),
-            _mercenary.CurMp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxMp].ToString(),
-            _mercenary.CurExp.ToString() + " / " + _mercenary.MaxExp.ToString(),
-            "Lv. " + _mercenary.CurLevel.ToString()};
-        float[] infoImage = {
-            _mercenary.CurHp / (float)_mercenary.TotalStatus[(int)EStatus.MaxHp] ,
-            _mercenary.CurMp / (float)_mercenary.TotalStatus[(int)EStatus.MaxMp],
-            _mercenary.CurExp / (float)_mercenary.MaxExp
-        };
-
-
-        for (int j = 0; j < infoText.Length; j++)
-        {
-            mercenaryTexts[4 * _mercenaryNum + j].text = infoText[j];
-        }
-        for (int j = 0; j < infoImage.Length; j++)
-        {
-            mercenaryStateImages[3 * _mercenaryNum + j].fillAmount = infoImage[j];
-        }
-
     }
     public IEnumerator Conversation(GameScript _gameScript)
     {
@@ -148,16 +81,79 @@ public class ProfilePanelController : MonoBehaviour
                     
             }
     }
+
+    #region "ë³´ìŠ¤ ì—…ë°ì´íŠ¸"
+    public void SetBossProfile(bool _bool)
+    {
+        bossProfile.SetActive(_bool);
+    }
+    public void BossUpdate(BossEnemyStatus _bossEnemy)
+    {
+        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.TotalStatus[(int)EStatus.MaxHp].ToString();
+        bossTexts[1].text = _bossEnemy.ObjectName.ToString();
+
+        bossStateImages.fillAmount = _bossEnemy.CurHp / _bossEnemy.TotalStatus[(int)EStatus.MaxHp];
+    }
+    #endregion
+
+    #region "í”„ë¡œí•„ ì—…ë°ì´íŠ¸"
+    public void UpdatePlayerProfile(PlayerStatus _player)
+    {
+        string[] infoText = new string[]
+            {
+            _player.CurHp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _player.CurMp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxMp].ToString(),
+            _player.CurExp.ToString() + " / " + _player.MaxExp.ToString(),
+            "Lv. " + _player.CurLevel.ToString(),
+        };
+        float[] infoImageFillAmount ={
+            _player.CurHp / _player.TotalStatus[(int)EStatus.MaxHp] ,
+            _player.CurMp / _player.TotalStatus[(int)EStatus.MaxMp],
+            _player.CurExp / (float)_player.MaxExp
+        };
+        for (int i = 0; i < 4; i++)
+        {
+            playerTexts[i].text = infoText[i];
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            playerStateImages[i].fillAmount = infoImageFillAmount[i];
+        }
+    }
+    public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
+    {
+        string[] infoText = {
+            _mercenary.CurHp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _mercenary.CurMp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxMp].ToString(),
+            _mercenary.CurExp.ToString() + " / " + _mercenary.MaxExp.ToString(),
+            "Lv. " + _mercenary.CurLevel.ToString()};
+        float[] infoImage = {
+            _mercenary.CurHp / _mercenary.TotalStatus[(int)EStatus.MaxHp] ,
+            _mercenary.CurMp / _mercenary.TotalStatus[(int)EStatus.MaxMp],
+            _mercenary.CurExp / (float)_mercenary.MaxExp
+        };
+
+
+        for (int j = 0; j < infoText.Length; j++)
+        {
+            mercenaryTexts[4 * _mercenaryNum + j].text = infoText[j];
+        }
+        for (int j = 0; j < infoImage.Length; j++)
+        {
+            mercenaryStateImages[3 * _mercenaryNum + j].fillAmount = infoImage[j];
+        }
+
+    }
     #endregion
     public void ActiveInventory()
     {
-        // UI È°¼ºÈ­ 
+        // UI í™œì„±í™” 
         this.gameObject.SetActive(true);
 
     }
     public void DeactiveInventory()
     {
-        // UI ºñÈ°¼ºÈ­
+        // UI ë¹„í™œì„±í™”
         this.gameObject.SetActive(false);
     }
 }

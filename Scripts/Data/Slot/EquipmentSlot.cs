@@ -2,38 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EquipmentSlot.cs
-==============================
-*/
+
 public class EquipmentSlot : MonoBehaviour
 {
+    [SerializeField] private Item curItem = null;
+
     private ItemType itemType = ItemType.Hair;
-
-    private Image[] itemImages;
-    public Image[] ItemImages
-    {
-        get { return itemImages; }
-        set { itemImages = value; }
-    }
-
-    [SerializeField]
-    private Item curItem = null;
-    public Item CurItem
-    {
-        get { return curItem; }
-        set { curItem = value; }
-    }
-
-    private bool isEquipmentChange;
-    public bool IsEquipmentChange
-    {
-        get { return isEquipmentChange; }
-        set { isEquipmentChange = value; }
-    }
+    private Image[] itemImages = null;
+    private bool isEquipmentChange = false;
+    public Image[] ItemImages { get { return itemImages; } set { itemImages = value; } }
+    public Item CurItem { get { return curItem; } set { curItem = value; } }
+    public bool IsEquipmentChange { get { return isEquipmentChange; } set { isEquipmentChange = value; }}
 
     private void Awake()
     {
@@ -80,6 +59,6 @@ public class EquipmentSlot : MonoBehaviour
     public void SelectItem()
     {
         if (curItem != null)
-            UIManager.Instance.SelectSlotItem(curItem);
+            UIManager.Instance.SelectEquipmenttSlotItem(curItem);
     }
 }

@@ -33,6 +33,7 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             characterStatus.DelayTime += Time.deltaTime;
         }
+
         
     }
     public IEnumerator FindPath()
@@ -280,6 +281,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual IEnumerator AIDied()
     {
+        characterStatus.IsDied = false;
         yield return null;
     }
 

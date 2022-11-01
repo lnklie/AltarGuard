@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 
-public class UIManager : SingletonManager<UIManager>
+public class UIManager : MonoBehaviour
 {
     [Header("EnemySpawner")]
     [SerializeField] private EnemySpawner enemySpawner = null;
@@ -47,7 +47,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private DisassemblePanelController disassemblePanelController = null;
     [SerializeField] private BattleSupportPanelController battleSupportPanel = null;
     [SerializeField] private UserControlPanelController userControlPanelController = null;
-
+    [SerializeField] private GameOverPanel gameOverPanel = null;
     [Header("NoticeText")]
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
@@ -56,9 +56,14 @@ public class UIManager : SingletonManager<UIManager>
 
 
     private Coroutine preNotice = null;
+    public static UIManager Instance = null;
 
     public bool IsUIOn { get { return isUIOn; } set { isUIOn = value; } }
     public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(13000,100));
@@ -101,9 +106,22 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateBossInfo();
             }
         }
-
-
+        if (altar.IsDied && !altar.TriggerDestroyed)
+        {
+            StartCoroutine(AltarDestroyed());
+        }
     }
+
+    public IEnumerator AltarDestroyed()
+    {
+        altar.TriggerDestroyed = true;
+        gameOverPanel.gameObject.SetActive(true);
+        Notice("����� �ı��Ǿ��ϴ�.", 90, Color.red);
+        yield return new WaitForSeconds(1f);
+        if(gameOverPanel)
+            gameOverPanel.StartGameOver();
+    }
+
     public void SetBossInfo(bool _bool)
     {
         profilePanelController.SetBossProfile(_bool);
@@ -117,19 +135,21 @@ public class UIManager : SingletonManager<UIManager>
         noticeText.gameObject.SetActive(true);
         noticeText.text = _notice;
     }
-    public void Notice(string _notice)
+    public void Notice(string _notice, int _fontSize = 36, Color _fontColor = new Color())
     {
         if (isNotice)
         {
             StopCoroutine(preNotice);
         }
-        preNotice = StartCoroutine(NoticeCoroutine(_notice));
+        preNotice = StartCoroutine(NoticeCoroutine(_notice, _fontSize, _fontColor));
     }
-    public IEnumerator NoticeCoroutine(string _notice)
+    public IEnumerator NoticeCoroutine(string _notice, int _fontSize = 36, Color _fontColor = new Color())
     {
         isNotice = true;
         noticeText.gameObject.SetActive(true);
         noticeText.text = _notice;
+        noticeText.fontSize = _fontSize;
+        noticeText.color = _fontColor;
         yield return new WaitForSeconds(2f);
         isNotice = false;
         for (float i = 1; i >= 0; i -= 0.05f)
@@ -172,6 +192,11 @@ public class UIManager : SingletonManager<UIManager>
         // 슬롯에 선택한 아이템 
         inventoryPanelController.SelectSlotItem(_item, _slot);
     }
+    public void SelectEquipmenttSlotItem(Item _item)
+    {
+        // ���Կ� ������ ������ 
+        equipmentPanelController.SelectSlotItem(_item);
+    }
     public void SelectSlotSellItem(Item _item)
     {
         sellPanelController.SelectSlotSellItem(_item);
@@ -209,10 +234,7 @@ public class UIManager : SingletonManager<UIManager>
     {
         profilePanelController.UpdateMercenaryProfile(mercenaries[_index], _index);
     }
-    public void SetActiveCharactersProfile(int _index, bool _bool)
-    {
-        profilePanelController.Profiles[_index].SetActive(_bool);
-    }
+
     #endregion
 
     #region Button
@@ -235,6 +257,15 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #region Profile Panel
+    public void ActiveEquipmentPanel(int _index)
+    {
+        equipmentPanelController.ActiveEquipmentPanel(true);
+        equipmentPanelController.SelectCharacter(_index);
+        equipmentPanelController.SetEquipmentSlotImage(_index);
+        
+    }
+    #endregion
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
@@ -567,11 +598,6 @@ public class UIManager : SingletonManager<UIManager>
             inventoryPanelController.ActiveInventoryPanel(true);
             inventoryPanelController.ChangeInventorySlot(0);
 
-        }
-        else if (_index == 1)
-        {
-            equipmentPanelController.UpdateEquipmentName();
-            equipmentPanelController.ActiveEquipmentPanel(true);
         }
         else if (_index == 2)
         {

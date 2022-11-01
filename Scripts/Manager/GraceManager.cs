@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GraceManager : SingletonManager<GraceManager>
+public class GraceManager : MonoBehaviour
 {
     [Header("Grace")]
     [SerializeField] private List<GraceConditionWho> graceConditionWhoList = new List<GraceConditionWho>();
@@ -18,12 +18,30 @@ public class GraceManager : SingletonManager<GraceManager>
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<CompleteGrace> GraceList { get { return graceList; } }
+    private void Start()
+    {
+        SetGraceList();
+    }
+
 
     private void Update()
     {
-        if (characterStatuses[(int)ECharacter.Player].TriggerEquipmentChange)
+        for(int i = 0; i < 9; i++)
         {
-            ActiveGrace();
+            if (characterEquipmentController[(int)ECharacter.Player].TriggerEquipmentChange[i])
+            {
+                if(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace1 != null)
+                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace1);
+                else
+                    
+                if (characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace2 != null)
+                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace2);
+                if (characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace3 != null)
+                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace3);
+
+                ActiveGrace();
+                characterEquipmentController[(int)ECharacter.Player].TriggerEquipmentChange[i] = false;
+            }
         }
 
     }
@@ -38,77 +56,6 @@ public class GraceManager : SingletonManager<GraceManager>
         graceResultHowList = DatabaseManager.Instance.graceResultHowList;
     }
 
-    public Grace SelectGrace(int _key)
-    {
-        Grace _grace = null;
-        switch (_key / 1000)
-        {
-            case 0:
-                for (int i = 0; i < graceConditionWhoList.Count; i++)
-                {
-                    if (graceConditionWhoList[i].graceKey == _key)
-                        _grace = graceConditionWhoList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 1:
-                for (int i = 0; i < graceConditionWhatList.Count; i++)
-                {
-                    if (graceConditionWhatList[i].graceKey == _key)
-                        _grace = graceConditionWhatList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 2:
-                for (int i = 0; i < graceConditionHowList.Count; i++)
-                {
-                    if (graceConditionHowList[i].graceKey == _key)
-                        _grace = graceConditionHowList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 3:
-                for (int i = 0; i < graceResultWhoList.Count; i++)
-                {
-                    if (graceResultWhoList[i].graceKey == _key)
-                        _grace = graceResultWhoList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 4:
-                for (int i = 0; i < graceResultWhatList.Count; i++)
-                {
-                    if (graceResultWhatList[i].graceKey == _key)
-                        _grace = graceResultWhatList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 5:
-                for (int i = 0; i < graceResultIsPercentList.Count; i++)
-                {
-                    if (graceResultIsPercentList[i].graceKey == _key)
-                        _grace = graceResultIsPercentList[i];
-                    //else
-                        //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-            case 6:
-                for (int i = 0; i < graceResultHowList.Count; i++)
-                {
-                    if (graceResultHowList[i].graceKey == _key)
-                        _grace = graceResultHowList[i];
-                    //else
-                       //Debug.Log("«ÿ¥Á ¿∫√— ±∏º∫∫Œ∞° æ¯Ω¿¥œ¥Ÿ.");
-                }
-                break;
-        }
-        return _grace;
-    }
     public void ActiveGrace()
     {
         for (int i = 0; i < characterStatuses.Count; i++)
@@ -123,12 +70,11 @@ public class GraceManager : SingletonManager<GraceManager>
             {
                 OperateGrace(graceList[i]);
                 graceList[i].isActive = true;
-                Debug.Log("¿€µø");
+
             }
             else
             {
                 graceList[i].isActive = false;
-                Debug.Log("∆»Ω∫");
             }
 
         }
@@ -138,121 +84,18 @@ public class GraceManager : SingletonManager<GraceManager>
             if (CheckGraceCondition(bigGraceList[i]))
             {
                 OperateGrace(bigGraceList[i]);
+                Debug.Log("ÏûëÎèô");
                 bigGraceList[i].isActive = true;
-                Debug.Log("¿€µø");
             }
             else
             {
                 bigGraceList[i].isActive = false;
-                Debug.Log("∆»Ω∫");
+                Debug.Log("ÌåîÏä§");
             }
         }
     }
-    public CompleteGrace CreateRandomGrace() 
-    {
-        int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
-        int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
-        int conditionValue = -1;
-        int conditionHow = -1;
-        if (conditionWhat > 13)
-        {
-            conditionHow = 3; 
-            conditionValue = Random.Range(0, 10);
-        }
-        else if (conditionWhat > 12)
-            conditionHow = 2;
-        else if(conditionWhat > 10)
-            conditionHow = 1;
-        else
-            conditionHow = 0;
-        int resultWho1 = Random.Range(0, graceResultWhoList.Count);
-        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
-        int resultValue1 = Random.Range(0, 10);
-        int resultValue2 = Random.Range(0, 10);
-        int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
-        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
-        int resultValueIsPercent1 = Random.Range(0, 2);
-        int resultValueIsPercent2 = Random.Range(0, 2);
-        int relationOfGraces = Random.Range(0, 2);
-        float weightedValue1 = 0;
-        float weightedValue2 = 0;
-        if (conditionWho != -1)
-        {
-            weightedValue1 =
-                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
-             * SelectGrace(resultWho1+ 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
-            weightedValue2 =
-                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
-             * SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
-        }
-        else
-        {
-            weightedValue1 = SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
-            weightedValue2 = SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
-        }
-        CompleteGrace _completeGrace = new CompleteGrace(
-            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
-            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 6000,6000, relationOfGraces + 7000);
-        _completeGrace.explain = AddGraceExplain(_completeGrace); 
 
-        return _completeGrace;
-    }
-    public string AddGraceExplain(CompleteGrace _completeGrace)
-    {
-        string _explain = null;
-        if(_completeGrace.conditionWho != -1)
-        {
-            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "∞°(¿Ã) ";
-            if (_completeGrace.conditionWhat < 1014)
-            {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "¿ª(∏¶) ";
-            }
-            else
-            {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "¿Ã ";
-                _explain += _completeGrace.conditionValue;
-            }
-            _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
-        }
-        if(_completeGrace.relationOfGraces == 7000)
-        {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "¿« ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "¿ª(∏¶) ";
-            if(_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " ∏∏≈≠ ";
-            else
-                _explain += _completeGrace.resultValue1 + "% ∏∏≈≠ ";
-            if(_completeGrace.resultWho2 == -1)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "Ω√≈≤¥Ÿ";
-            else
-            {
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "Ω√≈∞∞Ì ";
-                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "¿« ";
-                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "¿ª(∏¶) ";
-                if (_completeGrace.resultValueIsPercent2 == 0)
-                    _explain += _completeGrace.resultValue2 + " ∏∏≈≠ ";
-                else
-                    _explain += _completeGrace.resultValue2 + "% ∏∏≈≠ ";
-                    _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "Ω√≈≤¥Ÿ";
-                } 
-        }
-        else
-        {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "¿« ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "¿ª(∏¶) ";
-            if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " ∏∏≈≠ ";
-            else
-                _explain += _completeGrace.resultValue1 + "% ∏∏≈≠ ";
-            if (_completeGrace.resultHow1 == 6001)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "Ω√≈∞∞Ì ±◊ ∏∏≈≠ ";
 
-            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "¿« ";
-            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "¿ª(∏¶) ";
-            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "Ω√≈≤¥Ÿ";
-        }
-        return _explain;
-    }
     public bool CheckGraceCondition(CompleteGrace _grace)
     {
         bool _bool = false;
@@ -282,6 +125,7 @@ public class GraceManager : SingletonManager<GraceManager>
                                             _bool = false;
                                         }
                                         break;
+
                                 }
                                 break;
                             case EGraceConditionWhat.OnlySword:
@@ -407,8 +251,99 @@ public class GraceManager : SingletonManager<GraceManager>
 
                                 }
                                 break;
+                            case EGraceConditionWhat.Str:
+                                switch((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Dex:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Wiz:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Luck:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
                         }
-
                     }
                     break;
                 case EGraceConditionWho.AllMercenary:
@@ -600,6 +535,134 @@ public class GraceManager : SingletonManager<GraceManager>
                                         }
                                         break;
 
+                                }
+                                break;
+                            case EGraceConditionWhat.Str:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] ==  _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Dex:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Wiz:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Luck:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
                                 }
                                 break;
                         }
@@ -814,6 +877,146 @@ public class GraceManager : SingletonManager<GraceManager>
 
                                 }
                                 break;
+                            case EGraceConditionWhat.Str:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Dex:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Wiz:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case EGraceConditionWhat.Luck:
+                                switch ((EGraceConditionHow)_grace.conditionHow)
+                                {
+                                    case EGraceConditionHow.More:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Same:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                    case EGraceConditionHow.Less:
+                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
+                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        {
+                                            _bool = true;
+                                        }
+                                        break;
+                                }
+                                break;
                         }
 
                     }
@@ -828,7 +1031,7 @@ public class GraceManager : SingletonManager<GraceManager>
     }
     public void OperateGrace(CompleteGrace _grace)
     {
-        if (_grace.relationOfGraces == 7000)
+        if (_grace.relationOfVariables == 7000)
         {
 
             if (_grace.resultWho1 != -1)
@@ -1104,7 +1307,7 @@ public class GraceManager : SingletonManager<GraceManager>
     }
     public void OperateGrace(BigGrace _grace)
     {
-        if (_grace.relationOfGraces == 7000)
+        if (_grace.relationOfVariables == 7000)
         {
 
             if (_grace.resultWho1 != -1)
@@ -1178,76 +1381,76 @@ public class GraceManager : SingletonManager<GraceManager>
                         break;
                 }
             }
-        }
-        if (_grace.resultWho2 != -1)
-        {
-            switch ((EGraceResultWho)_grace.resultWho2)
+            if (_grace.resultWho2 != -1)
             {
-                case EGraceResultWho.Player:
-                case EGraceResultWho.Mercenary1:
-                case EGraceResultWho.Mercenary2:
-                case EGraceResultWho.Mercenary3:
-                case EGraceResultWho.Mercenary4:
+                switch ((EGraceResultWho)_grace.resultWho2)
+                {
+                    case EGraceResultWho.Player:
+                    case EGraceResultWho.Mercenary1:
+                    case EGraceResultWho.Mercenary2:
+                    case EGraceResultWho.Mercenary3:
+                    case EGraceResultWho.Mercenary4:
 
-                    if (_grace.resultWhat2 != -1)
-                        if (_grace.resultValueIsPercent2 == 5000)
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
                             else
-                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                        else
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                    case EGraceResultWho.AllMercenary:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
                             else
-                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                    break;
-                case EGraceResultWho.AllMercenary:
-                    if (_grace.resultWhat2 != -1)
-                        if (_grace.resultValueIsPercent2 == 5000)
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                        else
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                            else
-                                for (int i = 1; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                    break;
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 1; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
 
-                case EGraceResultWho.All:
-                    if (_grace.resultWhat2 != -1)
-                        if (_grace.resultValueIsPercent2 == 5000)
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                    case EGraceResultWho.All:
+                        if (_grace.resultWhat2 != -1)
+                            if (_grace.resultValueIsPercent2 == 5000)
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
                             else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                        else
-                        {
-                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                            else
-                                for (int i = 0; i < characterStatuses.Count; i++)
-                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                        }
-                    break;
+                            {
+                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                                else
+                                    for (int i = 0; i < characterStatuses.Count; i++)
+                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                            }
+                        break;
+                }
             }
         }
         else
@@ -1391,12 +1594,11 @@ public class GraceManager : SingletonManager<GraceManager>
             ActiveGrace();
         }
         else
-            Debug.Log("¿ÃπÃ πËøÓ ¿∫√—");
+            Debug.Log("Ïù¥ÎØ∏ Î∞∞Ïö¥ ÏùÄÏ¥ù");
     }
     public bool CheckIsReceive(int _key)
     {
         bool isReceive = false;
-        Debug.Log("√º≈©«œ∑¡¥¬ ≈∞¥¬ " + _key);
         if(bigGraceList.Count > 0)
             for(int i = 0; i < bigGraceList.Count; i++)
             {
@@ -1408,36 +1610,5 @@ public class GraceManager : SingletonManager<GraceManager>
         return isReceive;
     }
 
-        //public void SetGraceAbility()
-        //{
-        //    characterStatuses[0].InitGraceStatus();
-        //    for (int i = 0; i < graceList.Count; i++)
-        //    {
-        //        switch(graceList[i].graceKey)
-        //        {
-        //            case 0:
-        //                if (characterStatuses[0].EquipmentController.EquipItems[7].attackType == "Melee")
-        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-        //                break;
-        //            case 1:
-        //                if(characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-        //                break;
-        //            case 2:
-        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Axe" ||
-        //                    characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Spear")
-        //                    characterStatuses[0].GracePhysicalDamage += 0.1f;
-        //                break;
-        //            case 3:
-        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-        //                    characterStatuses[0].GraceAttackSpeed += 0.1f;
-        //                break;
-        //            case 4:
-        //                if (characterStatuses[0].EquipmentController.EquipItems[7].weaponType == "Sword")
-        //                    characterStatuses[0].GracePhysicalDamage += 0.2f;
-        //                break;
-        //        }
-        //    }
-        //}
         
 }

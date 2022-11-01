@@ -30,7 +30,7 @@ public class RushEnemyStatus : EnemyStatus
     }
     public void UpdateEnemyHp()
     {
-        images[1].fillAmount = curHp / (float)TotalStatus[(int)EStatus.MaxHp];
+        images[1].fillAmount = curHp / TotalStatus[(int)EStatus.MaxHp];
     }
     public void CustomEnemy()
     {
@@ -42,9 +42,9 @@ public class RushEnemyStatus : EnemyStatus
         totalStatus[(int)EStatus.Wiz] = rushEnemy.str + equipStatus[(int)EStatus.Wiz];
         totalStatus[(int)EStatus.MaxHp] = rushEnemy.hp + totalStatus[(int)EStatus.Str] + equipStatus[(int)EStatus.MaxHp];
         totalStatus[(int)EStatus.MaxMp] = rushEnemy.mp + totalStatus[(int)EStatus.Wiz] + equipStatus[(int)EStatus.MaxMp];
-        totalStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] + 5 + equipStatus[(int)EStatus.PhysicalDamage];
-        totalStatus[(int)EStatus.MagicalDamage] = totalStatus[(int)EStatus.Wiz] + 5 + equipStatus[(int)EStatus.MagicalDamage];
-        totalStatus[(int)EStatus.DefensivePower] = totalStatus[(int)EStatus.Str] + 3 + equipStatus[(int)EStatus.DefensivePower];
+        totalStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] * 5 + equipStatus[(int)EStatus.PhysicalDamage];
+        totalStatus[(int)EStatus.MagicalDamage] = totalStatus[(int)EStatus.Wiz] * 5 + equipStatus[(int)EStatus.MagicalDamage];
+        totalStatus[(int)EStatus.DefensivePower] = totalStatus[(int)EStatus.Str] * 3 + equipStatus[(int)EStatus.DefensivePower];
         totalStatus[(int)EStatus.Speed] = rushEnemy.speed + totalStatus[(int)EStatus.Dex] * 0.1f;
         totalStatus[(int)EStatus.HpRegenValue] = totalStatus[(int)EStatus.Str] * 0.5f;
         totalStatus[(int)EStatus.AtkRange] = rushEnemy.atkRange + totalStatus[(int)EStatus.AtkRange];

@@ -13,7 +13,7 @@ public class GracePanelController : MonoBehaviour
     [SerializeField] private Button graceLearnButton = null;
     [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
     [SerializeField] private TextMeshProUGUI remainingPoint = null;
-
+    [SerializeField] private GraceManager graceManager = null;
     private BigGrace selectGrace = null;
 
     private void Awake()
@@ -35,12 +35,12 @@ public class GracePanelController : MonoBehaviour
     //            slots[i].Grace = DatabaseManager.Instance.SelectBigGrace(_egraceType + i);
     //        }
     //        else
-    //            Debug.Log("«ÿ¥Á ¿∫√—¿Ã æ¯Ω¿¥œ¥Ÿ.");
+    //            Debug.Log("Ìï¥Îãπ ÏùÄÏ¥ùÏù¥ ÏóÜÏäµÎãàÎã§.");
     //    }
     //}
     public void UpdateGracePoint(int _gracePoint)
     {
-        remainingPoint.text = "¿‹ø© ∆˜¿Œ∆Æ: " + _gracePoint;
+        remainingPoint.text = "ÏûîÏó¨ Ìè¨Ïù∏Ìä∏: " + _gracePoint;
     }
 
     public void SelectGrace(int _index)
@@ -48,15 +48,15 @@ public class GracePanelController : MonoBehaviour
         selectGrace = slots[_index].Grace;
         graceExplain.text = selectGrace.explain;
         graceName.text = selectGrace.bigGraceName;
-        if(GraceManager.Instance.CheckIsReceive(selectGrace.bigGraceKey))
+        if(graceManager.CheckIsReceive(selectGrace.bigGraceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "¿ÃπÃ πﬁ¿Ω";
+            graceLearnButtonText.text = "Ïù¥ÎØ∏ Î∞õÏùå";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "πﬁ±‚";
+            graceLearnButtonText.text = "Î∞õÍ∏∞";
         }
         
     }
@@ -71,13 +71,14 @@ public class GracePanelController : MonoBehaviour
     }
     public void AquireGrace()
     {
-        GraceManager.Instance.AquireBigGrace(selectGrace.bigGraceKey);
+        graceManager.AquireBigGrace(selectGrace.bigGraceKey);
+        graceManager.ActiveGrace();
     }
     public void UpdateSlots()
     {
         for (int i = 0; i < slots.Count; i++)
         {
-            if (GraceManager.Instance.CheckIsReceive(slots[i].Grace.necessaryBigGraceKey) || slots[i].Grace.necessaryBigGraceKey == -1)
+            if (graceManager.CheckIsReceive(slots[i].Grace.necessaryBigGraceKey) || slots[i].Grace.necessaryBigGraceKey == -1)
             {
                 slotButtons[i].interactable = true;
             }

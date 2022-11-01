@@ -7,6 +7,7 @@ public class AltarController : MonoBehaviour
 {
     [SerializeField] private List<AllyStatus> characters = new List<AllyStatus>();
     private AltarStatus altar = null;
+
     private void Awake()
     {
         altar = this.GetComponent<AltarStatus>();

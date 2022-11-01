@@ -24,13 +24,6 @@ public class MercenaryController : AllyController
         mercenary.AIState = EAIState.Idle;
     }
 
-    public bool IsLastHit(CharacterStatus _status)
-    {
-        if (_status.CurHp <= 0f)
-            return true;
-        else
-            return false;
-    }
 
     public EAIState CheckBossState(CharacterStatus _Status)
     {
@@ -51,8 +44,8 @@ public class MercenaryController : AllyController
                 _enemy.Damaged(AttackTypeDamage());
                 if(_enemy.IsLastHit())
                 {
+                    _enemy.IsDied= true;
                     mercenary.AquireExp(_enemy);
-
                     bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)
                     {
@@ -111,9 +104,8 @@ public class MercenaryController : AllyController
 
         }
     }
-    public bool Targeting(List<EnemyController> _targetList)
+    public void Targeting(List<EnemyController> _targetList)
     {
-        bool _bool = false;
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if (_hit.Length > 0)
         {
@@ -126,13 +118,11 @@ public class MercenaryController : AllyController
                     _hitStatus.IsAllyTargeted[mercenary.AllyNum] = true;
                 }
             }
-            _bool = true;
         }
-        return _bool;
     }
-    public bool Targeting(List<AllyController> _targetList)
+    public void Targeting(List<AllyController> _targetList)
     {
-        bool _bool = false;
+  
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if (_hit.Length > 0)
         {
@@ -145,9 +135,7 @@ public class MercenaryController : AllyController
                     _hitStatus.IsAllyTargeted[mercenary.AllyNum] = true;
                 }
             }
-            _bool = true;
         }
-        return _bool;
     }
     public void ResortTarget(List<EnemyController> _targetList)
     {
@@ -211,11 +199,11 @@ public class MercenaryController : AllyController
     {
         while(true)
         {
-            if(Targeting(mercenary.EnemyRayList))
-                ResortTarget(mercenary.EnemyRayList);
+            Targeting(mercenary.EnemyRayList);
+            ResortTarget(mercenary.EnemyRayList);
 
-            if(Targeting(mercenary.AllyRayList))
-                ResortTarget(mercenary.AllyRayList);
+            Targeting(mercenary.AllyRayList);
+            ResortTarget(mercenary.AllyRayList);
 
             yield return new WaitForSeconds(0.5f);
         }

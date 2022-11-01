@@ -9,7 +9,7 @@ public class SetUpPanelController : MonoBehaviour
     [SerializeField] private PlayerController playerController = null;
     [SerializeField] private Slider[] soundSliders = null;
     [SerializeField] private Slider[] portionUseConditonSliders = null;
-    [SerializeField] private TextMeshProUGUI[] textMeshProUGUIs;
+    [SerializeField] private TextMeshProUGUI[] sleepTimeTexts;
     [SerializeField] private TextMeshProUGUI[] portionUseConditionPercents;
     
 
@@ -35,9 +35,13 @@ public class SetUpPanelController : MonoBehaviour
 
     public void SetSleepMode(int _index)
     {
-        textMeshProUGUIs[(int)GameManager.Instance.SleepModeTime].color = Color.white;
+        sleepTimeTexts[(int)GameManager.Instance.SleepModeTime].color = Color.white;
         GameManager.Instance.SleepModeTime = (ESleepModeTime)_index;
-        textMeshProUGUIs[_index].color = Color.red;
+        sleepTimeTexts[_index].color = Color.red;
+    }
+    public void SetSleeModeImmediately()
+    {
+        GameManager.Instance.OperateSleepMode();
     }
     public void SetSleeModeImmediately()
     {

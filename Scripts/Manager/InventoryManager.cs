@@ -1,30 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-09
- * 작성자 : Inklie
- * 파일명 : InventoryManager.cs
-==============================
-*/
-public class InventoryManager : SingletonManager<InventoryManager>
-{
+using UnityEngine.U2D;
+
+public class InventoryManager : MonoBehaviour
+
+    public static InventoryManager Instance;
+
     [SerializeField] private List<Item> inventroyWeaponItems = new List<Item>();
-
     [SerializeField] private List<Item> inventroyEquipmentItems = new List<Item>();
-
     [SerializeField] private List<Item> inventroyConsumableItems = new List<Item>();
-
     [SerializeField] private List<Item> inventroyMiscellaneousItems = new List<Item>();
-
     [SerializeField] private List<Item> inventroyDecorationItems = new List<Item>();
 
     [SerializeField] private bool isWeaponCoolTime = false;
     [SerializeField] private bool isEquipmentCoolTime = false;
     [SerializeField] private bool isConsumaableCoolTime = false;
     [SerializeField] private bool isDecorationCoolTime = false;
-
     #region Property
     public List<Item> InventroyWeaponItems { get { return inventroyWeaponItems; } }
     public List<Item> InventroyEquipmentItems { get { return inventroyEquipmentItems; } }
@@ -37,7 +29,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
     public bool IsConsumaableCoolTime { get { return isConsumaableCoolTime; } set { isConsumaableCoolTime = value; } }
     public bool IsDecorationCoolTime { get { return isDecorationCoolTime; } set { isDecorationCoolTime = value; } }
     #endregion
-
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         //AcquireItem(DatabaseManager.Instance.SelectItem(3), 1);
@@ -60,7 +55,6 @@ public class InventoryManager : SingletonManager<InventoryManager>
         //AcquireItem(DatabaseManager.Instance.SelectItem(7002));
         //AcquireItem(DatabaseManager.Instance.SelectItem(8003));
         //AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
-
     }
     private void Update()
     {

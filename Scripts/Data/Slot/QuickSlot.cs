@@ -11,7 +11,6 @@ public class QuickSlot : MonoBehaviour
     [SerializeField] private Image coolTimeImage = null;
     [SerializeField] private Item curItem = null;
     [SerializeField] private bool isItemRegistered = false;
-    [SerializeField] private Sprite uiMask = null;
     [SerializeField] private int index = 0;
 
     [SerializeField] private Button autoUseButton = null;
@@ -23,10 +22,7 @@ public class QuickSlot : MonoBehaviour
     public Item CurItem { get { return curItem; } set { curItem = value; } }
     public bool IsItemRegistered { get { return isItemRegistered; } set { isItemRegistered = value; } }
     #endregion
-    private void Awake()
-    {
-        itemCount = GetComponentInChildren<TextMeshProUGUI>();
-    }
+
     private void Start()
     {
         InitSlot();
@@ -49,7 +45,7 @@ public class QuickSlot : MonoBehaviour
     {
         // ½½·Ô ¸®¼Â
         curItem = null;
-        itemImage.sprite = uiMask;
+        itemImage.gameObject.SetActive(false);
         itemCount.text = "00";
         isAutoUse = false;
         checkEquip.gameObject.SetActive(false);
@@ -60,6 +56,7 @@ public class QuickSlot : MonoBehaviour
     public void SetSlot()
     {
         // ½½·Ô ¼¼ÆÃ
+        itemImage.gameObject.SetActive(true);
         itemImage.sprite = curItem.singleSprite;
         itemImage.rectTransform.sizeDelta = new Vector2(100f, 100f);
         if (curItem.isEquip)

@@ -104,6 +104,7 @@ public class InventoryPanelController : MonoBehaviour
     public void UpdateMoney()
     {
         moneyText.text = ConvertMoney(playerStatus.Money);
+        Debug.Log("ÇöÀçµ·Àº " + playerStatus.Money); ;
     }
 
     public string ConvertMoney(int _money)

@@ -7,6 +7,7 @@ public class CharacterStatus : Status
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected int curLevel = 30;
     [SerializeField] protected bool isAtk = false;
+
     [SerializeField] protected EnemyController enemyTarget = null;
     [SerializeField] protected AllyController allyTarget = null;
     [SerializeField] protected float seeRange = 8f;
@@ -24,17 +25,11 @@ public class CharacterStatus : Status
     [Header("BuffStatus")]
     [SerializeField] protected float[] buffStatus = new float[16];
 
-
-
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
-    [SerializeField] protected bool triggerEquipmentChange = false;
-    //[SerializeField] protected EquipmentController equipmentController = null;
+
     protected int curExp = 0;
     protected int maxExp = 0;
-
-
-
 
     [SerializeField] protected float delayTime = 0f;
     [SerializeField] private float stiffenTime = 0f;
@@ -47,17 +42,14 @@ public class CharacterStatus : Status
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
 
-    [SerializeField] private bool isDied = false;
     [SerializeField] private bool isSkillChange = false;
     private Debuff debuff = Debuff.Not;
     #region Properties
     public float[] EquipStatus { get { return equipStatus; } set { equipStatus = value; } }
     public float[] BuffStatus { get { return buffStatus; } set { buffStatus = value; } }
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
-    public bool TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
-    public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
 
-    public bool IsDied { get { return isDied; } set { isDied = value; } }
+    public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
 
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
@@ -97,7 +89,7 @@ public class CharacterStatus : Status
     {
         UpdateAllStatus();
         UpdateAllBasicStatus();
-        Debug.Log("ø‰±‚¿Ã±‚" + ObjectName);
+
         curHp = (int)totalStatus[(int)EStatus.MaxHp];
         curMp = (int)totalStatus[(int)EStatus.MaxMp];
         triggerStatusUpdate = true;
@@ -105,11 +97,6 @@ public class CharacterStatus : Status
     public virtual void Update()
     {
 
-        if (triggerEquipmentChange)
-        {
-            triggerEquipmentChange = false;
-            //UpdateTotalAbility();
-        }
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
 
@@ -132,7 +119,7 @@ public class CharacterStatus : Status
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
 
-        // »˚, πŒ, ¡ˆ ø√∏±∂ß πŸ≤Ó¥¬ ∞ÕµÈ
+        // Ìûò, ÎØº, ÏßÄ Ïò¨Î¶¥Îïå Î∞îÎÄåÎäî Í≤ÉÎì§
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -172,7 +159,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ¥…∑¬ æ˜µ•¿Ã∆Æ
+        // Îä•Î†• ÏóÖÎç∞Ïù¥Ìä∏
         
     }
     public void RemoveBuff()

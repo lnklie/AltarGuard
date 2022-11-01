@@ -46,16 +46,14 @@ public class EnemyController : CharacterController
         }
         enemyStatus.TargetDir = enemyStatus.Distance.normalized;
         if (enemyStatus.IsDied)
+        {
             StartCoroutine(AIDied());
+        }
         if (!enemyStatus.IsDied)
         {
             if (enemyStatus.AllyTarget == null)
             {
-
                 enemyStatus.AIState = EAIState.Chase;
-                Debug.Log("¦i´ÂÁß");
-
-
             }
             else
             {
@@ -104,7 +102,7 @@ public class EnemyController : CharacterController
     }
     public void ResortTarget(List<AllyController> _targetList )
     {
-        if (_targetList.Count > 0)
+        if (_targetList.Count > 0) 
         {
             enemyStatus.AllyTarget = _targetList[0];
             SortSightRayListByDistance(_targetList);
@@ -191,11 +189,11 @@ public class EnemyController : CharacterController
             for (int i = 0; i < hits.Length; i++)
             {
                 Status ally = hits[i].collider.GetComponent<Status>();
-                if(ally == null)
-                {
-                    Debug.Log("¹¹Â¡?? ¹» °ø°ÝÇÑ°É±î?" + hits[i].collider.name);
-                }
                 ally.Damaged(AttackTypeDamage());
+                if (ally.IsLastHit())
+                {
+                    ally.IsDied = true;
+                }
             }
         }
     }

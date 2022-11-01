@@ -22,9 +22,9 @@ public class CompleteGrace
     public int resultValueIsPercent2 = -1;
     public int resultHow1 = -1;
     public int resultHow2 = -1;
-    public int relationOfGraces = -1;
+    public int relationOfVariables = -1;
 
-    public CompleteGrace(int conditionWho, int conditionWhat, int conditionValue, int conditionHow, int resultWho1, int resultWho2, int resultWhat1, int resultWhat2, int resultValue1, int resultValue2, int resultValueIsPercent1, int resultValueIsPercent2, int resultHow1, int resultHow2, int relationOfGraces)
+    public CompleteGrace(int conditionWho, int conditionWhat, int conditionValue, int conditionHow, int resultWho1, int resultWho2, int resultWhat1, int resultWhat2, int resultValue1, int resultValue2, int resultValueIsPercent1, int resultValueIsPercent2, int resultHow1, int resultHow2, int relationOfVariables)
     {
         this.conditionWho = conditionWho;
         this.conditionWhat = conditionWhat;
@@ -40,6 +40,6 @@ public class CompleteGrace
         this.resultValueIsPercent2 = resultValueIsPercent2;
         this.resultHow1 = resultHow1;
         this.resultHow2 = resultHow2;
-        this.relationOfGraces = relationOfGraces;
+        this.relationOfVariables = relationOfVariables;
     }
 }

@@ -178,6 +178,10 @@ public enum EGraceConditionWhat
     SpearOrExe,
     SwordAndShield,
     WandAndShiled,
+    Str,
+    Dex,
+    Wiz,
+    Luck,
     HpPortion,
     MpPortion,
     Skill
@@ -187,6 +191,9 @@ public enum EGraceConditionHow
     Equip = 2000,
     Use,
     SkillUse,
+    More,
+    Same,
+    Less
 }
 public enum EGraceResultWho
 {

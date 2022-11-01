@@ -13,24 +13,21 @@ public class AllyStatus : CharacterStatus
     [SerializeField] private int[] graceMagniStatuses = new int[16];
 
 
+    [SerializeField] private bool isAlterBuff = false;
+    [SerializeField] private int allyNum = 0;
 
     private int statusPoint = 10;
-    [SerializeField] private bool isAlterBuff = false;
     private float revivalTime = 5f;
     private float knuckBackPower = 1;
 
-    [SerializeField] private int allyNum = 0;
 
     #region Properties
     public float[] GraceStatuses { get { return graceStatuses; } set { graceStatuses = value; } }
     public int[] GraceMagniStatuses { get { return graceMagniStatuses; } set { graceMagniStatuses = value; } }
-
     public int AllyNum { get{ return allyNum; } set{ allyNum = value; } }
     public float KnuckBackPower { get { return knuckBackPower; } set { knuckBackPower = value; } }
     public float RevivalTime { get { return revivalTime; } set { revivalTime = value; } }
-
     public int StatusPoint { get { return statusPoint; } set { statusPoint = value; } }
-
     public bool IsAlterBuff {get { return isAlterBuff; } set { isAlterBuff = value; } }
 
     #endregion
@@ -53,7 +50,7 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ½ºÅİ »ó½Â
+        // ìŠ¤í…Ÿ ìƒìŠ¹
         if (statusPoint > 0)
         {
             switch (_index)
@@ -78,21 +75,23 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("½ºÅ×ÀÌÅÍ½º Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ìŠ¤í…Œì´í„°ìŠ¤ í¬ì¸íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤.");
     }
 
     private void UpLevel()
     {
-        // ·¹º§¾÷
+        // ë ˆë²¨ì—…
         curLevel++;
-        curExp -= maxExp;
+        curExp = 0;
         statusPoint += 5;
+        Debug.Log("expë¦¬ìŠ¤íŠ¸ ìˆ˜ëŠ” " + DatabaseManager.Instance.expList.Count);
         LvToExp();
     }
 
     private void LvToExp()
     {
-        // ·¹º§º° °æÇèÄ¡ ÀüÈ¯
+        // ë ˆë²¨ë³„ ê²½í—˜ì¹˜ ì „í™˜
+        
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
             if (curLevel == DatabaseManager.Instance.expList[i].lv)
@@ -101,7 +100,7 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // ÃÖ´ë °æÇèÄ¡ ÀÎÁö È®ÀÎ
+        // ìµœëŒ€ ê²½í—˜ì¹˜ ì¸ì§€ í™•ì¸
         if (curExp >= maxExp)
             return true;
         else
@@ -144,7 +143,8 @@ public class AllyStatus : CharacterStatus
   
     public override void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
+        //Debug.Log("ì˜¤ë¸Œì íŠ¸ ì´ë¦„: " + ObjectName + " í•´ë‹¹ ë² ì´ì§ ìŠ¤í…Œì´í„°ìŠ¤ "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " í•´ë‹¹ ì¥ì°©ìŠ¤í…Œì´í„°ìŠ¤ " + equipStatus[(int)_eStatus]);
         totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
             + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
             + buffStatus[(int)_eStatus];

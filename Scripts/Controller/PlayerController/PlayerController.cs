@@ -236,7 +236,7 @@ public class PlayerController : AllyController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // ����ȿ� �ִ� ��鿡�� ������
+
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -245,6 +245,7 @@ public class PlayerController : AllyController
                 _enemy.Damaged(AttackTypeDamage());
                 if (_enemy.IsLastHit())
                 {
+                    _enemy.IsDied = true;
                     player.AquireExp(_enemy);
                     bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)
@@ -498,6 +499,7 @@ public class PlayerController : AllyController
                 _enemy.Damaged(AttackTypeDamage());
                 if (_enemy.IsLastHit())
                 {
+                    _enemy.IsDied = true;
                     player.AquireExp(_enemy);
                     bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
                     for (int j = 0; j < 5; j++)

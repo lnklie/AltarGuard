@@ -4,23 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 public class ScrollController : MonoBehaviour
 {
-    private RectTransform rectTransform = null;
+    [SerializeField] private RectTransform rectTransform = null;
     
     [SerializeField] private Vector3 preMousePos = Vector3.zero;
     [SerializeField] private float maxRectPos = 0f;
     [SerializeField] private float minRectPos = 0f;
     [SerializeField] private float scrollingSpeed = 0f;
     [SerializeField] private bool isScrolling = false;
-
     public bool IsScrolling { get { return isScrolling; } }
-    private void Awake()
-    {
-        rectTransform = GetComponent<RectTransform>();
-    }
-    private void Start()
-    {
-        
-    }
     private void Update()
     {
         if (IsPointerOverUIObject(Input.mousePosition) && !UIManager.Instance.IsUIOn)

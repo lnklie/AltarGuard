@@ -28,6 +28,7 @@ public class RushEnemyController : EnemyController
 
     public override IEnumerator AIDied()
     {
+        base.IsDied();
         rushEnemyStatus.UpdateEnemyHp();
         rushEnemyStatus.AIState = EAIState.Died;
         rushEnemyStatus.ActiveLayer(ELayerName.DieLayer);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : SingletonManager<GameManager>
 {
@@ -22,7 +23,10 @@ public class GameManager : SingletonManager<GameManager>
         if (Input.anyKey || isSleepMode)
             sleepModeTime = 0f;
     }
-
+    public void LoadScene(int _sceneNum)
+    {
+        SceneManager.LoadSceneAsync(_sceneNum);
+    }
     public void SetConditionSleepMode()
     {
         switch(EsleepModetime)
@@ -55,7 +59,7 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void OperateSleepMode()
     {
-        Debug.Log("ÀýÀü ¸ðµå ½ÃÀÛ");
+        Debug.Log("Ã€Ã½Ã€Ã¼ Â¸Ã°ÂµÃ¥ Â½ÃƒÃ€Ã›");
         isSleepMode = true;
     }
 }

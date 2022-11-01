@@ -22,56 +22,23 @@ public class AltarStatus : Status
     private bool isAltarStatusChange = false;
     private Image[] images = null;
     [SerializeField] private SpriteRenderer buffRangeSprite = null;
+    private bool triggerDestroyed = false;
+
+
     #region Property
-    public SpriteRenderer BuffRangeSprite
-    {
-        get { return buffRangeSprite; }
-    }
-    public AltarState AltarState
-    {
-        get { return altarState; }
-        set { altarState = value; }
-    }
-    public int Hp
-    {
-        get { return hpLevel; }
-        set { hpLevel = value; }
-    }
-    public int DefensivePowerLevel
-    {
-        get { return defensivePowerLevel; }
-        set { defensivePowerLevel = value; }
-    }
-    public int BuffRangeLevel
-    {
-        get { return buffRangeLevel; }
-        set { buffRangeLevel = value; }
-    }
-    public int BuffDamageLevel
-    {
-        get { return buffDamageLevel; }
-        set { buffDamageLevel = value; }
-    }
-    public int BuffDefensivePowerLevel
-    {
-        get { return buffDefensivePowerLevel; }
-        set { buffDefensivePowerLevel = value; }
-    }
-    public int BuffSpeedLevel
-    {
-        get { return buffSpeedLevel; }
-        set { buffSpeedLevel = value; }
-    }
-    public int BuffHpRegenLevel
-    {
-        get { return buffHpRegenLevel; }
-        set { buffHpRegenLevel = value; }
-    }
-    public bool TriggerAltarStatusChange
-    {
-        get { return isAltarStatusChange; }
-        set { isAltarStatusChange = value; }
-    }
+
+    public bool TriggerDestroyed { get { return triggerDestroyed; } set { triggerDestroyed = value; } }
+    public SpriteRenderer BuffRangeSprite { get { return buffRangeSprite; } }
+    public AltarState AltarState { get { return altarState; } set { altarState = value; } }
+    public int Hp { get { return hpLevel; } set { hpLevel = value; } }
+    public int DefensivePowerLevel { get { return defensivePowerLevel; } set { defensivePowerLevel = value; } }
+    public int BuffRangeLevel { get { return buffRangeLevel; } set { buffRangeLevel = value; } }
+    public int BuffDamageLevel { get { return buffDamageLevel; } set { buffDamageLevel = value; } }
+    public int BuffDefensivePowerLevel { get { return buffDefensivePowerLevel; } set { buffDefensivePowerLevel = value; } }
+    public int BuffSpeedLevel { get { return buffSpeedLevel; } set { buffSpeedLevel = value; } }
+    public int BuffHpRegenLevel { get { return buffHpRegenLevel; } set { buffHpRegenLevel = value; } }
+    public bool TriggerAltarStatusChange { get { return isAltarStatusChange; } set { isAltarStatusChange = value; } }
+
     #endregion
     public override void Awake()
     {
@@ -102,7 +69,7 @@ public class AltarStatus : Status
     }
     public override void Damaged(int _damage)
     {
-        //Debug.Log("ºÆªÛ ∏¬¥¬ ¡ﬂ");
+        //Debug.Log("ÏÑùÏÉÅ ÎßûÎäî Ï§ë");
         base.Damaged(_damage);
         UpdateAltarHp();
     }
@@ -116,7 +83,7 @@ public class AltarStatus : Status
     }
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
-        // ¡¶¥‹ æ˜±◊∑π¿ÃµÂ
+        // Ï†úÎã® ÏóÖÍ∑∏Î†àÏù¥Îìú
         switch (_altarAbility)
         {
             case AltarAbility.Hp:
