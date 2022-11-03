@@ -50,7 +50,7 @@ public class AllyStatus : CharacterStatus
 
     public void UpStatus(int _index)
     {
-        // ½ºÅÝ »ó½Â
+        // ìŠ¤í…Ÿ ìƒìŠ¹
         if (statusPoint > 0)
         {
             switch (_index)
@@ -75,22 +75,22 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("½ºÅ×ÀÌÅÍ½º Æ÷ÀÎÆ®°¡ ¾ø½À´Ï´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
     }
 
     private void UpLevel()
     {
-        // ·¹º§¾÷
+        // ë ˆë²¨ì—…
         curLevel++;
         curExp = 0;
         statusPoint += 5;
-        Debug.Log("exp¸®½ºÆ® ¼ö´Â " + DatabaseManager.Instance.expList.Count);
+        Debug.Log("expï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ " + DatabaseManager.Instance.expList.Count);
         LvToExp();
     }
 
     private void LvToExp()
     {
-        // ·¹º§º° °æÇèÄ¡ ÀüÈ¯
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½È¯
         
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
@@ -100,7 +100,7 @@ public class AllyStatus : CharacterStatus
     }
     private bool CheckMaxExp()
     {
-        // ÃÖ´ë °æÇèÄ¡ ÀÎÁö È®ÀÎ
+        // ìµœëŒ€ ê²½í—˜ì¹˜ ì¸ì§€ í™•ì¸
         if (curExp >= maxExp)
             return true;
         else
@@ -143,8 +143,8 @@ public class AllyStatus : CharacterStatus
   
     public override void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
-        //Debug.Log("¿ÀºêÁ§Æ® ÀÌ¸§: " + ObjectName + " ÇØ´ç º£ÀÌÁ÷ ½ºÅ×ÀÌÅÍ½º "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " ÇØ´ç ÀåÂø½ºÅ×ÀÌÅÍ½º " + equipStatus[(int)_eStatus]);
+        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        //Debug.Log("ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ì¸ï¿½: " + ObjectName + " ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í½ï¿½ " + equipStatus[(int)_eStatus]);
         totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
             + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
             + buffStatus[(int)_eStatus];

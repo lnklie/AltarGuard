@@ -18,7 +18,7 @@ public class IntroManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
-            loadingText.text = "·ÎµùÁß";
+            loadingText.text = "Â·ÃÂµÃ¹ÃÃŸ";
             GameManager.Instance.LoadScene(1);
         }
         CameraMove();

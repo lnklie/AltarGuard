@@ -56,7 +56,6 @@ public class GraceManager : MonoBehaviour
         graceResultHowList = DatabaseManager.Instance.graceResultHowList;
     }
 
-
     public void ActiveGrace()
     {
         for (int i = 0; i < characterStatuses.Count; i++)
@@ -84,13 +83,13 @@ public class GraceManager : MonoBehaviour
             if (CheckGraceCondition(bigGraceList[i]))
             {
                 OperateGrace(bigGraceList[i]);
-                Debug.Log("ÀÛµ¿");
+                Debug.Log("ï¿½Ûµï¿½");
                 bigGraceList[i].isActive = true;
             }
             else
             {
                 bigGraceList[i].isActive = false;
-                Debug.Log("ÆÈ½º");
+                Debug.Log("ï¿½È½ï¿½");
             }
         }
     }
@@ -1594,7 +1593,7 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
+            Debug.Log("ì´ë¯¸ ë°°ìš´ ì€ì´");
     }
     public bool CheckIsReceive(int _key)
     {

@@ -17,8 +17,6 @@ public class CharacterStatus : Status
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
 
-
-
     [Header("EquipStatus")]
     [SerializeField] protected float[] equipStatus = new float[16];
 
@@ -50,7 +48,6 @@ public class CharacterStatus : Status
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
 
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
-
 
 
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
@@ -91,6 +88,7 @@ public class CharacterStatus : Status
     {
         UpdateAllStatus();
         UpdateAllBasicStatus();
+
         curHp = (int)totalStatus[(int)EStatus.MaxHp];
         curMp = (int)totalStatus[(int)EStatus.MaxMp];
         triggerStatusUpdate = true;
@@ -118,8 +116,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
-
-        // Èû, ¹Î, Áö ¿Ã¸±¶§ ¹Ù²î´Â °Íµé
+        // ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Íµï¿½
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -159,7 +156,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
         
     }
     public void RemoveBuff()

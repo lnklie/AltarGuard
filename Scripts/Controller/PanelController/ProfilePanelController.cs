@@ -82,7 +82,7 @@ public class ProfilePanelController : MonoBehaviour
             }
     }
 
-    #region "º¸½º ¾÷µ¥ÀÌÆ®"
+    #region "ë³´ìŠ¤ ì—…ë°ì´íŠ¸"
     public void SetBossProfile(bool _bool)
     {
         bossProfile.SetActive(_bool);
@@ -96,7 +96,7 @@ public class ProfilePanelController : MonoBehaviour
     }
     #endregion
 
-    #region "ÇÁ·ÎÇÊ ¾÷µ¥ÀÌÆ®"
+    #region "í”„ë¡œí•„ ì—…ë°ì´íŠ¸"
     public void UpdatePlayerProfile(PlayerStatus _player)
     {
         string[] infoText = new string[]
@@ -147,13 +147,13 @@ public class ProfilePanelController : MonoBehaviour
     #endregion
     public void ActiveInventory()
     {
-        // UI È°¼ºÈ­ 
+        // UI í™œì„±í™” 
         this.gameObject.SetActive(true);
 
     }
     public void DeactiveInventory()
     {
-        // UI ºñÈ°¼ºÈ­
+        // UI ë¹„í™œì„±í™”
         this.gameObject.SetActive(false);
     }
 }
