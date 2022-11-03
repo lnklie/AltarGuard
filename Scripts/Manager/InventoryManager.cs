@@ -368,7 +368,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
         {
-
             // 아이템 버리기
             if (IndexOfItem(_item) != -1)
             {

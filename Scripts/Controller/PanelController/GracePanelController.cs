@@ -40,7 +40,7 @@ public class GracePanelController : MonoBehaviour
     //}
     public void UpdateGracePoint(int _gracePoint)
     {
-        remainingPoint.text = "잔여 포인트: " + _gracePoint;
+        remainingPoint.text = "�ܿ� ����Ʈ: " + _gracePoint;
     }
 
     public void SelectGrace(int _index)
@@ -51,12 +51,12 @@ public class GracePanelController : MonoBehaviour
         if(graceManager.CheckIsReceive(selectGrace.bigGraceKey))
         {
             graceLearnButton.interactable = false;
-            graceLearnButtonText.text = "이미 받음";
+            graceLearnButtonText.text = "�̹� ���";
         }
         else
         {
             graceLearnButton.interactable = true;
-            graceLearnButtonText.text = "받기";
+            graceLearnButtonText.text = "�ޱ�";
         }
         
     }

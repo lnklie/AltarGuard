@@ -145,6 +145,11 @@ public class EquipmentController : MonoBehaviour
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     ChangeAttackType();
                     SkillChange();
+                    if(equipItems[8].grace1 !=  null)
+                    {
+                        GraceManager.Instance.AquireGrace(equipItems[8].grace1);
+                        GraceManager.Instance.ActiveGrace();
+                    }
                     break;
             }
             status.UpdateEquipAbility(equipItems);

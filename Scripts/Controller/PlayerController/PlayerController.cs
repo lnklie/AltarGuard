@@ -21,7 +21,7 @@ public class PlayerController : AllyController
         player = this.GetComponent<PlayerStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
-     
+
     public override void Update()
     {
         DragFlag();
@@ -336,7 +336,6 @@ public class PlayerController : AllyController
                         player.EnemyTarget.SetTargetingBox(false);
                         player.EnemyTarget = null;
                     }
-
                     _targetList[i].IsAllyTargeted[player.AllyNum] = false;
                     _targetList.Remove(_targetList[i]);
                 }

@@ -505,7 +505,6 @@ public class DatabaseManager : MonoBehaviour
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-
                 rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }

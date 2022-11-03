@@ -62,7 +62,6 @@ public class GraceManager : MonoBehaviour
         {
             characterStatuses[i].InitGraceStatus(); 
         }
-
         for (int i = 0; i < graceList.Count; i++)
         {
 
