@@ -59,7 +59,7 @@ public class GameManager : SingletonManager<GameManager>
     }
     public void OperateSleepMode()
     {
-        Debug.Log("ÀýÀü ¸ðµå ½ÃÀÛ");
+        Debug.Log("���� ��� ����");
         isSleepMode = true;
     }
 }

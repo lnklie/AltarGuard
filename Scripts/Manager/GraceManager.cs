@@ -70,7 +70,6 @@ public class GraceManager : MonoBehaviour
             {
                 OperateGrace(graceList[i]);
                 graceList[i].isActive = true;
-
             }
             else
             {
@@ -84,13 +83,13 @@ public class GraceManager : MonoBehaviour
             if (CheckGraceCondition(bigGraceList[i]))
             {
                 OperateGrace(bigGraceList[i]);
-                Debug.Log("작동");
+                Debug.Log("�۵�");
                 bigGraceList[i].isActive = true;
             }
             else
             {
                 bigGraceList[i].isActive = false;
-                Debug.Log("팔스");
+                Debug.Log("�Ƚ�");
             }
         }
     }

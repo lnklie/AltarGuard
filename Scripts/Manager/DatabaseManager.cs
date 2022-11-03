@@ -62,11 +62,43 @@ public class DatabaseManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Debug.Log("여기1");
-        ExcelToJsonConverter.ConvertExcelFilesToJson(Application.dataPath + "/Resources/ExcelFile/", Application.dataPath + "/Resources/JsonFile/");
-        Debug.Log("여기2");
+
+        CSVToJson.Convert("Item/0_Hair");
+        CSVToJson.Convert("Item/1_FaceHair");
+        CSVToJson.Convert("Item/2_Cloth");
+        CSVToJson.Convert("Item/3_Pant");
+        CSVToJson.Convert("Item/4_Helmet");
+        CSVToJson.Convert("Item/5_Armor");
+        CSVToJson.Convert("Item/6_Back");
+        CSVToJson.Convert("Item/7_Shield");
+        CSVToJson.Convert("Item/8_Sword");
+        CSVToJson.Convert("Item/9_Exe");
+        CSVToJson.Convert("Item/10_Spear");
+        CSVToJson.Convert("Item/11_Bow");
+        CSVToJson.Convert("Item/12_Wand");
+        CSVToJson.Convert("Item/13_Consumables");
+        CSVToJson.Convert("Item/14_Miscellaneous");
+        CSVToJson.Convert("AltarProperty/AltarProperty");
+        CSVToJson.Convert("BigGrace/0_WarriorGrace");
+        CSVToJson.Convert("BigGrace/1_RangedGrace");
+        CSVToJson.Convert("BigGrace/2_MagicGrace");
+        CSVToJson.Convert("BigGrace/3_CommanderGrace");
+        CSVToJson.Convert("Exp/Exp");
+        CSVToJson.Convert("Enemy/Enemy");
+        CSVToJson.Convert("GameScript/GameScript");
+        CSVToJson.Convert("GraceComponent/0_ConditionWho");
+        CSVToJson.Convert("GraceComponent/1_ConditionWhat");
+        CSVToJson.Convert("GraceComponent/2_ConditionHow");
+        CSVToJson.Convert("GraceComponent/3_ResultWho");
+        CSVToJson.Convert("GraceComponent/4_ResultWhat");
+        CSVToJson.Convert("GraceComponent/5_ResultValueIsPercent");
+        CSVToJson.Convert("GraceComponent/6_ResultHow");
+        CSVToJson.Convert("GraceComponent/7_RelationOfGraces");
+        CSVToJson.Convert("Skill/Skill");
+        CSVToJson.Convert("CraftRecipe/CraftRecipe");
+        CSVToJson.Convert("Stage/Stage");
         JsonLoad();
-        Debug.Log("여기3");
+
     }
     string fixJson(string value)
     {
@@ -80,27 +112,28 @@ public class DatabaseManager : MonoBehaviour
 
     public void JsonLoad()
     {
-        if (!File.Exists(CombinePath("0_Hair")))
+        if (!File.Exists(CombinePath("Item/0_Hair")))
         {
             Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("0_Hair")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/0_Hair")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
+            //Item[] items = 
             for (var i = 0; i < items.Length; i++)
             {
                 hairList.Add(new Hair(items[i].itemKey, items[i].itemName, items[i].itemKorName, items[i].buyPrice, items[i].sellPrice, items[i].itemRank));
             }
 
         }
-        if (!File.Exists(CombinePath("1_FaceHair")))
+        if (!File.Exists(CombinePath("Item/1_FaceHair")))
         {
             Debug.Log("경로에 얼굴 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("1_FaceHair")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/1_FaceHair")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -108,13 +141,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("2_Cloth")))
+        if (!File.Exists(CombinePath("Item/2_Cloth")))
         {
             Debug.Log("경로에 옷 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("2_Cloth")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/2_Cloth")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -122,13 +155,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("3_Pant")))
+        if (!File.Exists(CombinePath("Item/3_Pant")))
         {
             Debug.Log("경로에 바지 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("3_Pant")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/3_Pant")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -136,13 +169,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("4_Helmet")))
+        if (!File.Exists(CombinePath("Item/4_Helmet")))
         {
             Debug.Log("경로에 머리 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("4_Helmet")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/4_Helmet")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -150,13 +183,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("5_Armor")))
+        if (!File.Exists(CombinePath("Item/5_Armor")))
         {
             Debug.Log("경로에 갑옷 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("5_Armor")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/5_Armor")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -164,13 +197,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("6_Back")))
+        if (!File.Exists(CombinePath("Item/6_Back")))
         {
             Debug.Log("경로에 망토 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("6_Back")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/6_Back")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -178,13 +211,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("7_Shield")))
+        if (!File.Exists(CombinePath("Item/7_Shield")))
         {
             Debug.Log("경로에 방패 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("7_Shield")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/7_Shield")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -192,13 +225,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("8_Sword")))
+        if (!File.Exists(CombinePath("Item/8_Sword")))
         {
             Debug.Log("경로에 검 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("8_Sword")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/8_Sword")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -207,13 +240,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("9_Exe")))
+        if (!File.Exists(CombinePath("Item/9_Exe")))
         {
             Debug.Log("경로에 도끼 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("9_Exe")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/9_Exe")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -222,13 +255,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("10_Spear")))
+        if (!File.Exists(CombinePath("Item/10_Spear")))
         {
             Debug.Log("경로에 창 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("10_Spear")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/10_Spear")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -237,13 +270,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("11_Bow")))
+        if (!File.Exists(CombinePath("Item/11_Bow")))
         {
             Debug.Log("경로에 활 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("11_Bow")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/11_Bow")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -252,13 +285,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("12_Wand")))
+        if (!File.Exists(CombinePath("Item/12_Wand")))
         {
             Debug.Log("경로에 지팡이 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("12_Wand")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/12_Wand")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -267,13 +300,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("13_Consumables")))
+        if (!File.Exists(CombinePath("Item/13_Consumables")))
         {
             Debug.Log("경로에 소비품 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("13_Consumables")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/13_Consumables")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -281,13 +314,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("14_Miscellaneous")))
+        if (!File.Exists(CombinePath("Item/14_Miscellaneous")))
         {
             Debug.Log("경로에 기타템 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("14_Miscellaneous")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Item/14_Miscellaneous")));
             Item[] items = JsonHelper.FromJson<Item>(loadJson);
             for (var i = 0; i < items.Length; i++)
             {
@@ -295,13 +328,13 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("Enemy")))
+        if (!File.Exists(CombinePath("Enemy/Enemy")))
         {
             Debug.Log("경로에 적 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Enemy/Enemy")));
             Enemy[] rushEnemies = JsonHelper.FromJson<Enemy>(loadJson);
             for (var i = 0; i < rushEnemies.Length; i++)
             {
@@ -314,39 +347,39 @@ public class DatabaseManager : MonoBehaviour
             }
 
         }
-        if (!File.Exists(CombinePath("Exp")))
+        if (!File.Exists(CombinePath("Exp/Exp")))
         {
             Debug.Log("경로에 경험치 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("Exp")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Exp/Exp")));
             Exp[] exp = JsonHelper.FromJson<Exp>(loadJson);
             for (var i = 0; i < exp.Length; i++)
             {
                 expList.Add(new Exp(exp[i].lv, exp[i].exp));
             }
         }
-        if (!File.Exists(CombinePath("Stage")))
+        if (!File.Exists(CombinePath("Stage/Stage")))
         {
             Debug.Log("경로에 스테이지 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("Stage")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Stage/Stage")));
             Stage[] stage = JsonHelper.FromJson<Stage>(loadJson);
             for (var i = 0; i < stage.Length; i++)
             {
                 stageList.Add(new Stage(stage[i].stage, stage[i].enemyKey1,stage[i].enemyKey2,stage[i].bossKey,stage[i].enemyNum1,stage[i].enemyNum2));
             }
         }
-        if (!File.Exists(CombinePath("Skill")))
+        if (!File.Exists(CombinePath("Skill/Skill")))
         {
             Debug.Log("경로에 스킬 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("Skill/Skill")));
             Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
@@ -357,104 +390,104 @@ public class DatabaseManager : MonoBehaviour
                     skill[i].skillFigures6, skill[i].skillFigures7, skill[i].skillFigures8, skill[i].skillFigures9, skill[i].skillFigures10));
             }
         }
-        if (!File.Exists(CombinePath("ConditionWho")))
+        if (!File.Exists(CombinePath("GraceComponent/0_ConditionWho")))
         {
             Debug.Log("경로에 조건부 누구의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWho")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/0_ConditionWho")));
             GraceConditionWho[] grace = JsonHelper.FromJson<GraceConditionWho>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceConditionWhoList.Add(new GraceConditionWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ConditionWhat")))
+        if (!File.Exists(CombinePath("GraceComponent/1_ConditionWhat")))
         {
             Debug.Log("경로에 조건부 무엇의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionWhat")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/1_ConditionWhat")));
             GraceConditionWhat[] grace = JsonHelper.FromJson<GraceConditionWhat>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceConditionWhatList.Add(new GraceConditionWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ConditionHow")))
+        if (!File.Exists(CombinePath("GraceComponent/2_ConditionHow")))
         {
             Debug.Log("경로에 조건부 어떻게의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ConditionHow")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/2_ConditionHow")));
             GraceConditionHow[] grace = JsonHelper.FromJson<GraceConditionHow>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceConditionHowList.Add(new GraceConditionHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ResultWho")))
+        if (!File.Exists(CombinePath("GraceComponent/3_ResultWho")))
         {
             Debug.Log("경로에 결과부 누구의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWho")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/3_ResultWho")));
             GraceResultWho[] grace = JsonHelper.FromJson<GraceResultWho>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceResultWhoList.Add(new GraceResultWho(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ResultWhat")))
+        if (!File.Exists(CombinePath("GraceComponent/4_ResultWhat")))
         {
             Debug.Log("경로에 결과부 무엇의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultWhat")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/4_ResultWhat")));
             GraceResultWhat[] grace = JsonHelper.FromJson<GraceResultWhat>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ResultValueIsPercent")))
+        if (!File.Exists(CombinePath("GraceComponent/5_ResultValueIsPercent")))
         {
             Debug.Log("경로에 결과부 수치 퍼센트 확인의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultValueIsPercent")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/5_ResultValueIsPercent")));
             GraceResultHow[] grace = JsonHelper.FromJson<GraceResultHow>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceResultIsPercentList.Add(new GraceResultIsPercent(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("ResultHow")))
+        if (!File.Exists(CombinePath("GraceComponent/6_ResultHow")))
         {
             Debug.Log("경로에 결과부 어떻게의 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("ResultHow")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GraceComponent/6_ResultHow")));
             GraceResultHow[] grace = JsonHelper.FromJson<GraceResultHow>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 graceResultHowList.Add(new GraceResultHow(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
             }
         }
-        if (!File.Exists(CombinePath("WarriorGrace")))
+        if (!File.Exists(CombinePath("BigGrace/0_WarriorGrace")))
         {
             Debug.Log("경로에 밀리 은총 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("WarriorGrace")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("BigGrace/0_WarriorGrace")));
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
@@ -462,29 +495,28 @@ public class DatabaseManager : MonoBehaviour
                     grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
-        if (!File.Exists(CombinePath("RangedGrace")))
+        if (!File.Exists(CombinePath("BigGrace/1_RangedGrace")))
         {
             Debug.Log("경로에 궁수 은총 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("RangedGrace")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("BigGrace/1_RangedGrace")));
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
 
                 rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-
                     grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
-        if (!File.Exists(CombinePath("MagicGrace")))
+        if (!File.Exists(CombinePath("BigGrace/2_MagicGrace")))
         {
             Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("MagicGrace")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("BigGrace/2_MagicGrace")));
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
@@ -493,28 +525,27 @@ public class DatabaseManager : MonoBehaviour
             }
         }
 
-        if (!File.Exists(CombinePath("CommanderGrace")))
+        if (!File.Exists(CombinePath("BigGrace/3_CommanderGrace")))
         {
             Debug.Log("경로에 은총 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("CommanderGrace")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("BigGrace/3_CommanderGrace")));
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
                 commanderGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
-
             }
         }
-        if (!File.Exists(CombinePath("CraftRecipe")))
+        if (!File.Exists(CombinePath("CraftRecipe/CraftRecipe")))
         {
             Debug.Log("경로에 제작 레시피 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("CraftRecipe")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("CraftRecipe/CraftRecipe")));
             CraftRecipe[] craftRecipes = JsonHelper.FromJson<CraftRecipe>(loadJson);
             for (var i = 0; i < craftRecipes.Length; i++)
             {
@@ -523,13 +554,13 @@ public class DatabaseManager : MonoBehaviour
                     craftRecipes[i].necessaryItemCount1, craftRecipes[i].necessaryItemCount2, craftRecipes[i].necessaryItemCount3, craftRecipes[i].necessaryItemCount4));
             }
         }
-        if (!File.Exists(CombinePath("AltarProperty")))
+        if (!File.Exists(CombinePath("AltarProperty/AltarProperty")))
         {
             Debug.Log("경로에 제단 특성 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("AltarProperty")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("AltarProperty/AltarProperty")));
             AltarProperty[] altarProperties = JsonHelper.FromJson<AltarProperty>(loadJson);
             for (var i = 0; i < altarProperties.Length; i++)
             {
@@ -541,13 +572,13 @@ public class DatabaseManager : MonoBehaviour
                     , altarProperties[i].rateOfValueIncreaseBySection_6, altarProperties[i].rateOfValueIncreaseBySection_7, altarProperties[i].rateOfValueIncreaseBySection_8, altarProperties[i].rateOfValueIncreaseBySection_9, altarProperties[i].rateOfValueIncreaseBySection_10));
             }
         }
-        if (!File.Exists(CombinePath("GameScript")))
+        if (!File.Exists(CombinePath("GameScript/GameScript")))
         {
             Debug.Log("경로에 대본 데이터 베이스가 존재하지 않습니다.");
         }
         else
         {
-            string loadJson = fixJson(File.ReadAllText(CombinePath("GameScript")));
+            string loadJson = fixJson(File.ReadAllText(CombinePath("GameScript/GameScript")));
             GameScript[] gameScripts = JsonHelper.FromJson<GameScript>(loadJson);
             for (var i = 0; i < gameScripts.Length; i++)
             {
@@ -570,7 +601,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceConditionWhoList[i].graceKey == _key)
                         _grace = graceConditionWhoList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 1:
@@ -579,7 +610,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceConditionWhatList[i].graceKey == _key)
                         _grace = graceConditionWhatList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 2:
@@ -588,7 +619,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceConditionHowList[i].graceKey == _key)
                         _grace = graceConditionHowList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 3:
@@ -597,7 +628,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceResultWhoList[i].graceKey == _key)
                         _grace = graceResultWhoList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 4:
@@ -606,7 +637,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceResultWhatList[i].graceKey == _key)
                         _grace = graceResultWhatList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 5:
@@ -615,7 +646,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceResultIsPercentList[i].graceKey == _key)
                         _grace = graceResultIsPercentList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
             case 6:
@@ -624,7 +655,7 @@ public class DatabaseManager : MonoBehaviour
                     if (graceResultHowList[i].graceKey == _key)
                         _grace = graceResultHowList[i];
                     //else
-                    //Debug.Log("해당 은총 구성부가 없습니다.");
+                    //Debug.Log("�ش� ��� �����ΰ� ���ϴ�.");
                 }
                 break;
         }
@@ -635,54 +666,54 @@ public class DatabaseManager : MonoBehaviour
         string _explain = null;
         if (_completeGrace.conditionWho != -1)
         {
-            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "가(이) ";
+            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "��(��) ";
             if (_completeGrace.conditionWhat < 1014)
             {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "을(를) ";
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "�(��) ";
             }
             else
             {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "이 ";
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "�� ";
                 _explain += _completeGrace.conditionValue;
             }
             _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
         }
         if (_completeGrace.relationOfVariables == 7000)
         {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "�� ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "�(��) ";
             if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " 만큼 ";
+                _explain += _completeGrace.resultValue1 + " ��ŭ ";
             else
-                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+                _explain += _completeGrace.resultValue1 + "% ��ŭ ";
             if (_completeGrace.resultWho2 == -1)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시킨다";
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "��Ų��";
             else
             {
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 ";
-                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
-                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "��Ű�� ";
+                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "�� ";
+                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "�(��) ";
                 if (_completeGrace.resultValueIsPercent2 == 0)
-                    _explain += _completeGrace.resultValue2 + " 만큼 ";
+                    _explain += _completeGrace.resultValue2 + " ��ŭ ";
                 else
-                    _explain += _completeGrace.resultValue2 + "% 만큼 ";
-                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+                    _explain += _completeGrace.resultValue2 + "% ��ŭ ";
+                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "��Ų��";
             }
         }
         else
         {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "�� ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "�(��) ";
             if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " 만큼 ";
+                _explain += _completeGrace.resultValue1 + " ��ŭ ";
             else
-                _explain += _completeGrace.resultValue1 + "% 만큼 ";
+                _explain += _completeGrace.resultValue1 + "% ��ŭ ";
             if (_completeGrace.resultHow1 == 6001)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 그 만큼 ";
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "��Ű�� �� ��ŭ ";
 
-            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
-            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
-            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
+            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "�� ";
+            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "�(��) ";
+            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "��Ų��";
         }
         return _explain;
     }
@@ -1024,7 +1055,7 @@ public class DatabaseManager : MonoBehaviour
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("해당 스크립트가 없습니다.");
+                Debug.Log("�ش� ��ũ��Ʈ�� ���ϴ�.");
         }
         return _gameScript;
     }

@@ -75,7 +75,7 @@ public class AllyStatus : CharacterStatus
             statusPoint--;
         }
         else
-            Debug.Log("스테이터스 포인트가 없습니다.");
+            Debug.Log("�������ͽ� ����Ʈ�� ���ϴ�.");
     }
 
     private void UpLevel()
@@ -84,13 +84,13 @@ public class AllyStatus : CharacterStatus
         curLevel++;
         curExp = 0;
         statusPoint += 5;
-        Debug.Log("exp리스트 수는 " + DatabaseManager.Instance.expList.Count);
+        Debug.Log("exp����Ʈ ��� " + DatabaseManager.Instance.expList.Count);
         LvToExp();
     }
 
     private void LvToExp()
     {
-        // 레벨별 경험치 전환
+        // ������ ����ġ ��ȯ
         
         for (int i = 0; i < DatabaseManager.Instance.expList.Count; i++)
         {
@@ -143,8 +143,8 @@ public class AllyStatus : CharacterStatus
   
     public override void UpdateTotalAbility(EStatus _eStatus)
     {
-        // 능력 업데이트
-        //Debug.Log("오브젝트 이름: " + ObjectName + " 해당 베이직 스테이터스 "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " 해당 장착스테이터스 " + equipStatus[(int)_eStatus]);
+        // �ɷ� ����Ʈ
+        //Debug.Log("����Ʈ �̸�: " + ObjectName + " �ش� ������ �������ͽ� "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " �ش� ���������ͽ� " + equipStatus[(int)_eStatus]);
         totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
             + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
             + buffStatus[(int)_eStatus];

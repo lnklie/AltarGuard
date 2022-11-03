@@ -7,7 +7,6 @@ public class Conversation : MonoBehaviour
 {
     [SerializeField] private Animator ani = null;
     [SerializeField] private TextMeshProUGUI conversationText = null;
-
     [SerializeField] private Lines curLines = null;
     [SerializeField] private bool isTalk = false;
     [SerializeField] private float defaultDelayBetweenLetters = 0.1f;
@@ -28,7 +27,6 @@ public class Conversation : MonoBehaviour
     {
 
     }
-
     public void Talk() 
     {
         StartCoroutine(Talk(curLines.script,curLines.scriptSpeed,curLines.scriptAniSpeed));
@@ -38,7 +36,6 @@ public class Conversation : MonoBehaviour
         if(isTalk)
         {
             isTalk = false;
-
             conversationText.text = null;
             ani.SetBool("isTalk", false);
             yield return new WaitForSeconds(curLines.scriptAniSpeed);

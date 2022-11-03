@@ -15,10 +15,10 @@ public class IntroManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
-            loadingText.text = "·ÎµùÁß";
+            loadingText.text = "Â·ÃÂµÃ¹ÃÃŸ";
             GameManager.Instance.LoadScene(1);
         }
         CameraMove();

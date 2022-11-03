@@ -106,7 +106,6 @@ public class PlayerController : AllyController
                 if(checkControlOnAutoPlay)
                 {
                     isControlOnAutoPlay = InputArrowKey();
-                    Debug.Log("���� " + isControlOnAutoPlay);
                 }    
                 AIChangeState();
                 AIState();
@@ -236,7 +235,6 @@ public class PlayerController : AllyController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
-
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)

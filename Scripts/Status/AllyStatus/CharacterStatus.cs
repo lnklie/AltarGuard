@@ -17,8 +17,6 @@ public class CharacterStatus : Status
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
 
-
-
     [Header("EquipStatus")]
     [SerializeField] protected float[] equipStatus = new float[16];
 
@@ -50,6 +48,7 @@ public class CharacterStatus : Status
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
 
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
+
 
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
@@ -96,7 +95,6 @@ public class CharacterStatus : Status
     }
     public virtual void Update()
     {
-
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
 
@@ -118,8 +116,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
-
-        // 힘, 민, 지 올릴때 바뀌는 것들
+        // ��, ��, �� �ø��� �ٲ�� �͵�
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -159,7 +156,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // 능력 업데이트
+        // �ɷ� ����Ʈ
         
     }
     public void RemoveBuff()

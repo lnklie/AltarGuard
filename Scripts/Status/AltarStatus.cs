@@ -26,7 +26,6 @@ public class AltarStatus : Status
 
 
     #region Property
-
     public bool TriggerDestroyed { get { return triggerDestroyed; } set { triggerDestroyed = value; } }
     public SpriteRenderer BuffRangeSprite { get { return buffRangeSprite; } }
     public AltarState AltarState { get { return altarState; } set { altarState = value; } }

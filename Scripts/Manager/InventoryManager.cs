@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 
 public class InventoryManager : MonoBehaviour
-
+{
     public static InventoryManager Instance;
 
     [SerializeField] private List<Item> inventroyWeaponItems = new List<Item>();

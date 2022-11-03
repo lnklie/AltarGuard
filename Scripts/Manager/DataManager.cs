@@ -34,9 +34,8 @@ public class DataManager : MonoBehaviour
         Player playerData = new Player();
         if (!File.Exists(path))
         {
-            Debug.Log("처음 로드");
-            playerStatus.ObjectName = "플레이어";
-
+            Debug.Log("ó� �ε�");
+            playerStatus.ObjectName = "�÷��̾�";
             playerStatus.BasicStatus[(int)EStatus.Str] = 500;
             playerStatus.BasicStatus[(int)EStatus.Dex] = 5;
             playerStatus.BasicStatus[(int)EStatus.Wiz] = 5;
@@ -49,7 +48,8 @@ public class DataManager : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 AllyStatus _mercenaryStatus = mercenaryStatuses[j];
-                _mercenaryStatus.ObjectName = "용병" + j;
+
+                _mercenaryStatus.ObjectName = "�뺴" + j;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 500;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Dex] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Wiz] = 5;
