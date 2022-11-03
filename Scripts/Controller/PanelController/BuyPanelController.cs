@@ -6,30 +6,37 @@ using TMPro;
 
 public class BuyPanelController : MonoBehaviour
 {
-    [Header("ItemInfo")]
+    [Header("BuyingItemInfo")]
     [SerializeField] private GameObject shopItemInfo = null;
     [SerializeField] private GameObject equipedItemInfo = null;
     [SerializeField] private BuySlot[] buySlots = null;
-
-    [Header("MoneyText")]
+    [SerializeField] private TextMeshProUGUI buyingItemName = null;
+    [SerializeField] private TextMeshProUGUI buyingItemType = null;
+    [SerializeField] private TextMeshProUGUI buyingItemExplain = null;
+    [SerializeField] private TextMeshProUGUI buyingItemPrice = null;
+    [SerializeField] private TMP_InputField buyAmount = null;
     [SerializeField] private TextMeshProUGUI moneyText = null;
 
+    [Header("EquipedItemInfo")]
+    [SerializeField] private TextMeshProUGUI equipedItemName = null;
+    [SerializeField] private TextMeshProUGUI equipedItemType = null;
+    [SerializeField] private TextMeshProUGUI equipedItemExplain = null;
+
+
+    [Header("Character Information")]
     [SerializeField] private PlayerStatus playerStatus = null;
     [SerializeField] private EquipmentController playerEquipmentController = null;
 
+    [Header("Current")]
     [SerializeField] private Item selectBuyingItem = null;
-    [SerializeField] private TextMeshProUGUI[] buyingiteminfoText = null;
-    [SerializeField] private TextMeshProUGUI[] equipediteminfoText = null;
-    [SerializeField] private TMP_InputField buyAmount = null;
-    private bool isBuyingItemSelect = false;
-    private int selectBuyShopPanelIndex = 0;
+    [SerializeField] private int selectBuyShopPanelIndex = 0;
 
+
+    private bool isBuyingItemSelect = false;
 
     private void Awake()
     {
         buySlots = this.GetComponentsInChildren<BuySlot>();
-        buyingiteminfoText = shopItemInfo.GetComponentsInChildren<TextMeshProUGUI>();
-        equipediteminfoText = equipedItemInfo.GetComponentsInChildren<TextMeshProUGUI>();
     }
     private void Update()
     {
@@ -153,34 +160,34 @@ public class BuyPanelController : MonoBehaviour
         SetActiveShopItemInfo(true);
 
 
-        buyingiteminfoText[0].text = selectBuyingItem.itemKorName;
-        buyingiteminfoText[1].text = KeyToItemTypeText(selectBuyingItem.itemKey);
-        buyingiteminfoText[3].text = "구매 가격: " + selectBuyingItem.buyPrice;
+        buyingItemName.text = selectBuyingItem.itemKorName;
+        buyingItemType.text = KeyToItemTypeText(selectBuyingItem.itemKey);
+        buyingItemPrice.text = "구매 가격: " + selectBuyingItem.buyPrice;
         switch (selectBuyingItem.itemKey / 1000)
         {
             case 0:
-                buyingiteminfoText[2].text = "머리 장식품";
+                buyingItemExplain.text = "머리 장식품";
                 break;
             case 1:
-                buyingiteminfoText[2].text = "안면 장식품";
+                buyingItemExplain.text = "안면 장식품";
                 break;
             case 2:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingItemExplain.text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 3:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingItemExplain.text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 4:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingItemExplain.text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 5:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingItemExplain.text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 6:
-                buyingiteminfoText[2].text = "방어력: " + selectBuyingItem.defensivePower;
+                buyingItemExplain.text = "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 7:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                     "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
                     "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
@@ -188,7 +195,7 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 8:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                     "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
                     "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
@@ -197,7 +204,7 @@ public class BuyPanelController : MonoBehaviour
                     "방어력: " + selectBuyingItem.defensivePower;
                 break;
             case 9:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                     "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
                     "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
@@ -205,7 +212,7 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 10:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                     "물리 공격력: " + selectBuyingItem.physicalDamage + "\n" +
                     "마법 공격력: " + selectBuyingItem.magicalDamage + "\n" +
                     "공격 범위: " + ((Weapon)selectBuyingItem).atkRange + "\n" +
@@ -213,11 +220,11 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + ((Weapon)selectBuyingItem).weaponType;
                 break;
             case 11:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                     "회복량 : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
-                buyingiteminfoText[2].text =
+                buyingItemExplain.text =
                      "이것은 퀘스트 아이템";
                 break;
         }
@@ -226,33 +233,33 @@ public class BuyPanelController : MonoBehaviour
     {
         // 아이템 정보창 업데이트
         int _index = selectBuyingItem.itemType;
-        equipediteminfoText[0].text = playerEquipmentController.EquipItems[_index].itemKorName;
-        equipediteminfoText[1].text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
+        equipedItemName.text = playerEquipmentController.EquipItems[_index].itemKorName;
+        equipedItemType.text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
         switch (playerEquipmentController.EquipItems[_index].itemKey / 1000)
         {
             case 0:
-                equipediteminfoText[2].text = "머리 장식품";
+                equipedItemExplain.text = "머리 장식품";
                 break;
             case 1:
-                equipediteminfoText[2].text = "안면 장식품";
+                equipedItemExplain.text = "안면 장식품";
                 break;
             case 2:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipedItemExplain.text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 3:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipedItemExplain.text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 4:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipedItemExplain.text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 5:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipedItemExplain.text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 6:
-                equipediteminfoText[2].text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
+                equipedItemExplain.text = "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 7:
-                equipediteminfoText[2].text =
+                equipedItemExplain.text =
                     "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
                     "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
                     "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
@@ -260,7 +267,7 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 8:
-                equipediteminfoText[2].text =
+                equipedItemExplain.text =
                     "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
                     "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
                     "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
@@ -269,7 +276,7 @@ public class BuyPanelController : MonoBehaviour
                     "방어력: " + playerEquipmentController.EquipItems[_index].defensivePower;
                 break;
             case 9:
-                equipediteminfoText[2].text =
+                equipedItemExplain.text =
                     "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
                     "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
                     "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
@@ -277,7 +284,7 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 10:
-                equipediteminfoText[2].text =
+                equipedItemExplain.text =
                     "물리 공격력: " + playerEquipmentController.EquipItems[_index].physicalDamage + "\n" +
                     "마법 공격력: " + playerEquipmentController.EquipItems[_index].magicalDamage + "\n" +
                     "공격 범위: " + (playerEquipmentController.EquipItems[_index]).atkRange + "\n" +
@@ -285,17 +292,17 @@ public class BuyPanelController : MonoBehaviour
                     "무기 종류: " + (playerEquipmentController.EquipItems[_index]).weaponType;
                 break;
             case 11:
-                equipediteminfoText[2].text =
+                equipedItemExplain.text =
                     "회복량 : " + selectBuyingItem.value + "\n";
                 break;
             case 12:
-                equipediteminfoText[2].text = "이것은 퀘스트 아이템";
+                equipedItemExplain.text = "이것은 퀘스트 아이템";
                 break;
         }
     }
     public void UpdateBuyMoneyText()
     {
-        buyingiteminfoText[3].text = "구매 가격: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
+        buyingItemPrice.text = "구매 가격: " + (selectBuyingItem.buyPrice * int.Parse(buyAmount.text)).ToString();
     }
     public void BuyItem()
     {

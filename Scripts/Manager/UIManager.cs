@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 
-public class UIManager : SingletonManager<UIManager>
+public class UIManager : MonoBehaviour
 {
     [Header("EnemySpawner")]
     [SerializeField] private EnemySpawner enemySpawner = null;
@@ -47,7 +47,7 @@ public class UIManager : SingletonManager<UIManager>
     [SerializeField] private DisassemblePanelController disassemblePanelController = null;
     [SerializeField] private BattleSupportPanelController battleSupportPanel = null;
     [SerializeField] private UserControlPanelController userControlPanelController = null;
-
+    [SerializeField] private GameOverPanel gameOverPanel = null;
     [Header("NoticeText")]
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
@@ -56,11 +56,17 @@ public class UIManager : SingletonManager<UIManager>
 
 
     private Coroutine preNotice = null;
+    public static UIManager Instance = null;
 
     public bool IsUIOn { get { return isUIOn; } set { isUIOn = value; } }
     public bool IsLogScrolling { get { return logPanelController.ScrollController.IsScrolling; } }
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
+        InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(13000,100));
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
         item.skills[0] = DatabaseManager.Instance.SelectSkill(0);
         item.skills[1] = DatabaseManager.Instance.SelectSkill(1);
@@ -100,10 +106,22 @@ public class UIManager : SingletonManager<UIManager>
                 UpdateBossInfo();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.V))
-            StartCoroutine(profilePanelController.Conversation(DatabaseManager.Instance.SelectGameScript(0)));
+        if (altar.IsDied && !altar.TriggerDestroyed)
+        {
+            StartCoroutine(AltarDestroyed());
+        }
     }
+
+    public IEnumerator AltarDestroyed()
+    {
+        altar.TriggerDestroyed = true;
+        gameOverPanel.gameObject.SetActive(true);
+        Notice("제단이 파괴되었습니다.", 90, Color.red);
+        yield return new WaitForSeconds(1f);
+        if(gameOverPanel)
+            gameOverPanel.StartGameOver();
+    }
+
     public void SetBossInfo(bool _bool)
     {
         profilePanelController.SetBossProfile(_bool);
@@ -117,19 +135,21 @@ public class UIManager : SingletonManager<UIManager>
         noticeText.gameObject.SetActive(true);
         noticeText.text = _notice;
     }
-    public void Notice(string _notice)
+    public void Notice(string _notice, int _fontSize = 36, Color _fontColor = new Color())
     {
         if (isNotice)
         {
             StopCoroutine(preNotice);
         }
-        preNotice = StartCoroutine(NoticeCoroutine(_notice));
+        preNotice = StartCoroutine(NoticeCoroutine(_notice, _fontSize, _fontColor));
     }
-    public IEnumerator NoticeCoroutine(string _notice)
+    public IEnumerator NoticeCoroutine(string _notice, int _fontSize = 36, Color _fontColor = new Color())
     {
         isNotice = true;
         noticeText.gameObject.SetActive(true);
         noticeText.text = _notice;
+        noticeText.fontSize = _fontSize;
+        noticeText.color = _fontColor;
         yield return new WaitForSeconds(2f);
         isNotice = false;
         for (float i = 1; i >= 0; i -= 0.05f)
@@ -143,7 +163,7 @@ public class UIManager : SingletonManager<UIManager>
 
     public void UpdateGracePanel()
     {
-        gracePanelController.UpdateSlots(graceManager.CheckIsActive);
+        gracePanelController.UpdateSlots();
         UpdateGracePoint();
     }
     public void UpdateGracePoint()
@@ -171,6 +191,11 @@ public class UIManager : SingletonManager<UIManager>
     {
         // 슬롯에 선택한 아이템 
         inventoryPanelController.SelectSlotItem(_item, _slot);
+    }
+    public void SelectEquipmenttSlotItem(Item _item)
+    {
+        // 슬롯에 선택한 아이템 
+        equipmentPanelController.SelectSlotItem(_item);
     }
     public void SelectSlotSellItem(Item _item)
     {
@@ -209,21 +234,19 @@ public class UIManager : SingletonManager<UIManager>
     {
         profilePanelController.UpdateMercenaryProfile(mercenaries[_index], _index);
     }
-    public void SetActiveCharactersProfile(int _index, bool _bool)
-    {
-        profilePanelController.Profiles[_index].SetActive(_bool);
-    }
+
     #endregion
 
     #region Button
     #region Set-Up Panel
-    public void SetSoundVolume(int _index)
-    {
-        setUpPanelController.SetSoundVolume(_index);
-    }
+
     public void SetSleepMode(int _index)
     {
         setUpPanelController.SetSleepMode(_index);
+    }
+    public void SetSleeModeImmediately()
+    {
+        setUpPanelController.SetSleeModeImmediately();
     }
     #endregion
 
@@ -234,6 +257,15 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #region Profile Panel
+    public void ActiveEquipmentPanel(int _index)
+    {
+        equipmentPanelController.ActiveEquipmentPanel(true);
+        equipmentPanelController.SelectCharacter(_index);
+        equipmentPanelController.SetEquipmentSlotImage(_index);
+        
+    }
+    #endregion
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
@@ -370,7 +402,7 @@ public class UIManager : SingletonManager<UIManager>
 
         if(player.GracePoint > 0)
         {
-            gracePanelController.AquireGrace(graceManager.AquireBigGrace);
+            gracePanelController.AquireGrace();
             ActiveGraceInfo(false);
             player.GracePoint--;
             UpdateGracePanel();
@@ -382,7 +414,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     public void SelectGrace(int _index)
     {
-        gracePanelController.SelectGrace(_index,graceManager.CheckIsActive);
+        gracePanelController.SelectGrace(_index);
         ActiveGraceInfo(true);
     }
     public void ActiveGraceInfo(bool _bool)
@@ -567,11 +599,6 @@ public class UIManager : SingletonManager<UIManager>
             inventoryPanelController.ChangeInventorySlot(0);
 
         }
-        else if (_index == 1)
-        {
-            equipmentPanelController.UpdateEquipmentName();
-            equipmentPanelController.ActiveEquipmentPanel(true);
-        }
         else if (_index == 2)
         {
             statusPanelController.SetPlayer(player);
@@ -690,5 +717,32 @@ public class UIManager : SingletonManager<UIManager>
     }
     #endregion
 
+    #endregion
+    #region Slider
+
+    #region Set-Up Panel
+    public void SetSoundVolume(int _index)
+    {
+        setUpPanelController.SetSoundVolume(_index);
+    }
+    public void SetPortionUseCondition(int _index)
+    {
+        setUpPanelController.SetPortionUseCondition(_index);
+    }
+    #endregion
+
+    #endregion
+
+    #region Toggle
+    #region Set-Up Panel
+    public void SetActiveConversation(bool _bool)
+    {
+        profilePanelController.ChooseTriggerConversationActive(_bool);
+    }
+    public void SetCheckControlOnAutoPlay(bool _bool)
+    {
+        setUpPanelController.SetCheckControlOnAutoPlay(_bool);
+    }
+    #endregion
     #endregion
 }

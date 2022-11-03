@@ -7,6 +7,7 @@ public class AltarController : MonoBehaviour
 {
     [SerializeField] private List<AllyStatus> characters = new List<AllyStatus>();
     private AltarStatus altar = null;
+
     private void Awake()
     {
         altar = this.GetComponent<AltarStatus>();
@@ -93,12 +94,12 @@ public class AltarController : MonoBehaviour
             for (int i = 0; i < characters.Count; i++)
             {
                 characters[i].IsAlterBuff = true;
-                characters[i].BuffPhysicalDamage = altar.BuffDamage;
-                characters[i].BuffMagicalDamage = altar.BuffDamage;
-                characters[i].BuffDefensivePower = altar.BuffDefensivePower;
-                characters[i].BuffSpeed = altar.BuffSpeed;
-                characters[i].BuffHpRegenValue = altar.BuffHpRegen;
-                characters[i].UpdateTotalAbility();
+                characters[i].BuffStatus[(int)EStatus.PhysicalDamage] = altar.BuffDamageLevel;
+                characters[i].BuffStatus[(int)EStatus.MagicalDamage] = altar.BuffDamageLevel;
+                characters[i].BuffStatus[(int)EStatus.DefensivePower] = altar.BuffDefensivePowerLevel;
+                characters[i].BuffStatus[(int)EStatus.Speed] = altar.BuffSpeedLevel;
+                characters[i].BuffStatus[(int)EStatus.HpRegenValue] = altar.BuffHpRegenLevel;
+                characters[i].UpdateAllStatus();
                 UpdateBuffRange();
             }
             altar.TriggerStatusUpdate = false;
@@ -107,24 +108,20 @@ public class AltarController : MonoBehaviour
     public void RemoveBuff(AllyStatus _ally)
     {
         _ally.IsAlterBuff = false;
-        _ally.BuffPhysicalDamage = 0;
-        _ally.BuffMagicalDamage = 0;
-        _ally.BuffDefensivePower = 0;
-        _ally.BuffSpeed = 0;
-        _ally.BuffHpRegenValue = 0;
-        _ally.UpdateTotalAbility();
+        _ally.RemoveBuff();
+        //_ally.UpdateTotalAbility();
     }
     private void UpdateBuffRange()
     {
         // 버프 거리 업데이트
-        float _diameter = altar.BuffRange * 1f / 10;
+        float _diameter = altar.BuffRangeLevel * 1f / 10;
         altar.BuffRangeSprite.transform.localScale = new Vector2(_diameter, _diameter);
     }
 
     public void FindAllyInBuffRange()
     {
         // 동맹 찾기
-        var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRange * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, altar.BuffRangeLevel * 1f, Vector2.zero, 0f, LayerMask.GetMask("Ally"));
         if (hits.Length > 0)
         {
             AddBuffCharacterList(hits);
@@ -149,9 +146,10 @@ public class AltarController : MonoBehaviour
     {
         for (int i = 0; i < characters.Count; i++)
         {
-            if (altar.GetDistance(characters[i].transform.position) >= altar.BuffRange * 1f && characters[i].IsAlterBuff)
+            if (altar.GetDistance(characters[i].transform.position) >= altar.BuffRangeLevel * 1f && characters[i].IsAlterBuff)
             {
-                RemoveBuff(characters[i]);
+                characters[i].RemoveBuff();
+                characters[i].IsAlterBuff = false;
                 characters.Remove(characters[i]);
                 Debug.Log(characters[i].ObjectName + "버프 빠짐");
             }

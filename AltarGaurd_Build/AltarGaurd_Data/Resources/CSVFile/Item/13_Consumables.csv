@@ -1,0 +1,8 @@
+﻿itemKey,itemName,itemKorName,useEffect,target,durationTime,value,buyPrice,sellPrice,maxCoolTime,itemRank
+13000,Portion_1,포션1,Cure,Hp,0,100,2000,1000,2,0
+13001,Portion_2,Portion_2,Cure,Hp,0,150,2000,1000,3,0
+13002,Portion_3,Portion_3,Cure,Hp,0,200,2000,1000,4,0
+13003,Portion_4,Portion_4,Cure,Mp,0,250,2000,1000,5,0
+13004,Portion_5,Portion_5,Cure,Mp,0,300,2000,1000,6,0
+13005,Portion_6,Portion_6,Cure,Hp,5,350,2000,1000,7,0
+13006,Portion_7,Portion_7,Cure,Hp,5,400,2000,1000,8,0

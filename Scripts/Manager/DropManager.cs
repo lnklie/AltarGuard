@@ -1,14 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : DropManager.cs
-==============================
-*/
-public class DropManager : SingletonManager<DropManager>
+
+public class DropManager : MonoBehaviour
 {
     private Queue<GameObject> dropObject = new Queue<GameObject>();
 

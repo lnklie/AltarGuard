@@ -13,11 +13,9 @@ public class GracePanelController : MonoBehaviour
     [SerializeField] private Button graceLearnButton = null;
     [SerializeField] private TextMeshProUGUI graceLearnButtonText = null;
     [SerializeField] private TextMeshProUGUI remainingPoint = null;
-
+    [SerializeField] private GraceManager graceManager = null;
     private BigGrace selectGrace = null;
 
-    public delegate bool CheckIsActiveGrace(int _key);
-    public delegate void AquireGraceDel(int _key);
     private void Awake()
     {
         slots.AddRange(GetComponentsInChildren<GraceSlot>());       
@@ -45,12 +43,12 @@ public class GracePanelController : MonoBehaviour
         remainingPoint.text = "잔여 포인트: " + _gracePoint;
     }
 
-    public void SelectGrace(int _index, CheckIsActiveGrace _checkIsActiveGrace)
+    public void SelectGrace(int _index)
     {
         selectGrace = slots[_index].Grace;
         graceExplain.text = selectGrace.explain;
-        graceName.text = selectGrace.graceName;
-        if(_checkIsActiveGrace(selectGrace.graceKey))
+        graceName.text = selectGrace.bigGraceName;
+        if(graceManager.CheckIsReceive(selectGrace.bigGraceKey))
         {
             graceLearnButton.interactable = false;
             graceLearnButtonText.text = "이미 받음";
@@ -71,16 +69,16 @@ public class GracePanelController : MonoBehaviour
     {
         graceInfo.SetActive(_bool);
     }
-    public void AquireGrace(AquireGraceDel _aquireGrace)
+    public void AquireGrace()
     {
-        _aquireGrace(selectGrace.graceKey);
+        graceManager.AquireBigGrace(selectGrace.bigGraceKey);
+        graceManager.ActiveGrace();
     }
-    public void UpdateSlots(CheckIsActiveGrace _checkIsActiveGrace)
+    public void UpdateSlots()
     {
         for (int i = 0; i < slots.Count; i++)
         {
-
-            if (_checkIsActiveGrace(slots[i].Grace.necessaryGraceKey) || slots[i].Grace.necessaryGraceKey == -1)
+            if (graceManager.CheckIsReceive(slots[i].Grace.necessaryBigGraceKey) || slots[i].Grace.necessaryBigGraceKey == -1)
             {
                 slotButtons[i].interactable = true;
             }

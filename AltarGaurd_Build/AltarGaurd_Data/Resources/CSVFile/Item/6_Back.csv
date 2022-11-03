@@ -1,0 +1,8 @@
+﻿itemKey,itemName,itemKorName,defensivePower,equipLevel,buyPrice,sellPrice,disassembleItemKey,disassembleItemAmount,itemRank
+6000,Back_1,Back_1,1,0,2000,1000,12012,1,3
+6001,Back_2,Back_2,2,1,2000,1000,12012,2,3
+6002,Back_3,Back_3,3,2,2000,1000,12012,3,3
+6003,Back_4,Back_4,4,3,2000,1000,12012,4,3
+6004,Back_5,Back_5,5,4,2000,1000,12012,5,3
+6005,BowBack_1,BowBack_1,5,5,2000,1000,12012,6,3
+6006,BowBack_2,BowBack_2,10,6,2000,1000,12012,7,3

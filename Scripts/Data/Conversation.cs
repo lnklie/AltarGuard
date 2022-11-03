@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 public class Conversation : MonoBehaviour
 {
     [SerializeField] private Animator ani = null;
     [SerializeField] private TextMeshProUGUI conversationText = null;
+    [SerializeField] private Lines curLines = null;
     [SerializeField] private bool isTalk = false;
-    [SerializeField] private float defaultDelayBetweenLetters = 0.1f; //how long to wait before displaying the next letter
+    [SerializeField] private float defaultDelayBetweenLetters = 0.1f;
     [SerializeField] private float timePadding = 1.0f;
     [SerializeField] public float letterSpeed = 1.0f;
     [SerializeField] public float readTime = 5f;
-    private Coroutine curTalk = null;
+
+
+    public Lines CurLines { get { return curLines; } set { curLines = value; } }
+    public bool IsTalk { get { return isTalk; } set { isTalk = value; } }
     private void Awake()
     {
         if (defaultDelayBetweenLetters < 0.02f)
@@ -22,16 +27,20 @@ public class Conversation : MonoBehaviour
     {
 
     }
+    public void Talk() 
+    {
+        StartCoroutine(Talk(curLines.script,curLines.scriptSpeed,curLines.scriptAniSpeed));
+    }
     public IEnumerator Talk(string _text, float _textSpeed, float _frameAniSpeed)
     {
         if(isTalk)
         {
             isTalk = false;
-            StopCoroutine(curTalk);
             conversationText.text = null;
             ani.SetBool("isTalk", false);
+            yield return new WaitForSeconds(curLines.scriptAniSpeed);
         }
-        
+
         isTalk = true;
         ani.SetBool("isTalk", true);
         ani.speed = _frameAniSpeed;

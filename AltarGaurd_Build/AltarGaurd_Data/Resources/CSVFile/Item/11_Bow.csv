@@ -1,0 +1,5 @@
+﻿itemKey,itemName,itemKorName,attackType,weaponType,physicalDamage,magicalDamage,atkRange,atkDistance,atkSpeed,equipLevel,buyPrice,sellPrice,disassembleItemKey,disassembleItemAmount,itemRank
+11000,Bow_1,Bow_1,Ranged,Bow,10,0,15,0,3,0,2000,1000,12013,1,2
+11001,Bow_2,Bow_2,Ranged,Bow,15,0,15,0,3,1,2000,1000,12013,2,2
+11002,Bow_3,Bow_3,Ranged,Bow,20,0,15,0,3,2,2000,1000,12013,3,2
+11003,Bow_4,Bow_4,Ranged,Bow,25,0,15,0,3,3,2000,1000,12013,4,2

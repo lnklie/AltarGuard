@@ -104,6 +104,7 @@ public class InventoryPanelController : MonoBehaviour
     public void UpdateMoney()
     {
         moneyText.text = ConvertMoney(playerStatus.Money);
+        Debug.Log("현재돈은 " + playerStatus.Money); ;
     }
 
     public string ConvertMoney(int _money)
@@ -291,12 +292,17 @@ public class InventoryPanelController : MonoBehaviour
         SetActiveEquipCharacterBox(false);
         SetActiveItemInfo(true);
         SetActiveEquipedItemInfo(false);
-        if (CheckCharacterEquiped())
+        Debug.Log("이아이템의 타입은 " + selectItem.itemType);
+        if(selectItem.itemType != 9 && selectItem.itemType != 10)
         {
-            ResetEquipedItemInfoSkillButtons();
-            SetActiveEquipedItemInfo(true);
-            SelectCharacterEquiped();
-            SetEquipedItemInfoPanel();
+            Debug.Log("이아이템의 타입은2 " + selectItem.itemType);
+            if (CheckCharacterEquiped())
+            {
+                ResetEquipedItemInfoSkillButtons();
+                SetActiveEquipedItemInfo(true);
+                SelectCharacterEquiped();
+                SetEquipedItemInfoPanel();
+            }
         }
 
         inventoryButtons[3].gameObject.SetActive(true);

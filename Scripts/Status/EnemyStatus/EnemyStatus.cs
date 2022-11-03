@@ -2,13 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
-==============================
- * 최종수정일 : 2022-06-13
- * 작성자 : Inklie
- * 파일명 : EnemyStatus.cs
-==============================
-*/
+
 public class EnemyStatus : CharacterStatus
 {
     protected RaycastHit2D altarRay = default;

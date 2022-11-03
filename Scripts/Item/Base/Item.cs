@@ -2,14 +2,14 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
 
 [System.Serializable]
 public class Item
 {
-    public Texture2D texture2D = null;
     public Sprite singleSprite = null;
     public List<Sprite> spList = new List<Sprite>();
+    public string spPath = null;
 
     public int itemKey;
     public int count = 0;
@@ -57,5 +57,75 @@ public class Item
         sellPrice = _sellPrice;
         count = 0;
         itemRank = _itemRank;
+
+        switch(itemKey / 1000)
+        {
+            case 0:
+                spPath = "Sprites/0_Hair/";
+                break;
+            case 1:
+                spPath = "Sprites/1_FaceHair/";
+                break;
+            case 2:
+                spPath = "Sprites/2_Cloth/";
+                break;
+            case 3:
+                spPath = "Sprites/3_Pant/";
+                break;
+            case 4:
+                spPath = "Sprites/4_Helmet/";
+                break;
+            case 5:
+                spPath = "Sprites/5_Armor/";
+                break;
+            case 6:
+                spPath = "Sprites/6_Back/";
+                break;
+            case 7:
+                spPath = "Sprites/7_Shield/";
+                break;
+            case 8:
+                spPath = "Sprites/8_Sword/";
+                break;
+            case 9:
+                spPath = "Sprites/9_Exe/";
+                break;
+            case 10:
+                spPath = "Sprites/10_Spear/";
+                break;
+
+            case 11:
+                spPath = "Sprites/11_Bow/";
+                break;
+            case 12:
+                spPath = "Sprites/12_Wand/";
+                break;
+            case 13:
+                spPath = "Sprites/13_Consumable/";
+                break;
+            case 14:
+                spPath = "Sprites/14_Miscellaneous/";
+                break;
+        }
+
+        singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
+        UnityEngine.Object[] sprites = Resources.LoadAll<Sprite>(spPath + itemName);
+        if (sprites.Length > 0)
+        {
+            for (var i = 0; i < sprites.Length; i++)
+            {
+                if (sprites[i].GetType() == typeof(Sprite))
+                {
+                    spList.Add((Sprite)sprites[i]);
+                }
+            }
+        }
+        else
+        {
+            for (var i = 0; i < spList.Count; i++)
+            {
+                spList[i] = null;
+            }
+        }
     }
 }
