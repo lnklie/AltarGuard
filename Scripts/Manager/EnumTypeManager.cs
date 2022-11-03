@@ -1,14 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : EnumTypeManager.cs
-==============================
-*/
-public enum LayerName
+
+public enum ESound
+{
+    BackGround,
+    Effect
+}
+public enum ESleepModeTime
+{
+    TurnOff,
+    FiveMin,
+    TenMin,
+    ThirtyMin,
+    SixtyMin
+}
+public enum EAllyTargetingSetUp
+{
+     OneSelf,
+     CloseAlly,
+     Random,
+     WeakAlly
+}
+public enum ELayerName
 {
     IdleLayer = 0,
     WalkLayer = 1,
@@ -71,6 +85,25 @@ public enum EnemyType
     SwordOrc,
     BowOrc,
     WizardOrc
+}
+public enum EStatus
+{
+    Str,
+    Dex,
+    Wiz,
+    Luck,
+    MaxHp,
+    MaxMp,
+    HpRegenValue,
+    PhysicalDamage,
+    MagicalDamage,
+    DefensivePower,
+    Speed,
+    AttackSpeed,
+    CastingSpeed,
+    AtkRange,
+    DropProbability,
+    ItemRarity
 }
 public enum BossEnemyType
 {
@@ -145,6 +178,10 @@ public enum EGraceConditionWhat
     SpearOrExe,
     SwordAndShield,
     WandAndShiled,
+    Str,
+    Dex,
+    Wiz,
+    Luck,
     HpPortion,
     MpPortion,
     Skill
@@ -154,6 +191,9 @@ public enum EGraceConditionHow
     Equip = 2000,
     Use,
     SkillUse,
+    More,
+    Same,
+    Less
 }
 public enum EGraceResultWho
 {
@@ -184,4 +224,9 @@ public enum EGraceResultHow
 {
     Increase = 6000,
     Decrease,
+}
+public enum ERelationOfGraces
+{
+    Independence = 7000,
+    Subordination
 }

@@ -21,6 +21,7 @@ public class InventoryPanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI equipedItemSkillExplain = null;
     [SerializeField] private TextMeshProUGUI equipedItemCharacterName = null;
 
+
     [Header("CheckDiscard")]
     [SerializeField] private GameObject checkDiscard = null;
     [SerializeField] private GameObject checkAmount = null;
@@ -103,6 +104,7 @@ public class InventoryPanelController : MonoBehaviour
     public void UpdateMoney()
     {
         moneyText.text = ConvertMoney(playerStatus.Money);
+        Debug.Log("���絷� " + playerStatus.Money); ;
     }
 
     public string ConvertMoney(int _money)
@@ -125,7 +127,6 @@ public class InventoryPanelController : MonoBehaviour
             }
             else if (_tempMoney >= 10000)
             {
-
                 _moneyText += ((_tempMoney / 10000)).ToString() + "�� ";
                 _tempMoney = (_tempMoney % 10000);
 
@@ -228,6 +229,7 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetActiveEquipedItemInfo(bool _bool)
     {
+        // ������ ���â Ȱ��ȭ ����
         equipedItemInfo.SetActive(_bool);
     }
     public void SetActiveCheckDiscard(bool _bool)
@@ -258,9 +260,11 @@ public class InventoryPanelController : MonoBehaviour
                 selectEquipmentController.Add(characterEquipmentController[i]);
             }
         }
+
     }
     public void SelectCharacterEquipment(bool _isUp)
     {
+        ResetEquipedItemInfoSkillButtons();
         if(_isUp)
         {
             selectCharNum++;
@@ -273,12 +277,12 @@ public class InventoryPanelController : MonoBehaviour
             if (selectCharNum == -1)
                 selectCharNum = selectEquipmentController.Count - 1;
         }
-        ResetEquipedItemInfoSkillButtons();
         SetEquipedItemInfoPanel();
     }
 
     public void UpdateItemInfo()
     {
+        // ������ ���â ����Ʈ
         selectCharNum = 0;
         isItemSelect = false;
         selectEquipmentController.Clear();
@@ -287,12 +291,17 @@ public class InventoryPanelController : MonoBehaviour
         SetActiveEquipCharacterBox(false);
         SetActiveItemInfo(true);
         SetActiveEquipedItemInfo(false);
-        if (CheckCharacterEquiped())
+        Debug.Log("�̾������� Ÿ��� " + selectItem.itemType);
+        if(selectItem.itemType != 9 && selectItem.itemType != 10)
         {
-            ResetEquipedItemInfoSkillButtons();
-            SetActiveEquipedItemInfo(true);
-            SelectCharacterEquiped();
-            SetEquipedItemInfoPanel();
+            Debug.Log("�̾������� Ÿ���2 " + selectItem.itemType);
+            if (CheckCharacterEquiped())
+            {
+                ResetEquipedItemInfoSkillButtons();
+                SetActiveEquipedItemInfo(true);
+                SelectCharacterEquiped();
+                SetEquipedItemInfoPanel();
+            }
         }
 
         inventoryButtons[3].gameObject.SetActive(true);
@@ -416,11 +425,11 @@ public class InventoryPanelController : MonoBehaviour
                     "��� ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
                     "��� �Ÿ�: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
                     "���� ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
-                if (selectItem.grace1 != null)
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1 != null)
                     equipedIteminfoExplainText.text += "ù ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace1.explain;
-                if (selectItem.grace2 != null)
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2 != null)
                     equipedIteminfoExplainText.text += "�� ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace2.explain;
-                if (selectItem.grace3 != null)
+                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3 != null)
                     equipedIteminfoExplainText.text += "�� ��° ���: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace3.explain;
                 SetEquipedItemSkillIcon();
                 break;
@@ -576,6 +585,7 @@ public class InventoryPanelController : MonoBehaviour
 
     public void TakeOffInventoryItem(List<EquipmentController> _characterList)
     {
+        // �������
         if (selectItem.isEquip)
         {
             _characterList[selectItem.equipCharNum].TakeOffEquipment(selectItem);
@@ -590,6 +600,7 @@ public class InventoryPanelController : MonoBehaviour
  
     public void SetActiveEquipCharacterBox(bool _bool)
     {
+        // ���� ĳ���� �����ϱ� ��ư Ȱ��ȭ
         for (int i = 0; i < equipCharactersBtn.Length; i++)
             equipCharactersBtn[i].gameObject.SetActive(_bool);
     }

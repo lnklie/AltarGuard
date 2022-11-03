@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class Status : MonoBehaviour
 {
+    [SerializeField] private EStatus previewStatus = EStatus.Str;
     [SerializeField] protected string objectName = "";
     [SerializeField] protected int curHp = 0;
-    [SerializeField] protected int maxHp = 100;
-    [SerializeField] protected int defensivePower = 0;
     [SerializeField] protected bool isDamaged = false;
-    [SerializeField] protected int totalMaxHp = 0;
-    [SerializeField] protected int totalDefensivePower = 0;
+    [SerializeField] protected bool isDied = false;
     [SerializeField] protected bool triggerStatusUpdate = false;
     protected BoxCollider2D col = null;
     protected Rigidbody2D rig = null;
@@ -19,23 +17,23 @@ public class Status : MonoBehaviour
     [SerializeField] private ValueTextController damageTextController;
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
+    [SerializeField] protected float[] totalStatus = new float[16];
+    [SerializeField] protected float[] basicStatus = new float[16];
     #region Property
-    public int TotalMaxHp { get { return totalMaxHp; } set { totalMaxHp = value; } }
-    public int TotalDefensivePower { get { return totalDefensivePower; } set { totalDefensivePower = value; } }
+    public float[] TotalStatus { get { return totalStatus; } set { totalStatus = value; } }
+    public float[] BasicStatus { get { return basicStatus; } set { basicStatus = value; } }
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
     public int DefeatExp { get { return defeatExp; } set { defeatExp = value; } }
     public Transform TargetPos { get { return targetPos; } }
     public string ObjectName { get { return objectName; } set { objectName = value; } }
     public int CurHp { get { return curHp; } set { curHp = value; } }
-    public int MaxHp { get { return maxHp; } set { maxHp = value; } }
-    public int DefensivePower { get { return defensivePower; } set { defensivePower = value; } }
     public bool IsDamaged { get { return isDamaged; } set { isDamaged = value; } }
     //public bool TriggerStateChange { get { return triggerStateChange; } set { triggerStateChange = value; } }
     public BoxCollider2D Col { get { return col; } }
     public Rigidbody2D Rig { get { return rig; } }
     public Animator Ani { get { return ani; } }
+    public bool IsDied { get { return isDied; } set { isDied = value; } }
     #endregion
-
 
 
     public virtual void Awake()
@@ -45,6 +43,7 @@ public class Status : MonoBehaviour
         ani = this.GetComponent<Animator>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
+
 
     public void SetValueText(int _damage, Color _color)
     {
@@ -57,17 +56,21 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
+        // 매개변수가 마지막 공격을 했는지 체크
         if (curHp <= 0f)
+        {
             return true;
+        }
         else
             return false;
     }
     public virtual void Damaged(int _damage)
     {
-        curHp -= ReviseDamage(_damage, defensivePower);
+        //Debug.Log("�̿���Ʈ�� �̸�� " + ObjectName + " ������ ��� " + "������� " + ReviseDamage(_damage, defensivePower) + " ���� ü��� " + curHp);
+        curHp -= ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
-        SetValueText(ReviseDamage(_damage, defensivePower),Color.red);
+        SetValueText(ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]),Color.red);
     }
     public virtual void recovered(int _value)
     {
@@ -81,8 +84,9 @@ public class Status : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         bodySprites.color = new Color(1f, 1f, 1f, 1f);
     }
-    public void ActiveLayer(LayerName layerName)
+    public void ActiveLayer(ELayerName layerName)
     {
+        // 애니메이션 레이어 가중치 조절
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);
@@ -91,7 +95,7 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
-        // ������ �Ÿ� ���
+        // 대상과의 거리 측정
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

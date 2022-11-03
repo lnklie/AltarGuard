@@ -1,0 +1,5 @@
+﻿recipeKey,recipeName,completeItemKey,necessaryItemKey1,necessaryItemKey2,necessaryItemKey3,necessaryItemKey4,necessaryItemCount1,necessaryItemCount2,necessaryItemCount3,necessaryItemCount4
+0,엄청난 검 제조법,7005,1003,-1,-1,-1,1,-1,-1,-1
+1,엄청난 방패 제조법,8004,2001,3002,-1,-1,1,1,-1,-1
+2,엄청난 활 제조법,9002,4001,5002,6001,-1,1,1,1,-1
+3,엄청난 지팡이 제조법,10003,7002,8004,9001,11001,1,1,1,4

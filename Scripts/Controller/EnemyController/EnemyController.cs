@@ -7,6 +7,8 @@ public class EnemyController : CharacterController
     [SerializeField] private Status altar = null;
     [SerializeField] protected EnemyStatus enemyStatus = null;
     [SerializeField] private TargetingBoxController targetingBoxController = null;
+    [SerializeField] private bool isPlayerTargeting = false;
+
     public override void Awake()
     {
         base.Awake();
@@ -14,9 +16,19 @@ public class EnemyController : CharacterController
     }
     public override void Start()
     {
-        base.Start();
         FindAltar();
+        base.Start();
     }
+    public override void Update()
+    {
+        base.Update();
+        if (enemyStatus.AllyTarget != null)
+            destination = enemyStatus.AllyTarget.transform.position;
+        else
+            destination = altar.TargetPos.position;
+
+    }
+
     public void FindAltar()
     {
         enemyStatus.AltarRay = Physics2D.CircleCast(enemyStatus.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Altar"));
@@ -25,41 +37,46 @@ public class EnemyController : CharacterController
 
     public override void AIChangeState()
     {
-        if (enemyStatus.Target)
+        if (enemyStatus.AllyTarget)
         {
-            enemyStatus.Distance = enemyStatus.Target.position - enemyStatus.TargetPos.position;
-            enemyStatus.TargetDir = enemyStatus.Distance.normalized;
+            enemyStatus.Distance = enemyStatus.AllyTarget.transform.position - enemyStatus.TargetPos.position;
         } 
-        
-        if(!enemyStatus.IsDied)
+        else
         {
-            if(enemyStatus.IsDied)
-                StartCoroutine(AIDied());
+            enemyStatus.Distance = altar.transform.position - enemyStatus.TargetPos.position;
+        }
+        enemyStatus.TargetDir = enemyStatus.Distance.normalized;
+        if (enemyStatus.IsDied)
+        {
+            StartCoroutine(AIDied());
+        }
+        if (!enemyStatus.IsDied)
+        {
+            if (enemyStatus.AllyTarget == null)
+            {
+                enemyStatus.AIState = EAIState.Chase;
+            }
             else
             {
-                if (enemyStatus.Target == null)
-                    enemyStatus.AIState = EAIState.Idle;
+                if (IsSkillQueue() && IsSkillRange(enemyStatus.AllyTarget))
+                    enemyStatus.AIState = EAIState.UseSkill;
+                else if (IsAtkRange(enemyStatus.AllyTarget))
+                    enemyStatus.AIState = EAIState.Attack;
                 else
-                {
-                    if(IsSkillQueue() && IsSkillRange())
-                        enemyStatus.AIState = EAIState.UseSkill;
-                    else if (IsAtkRange())
-                        enemyStatus.AIState = EAIState.Attack;
-                    else
-                        enemyStatus.AIState = EAIState.Chase;
-                }
+                    enemyStatus.AIState = EAIState.Chase;
             }
+
         }
     }
 
-    public void Targeting(int _layer, List<CharacterStatus> _targetList)
+    public void Targeting(List<AllyController> _targetList)
     {
-        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, _layer);
+        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if (_hit.Length > 0)
         {
             for (int i = 0; i < _hit.Length; i++)
             {
-                CharacterStatus _hitStatus = _hit[i].collider.GetComponent<CharacterStatus>();
+                AllyController _hitStatus = _hit[i].collider.GetComponent<AllyController>();
                 if (!_hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex])
                 {
                     _targetList.Add(_hitStatus);
@@ -68,80 +85,116 @@ public class EnemyController : CharacterController
             }
         }
     }
-    public void ResortTarget(List<CharacterStatus> _targetList, bool _isEnemy, Transform _defaultTransform = null)
+    public void Targeting(List<EnemyController> _targetList)
     {
-        if (_targetList.Count > 0)
+        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+        if (_hit.Length > 0)
         {
-            if (_isEnemy)
-                enemyStatus.Target = _targetList[0].TargetPos;
-            else
-                enemyStatus.AllyTarget = _targetList[0].TargetPos;
-            SortSightRayList(_targetList);
+            for (int i = 0; i < _hit.Length; i++)
+            {
+                EnemyController _hitStatus = _hit[i].collider.GetComponent<EnemyController>();
+                if (!_hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex])
+                {
+                    _targetList.Add(_hitStatus);
+                    _hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex] = true;
+                }
+            }
+        }
+    }
+    public void ResortTarget(List<AllyController> _targetList )
+    {
+        if (_targetList.Count > 0) 
+        {
+            enemyStatus.AllyTarget = _targetList[0];
+            SortSightRayListByDistance(_targetList);
             for (int i = 0; i < _targetList.Count; i++)
             {
-                if (enemyStatus.GetDistance(_targetList[i].TargetPos.position) >= enemyStatus.SeeRange
-                    || _targetList[i].transform.GetComponent<CharacterStatus>().AIState == EAIState.Died)
+                if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
+                    || _targetList[i].IsDied())
                 {
-                    if (_isEnemy)
-                    {
 
-                        if (_targetList[i].TargetPos == enemyStatus.Target)
-                        {
-                            enemyStatus.Target = _defaultTransform;
-                        }
-                    }
-                    else
+                    if (_targetList[i] == enemyStatus.AllyTarget)
                     {
-                        if (_targetList[i].TargetPos == enemyStatus.AllyTarget)
-                        {
-                            enemyStatus.AllyTarget = _defaultTransform;
-                        }
+                        enemyStatus.AllyTarget = null;
                     }
-                    _targetList[i].transform.GetComponent<CharacterStatus>().IsEnemyTargeted[enemyStatus.EnemyIndex] = false;
+
+                    _targetList[i].IsEnemyTargeted[enemyStatus.EnemyIndex] = false;
                     _targetList.Remove(_targetList[i]);
                 }
             }
         }
         else
         {
-            if (_isEnemy)
-                enemyStatus.Target = _defaultTransform;
-            else
-                enemyStatus.AllyTarget = _defaultTransform;
+            enemyStatus.AllyTarget = null;
+        }
+    }
+    public void ResortTarget(List<EnemyController> _targetList)
+    {
+        if (_targetList.Count > 0)
+        {
+            enemyStatus.EnemyTarget = _targetList[0];
+
+            SortSightRayListByDistance(_targetList);
+            for (int i = 0; i < _targetList.Count; i++)
+            {
+                if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
+                    || _targetList[i].IsDied())
+                {
+                    if (_targetList[i] == enemyStatus.EnemyTarget)
+                    {
+                        enemyStatus.EnemyTarget = null;
+                    }
+                    _targetList[i].IsEnemyTargeted[enemyStatus.EnemyIndex] = false;
+                    _targetList.Remove(_targetList[i]);
+                }
+            }
+        }
+        else
+        {
+                enemyStatus.EnemyTarget = null;
         }
     }
     public override IEnumerator AIPerception()
     {
         while(true)
         {
-            Targeting(LayerMask.GetMask("Ally"), enemyStatus.AllyRayList);
-            if (!altar)
-                enemyStatus.Target = null;
-            else
-                ResortTarget(enemyStatus.AllyRayList,true, altar.TargetPos);
+            Targeting(enemyStatus.AllyRayList);
+            ResortTarget(enemyStatus.AllyRayList);
         
-            Targeting(LayerMask.GetMask("Enemy"), enemyStatus.EnemyRayList);
-            ResortTarget(enemyStatus.EnemyRayList, false);
+            Targeting( enemyStatus.EnemyRayList);
+            ResortTarget(enemyStatus.EnemyRayList);
 
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-
+    //public override void AIChase()
+    //{
+    //    if (pathFindController.FinalNodeList.Count > 1)
+    //    {
+    //        Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
+    //        characterStatus.ActiveLayer(LayerName.WalkLayer);
+    //        characterStatus.transform.position = Vector2.MoveTowards(characterStatus.transform.position, _moveDir, characterStatus.TotalSpeed * Time.deltaTime);
+    //    }
+    //    else if (pathFindController.FinalNodeList.Count == 1)
+    //    {
+    //        pathFindController.FinalNodeList.RemoveAt(0);
+    //    }
+    //}
     public override void AttackDamage()
     {
-        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalAtkRange, enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
+        var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalStatus[(int)EStatus.AtkRange], enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));
 
         if(hits.Length > 0)
         {
             for (int i = 0; i < hits.Length; i++)
             {
                 Status ally = hits[i].collider.GetComponent<Status>();
-                if(ally == null)
-                {
-                    Debug.Log("¹¹Â¡?? ¹» °ø°ÝÇÑ°É±î?" + hits[i].collider.name);
-                }
                 ally.Damaged(AttackTypeDamage());
+                if (ally.IsLastHit())
+                {
+                    ally.IsDied = true;
+                }
             }
         }
     }

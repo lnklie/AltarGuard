@@ -6,7 +6,6 @@ public class RushEnemyStatus : EnemyStatus
 {
     [SerializeField] protected Enemy rushEnemy = null;
 
-
     private Image[] images = null;
     public Enemy RushEnemy { get { return rushEnemy; } set { rushEnemy = value; } }
 
@@ -31,19 +30,26 @@ public class RushEnemyStatus : EnemyStatus
     }
     public void UpdateEnemyHp()
     {
-        images[1].fillAmount = curHp / (float)TotalMaxHp;
+        images[1].fillAmount = curHp / TotalStatus[(int)EStatus.MaxHp];
     }
     public void CustomEnemy()
     {
         objectName = rushEnemy.objectName;
-        totalStr = rushEnemy.str + equipedStr;
-        totalDex = rushEnemy.dex + equipedDex;
-        totalWiz = rushEnemy.wiz + equipedWiz; 
         seeRange = rushEnemy.seeRange;
         defeatExp = rushEnemy.defeatExp;
-        UpdateTotalAbility();
-        totalAtkRange = rushEnemy.atkRange + equipedAtkRange;
-        totalAtkSpeed = maxAtkSpeed - (rushEnemy.atkSpeed + equipedAtkSpeed);
+        totalStatus[(int)EStatus.Str] = rushEnemy.str + equipStatus[(int)EStatus.Str];
+        totalStatus[(int)EStatus.Dex] = rushEnemy.dex + equipStatus[(int)EStatus.Dex];
+        totalStatus[(int)EStatus.Wiz] = rushEnemy.str + equipStatus[(int)EStatus.Wiz];
+        totalStatus[(int)EStatus.MaxHp] = rushEnemy.hp + totalStatus[(int)EStatus.Str] + equipStatus[(int)EStatus.MaxHp];
+        totalStatus[(int)EStatus.MaxMp] = rushEnemy.mp + totalStatus[(int)EStatus.Wiz] + equipStatus[(int)EStatus.MaxMp];
+        totalStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] * 5 + equipStatus[(int)EStatus.PhysicalDamage];
+        totalStatus[(int)EStatus.MagicalDamage] = totalStatus[(int)EStatus.Wiz] * 5 + equipStatus[(int)EStatus.MagicalDamage];
+        totalStatus[(int)EStatus.DefensivePower] = totalStatus[(int)EStatus.Str] * 3 + equipStatus[(int)EStatus.DefensivePower];
+        totalStatus[(int)EStatus.Speed] = rushEnemy.speed + totalStatus[(int)EStatus.Dex] * 0.1f;
+        totalStatus[(int)EStatus.HpRegenValue] = totalStatus[(int)EStatus.Str] * 0.5f;
+        totalStatus[(int)EStatus.AtkRange] = rushEnemy.atkRange + totalStatus[(int)EStatus.AtkRange];
+        totalStatus[(int)EStatus.AttackSpeed] = maxAtkSpeed - (rushEnemy.atkSpeed + totalStatus[(int)EStatus.AttackSpeed]);
+        curHp = (int)totalStatus[(int)EStatus.MaxHp];
 
         itemDropKey.Add(rushEnemy.itemDropKey1);
         itemDropKey.Add(rushEnemy.itemDropKey2);
@@ -58,18 +64,4 @@ public class RushEnemyStatus : EnemyStatus
         isEnemyChange = false;
     }
 
-    public override void UpdateTotalAbility()
-    {
-        // 능력 업데이트
-        totalMaxHp = rushEnemy.hp + str * 10;
-        totalMaxMp = rushEnemy.mp + wiz * 10;
-        totalPhysicalDamage = 1;
-        //totalPhysicalDamage = str * 5 + equipedPhysicalDamage; 
-        totalMagicalDamage = wiz * 5 + equipedMagicalDamage;
-        totalDefensivePower = str * 3 + equipedDefensivePower;
-        totalSpeed = rushEnemy.speed + dex * 0.1f;
-        totalHpRegenValue = str * 1;
-
-        curHp = totalMaxHp;
-    }
 }

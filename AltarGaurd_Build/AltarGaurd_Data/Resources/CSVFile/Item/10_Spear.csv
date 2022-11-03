@@ -1,0 +1,6 @@
+﻿itemKey,itemName,itemKorName,attackType,weaponType,physicalDamage,magicalDamage,atkRange,atkDistance,atkSpeed,equipLevel,buyPrice,sellPrice,disassembleItemKey,disassembleItemAmount,itemRank
+10000,Spear_1,Spear_1,Melee,Spear,15,0,0.5,1,3,7,2000,1000,12012,8,1
+10001,Spear_2,Spear_2,Melee,Spear,20,0,0.5,1,3,8,2000,1000,12012,9,1
+10002,Spear_3,Spear_3,Melee,Spear,25,0,0.5,1,3,9,2000,1000,12012,10,1
+10003,Spear_4,Spear_4,Melee,Spear,30,0,0.5,1,3,10,2000,1000,12012,11,1
+10004,Spear_5,Spear_5,Melee,Spear,35,0,0.5,1,3,11,2000,1000,12012,12,1

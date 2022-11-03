@@ -1,0 +1,11 @@
+﻿itemKey,itemName,itemKorName,attackType,weaponType,physicalDamage,magicalDamage,atkRange,atkDistance,defensivePower,skillKey1,skillKey2,equipLevel,buyPrice,sellPrice,disassembleItemKey,disassembleItemAmount,itemRank
+7000,Shield_1,Shield_1,Melee,Shield,1,1,0.5,0.5,1,0,1,0,2000,1000,12013,1,2
+7001,Shield_2,Shield_2,Melee,Shield,1,1,0.5,0.5,2,0,1,1,2000,1000,12013,2,2
+7002,Shield_3,Shield_3,Melee,Shield,1,1,0.5,0.5,3,0,1,2,2000,1000,12013,3,2
+7003,Shield_4,Shield_4,Melee,Shield,1,1,0.5,0.5,4,0,1,3,2000,1000,12013,4,2
+7004,Shield_5,Shield_5,Melee,Shield,1,1,0.5,0.5,5,0,1,4,2000,1000,12013,5,2
+7005,Shield_6,Shield_6,Melee,Shield,1,1,0.5,0.5,6,0,1,5,2000,1000,12013,6,2
+7006,Shield_7,Shield_7,Melee,Shield,1,1,0.5,0.5,7,0,1,6,2000,1000,12013,7,2
+7007,Shield_8,Shield_8,Melee,Shield,1,1,0.5,0.5,8,0,1,7,2000,1000,12013,8,2
+7008,Shield_9,Shield_9,Melee,Shield,1,1,0.5,0.5,9,0,1,8,2000,1000,12013,9,2
+7009,Shield_10,Shield_10,Melee,Shield,1,1,0.5,0.5,10,0,1,9,2000,1000,12013,10,2

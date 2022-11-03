@@ -1,15 +1,9 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-/*
-==============================
- * √÷¡æºˆ¡§¿œ : 2022-06-08
- * ¿€º∫¿⁄ : Inklie
- * ∆ƒ¿œ∏Ì : ProfilePanelController.cs
-==============================
-*/
+ 
 public class ProfilePanelController : MonoBehaviour
 {
     [Header("StateImages & StateTexts")]
@@ -23,43 +17,98 @@ public class ProfilePanelController : MonoBehaviour
 
     [Header("ProfileImages")]
     [SerializeField] private GameObject bossProfile = null;
-    [SerializeField] private List<GameObject> profiles = new List<GameObject>();
 
-    [SerializeField] private Sprite UIMask;
+
 
     [SerializeField] private Conversation[] conversations = null;
+    [SerializeField] private bool isconversationActive = true;
+    [SerializeField] private bool triggerConversationDeActive = false;
+    [SerializeField] private bool triggerConversationActive = false;
 
-    public List<GameObject> Profiles { get { return profiles; } set { profiles = value; } }
+    public bool IsconversationActive { get { return isconversationActive; } set { isconversationActive = value; } }
 
+    private void Start()
+    {
+        if (isconversationActive)
+        {
+            triggerConversationActive = true;
+        }
+    }
+    private void Update()
+    {
+        if(triggerConversationDeActive)
+        {
+            triggerConversationDeActive = false;
+            isconversationActive = false;
+            StartCoroutine(SetActiveConversation(false));
+            StopAllCoroutines();
+        }
+        else if(triggerConversationActive)
+        {
+            triggerConversationActive = false;
+            isconversationActive = true;
+            StartCoroutine(SetActiveConversation(true));
+            StartCoroutine(Conversation(DatabaseManager.Instance.SelectGameScript(0)));
+        }
+    }
 
+    public void ChooseTriggerConversationActive(bool _bool)
+    {
+        if (_bool)
+            triggerConversationActive = true;
+        else
+            triggerConversationDeActive = true;
+    }
+    public IEnumerator SetActiveConversation(bool _bool)
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            conversations[i].gameObject.SetActive(_bool);
+            yield return null;
+        }
+    }
+    public IEnumerator Conversation(GameScript _gameScript)
+    {
+        if(isconversationActive)
+            for (int i = 0; i < _gameScript.actorNums.Count; i++)
+            {
+                if (_gameScript.actorNums[i] != -1)
+                {
+                    conversations[_gameScript.actorNums[i]].CurLines = _gameScript.lines[i];
+                    yield return new WaitForSeconds(conversations[_gameScript.actorNums[i]].CurLines.timeLag);
+                    conversations[_gameScript.actorNums[i]].Talk();
+                }
+                    
+            }
+    }
 
-    #region "∫∏Ω∫ æ˜µ•¿Ã∆Æ"
+    #region "Î≥¥Ïä§ ÏóÖÎç∞Ïù¥Ìä∏"
     public void SetBossProfile(bool _bool)
     {
         bossProfile.SetActive(_bool);
     }
     public void BossUpdate(BossEnemyStatus _bossEnemy)
     {
-        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.MaxHp.ToString();
+        bossTexts[0].text = _bossEnemy.CurHp.ToString() + " / " + _bossEnemy.TotalStatus[(int)EStatus.MaxHp].ToString();
         bossTexts[1].text = _bossEnemy.ObjectName.ToString();
 
-        bossStateImages.fillAmount = (float)_bossEnemy.CurHp / _bossEnemy.MaxHp;
+        bossStateImages.fillAmount = _bossEnemy.CurHp / _bossEnemy.TotalStatus[(int)EStatus.MaxHp];
     }
     #endregion
 
-    #region "«¡∑Œ«  æ˜µ•¿Ã∆Æ"
+    #region "ÌîÑÎ°úÌïÑ ÏóÖÎç∞Ïù¥Ìä∏"
     public void UpdatePlayerProfile(PlayerStatus _player)
     {
         string[] infoText = new string[]
             {
-            _player.CurHp.ToString() + " / " + _player.MaxHp.ToString(),
-            _player.CurMp.ToString() + " / " + _player.MaxMp.ToString(),
+            _player.CurHp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _player.CurMp.ToString() + " / " + _player.TotalStatus[(int)EStatus.MaxMp].ToString(),
             _player.CurExp.ToString() + " / " + _player.MaxExp.ToString(),
             "Lv. " + _player.CurLevel.ToString(),
         };
-        float[] infoImage ={
-            _player.CurHp / (float)_player.MaxHp ,
-            _player.CurMp / (float)_player.MaxMp,
+        float[] infoImageFillAmount ={
+            _player.CurHp / _player.TotalStatus[(int)EStatus.MaxHp] ,
+            _player.CurMp / _player.TotalStatus[(int)EStatus.MaxMp],
             _player.CurExp / (float)_player.MaxExp
         };
         for (int i = 0; i < 4; i++)
@@ -68,19 +117,19 @@ public class ProfilePanelController : MonoBehaviour
         }
         for (int i = 0; i < 3; i++)
         {
-            playerStateImages[i].fillAmount = infoImage[i];
+            playerStateImages[i].fillAmount = infoImageFillAmount[i];
         }
     }
     public void UpdateMercenaryProfile(CharacterStatus _mercenary, int _mercenaryNum)
     {
         string[] infoText = {
-            _mercenary.CurHp.ToString() + " / " + _mercenary.MaxHp.ToString(),
-            _mercenary.CurMp.ToString() + " / " + _mercenary.MaxMp.ToString(),
+            _mercenary.CurHp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxHp].ToString(),
+            _mercenary.CurMp.ToString() + " / " + _mercenary.TotalStatus[(int)EStatus.MaxMp].ToString(),
             _mercenary.CurExp.ToString() + " / " + _mercenary.MaxExp.ToString(),
             "Lv. " + _mercenary.CurLevel.ToString()};
         float[] infoImage = {
-            _mercenary.CurHp / (float)_mercenary.MaxHp ,
-            _mercenary.CurMp / (float)_mercenary.MaxMp,
+            _mercenary.CurHp / _mercenary.TotalStatus[(int)EStatus.MaxHp] ,
+            _mercenary.CurMp / _mercenary.TotalStatus[(int)EStatus.MaxMp],
             _mercenary.CurExp / (float)_mercenary.MaxExp
         };
 
@@ -95,69 +144,16 @@ public class ProfilePanelController : MonoBehaviour
         }
 
     }
-    public IEnumerator Conversation(GameScript _gameScript)
-    {
-        if(_gameScript.actorNum0 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum0].Talk(_gameScript.script0, _gameScript.scriptSpeed0, _gameScript.scriptAniSpeed0));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag0);
-        if (_gameScript.actorNum1 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum1].Talk(_gameScript.script1, _gameScript.scriptSpeed1, _gameScript.scriptAniSpeed1));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag1);
-        if (_gameScript.actorNum2 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum2].Talk(_gameScript.script2, _gameScript.scriptSpeed2, _gameScript.scriptAniSpeed2));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag2);
-        if (_gameScript.actorNum3 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum3].Talk(_gameScript.script3, _gameScript.scriptSpeed3, _gameScript.scriptAniSpeed3));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag3);
-        if (_gameScript.actorNum4 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum4].Talk(_gameScript.script4, _gameScript.scriptSpeed4, _gameScript.scriptAniSpeed4));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag4);
-        if (_gameScript.actorNum5 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum5].Talk(_gameScript.script5, _gameScript.scriptSpeed5, _gameScript.scriptAniSpeed5));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag5);
-        if (_gameScript.actorNum6 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum6].Talk(_gameScript.script6, _gameScript.scriptSpeed6, _gameScript.scriptAniSpeed6));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag6);
-        if (_gameScript.actorNum7 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum7].Talk(_gameScript.script7, _gameScript.scriptSpeed7, _gameScript.scriptAniSpeed7));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag7);
-        if (_gameScript.actorNum8 != -1)
-        {
-            StartCoroutine(conversations[_gameScript.actorNum8].Talk(_gameScript.script8, _gameScript.scriptSpeed8, _gameScript.scriptAniSpeed8));
-        }
-        yield return new WaitForSeconds(_gameScript.timeLag8);
-        if (_gameScript.actorNum9 != -1)
-        {
-            Debug.Log("ø‰±„");
-            StartCoroutine(conversations[_gameScript.actorNum9].Talk(_gameScript.script9, _gameScript.scriptSpeed9, _gameScript.scriptAniSpeed9));
-        }
-    }
     #endregion
     public void ActiveInventory()
     {
-        // UI »∞º∫»≠ 
+        // UI ÌôúÏÑ±Ìôî 
         this.gameObject.SetActive(true);
 
     }
     public void DeactiveInventory()
     {
-        // UI ∫Ò»∞º∫»≠
+        // UI ÎπÑÌôúÏÑ±Ìôî
         this.gameObject.SetActive(false);
     }
 }

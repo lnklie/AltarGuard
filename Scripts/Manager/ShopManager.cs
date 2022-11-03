@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopManager : SingletonManager<ShopManager>
+public class ShopManager : MonoBehaviour
 {
     [SerializeField]
     private Player player = null;
@@ -21,6 +21,7 @@ public class ShopManager : SingletonManager<ShopManager>
     [SerializeField]
     private List<Item> inventroyDecorationItems = new List<Item>();
 
+    public static ShopManager Instance = null;
     #region Property
     public List<Item> shopInventroyWeaponItems
     {
@@ -43,6 +44,10 @@ public class ShopManager : SingletonManager<ShopManager>
         get { return inventroyDecorationItems; }
     }
     #endregion
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         AddProduct(DatabaseManager.Instance.SelectItem(8001));

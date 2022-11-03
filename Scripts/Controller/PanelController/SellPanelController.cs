@@ -8,17 +8,16 @@ public class SellPanelController : MonoBehaviour
     [Header("SellItemInfo")]
     [SerializeField] private GameObject sellItemInfo = null;
 
-    [Header("SellItemAmount")]
-    [SerializeField] private GameObject sellItemAmount = null;
+    [Header("SellItemAmountPanel")]
+    [SerializeField] private GameObject sellItemAmountPanel = null;
 
+    [Header("Slots")]
     [SerializeField] private List<SellSlot> sellSlots = new List<SellSlot>();
 
-    [Header("EasyRegister")]
-    [SerializeField] private GameObject easyRegister = null;
+    [Header("QuickRegister")]
+    [SerializeField] private GameObject QuickRegister = null;
     [SerializeField] private Toggle[] topToggleList = null;
     [SerializeField] private Toggle[] lowToggleList = null;
-
-    [SerializeField] private Item selectSellItem = null;
     [SerializeField] private List<ShopInventorySlot> shopInventorySlots = new List<ShopInventorySlot>();
     private TextMeshProUGUI[] sellItemInfoText = null;
     [SerializeField] private List<Item> sellItemList = new List<Item>(); 
@@ -29,10 +28,15 @@ public class SellPanelController : MonoBehaviour
     [Header("SellMoenyText")]
     [SerializeField] private TextMeshProUGUI sellMoneyText = null;
 
+    [Header("Player Information")]
     [SerializeField] private PlayerStatus playerStatus = null;
 
-    private bool isSellItemSelect = false;
+    [Header("Current")]
+    [SerializeField] private Item selectSellItem = null;
+
+    [Header("InputField")]
     [SerializeField] private TMP_InputField sellAmount = null;
+    private bool isSellItemSelect = false;
     private int selectInventoryIndex = 0;
     private int sellMoney = 0;
     public List<Item> SellItemList { get { return sellItemList; } }
@@ -266,7 +270,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SetActiveRegisterEasyPanel(bool _bool)
     {
-        easyRegister.SetActive(_bool);
+        QuickRegister.SetActive(_bool);
     }
     public void SelectSlotSellItem(Item _item)
     {
@@ -612,7 +616,7 @@ public class SellPanelController : MonoBehaviour
     }
     public void SetActiveSellItemAmount(bool _bool)
     {
-        sellItemAmount.SetActive(_bool);
+        sellItemAmountPanel.SetActive(_bool);
     }
     public void RegisterAmountItem()
     {

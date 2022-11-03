@@ -1,0 +1,5 @@
+﻿objectName,enemyKey,enemyType,hp,mp,str,dex,wiz,seeRange,speed,defeatExp,itemDropKey1,itemDropKey2,itemDropKey3,itemDropKey4,itemDropKey5,itemDropProb1,itemDropProb2,itemDropProb3,itemDropProb4,itemDropProb5,helmetKey,armorKey,pantKey,weaponKey
+Enemy_1,0,0,1000,30,5,5,5,8,2,100,1,2,3,4,5,50,10,10,10,10,4000,5000,3000,7000
+Enemy_2,1,1,100,30,5,5,5,8,2,200,1,2,3,4,5,50,10,10,10,10,4000,5000,3000,9000
+Enemy_3,3,2,30,30,5,5,5,8,2,300,1,2,3,4,5,50,10,10,10,10,4000,5000,3000,10000
+Enemy_4,1000,1,1000,500,20,20,20,8,3,5000,1,2,3,4,5,50,10,10,10,10,4000,5000,3000,10000

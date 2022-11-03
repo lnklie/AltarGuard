@@ -20,11 +20,12 @@ public class EquipmentController : MonoBehaviour
     [SerializeField] private SkillController skillController = null;
     [SerializeField] private Item[] equipItems = new Item[9];
     [SerializeField] private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
-
+    [SerializeField] protected bool[] triggerEquipmentChange = new bool[9];
     #region Property
     public Item[] EquipItems { get { return equipItems; } set { equipItems = value; } }
     public CharacterStatus Status { get { return status; } }
     public bool[] CheckEquipItems { get { return checkEquipItems; } set { checkEquipItems = value; } }
+    public bool[] TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     #endregion
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
+        // 장비에 방어력 출력
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -51,6 +53,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
+        // 장비에 물리데미지 출력
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -62,7 +65,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // ��� ������� ���
+        // 장비에 마법데미지 출력
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -74,9 +77,10 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
+        // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[8])
         {
-            status.AtkRange = equipItems[8].atkRange;
+            status.EquipStatus[(int)EStatus.AtkRange] = equipItems[8].atkRange;
             int num = equipItems[8].itemKey / 1000;
 
             if (equipItems[8].attackType == "Melee")
@@ -95,8 +99,7 @@ public class EquipmentController : MonoBehaviour
         if(!_item.isEquip)
         {
             status.IsSkillChange = true;
-            status.UpdateEquipAbility(equipItems);
-            status.UpdateTotalAbility();
+            TriggerEquipmentChange[_item.itemType] = true;
             status.TriggerStatusUpdate = true;
 
             equipItems[_item.itemType] = _item;
@@ -111,10 +114,11 @@ public class EquipmentController : MonoBehaviour
                     faceHairSpace.ChangeItemSprite(equipItems[1].spList[0]);
                     break;
                 case (int)ItemType.Cloth:
-                    for (int i = 0; i < clothSpaces.Length; i++)
-                    {
-                        clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
-                    }
+                    //for (int i = 0; i < clothSpaces.Length; i++)
+                    //{
+                    //    if(equipItems[2].spList[i] != null)
+                    //        clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
+                    //}
                     break;
                 case (int)ItemType.Pant:
                     for (int i = 0; i < pantSpaces.Length; i++)
@@ -148,10 +152,12 @@ public class EquipmentController : MonoBehaviour
                     }
                     break;
             }
-            status.TriggerEquipmentChange = true;
+            status.UpdateEquipAbility(equipItems);
+            status.UpdateAllStatus();
         }
         else
         {
+            Debug.Log("장착 중입니다.");
         }
     }
     public void SkillChange()
@@ -167,9 +173,8 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        status.UpdateEquipAbility(equipItems);
-        status.UpdateTotalAbility();
-
+        
+      
         switch (_item.itemType)
         {
             case 0:
@@ -273,10 +278,12 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
         }
-        status.TriggerEquipmentChange = true;
+        status.UpdateEquipAbility(equipItems);
+        status.UpdateAllStatus();
     }
     public void RemoveEquipment(int _index)
     {
+        // 장착 제거
         switch (_index)
         {
             case 0:
@@ -335,6 +342,6 @@ public class EquipmentController : MonoBehaviour
                 ChangeAttackType();
                 break;
         }
-        status.TriggerEquipmentChange = true;
+        TriggerEquipmentChange[_index] = true;
     }
 }

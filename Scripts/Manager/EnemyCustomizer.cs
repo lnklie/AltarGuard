@@ -26,7 +26,7 @@ public class EnemyCustomizer : MonoBehaviour
             rushEnemyAIController.AIPerception();
             rushEnemyAIController.AIChangeState();
             rushEnemyAIController.AIState();
-            rushEnemyStatus.Distance = rushEnemyStatus.Target.transform.position - this.transform.position;
+            rushEnemyStatus.Distance = rushEnemyStatus.EnemyTarget.transform.position - this.transform.position;
             rushEnemyStatus.TargetDir = rushEnemyStatus.Distance.normalized;
         }
     }
@@ -39,7 +39,7 @@ public class EnemyCustomizer : MonoBehaviour
     public void SetEnemyStatus(Enemy _rushenemy)
     {
         rushEnemyStatus.RushEnemy = _rushenemy;
-        rushEnemyStatus.CurHp = rushEnemyStatus.MaxHp;
+        rushEnemyStatus.CurHp = (int)rushEnemyStatus.TotalStatus[(int)EStatus.MaxHp];
         rushEnemyStatus.IsEnemyChange = true;
     }
     public void SetAnimator(RuntimeAnimatorController _ani)

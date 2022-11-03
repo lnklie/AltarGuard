@@ -1,0 +1,6 @@
+﻿itemKey,itemName,itemKorName,attackType,weaponType,physicalDamage,magicalDamage,atkRange,atkDistance,atkSpeed,equipLevel,buyPrice,sellPrice,disassembleItemKey,disassembleItemAmount,itemRank
+12000,Wand_1,Wand_1,Magic,Staff,0,15,10,0,3,0,2000,1000,12012,1,1
+12001,Wand_2,Wand_2,Magic,Staff,0,20,10,0,3,1,2000,1000,12012,2,1
+12002,Wand_3,Wand_3,Magic,Staff,0,25,10,0,3,2,2000,1000,12012,3,1
+12003,Wand_4,Wand_4,Magic,Staff,0,30,10,0,3,3,2000,1000,12012,4,1
+12004,Wand_5,Wand_5,Magic,Staff,0,35,10,0,3,4,2000,1000,12012,5,1

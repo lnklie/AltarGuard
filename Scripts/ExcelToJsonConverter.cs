@@ -81,7 +81,6 @@ public class ExcelToJsonConverter
 		for (int i = 0; i < directoryFiles.Length; i++)
 		{
 			string fileName = directoryFiles[i].Substring(directoryFiles[i].LastIndexOf('/') + 1);
-
 			if (excelRegex.IsMatch(fileName))
 			{
 				excelFiles.Add(directoryFiles[i]);
@@ -318,6 +317,7 @@ public class ExcelToJsonConverter
 		{
 			if (columnNameRegex.IsMatch(dataTable.Columns[i].ColumnName))
 			{
+				
 				dataTable.Columns.RemoveAt(i);
 			}
 		}
