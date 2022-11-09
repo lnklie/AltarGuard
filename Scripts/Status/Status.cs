@@ -56,7 +56,7 @@ public class Status : MonoBehaviour
     }
     public bool IsLastHit()
     {
-        // ë§¤ê°œë³€ìˆ˜ê°€ ë§ˆì§€ë§‰ ê³µê²©ì„ í–ˆëŠ”ì§€ ì²´í¬
+        // ¸Å°³º¯¼ö°¡ ¸¶Áö¸· °ø°İÀ» Çß´ÂÁö Ã¼Å©
         if (curHp <= 0f)
         {
             return true;
@@ -66,7 +66,7 @@ public class Status : MonoBehaviour
     }
     public virtual void Damaged(int _damage)
     {
-        //Debug.Log("ï¿½Ì¿ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ " + ObjectName + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ " + "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ " + ReviseDamage(_damage, defensivePower) + " ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ " + curHp);
+        //Debug.Log("ÀÌ¿ÀºêÁ§Æ®ÀÇ ÀÌ¸§Àº " + ObjectName + " µ¥¹ÌÁö ¹ŞÀ½ " + "µ¥¹ÌÁö´Â " + ReviseDamage(_damage, defensivePower) + " ÇöÀç Ã¼·ÂÀº " + curHp);
         curHp -= ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
@@ -86,7 +86,7 @@ public class Status : MonoBehaviour
     }
     public void ActiveLayer(ELayerName layerName)
     {
-        // ì• ë‹ˆë©”ì´ì…˜ ë ˆì´ì–´ ê°€ì¤‘ì¹˜ ì¡°ì ˆ
+        // ¾Ö´Ï¸ŞÀÌ¼Ç ·¹ÀÌ¾î °¡ÁßÄ¡ Á¶Àı
         for (int i = 0; i < ani.layerCount; i++)
         {
             ani.SetLayerWeight(i, 0);
@@ -95,7 +95,7 @@ public class Status : MonoBehaviour
     }
     public float GetDistance(Vector2 _end)
     {
-        // ëŒ€ìƒê³¼ì˜ ê±°ë¦¬ ì¸¡ì •
+        // ´ë»ó°úÀÇ °Å¸® ÃøÁ¤
         float x1 = transform.position.x;
         float y1 = transform.position.y;
         float x2 = _end.x;

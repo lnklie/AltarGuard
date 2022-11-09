@@ -43,7 +43,7 @@ public class EquipmentController : MonoBehaviour
 
     public int GetEquipmentDefensivePower()
     {
-        // ì¥ë¹„ì— ë°©ì–´ë ¥ ì¶œë ¥
+        // Àåºñ¿¡ ¹æ¾î·Â Ãâ·Â
         int equipmentDefensivePower = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -53,7 +53,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentPhysicDamage()
     {
-        // ì¥ë¹„ì— ë¬¼ë¦¬ë°ë¯¸ì§€ ì¶œë ¥
+        // Àåºñ¿¡ ¹°¸®µ¥¹ÌÁö Ãâ·Â
         int physicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -65,7 +65,7 @@ public class EquipmentController : MonoBehaviour
     }
     public int GetEquipmentMagicDamage()
     {
-        // ì¥ë¹„ì— ë§ˆë²•ë°ë¯¸ì§€ ì¶œë ¥
+        // Àåºñ¿¡ ¸¶¹ıµ¥¹ÌÁö Ãâ·Â
         int magicDamage = 0;
 
         for (int i = 0; i < equipItems.Length; i++)
@@ -77,7 +77,7 @@ public class EquipmentController : MonoBehaviour
     }
     private void ChangeAttackType()
     {
-        // ë¬´ê¸° ì•„ì´í…œì— ë”°ë¥¸ ê³µê²© íƒ€ì… ë³€ê²½
+        // ¹«±â ¾ÆÀÌÅÛ¿¡ µû¸¥ °ø°İ Å¸ÀÔ º¯°æ
         if (checkEquipItems[8])
         {
             status.EquipStatus[(int)EStatus.AtkRange] = equipItems[8].atkRange;
@@ -100,6 +100,8 @@ public class EquipmentController : MonoBehaviour
         {
             status.IsSkillChange = true;
             TriggerEquipmentChange[_item.itemType] = true;
+
+
             status.TriggerStatusUpdate = true;
 
             equipItems[_item.itemType] = _item;
@@ -145,11 +147,6 @@ public class EquipmentController : MonoBehaviour
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     ChangeAttackType();
                     SkillChange();
-                    if(equipItems[8].grace1 !=  null)
-                    {
-                        GraceManager.Instance.AquireGrace(equipItems[8].grace1);
-                        GraceManager.Instance.ActiveGrace();
-                    }
                     break;
             }
             status.UpdateEquipAbility(equipItems);
@@ -157,12 +154,12 @@ public class EquipmentController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ì¥ì°© ì¤‘ì…ë‹ˆë‹¤.");
+            Debug.Log("ÀåÂø ÁßÀÔ´Ï´Ù.");
         }
     }
     public void SkillChange()
     {
-        for(int i = 0; i < equipItems[8].skills.Length; i++)
+        for(int i = 0; i < equipItems[8].skills.Count; i++)
         {
             if (equipItems[8].skills[i] != null)
             {
@@ -173,8 +170,6 @@ public class EquipmentController : MonoBehaviour
 
     public void TakeOffEquipment(Item _item)
     {
-        
-      
         switch (_item.itemType)
         {
             case 0:
@@ -283,7 +278,7 @@ public class EquipmentController : MonoBehaviour
     }
     public void RemoveEquipment(int _index)
     {
-        // ì¥ì°© ì œê±°
+        // ÀåÂø Á¦°Å
         switch (_index)
         {
             case 0:

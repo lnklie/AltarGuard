@@ -12,7 +12,7 @@ public class EnemyStatus : CharacterStatus
     protected List<int> itemDropKey = new List<int>();
     protected List<float> itemDropProb = new List<float>();
     protected bool isEnemyChange;
-
+    private AllyStatus killedAlly = null;
     [SerializeField] private int enemyIndex = -1;
 
     #region Property
@@ -33,7 +33,15 @@ public class EnemyStatus : CharacterStatus
     {
         base.Update();
     }
-    public bool[] RandomChoose(List<float> _probs, float _characterAquireProb)
+    public void SetKilledAlly(AllyStatus _allyStatus)
+    {
+        killedAlly = _allyStatus;
+    }
+    public AllyStatus GetKilledAlly()
+    {
+        return killedAlly;
+    }
+    public bool[] RandomChoose(List<float> _probs, float _addedAquireProb)
     {
         // 무작위 선택
         bool[] itemIndexs = new bool[5];
@@ -46,9 +54,9 @@ public class EnemyStatus : CharacterStatus
         for (int i = 0; i < _probs.Count; i++)
         {
             float _prob = Random.Range(0f, 100f);
-            if (_probs[i] + _characterAquireProb > _prob)
+            if (_probs[i] + _addedAquireProb > _prob)
             {
-                float _we = _probs[i] + _characterAquireProb;
+                float _we = _probs[i] + _addedAquireProb;
                 itemIndexs[i] = true;
             }
             else

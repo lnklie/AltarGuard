@@ -64,7 +64,7 @@ public class CSVToJson
         spreadSheetJson = Newtonsoft.Json.JsonConvert.SerializeObject(csv);
         if (String.IsNullOrEmpty(spreadSheetJson))
         {
-            Debug.LogError("Excel To Json Converter: Failed to covert Spreadsheet '" + filePath + "' to json.");
+            Debug.LogError("CSV To Json Converter: Failed to covert Spreadsheet '" + filePath + "' to json.");
             return;
         }
         else
@@ -72,7 +72,7 @@ public class CSVToJson
             // The file name is the sheet name with spaces removed
             string fileName = filePath.Replace(" ", string.Empty);
             WriteTextToFile(spreadSheetJson, outputPath + "/" + fileName + ".json");
-            Debug.Log("Excel To Json Converter: " + fileName + " successfully written to file.");
+            Debug.Log("CSV To Json Converter: " + fileName + " successfully written to file.");
         }
 
     }
@@ -83,13 +83,11 @@ public class CSVToJson
         // Get the specified table
         Dictionary<string, string> dataTable = csv[_index];
 
-        Debug.Log("데이터 테이블의 수는 " + dataTable.Count);
         // Remove empty columns
         for (int col = dataTable.Count - 1; col >= 0; col--)
         {
             bool removeColumn = true;
             string _row = null;
-            Debug.Log("키의 수는 " + dataTable.Keys.Count);
             foreach (string row in dataTable.Keys)
             {
                 if (row != null)
@@ -104,7 +102,6 @@ public class CSVToJson
 
             if (removeColumn)
             {
-                Debug.Log("없애기1");
                 dataTable[_row] = null;
             }
         }
@@ -115,7 +112,6 @@ public class CSVToJson
         {
             if (columnNameRegex.IsMatch(dataTable.Values.ToString()))
             {
-                Debug.Log("없애기2");
                 string _row = dataTable.Keys.ToString();
                 dataTable[_row] = null;
             }

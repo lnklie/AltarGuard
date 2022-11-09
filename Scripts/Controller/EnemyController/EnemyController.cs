@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,6 @@ public class EnemyController : CharacterController
     [SerializeField] protected EnemyStatus enemyStatus = null;
     [SerializeField] private TargetingBoxController targetingBoxController = null;
     [SerializeField] private bool isPlayerTargeting = false;
-
     public override void Awake()
     {
         base.Awake();

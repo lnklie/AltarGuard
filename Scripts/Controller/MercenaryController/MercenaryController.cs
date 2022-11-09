@@ -45,15 +45,9 @@ public class MercenaryController : AllyController
                 if(_enemy.IsLastHit())
                 {
                     _enemy.IsDied= true;
+                    _enemy.SetKilledAlly(mercenary);
                     mercenary.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, mercenary.TotalStatus[(int)EStatus.DropProbability]);
-                    for (int j = 0; j < 5; j++)
-                    {
-                        if (_isDrops[j])
-                        {
-                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
-                        }
-                    }
+
                 }
             }
         }
@@ -168,7 +162,23 @@ public class MercenaryController : AllyController
     {
         if (_targetList.Count > 0)
         {
-            SortSightRayListByDistance(_targetList);
+            switch (mercenary.AllyTargetIndex)
+            {
+                case EAllyTargetingSetUp.OneSelf:
+                    mercenary.AllyTarget = this;
+                    break;
+                case EAllyTargetingSetUp.CloseAlly:
+                    SortSightRayListByDistance(_targetList);
+                    mercenary.AllyTarget = _targetList[1];
+                    break;
+                case EAllyTargetingSetUp.Random:
+                    mercenary.AllyTarget = ChooseSightRayListByRandom(_targetList);
+                    break;
+                case EAllyTargetingSetUp.WeakAlly:
+                    SortSightRayListByCurHp(_targetList);
+                    mercenary.AllyTarget = _targetList[0];
+                    break;
+            }
 
             mercenary.AllyTarget = _targetList[0];
             for (int i = 0; i < _targetList.Count; i++)

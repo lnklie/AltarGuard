@@ -114,7 +114,7 @@ public class DatabaseManager : MonoBehaviour
     {
         if (!File.Exists(CombinePath("Item/0_Hair")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -129,7 +129,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/1_FaceHair")))
         {
-            Debug.Log("ê²½ë¡œì— ì–¼êµ´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¾ó±¼ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -143,7 +143,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/2_Cloth")))
         {
-            Debug.Log("ê²½ë¡œì— ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -157,7 +157,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/3_Pant")))
         {
-            Debug.Log("ê²½ë¡œì— ë°”ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹ÙÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -171,7 +171,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/4_Helmet")))
         {
-            Debug.Log("ê²½ë¡œì— ë¨¸ë¦¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸Ó¸® µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -185,7 +185,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/5_Armor")))
         {
-            Debug.Log("ê²½ë¡œì— ê°‘ì˜· ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °©¿Ê µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -199,7 +199,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/6_Back")))
         {
-            Debug.Log("ê²½ë¡œì— ë§í†  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¸ÁÅä µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -213,7 +213,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/7_Shield")))
         {
-            Debug.Log("ê²½ë¡œì— ë°©íŒ¨ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹æÆĞ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -227,7 +227,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/8_Sword")))
         {
-            Debug.Log("ê²½ë¡œì— ê²€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °Ë µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -242,7 +242,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/9_Exe")))
         {
-            Debug.Log("ê²½ë¡œì— ë„ë¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ µµ³¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -257,7 +257,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/10_Spear")))
         {
-            Debug.Log("ê²½ë¡œì— ì°½ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Ã¢ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -272,7 +272,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/11_Bow")))
         {
-            Debug.Log("ê²½ë¡œì— í™œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ È° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -287,7 +287,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/12_Wand")))
         {
-            Debug.Log("ê²½ë¡œì— ì§€íŒ¡ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÁöÆÎÀÌ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -302,7 +302,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/13_Consumables")))
         {
-            Debug.Log("ê²½ë¡œì— ì†Œë¹„í’ˆ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¼ÒºñÇ° µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -316,7 +316,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Item/14_Miscellaneous")))
         {
-            Debug.Log("ê²½ë¡œì— ê¸°íƒ€í…œ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ±âÅ¸ÅÛ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -330,7 +330,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Enemy/Enemy")))
         {
-            Debug.Log("ê²½ë¡œì— ì  ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Àû µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -349,7 +349,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Exp/Exp")))
         {
-            Debug.Log("ê²½ë¡œì— ê²½í—˜ì¹˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °æÇèÄ¡ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -362,7 +362,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Stage/Stage")))
         {
-            Debug.Log("ê²½ë¡œì— ìŠ¤í…Œì´ì§€ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ½ºÅ×ÀÌÁö µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -375,7 +375,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("Skill/Skill")))
         {
-            Debug.Log("ê²½ë¡œì— ìŠ¤í‚¬ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ½ºÅ³ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -392,7 +392,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/0_ConditionWho")))
         {
-            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ëˆ„êµ¬ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¶°ÇºÎ ´©±¸ÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -405,7 +405,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/1_ConditionWhat")))
         {
-            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ë¬´ì—‡ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¶°ÇºÎ ¹«¾ùÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -418,7 +418,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/2_ConditionHow")))
         {
-            Debug.Log("ê²½ë¡œì— ì¡°ê±´ë¶€ ì–´ë–»ê²Œì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¶°ÇºÎ ¾î¶»°ÔÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -431,7 +431,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/3_ResultWho")))
         {
-            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ëˆ„êµ¬ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °á°úºÎ ´©±¸ÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -444,7 +444,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/4_ResultWhat")))
         {
-            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ë¬´ì—‡ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °á°úºÎ ¹«¾ùÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -457,7 +457,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/5_ResultValueIsPercent")))
         {
-            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ìˆ˜ì¹˜ í¼ì„¼íŠ¸ í™•ì¸ì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °á°úºÎ ¼öÄ¡ ÆÛ¼¾Æ® È®ÀÎÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -470,7 +470,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GraceComponent/6_ResultHow")))
         {
-            Debug.Log("ê²½ë¡œì— ê²°ê³¼ë¶€ ì–´ë–»ê²Œì˜ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ °á°úºÎ ¾î¶»°ÔÀÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -483,7 +483,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("BigGrace/0_WarriorGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ë°€ë¦¬ ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ¹Ğ¸® ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -497,7 +497,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("BigGrace/1_RangedGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ê¶ìˆ˜ ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ±Ã¼ö ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -505,13 +505,14 @@ public class DatabaseManager : MonoBehaviour
             BigGrace[] grace = JsonHelper.FromJson<BigGrace>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
+
                 rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
                     grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
             }
         }
         if (!File.Exists(CombinePath("BigGrace/2_MagicGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -526,7 +527,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (!File.Exists(CombinePath("BigGrace/3_CommanderGrace")))
         {
-            Debug.Log("ê²½ë¡œì— ì€ì´ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ÀºÃÑ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -540,7 +541,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("CraftRecipe/CraftRecipe")))
         {
-            Debug.Log("ê²½ë¡œì— ì œì‘ ë ˆì‹œí”¼ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¦ÀÛ ·¹½ÃÇÇ µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -555,7 +556,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("AltarProperty/AltarProperty")))
         {
-            Debug.Log("ê²½ë¡œì— ì œë‹¨ íŠ¹ì„± ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ Á¦´Ü Æ¯¼º µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -573,7 +574,7 @@ public class DatabaseManager : MonoBehaviour
         }
         if (!File.Exists(CombinePath("GameScript/GameScript")))
         {
-            Debug.Log("ê²½ë¡œì— ëŒ€ë³¸ ë°ì´í„° ë² ì´ìŠ¤ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
+            Debug.Log("°æ·Î¿¡ ´ëº» µ¥ÀÌÅÍ º£ÀÌ½º°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
         }
         else
         {
@@ -589,182 +590,7 @@ public class DatabaseManager : MonoBehaviour
             }
         }
     }
-    public Grace SelectGrace(int _key)
-    {
-        Grace _grace = null;
-        switch (_key / 1000)
-        {
-            case 0:
-                for (int i = 0; i < graceConditionWhoList.Count; i++)
-                {
-                    if (graceConditionWhoList[i].graceKey == _key)
-                        _grace = graceConditionWhoList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 1:
-                for (int i = 0; i < graceConditionWhatList.Count; i++)
-                {
-                    if (graceConditionWhatList[i].graceKey == _key)
-                        _grace = graceConditionWhatList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 2:
-                for (int i = 0; i < graceConditionHowList.Count; i++)
-                {
-                    if (graceConditionHowList[i].graceKey == _key)
-                        _grace = graceConditionHowList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 3:
-                for (int i = 0; i < graceResultWhoList.Count; i++)
-                {
-                    if (graceResultWhoList[i].graceKey == _key)
-                        _grace = graceResultWhoList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 4:
-                for (int i = 0; i < graceResultWhatList.Count; i++)
-                {
-                    if (graceResultWhatList[i].graceKey == _key)
-                        _grace = graceResultWhatList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 5:
-                for (int i = 0; i < graceResultIsPercentList.Count; i++)
-                {
-                    if (graceResultIsPercentList[i].graceKey == _key)
-                        _grace = graceResultIsPercentList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-            case 6:
-                for (int i = 0; i < graceResultHowList.Count; i++)
-                {
-                    if (graceResultHowList[i].graceKey == _key)
-                        _grace = graceResultHowList[i];
-                    //else
-                    //Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
-                }
-                break;
-        }
-        return _grace;
-    }
-    public string AddGraceExplain(CompleteGrace _completeGrace)
-    {
-        string _explain = null;
-        if (_completeGrace.conditionWho != -1)
-        {
-            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "ï¿½ï¿½(ï¿½ï¿½) ";
-            if (_completeGrace.conditionWhat < 1014)
-            {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ï¿½(ï¿½ï¿½) ";
-            }
-            else
-            {
-                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ï¿½ï¿½ ";
-                _explain += _completeGrace.conditionValue;
-            }
-            _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
-        }
-        if (_completeGrace.relationOfVariables == 7000)
-        {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "ï¿½ï¿½ ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "ï¿½(ï¿½ï¿½) ";
-            if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " ï¿½ï¿½Å­ ";
-            else
-                _explain += _completeGrace.resultValue1 + "% ï¿½ï¿½Å­ ";
-            if (_completeGrace.resultWho2 == -1)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "ï¿½ï¿½Å²ï¿½ï¿½";
-            else
-            {
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "ï¿½ï¿½Å°ï¿½ï¿½ ";
-                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "ï¿½ï¿½ ";
-                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "ï¿½(ï¿½ï¿½) ";
-                if (_completeGrace.resultValueIsPercent2 == 0)
-                    _explain += _completeGrace.resultValue2 + " ï¿½ï¿½Å­ ";
-                else
-                    _explain += _completeGrace.resultValue2 + "% ï¿½ï¿½Å­ ";
-                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "ï¿½ï¿½Å²ï¿½ï¿½";
-            }
-        }
-        else
-        {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "ï¿½ï¿½ ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "ï¿½(ï¿½ï¿½) ";
-            if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " ï¿½ï¿½Å­ ";
-            else
-                _explain += _completeGrace.resultValue1 + "% ï¿½ï¿½Å­ ";
-            if (_completeGrace.resultHow1 == 6001)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Å­ ";
 
-            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "ï¿½ï¿½ ";
-            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "ï¿½(ï¿½ï¿½) ";
-            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "ï¿½ï¿½Å²ï¿½ï¿½";
-        }
-        return _explain;
-    }
-    public CompleteGrace CreateRandomGrace()
-    {
-        int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
-        int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
-        int conditionValue = -1;
-        int conditionHow = -1;
-        if (conditionWhat > 13)
-        {
-            conditionHow = 3;
-            conditionValue = Random.Range(0, 10);
-        }
-        else if (conditionWhat > 12)
-            conditionHow = 2;
-        else if (conditionWhat > 10)
-            conditionHow = 1;
-        else
-            conditionHow = 0;
-        int resultWho1 = Random.Range(0, graceResultWhoList.Count);
-        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
-        int resultValue1 = Random.Range(0, 10);
-        int resultValue2 = Random.Range(0, 10);
-        int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
-        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
-        int resultValueIsPercent1 = Random.Range(0, 2);
-        int resultValueIsPercent2 = Random.Range(0, 2);
-        int relationOfGraces = Random.Range(0, 2);
-        float weightedValue1 = 0;
-        float weightedValue2 = 0;
-        if (conditionWho != -1)
-        {
-            weightedValue1 =
-                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
-             * SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
-            weightedValue2 =
-                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
-             * SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
-        }
-        else
-        {
-            weightedValue1 = SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
-            weightedValue2 = SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
-        }
-        CompleteGrace _completeGrace = new CompleteGrace(
-            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
-            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 6000, 6000, relationOfGraces + 7000);
-        _completeGrace.explain = AddGraceExplain(_completeGrace);
-
-        return _completeGrace;
-    }
     public Item SelectItem(int _key, int _amount = 1)
     {
         if(_key == -1)
@@ -864,7 +690,6 @@ public class DatabaseManager : MonoBehaviour
                         {
                             Sword _sword = new Sword(swordList[i].itemKey, swordList[i].itemName, swordList[i].itemKorName, swordList[i].buyPrice, swordList[i].sellPrice, swordList[i].attackType, swordList[i].weaponType, swordList[i].physicalDamage, swordList[i].magicalDamage,
                         swordList[i].atkRange, swordList[i].atkDistance, swordList[i].atkSpeed, swordList[i].equipLevel, swordList[i].disassembleItemKey, swordList[i].disassembleItemAmount, swordList[i].itemRank);
-                            _sword.grace1 = CreateRandomGrace();
                             _item = _sword;
                         }
                     }
@@ -988,7 +813,7 @@ public class DatabaseManager : MonoBehaviour
                     if (warriorGraceList[i].bigGraceKey == _key)
                         _grace = warriorGraceList[i];
                     else
-                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
             case 1:
@@ -997,7 +822,7 @@ public class DatabaseManager : MonoBehaviour
                     if (rangedGraceList[i].bigGraceKey == _key)
                         _grace = rangedGraceList[i];
                     else
-                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
             case 2:
@@ -1006,7 +831,7 @@ public class DatabaseManager : MonoBehaviour
                     if (magicGraceList[i].bigGraceKey == _key)
                         _grace = magicGraceList[i];
                     else
-                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
             case 3:
@@ -1015,7 +840,7 @@ public class DatabaseManager : MonoBehaviour
                     if (commanderGraceList[i].bigGraceKey == _key)
                         _grace = commanderGraceList[i];
                     else
-                        Debug.Log("í•´ë‹¹ ì€ì´ì´ ì—†ìŠµë‹ˆë‹¤.");
+                        Debug.Log("ÇØ´ç ÀºÃÑÀÌ ¾ø½À´Ï´Ù.");
                 }
                 break;
 
@@ -1030,7 +855,7 @@ public class DatabaseManager : MonoBehaviour
             if (craftRecipeList[i].recipeKey == _key)
                 _craftRecipe = craftRecipeList[i];
             else
-                Debug.Log("í•´ë‹¹ ì œì‘ ë ˆì‹œí”¼ê°€ ì—†ìŠµë‹ˆë‹¤.");
+                Debug.Log("ÇØ´ç Á¦ÀÛ ·¹½ÃÇÇ°¡ ¾ø½À´Ï´Ù.");
         }
         return _craftRecipe;
     }
@@ -1042,7 +867,7 @@ public class DatabaseManager : MonoBehaviour
             if (altarPropertyList[i].propertyKey == _key)
                 _altarProperty = altarPropertyList[i];
             else
-                Debug.Log("í•´ë‹¹ ì œë‹¨ íŠ¹ì„±ì´ ì—†ìŠµë‹ˆë‹¤.");
+                Debug.Log("ÇØ´ç Á¦´Ü Æ¯¼ºÀÌ ¾ø½À´Ï´Ù.");
         }
         return _altarProperty;
     }
@@ -1054,7 +879,7 @@ public class DatabaseManager : MonoBehaviour
             if (gameScriptList[i].scriptKey == _key)
                 _gameScript = gameScriptList[i];
             else
-                Debug.Log("ï¿½Ø´ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½.");
+                Debug.Log("ÇØ´ç ½ºÅ©¸³Æ®°¡ ¾ø½À´Ï´Ù.");
         }
         return _gameScript;
     }

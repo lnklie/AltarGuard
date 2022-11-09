@@ -68,7 +68,7 @@ public class AltarStatus : Status
     }
     public override void Damaged(int _damage)
     {
-        //Debug.Log("ì„ìƒ ë§ëŠ” ì¤‘");
+        //Debug.Log("¼®»ó ¸Â´Â Áß");
         base.Damaged(_damage);
         UpdateAltarHp();
     }
@@ -82,7 +82,7 @@ public class AltarStatus : Status
     }
     public void UpgradeAltar(AltarAbility _altarAbility)
     {
-        // ì œë‹¨ ì—…ê·¸ë ˆì´ë“œ
+        // Á¦´Ü ¾÷±×·¹ÀÌµå
         switch (_altarAbility)
         {
             case AltarAbility.Hp:

@@ -22,11 +22,13 @@ public class Enemy : Elements
     public int itemDropKey3 = -1;
     public int itemDropKey4 = -1;
     public int itemDropKey5 = -1;
+    public List<int> itemDropKeies = new List<int>();
     public float itemDropProb1 = 20f;
     public float itemDropProb2 = 20f;
     public float itemDropProb3 = 20f;
     public float itemDropProb4 = 20f;
     public float itemDropProb5 = 20f;
+    public List<float> itemDropProbs = new List<float>();
 
     public int helmetKey = 0;
     public int armorKey = 0;
@@ -57,10 +59,26 @@ public class Enemy : Elements
         itemDropProb4 = _itemDropProb4;
         itemDropProb5 = _itemDropProb5;
 
+
+        AddItemDropComponents(itemDropKey1, itemDropProb1);
+        AddItemDropComponents(itemDropKey2, itemDropProb2);
+        AddItemDropComponents(itemDropKey3, itemDropProb3);
+        AddItemDropComponents(itemDropKey4, itemDropProb4);
+        AddItemDropComponents(itemDropKey5, itemDropProb5);
+
         enemyType = _enemyType;
         helmetKey = _helmetKey;
         armorKey = _armorKey;
         pantKey = _pantKey; ;
         weaponKey = _weaponKey;
+    }
+
+    public void AddItemDropComponents(int _itemDropKey,float _itemDropProb)
+    {
+        if(_itemDropKey != -1)
+        {
+            itemDropKeies.Add(_itemDropKey);
+            itemDropProbs.Add(_itemDropProb);
+        }
     }
 }

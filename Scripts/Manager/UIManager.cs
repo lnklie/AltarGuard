@@ -68,9 +68,10 @@ public class UIManager : MonoBehaviour
     {
         InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(13000,100));
         Item item = InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(8002));
-        item.skills[0] = DatabaseManager.Instance.SelectSkill(0);
-        item.skills[1] = DatabaseManager.Instance.SelectSkill(1);
-        item.skills[2] = DatabaseManager.Instance.SelectSkill(2);
+        for(int i = 0; i < 3; i++)
+        {
+            item.skills.Add(DatabaseManager.Instance.SelectSkill(i));
+        }
         characterList[0].ChangeEquipment(item);
         UpdatePlayerProfile();
         for (int i = 0; i < mercenaries.Count; i++)
@@ -116,7 +117,7 @@ public class UIManager : MonoBehaviour
     {
         altar.TriggerDestroyed = true;
         gameOverPanel.gameObject.SetActive(true);
-        Notice("ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½Ç¾ï¿½ï¿½Ï´ï¿½.", 90, Color.red);
+        Notice("Á¦´ÜÀÌ ÆÄ±«µÇ¾ú½À´Ï´Ù.", 90, Color.red);
         yield return new WaitForSeconds(1f);
         if(gameOverPanel)
             gameOverPanel.StartGameOver();
@@ -189,12 +190,12 @@ public class UIManager : MonoBehaviour
     }
     public void SelectSlotItem(Item _item, InventorySlot _slot = null)
     {
-        // ìŠ¬ë¡¯ì— ì„ íƒí•œ ì•„ì´í…œ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         inventoryPanelController.SelectSlotItem(_item, _slot);
     }
     public void SelectEquipmenttSlotItem(Item _item)
     {
-        // ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+        // ½½·Ô¿¡ ¼±ÅÃÇÑ ¾ÆÀÌÅÛ 
         equipmentPanelController.SelectSlotItem(_item);
     }
     public void SelectSlotSellItem(Item _item)
@@ -262,66 +263,65 @@ public class UIManager : MonoBehaviour
     {
         equipmentPanelController.ActiveEquipmentPanel(true);
         equipmentPanelController.SelectCharacter(_index);
-        equipmentPanelController.SetEquipmentSlotImage(_index);
-        
+        equipmentPanelController.ChangeAllEquipmentImage();
     }
     #endregion
     #region Inventory Panel
     public void SetActiveItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveItemInfo(_bool);
     }
     public void SetActiveInventoryEquipedItemInfo(bool _bool)
     {
-        // ì•„ì´í…œ ì •ë³´ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ Á¤º¸Ã¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveEquipedItemInfo(_bool);
     }
     public void InventorySlotChange(int _index)
     {
-        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë³€ê²½
+        // ÀÎº¥Åä¸® ½½·Ô º¯°æ
         inventoryPanelController.ChangeInventorySlot(_index);
     }
     public void EquipBtn(int _character)
     {
-        // ì•„ì´í…œ ì¥ì°©
+        // ¾ÆÀÌÅÛ ÀåÂø
         inventoryPanelController.EquipInventoryItem(characterList, _character);
         graceManager.ActiveGrace();
         userControlPanelController.SetSkillSlot(player.GetComponent<SkillController>().Skills);
     }
     public void SetActiveEquipCharacterBox(bool _bool)
     {
-        // ì•„ì´í…œ ì¥ì°© ìºë¦­í„° ì„ íƒ í™œì„±í™” ì—¬ë¶€ 
+        // ¾ÆÀÌÅÛ ÀåÂø Ä³¸¯ÅÍ ¼±ÅÃ È°¼ºÈ­ ¿©ºÎ 
         inventoryPanelController.SetActiveEquipCharacterBox(_bool);
     }
     public void TakeOffSelectItemBtn()
     {
-        // ì„ íƒí•œ ì•„ì´í…œ í•´ì œ
+        // ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ÇØÁ¦
         inventoryPanelController.TakeOffInventoryItem(characterList);
     }
     public void UseSelectItemBtn()
     {
-        // ì•„ì´í…œ ì‚¬ìš©
+        // ¾ÆÀÌÅÛ »ç¿ë
         inventoryPanelController.UseSelectItem(player);
     }
     public void DiscardSelectItemBtn()
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¹ö¸®±â
         inventoryPanelController.DiscardSelectItem();
     }
     public void DiscardSelectAmountItem()
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ìœ¼ë¡œ ë²„ë¦¬ê¸°
+        // ¾ÆÀÌÅÛ ¼ö·®À¸·Î ¹ö¸®±â
         inventoryPanelController.DiscardSelectAmountItem();
     }
     public void SetActiveCheckDiscard(bool _bool)
     {
-        // ì•„ì´í…œ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscard(_bool);
     }
     public void SetActiveCheckDiscardAmount(bool _bool)
     {
-        // ì•„ì´í…œ ìˆ˜ëŸ‰ ë²„ë¦¬ê¸° í™•ì¸ì°½ í™œì„±í™” ì—¬ë¶€
+        // ¾ÆÀÌÅÛ ¼ö·® ¹ö¸®±â È®ÀÎÃ¢ È°¼ºÈ­ ¿©ºÎ
         inventoryPanelController.SetActiveCheckDiscardAmount(_bool);
     }
     public void SetItemQuickSlot(int _index)
@@ -351,13 +351,17 @@ public class UIManager : MonoBehaviour
     #region Equipment Panel
     public void SelectCharacterInEquipmentBtn(bool _isUp)
     {
-        // ì¥ë¹„ì°½ì—ì„œ ìºë¦­í„° ì„ íƒ
+        // ÀåºñÃ¢¿¡¼­ Ä³¸¯ÅÍ ¼±ÅÃ
         equipmentPanelController.SelectCharacterInEquipment(characterList,_isUp);
     }
     public void UpdateEquipmentName()
     {
-        // ì¥ë¹„ì°½ ìºë¦­í„° ì´ë¦„ ì—…ë°ì´íŠ¸
+        // ÀåºñÃ¢ Ä³¸¯ÅÍ ÀÌ¸§ ¾÷µ¥ÀÌÆ®
         equipmentPanelController.UpdateEquipmentName();
+    }
+    public void ChangeAllyTargetSetting(int _index)
+    {
+        equipmentPanelController.ChangeAllyTargetSetting(_index);
     }
     #endregion
 
@@ -373,7 +377,7 @@ public class UIManager : MonoBehaviour
     }
     public void StatusUp(int _index)
     {
-        // ìŠ¤í…Ÿ ì—…
+        // ½ºÅİ ¾÷
         statusPanelController.StatusUp(_index);
     }
     #endregion 
@@ -409,7 +413,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Notice("ì€ì´ í¬ì¸íŠ¸ê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+            Notice("ÀºÃÑ Æ÷ÀÎÆ®°¡ ºÎÁ·ÇÕ´Ï´Ù.");
         }
     }
     public void SelectGrace(int _index)
@@ -590,7 +594,7 @@ public class UIManager : MonoBehaviour
     #region MainUI
     public void ActiveUIBtn(int _index)
     {
-        // UI í™œì„±í™” 
+        // UI È°¼ºÈ­ 
 
         isUIOn = true;
         if (_index == 0)
@@ -655,7 +659,7 @@ public class UIManager : MonoBehaviour
 
     public void DeactiveUIBtn(int _index)
     {
-        // UI ë¹„í™œì„±í™”
+        // UI ºñÈ°¼ºÈ­
         isUIOn = false;
         if (_index == 0)
         {

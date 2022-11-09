@@ -23,6 +23,7 @@ public class DataManager : MonoBehaviour
     }
     private void Start()
     {
+
     }
     private void Update()
     {
@@ -30,12 +31,12 @@ public class DataManager : MonoBehaviour
     }
     public void JsonLoad()
     {
-        // ë°ì´í„° ë¡œë“œ
+        // µ¥ÀÌÅÍ ·Îµå
         Player playerData = new Player();
         if (!File.Exists(path))
         {
-            Debug.Log("Ã³ï¿½ ï¿½Îµï¿½");
-            playerStatus.ObjectName = "ï¿½Ã·ï¿½ï¿½Ì¾ï¿½";
+            Debug.Log("Ã³À½ ·Îµå");
+            playerStatus.ObjectName = "ÇÃ·¹ÀÌ¾î";
             playerStatus.BasicStatus[(int)EStatus.Str] = 500;
             playerStatus.BasicStatus[(int)EStatus.Dex] = 5;
             playerStatus.BasicStatus[(int)EStatus.Wiz] = 5;
@@ -48,8 +49,7 @@ public class DataManager : MonoBehaviour
             for (int j = 0; j < 4; j++)
             {
                 AllyStatus _mercenaryStatus = mercenaryStatuses[j];
-
-                _mercenaryStatus.ObjectName = "ï¿½ëº´" + j;
+                _mercenaryStatus.ObjectName = "¿ëº´" + j;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 500;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Dex] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Wiz] = 5;
@@ -62,7 +62,7 @@ public class DataManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(" ìˆëŠ” ë¡œë“œ");
+            Debug.Log(" ÀÖ´Â ·Îµå");
             string loadJson = File.ReadAllText(path);
             playerData = JsonUtility.FromJson<Player>(loadJson);
             if (playerData != null)
@@ -163,7 +163,7 @@ public class DataManager : MonoBehaviour
 
     public void JsonSave()
     {
-        // ë°ì´í„° ì„¸ì´ë¸Œ
+        // µ¥ÀÌÅÍ ¼¼ÀÌºê
         Debug.Log("Save");
         Player playerData = new Player();
 
@@ -228,7 +228,7 @@ public class DataManager : MonoBehaviour
     }
     public void AddItemList(List<Item> dataItem, List<Item> Inventory)
     {
-        // ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ ì¶”ê°€
+        // ¾ÆÀÌÅÛ ¸®½ºÆ® Ãß°¡
         for (int i = 0; i < Inventory.Count; i++)
         {
             dataItem.Add(Inventory[i]);
