@@ -17,6 +17,8 @@ public class CharacterStatus : Status
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
 
+
+
     [Header("EquipStatus")]
     [SerializeField] protected float[] equipStatus = new float[16];
 
@@ -48,6 +50,7 @@ public class CharacterStatus : Status
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
 
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
+
 
 
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
@@ -88,7 +91,6 @@ public class CharacterStatus : Status
     {
         UpdateAllStatus();
         UpdateAllBasicStatus();
-
         curHp = (int)totalStatus[(int)EStatus.MaxHp];
         curMp = (int)totalStatus[(int)EStatus.MaxMp];
         triggerStatusUpdate = true;
@@ -116,7 +118,8 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
-        // ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½Íµï¿½
+
+        // Èû, ¹Î, Áö ¿Ã¸±¶§ ¹Ù²î´Â °Íµé
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -140,11 +143,14 @@ public class CharacterStatus : Status
         InitEquipAbility();
         for (int i = 0;  i < _items.Length; i++)
         {
-            equipStatus[(int)EStatus.PhysicalDamage] += _items[i].physicalDamage;
-            equipStatus[(int)EStatus.MagicalDamage] += _items[i].magicalDamage;
-            equipStatus[(int)EStatus.DefensivePower] += _items[i].defensivePower;
-            equipStatus[(int)EStatus.AtkRange] += _items[i].atkRange;
-            equipStatus[(int)EStatus.AttackSpeed] += _items[i].atkSpeed;
+            if(_items[i] != null)
+            {
+                equipStatus[(int)EStatus.PhysicalDamage] += _items[i].physicalDamage;
+                equipStatus[(int)EStatus.MagicalDamage] += _items[i].magicalDamage;
+                equipStatus[(int)EStatus.DefensivePower] += _items[i].defensivePower;
+                equipStatus[(int)EStatus.AtkRange] += _items[i].atkRange;
+                equipStatus[(int)EStatus.AttackSpeed] += _items[i].atkSpeed;
+            }
         }
     }
     public void InitEquipAbility()
@@ -156,7 +162,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ï¿½É·ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         
     }
     public void RemoveBuff()

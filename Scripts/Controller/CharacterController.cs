@@ -75,7 +75,7 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public void SortSightRayListByDistance(List<EnemyController> _sightRay)
     {
-        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
+        // ¸®½ºÆ® Á¤·Ä
         _sightRay.Sort(delegate (EnemyController a, EnemyController b)
         {
             if (characterStatus.GetDistance( a.transform.position) < characterStatus.GetDistance( b.transform.position)) return -1;
@@ -108,7 +108,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½
+        // ¸®½ºÆ® Á¤·Ä
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -159,13 +159,13 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
-        // È°ï¿½ï¿½ï¿½
+        // È°½î±â
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(characterStatus, AttackTypeDamage());
         }
         else
-            Debug.Log("È­ï¿½ï¿½ ï¿½ï¿½ï¿½");
+            Debug.Log("È­»ì ¾øÀ½");
     }
     public bool IsDied()
     {

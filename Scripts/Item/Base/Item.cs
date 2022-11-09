@@ -31,7 +31,7 @@ public class Item
     public string target = null;
     public float durationTime = 0f;
     public int value = 0;
-    public Skill[] skills = new Skill[3];
+    public List<Skill> skills = new List<Skill>();
 
     public int equipLevel = 0;
     public int buyPrice = 0;
@@ -44,9 +44,8 @@ public class Item
     public int itemRank = -1;
     public int inventoryIndex = -1; 
     public DateTime dateTime = default;
-    public CompleteGrace grace1 = null;
-    public CompleteGrace grace2 = null;
-    public CompleteGrace grace3 = null;
+    public List<CompleteGrace> grace = new List<CompleteGrace>();
+
 
     public Item(int _itemKey, string _itemName,string _itemKorName, int _buyPrice, int _sellPrice, int _itemRank)
     {

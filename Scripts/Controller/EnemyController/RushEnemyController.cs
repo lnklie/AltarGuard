@@ -5,6 +5,7 @@ public class RushEnemyController : EnemyController
 {
     private RushEnemyStatus rushEnemyStatus = null;
     private float returnTime = 1f;
+
     public override void Awake()
     {
         base.Awake();
@@ -35,8 +36,19 @@ public class RushEnemyController : EnemyController
         rushEnemyStatus.Rig.velocity = Vector2.zero;
         rushEnemyStatus.Col.enabled = false;
         yield return new WaitForSeconds(returnTime);
+        bool[] _isDrops = rushEnemyStatus.RandomChoose(rushEnemyStatus.ItemDropProb, rushEnemyStatus.GetKilledAlly().TotalStatus[(int)EStatus.DropProbability]);
+        for (int j = 0; j < rushEnemyStatus.ItemDropProb.Count; j++)
+        {
+            if (_isDrops[j])
+            {
+                DropManager.Instance.DropItem(
+                    ItemManager.Instance.CreateItem(
+                        DatabaseManager.Instance.SelectItem(rushEnemyStatus.ItemDropKey[j])), this.gameObject.transform.position);
+            }
+        }
         rushEnemyStatus.transform.parent.localScale = new Vector3(1, 1, 1);
         rushEnemyStatus.transform.parent.gameObject.SetActive(false);
+        rushEnemyStatus.AIState = EAIState.Idle;
         StageManager.Instance.SpawnedEneies--;
         EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }

@@ -21,7 +21,7 @@ public class PlayerController : AllyController
         player = this.GetComponent<PlayerStatus>();
         bodySprites = this.GetComponentInChildren<BodySpace>().GetComponent<SpriteRenderer>();
     }
-
+     
     public override void Update()
     {
         DragFlag();
@@ -47,6 +47,23 @@ public class PlayerController : AllyController
             player.TargetDir = player.Distance.normalized;
         }
 
+        RaycastItem();
+    }
+    public void RaycastItem()
+    {
+        RaycastHit2D raycast = Physics2D.CircleCast(this.transform.position, 1f, Vector2.zero, 0f, LayerMask.GetMask("Item"));
+        
+        if (raycast)
+        {
+            DropItem _dropItem = raycast.collider.GetComponent<DropItem>();
+            AquireItem(_dropItem.CurItem);
+            DropManager.Instance.ReturnItem(_dropItem);
+        } 
+    }
+
+    public void AquireItem(Item _item)
+    {
+        InventoryManager.Instance.AcquireItem(_item);
     }
     public void DragFlag()
     {
@@ -102,7 +119,6 @@ public class PlayerController : AllyController
                 }
                 break;
             case EPlayerState.AutoPlay:
-                Debug.Log("ÔøΩÔøΩÔøΩÔøΩ " + checkControlOnAutoPlay);
                 if(checkControlOnAutoPlay)
                 {
                     isControlOnAutoPlay = InputArrowKey();
@@ -117,7 +133,7 @@ public class PlayerController : AllyController
     //{
     //    if(Input.GetMouseButtonDown(0))
     //    {
-    //        Debug.Log("ÏïÑÍµ∞ ÌÅ¥Î¶≠");
+    //        Debug.Log("æ∆±∫ ≈¨∏Ø");
 
     //        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -129,11 +145,11 @@ public class PlayerController : AllyController
     //                {
     //                    player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
     //                }
-    //                Debug.Log("ÏïÑÍµ∞ ÌÉÄÍ≤üÌåÖ " + hit.rigidbody.gameObject.name);
+    //                Debug.Log("æ∆±∫ ≈∏∞Ÿ∆√ " + hit.rigidbody.gameObject.name);
     //                TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
     //            }
     //            else
-    //                Debug.Log("ÎåÄÏÉÅÏù¥ ÎÑàÎ¨¥ Î©ÄÎ¶¨ÏûàÏäµÎãàÎã§.");
+    //                Debug.Log("¥ÎªÛ¿Ã ≥ π´ ∏÷∏Æ¿÷Ω¿¥œ¥Ÿ.");
     //        }
     //        else
     //        {
@@ -161,14 +177,14 @@ public class PlayerController : AllyController
     }
     public void PlayerMove()
     {
-        // ÏõÄÏßÅÏûÑ Ïã§Ìñâ
+        // øÚ¡˜¿” Ω««‡
         player.ActiveLayer(ELayerName.WalkLayer);
         player.Rig.velocity = player.TotalStatus[(int)EStatus.Speed] * player.Dir;
         AnimationDirection();
     }
     public bool InputArrowKey()
     {
-        // ÌÇ§ÏûÖÎ†•
+        // ≈∞¿‘∑¬
         player.Dir = new Vector2(0, 0);
         bool _bool = true;
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -197,7 +213,7 @@ public class PlayerController : AllyController
     }
     public bool IsMove()
     {
-        // ÏõÄÏßÅÏù¥Í≥† ÏûàÎäîÏßÄ ÌôïÏù∏
+        // øÚ¡˜¿Ã∞Ì ¿÷¥¬¡ˆ »Æ¿Œ
         if (Mathf.Abs(player.Dir.x) > 0 || Mathf.Abs(player.Dir.y) > 0)
             return true;
         else
@@ -235,6 +251,7 @@ public class PlayerController : AllyController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
+        // π¸¿ßæ»ø° ¿÷¥¬ ¿˚µÈø°∞‘ µ•πÃ¡ˆ
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -244,15 +261,8 @@ public class PlayerController : AllyController
                 if (_enemy.IsLastHit())
                 {
                     _enemy.IsDied = true;
+                    _enemy.SetKilledAlly(player);
                     player.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
-                    for (int j = 0; j < 5; j++)
-                    {
-                        if (_isDrops[j])
-                        {
-                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
-                        }
-                    }
                 }
             }
         }
@@ -336,6 +346,7 @@ public class PlayerController : AllyController
                         player.EnemyTarget.SetTargetingBox(false);
                         player.EnemyTarget = null;
                     }
+
                     _targetList[i].IsAllyTargeted[player.AllyNum] = false;
                     _targetList.Remove(_targetList[i]);
                 }
@@ -416,11 +427,6 @@ public class PlayerController : AllyController
     #region AI
     public override void AIChangeState()
     {
-        if (player.EnemyTarget)
-        {
-            player.Distance = player.EnemyTarget.transform.position - player.TargetPos.position;
-            player.TargetDir = player.Distance.normalized;
-        }
         if (player.CurHp < 0f)
         {
             player.IsDied = true;
@@ -437,6 +443,9 @@ public class PlayerController : AllyController
             }
             else
             {
+                player.Distance = player.EnemyTarget.transform.position - player.TargetPos.position;
+                player.TargetDir = player.Distance.normalized;
+
                 player.AIState = EAIState.Chase;
                 if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
                     player.GetDistance(player.EnemyTarget.transform.position) <= skillController.SkillQueue[0].skillRange)
@@ -497,15 +506,8 @@ public class PlayerController : AllyController
                 if (_enemy.IsLastHit())
                 {
                     _enemy.IsDied = true;
+                    _enemy.SetKilledAlly(player);
                     player.AquireExp(_enemy);
-                    bool[] _isDrops = _enemy.RandomChoose(_enemy.ItemDropProb, player.TotalStatus[(int)EStatus.DropProbability]);
-                    for (int j = 0; j < 5; j++)
-                    {
-                        if (_isDrops[i])
-                        {
-                            InventoryManager.Instance.AcquireItem(DatabaseManager.Instance.SelectItem(_enemy.ItemDropKey[j]));
-                        }
-                    }
                 }
             }
         }

@@ -59,6 +59,8 @@ public class EquipmentSlot : MonoBehaviour
     public void SelectItem()
     {
         if (curItem != null)
+        {
             UIManager.Instance.SelectEquipmenttSlotItem(curItem);
+        }
     }
 }

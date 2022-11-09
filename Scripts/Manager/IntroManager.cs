@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class IntroManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI loadingText = null;
-    [SerializeField] private bool isChange = false;
     [SerializeField] private float backgroundSpeed = 0f;
     private void Start()
     {
@@ -18,7 +17,7 @@ public class IntroManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             StopAllCoroutines();
-            loadingText.text = "¬∑√é¬µ√π√Å√ü";
+            loadingText.text = "∑Œµ˘¡ﬂ";
             GameManager.Instance.LoadScene(1);
         }
         CameraMove();

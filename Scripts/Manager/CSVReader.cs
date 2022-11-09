@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Text.RegularExpressions;
-/*
-==============================
- * 최종수정일 : 2022-06-05
- * 작성자 : Inklie
- * 파일명 : CSVReader.cs
-==============================
-*/
+
 public class CSVReader
 {
     static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";

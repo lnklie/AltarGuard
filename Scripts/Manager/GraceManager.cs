@@ -18,6 +18,13 @@ public class GraceManager : MonoBehaviour
     [SerializeField] private List<EquipmentController> characterEquipmentController = new List<EquipmentController>();
 
     public List<CompleteGrace> GraceList { get { return graceList; } }
+
+    public static GraceManager Instance = null;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
     private void Start()
     {
         SetGraceList();
@@ -30,14 +37,10 @@ public class GraceManager : MonoBehaviour
         {
             if (characterEquipmentController[(int)ECharacter.Player].TriggerEquipmentChange[i])
             {
-                if(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace1 != null)
-                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace1);
-                else
-                    
-                if (characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace2 != null)
-                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace2);
-                if (characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace3 != null)
-                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace3);
+                for(int j = 0; j < characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace.Count; j++)
+                {
+                    AquireGrace(characterEquipmentController[(int)ECharacter.Player].EquipItems[i].grace[j]);
+                }
 
                 ActiveGrace();
                 characterEquipmentController[(int)ECharacter.Player].TriggerEquipmentChange[i] = false;
@@ -55,13 +58,189 @@ public class GraceManager : MonoBehaviour
         graceResultIsPercentList = DatabaseManager.Instance.graceResultIsPercentList;
         graceResultHowList = DatabaseManager.Instance.graceResultHowList;
     }
+    public Grace SelectGrace(int _key)
+    {
+        Grace _grace = null;
+        switch (_key / 1000)
+        {
+            case 0:
+                for (int i = 0; i < graceConditionWhoList.Count; i++)
+                {
+                    if (graceConditionWhoList[i].graceKey == _key)
+                        _grace = graceConditionWhoList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 1:
+                for (int i = 0; i < graceConditionWhatList.Count; i++)
+                {
+                    if (graceConditionWhatList[i].graceKey == _key)
+                        _grace = graceConditionWhatList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 2:
+                for (int i = 0; i < graceConditionHowList.Count; i++)
+                {
+                    if (graceConditionHowList[i].graceKey == _key)
+                        _grace = graceConditionHowList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 3:
+                for (int i = 0; i < graceResultWhoList.Count; i++)
+                {
+                    if (graceResultWhoList[i].graceKey == _key)
+                        _grace = graceResultWhoList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 4:
+                for (int i = 0; i < graceResultWhatList.Count; i++)
+                {
+                    if (graceResultWhatList[i].graceKey == _key)
+                        _grace = graceResultWhatList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 5:
+                for (int i = 0; i < graceResultIsPercentList.Count; i++)
+                {
+                    if (graceResultIsPercentList[i].graceKey == _key)
+                        _grace = graceResultIsPercentList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+            case 6:
+                for (int i = 0; i < graceResultHowList.Count; i++)
+                {
+                    if (graceResultHowList[i].graceKey == _key)
+                        _grace = graceResultHowList[i];
+                    //else
+                    //Debug.Log("ÇØ´ç ÀºÃÑ ±¸¼ººÎ°¡ ¾ø½À´Ï´Ù.");
+                }
+                break;
+        }
+        return _grace;
+    }
+    public string AddGraceExplain(CompleteGrace _completeGrace)
+    {
+        string _explain = null;
+        if (_completeGrace.conditionWho != -1)
+        {
+            _explain = SelectGrace(_completeGrace.conditionWho).graceKorName + "°¡(ÀÌ) ";
+            if (_completeGrace.conditionWhat < 1014)
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "À»(¸¦) ";
+            }
+            else
+            {
+                _explain += SelectGrace(_completeGrace.conditionWhat).graceKorName + "ÀÌ ";
+                _explain += _completeGrace.conditionValue;
+            }
+            _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
+        }
+        if (_completeGrace.relationOfVariables == 7000)
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "ÀÇ ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "À»(¸¦) ";
+            if (_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " ¸¸Å­ ";
+            else
+                _explain += _completeGrace.resultValue1 + "% ¸¸Å­ ";
+            if (_completeGrace.resultWho2 == -1)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "½ÃÅ²´Ù";
+            else
+            {
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "½ÃÅ°°í ";
+                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "ÀÇ ";
+                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "À»(¸¦) ";
+                if (_completeGrace.resultValueIsPercent2 == 0)
+                    _explain += _completeGrace.resultValue2 + " ¸¸Å­ ";
+                else
+                    _explain += _completeGrace.resultValue2 + "% ¸¸Å­ ";
+                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "½ÃÅ²´Ù";
+            }
+        }
+        else
+        {
+            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "ÀÇ ";
+            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "À»(¸¦) ";
+            if (_completeGrace.resultValueIsPercent1 == 0)
+                _explain += _completeGrace.resultValue1 + " ¸¸Å­ ";
+            else
+                _explain += _completeGrace.resultValue1 + "% ¸¸Å­ ";
+            if (_completeGrace.resultHow1 == 6001)
+                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "½ÃÅ°°í ±× ¸¸Å­ ";
 
+            _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "ÀÇ ";
+            _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "À»(¸¦) ";
+            _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "½ÃÅ²´Ù";
+        }
+        return _explain;
+    }
+    public CompleteGrace CreateRandomGrace()
+    {
+        int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
+        int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
+        int conditionValue = -1;
+        int conditionHow = -1;
+        if (conditionWhat > 13)
+        {
+            conditionHow = 3;
+            conditionValue = Random.Range(0, 10);
+        }
+        else if (conditionWhat > 12)
+            conditionHow = 2;
+        else if (conditionWhat > 10)
+            conditionHow = 1;
+        else
+            conditionHow = 0;
+        int resultWho1 = Random.Range(0, graceResultWhoList.Count);
+        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
+        int resultValue1 = Random.Range(0, 10);
+        int resultValue2 = Random.Range(0, 10);
+        int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
+        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
+        int resultValueIsPercent1 = Random.Range(0, 2);
+        int resultValueIsPercent2 = Random.Range(0, 2);
+        int relationOfGraces = Random.Range(0, 2);
+        float weightedValue1 = 0;
+        float weightedValue2 = 0;
+        if (conditionWho != -1)
+        {
+            weightedValue1 =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 =
+                SelectGrace(conditionWho).weightedValue * SelectGrace(conditionWhat + 1000).weightedValue
+             * SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
+        }
+        else
+        {
+            weightedValue1 = SelectGrace(resultWho1 + 3000).weightedValue * SelectGrace(resultWhat1 + 4000).weightedValue * SelectGrace(resultValueIsPercent1 + 5000).weightedValue;
+            weightedValue2 = SelectGrace(resultWho2 + 3000).weightedValue * SelectGrace(resultWhat2 + 4000).weightedValue * SelectGrace(resultValueIsPercent2 + 5000).weightedValue;
+        }
+        CompleteGrace _completeGrace = new CompleteGrace(
+            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
+            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 6000, 6000, relationOfGraces + 7000);
+        _completeGrace.explain = AddGraceExplain(_completeGrace);
+
+        return _completeGrace;
+    }
     public void ActiveGrace()
     {
         for (int i = 0; i < characterStatuses.Count; i++)
         {
             characterStatuses[i].InitGraceStatus(); 
         }
+
         for (int i = 0; i < graceList.Count; i++)
         {
 
@@ -82,13 +261,11 @@ public class GraceManager : MonoBehaviour
             if (CheckGraceCondition(bigGraceList[i]))
             {
                 OperateGrace(bigGraceList[i]);
-                Debug.Log("ï¿½Ûµï¿½");
                 bigGraceList[i].isActive = true;
             }
             else
             {
                 bigGraceList[i].isActive = false;
-                Debug.Log("ï¿½È½ï¿½");
             }
         }
     }
@@ -1307,7 +1484,6 @@ public class GraceManager : MonoBehaviour
     {
         if (_grace.relationOfVariables == 7000)
         {
-
             if (_grace.resultWho1 != -1)
             {
                 switch ((EGraceResultWho)_grace.resultWho1)
@@ -1592,7 +1768,7 @@ public class GraceManager : MonoBehaviour
             ActiveGrace();
         }
         else
-            Debug.Log("ì´ë¯¸ ë°°ìš´ ì€ì´");
+            Debug.Log("ÀÌ¹Ì ¹è¿î ÀºÃÑ");
     }
     public bool CheckIsReceive(int _key)
     {

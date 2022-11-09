@@ -23,10 +23,6 @@ public class Conversation : MonoBehaviour
             defaultDelayBetweenLetters = 0.02f;
     }
 
-    private void Update()
-    {
-
-    }
     public void Talk() 
     {
         StartCoroutine(Talk(curLines.script,curLines.scriptSpeed,curLines.scriptAniSpeed));

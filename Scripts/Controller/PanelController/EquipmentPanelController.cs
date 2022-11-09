@@ -29,14 +29,18 @@ public class EquipmentPanelController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI equipmentItemExplainText = null;
     [SerializeField] private Image[] equipmentItemSkillImages = null;
     [SerializeField] private Button[] equipmentItemSkillButtons = null;
-
+    [SerializeField] private TextMeshProUGUI[] characterAllyTargetSettingTexts = null;
     private void Awake()
     {
         equipmentSlots = this.GetComponentsInChildren<EquipmentSlot>();
     }
-    void Start()
+
+    public void SelectCharacter(int _index)
     {
-        selectCharacterEqipment = characterEquipmentController[0];
+        selectCharacterEqipment = characterEquipmentController[_index];
+        selectCharStatus = selectCharacterEqipment.GetComponent<AllyStatus>();
+        InitCharacterAllyTargetButton();
+        SetCharacterAllyTargetButton((int)selectCharStatus.AllyTargetIndex);
     }
 
     public void ChangeAllEquipmentImage()
@@ -59,14 +63,16 @@ public class EquipmentPanelController : MonoBehaviour
         // 슬롯에 선택한 아이템 
         InitEquipedItemSkillIcon();
         selectItem = _item;
+        SetEquipmentInfo();
+    }
+    public void SetEquipmentInfo()
+    {
         ItemInfoPanel.SetActive(true);
         equipmentItemNameText.text = selectItem.itemKorName;
         equipmentItemRankText.text = IntRankToStringRank(selectItem.itemRank);
         equipmentItemTypeText.text = KeyToItemType(selectItem.itemType);
         equipmentItemExplainText.text = SetItemExplain(selectItem);
-
     }
-
     public string SetItemExplain(Item item)
     {
         string _explain = null;
@@ -107,12 +113,12 @@ public class EquipmentPanelController : MonoBehaviour
                     "공격 범위: " + item.atkRange + "\n" +
                     "공격 거리: " + item.atkDistance + "\n" +
                     "무기 종류: " + item.weaponType + "\n";
-                if (item.grace1 != null)
-                    _explain += "첫 번째 은총: " + item.grace1.explain;
-                if (item.grace2 != null)
-                    _explain += "두 번째 은총: " + item.grace2.explain;
-                if (item.grace3 != null)
-                    _explain += "세 번째 은총: " + item.grace3.explain;
+                if (item.grace[0] != null)
+                    _explain += "첫 번째 은총: " + item.grace[0].explain;
+                if (item.grace[1] != null)
+                    _explain += "두 번째 은총: " + item.grace[1].explain;
+                if (item.grace[2] != null)
+                    _explain += "세 번째 은총: " + item.grace[2].explain;
                 SetEquipedItemSkillIcon(item);
                 break;
             case 13:
@@ -199,14 +205,24 @@ public class EquipmentPanelController : MonoBehaviour
     }
     public void SetEquipedItemSkillIcon(Item _item)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < _item.skills.Count; i++)
         {
-            if (_item.skills[i] != null)
+            if (_item.skills[i] != null) 
             {
                 equipmentItemSkillButtons[i].gameObject.SetActive(true);
                 equipmentItemSkillImages[i].sprite = _item.skills[i].singleSprite;
+                equipmentItemSkillImages[i].gameObject.SetActive(true);
             }
         }
+    }
+    public void SetCharacterAllyTargetButton(int _index)
+    {
+        characterAllyTargetSettingTexts[_index].color = Color.red;
+    }
+    public void InitCharacterAllyTargetButton()
+    {
+        for(int i =0;i < 4; i++)
+            characterAllyTargetSettingTexts[i].color = Color.white;
     }
     public void InitEquipment()
     {
@@ -219,9 +235,11 @@ public class EquipmentPanelController : MonoBehaviour
     }
     public void SetEquipmentSlotImage(int _index)
     {
+        
         equipmentSlots[_index].CurItem = selectCharacterEqipment.EquipItems[_index];
         equipmentSlots[_index].ItemImages[1].sprite = selectCharacterEqipment.EquipItems[_index].singleSprite;
         equipmentSlots[_index].SlotSetting(selectCharacterEqipment.EquipItems[_index]);
+        UpdateEquipmentName();
     }
     public void InitEquipmentSlotImage(int _index)
     {
@@ -234,6 +252,8 @@ public class EquipmentPanelController : MonoBehaviour
     {
         // 장비창에서 캐릭터 선택
         InitEquipment();
+        if(ItemInfoPanel.activeInHierarchy)
+            ItemInfoPanel.SetActive(false);
         if (_isUp)
         {
             if (selectCharNum >= _charaterList.Count - 1)
@@ -251,6 +271,8 @@ public class EquipmentPanelController : MonoBehaviour
         }
         selectCharacterEqipment = _charaterList[selectCharNum];
         selectCharStatus = _charaterList[selectCharNum].GetComponent<AllyStatus>();
+        InitCharacterAllyTargetButton();
+        SetCharacterAllyTargetButton((int)selectCharStatus.AllyTargetIndex);
         UpdateEquipmentName();
         ChangeAllEquipmentImage();
     }
@@ -260,6 +282,12 @@ public class EquipmentPanelController : MonoBehaviour
         // 장비창 캐릭터 이름 변경
         equipmentCharacterNameText.text = selectCharStatus.ObjectName.ToString();
     }
+    public void ChangeAllyTargetSetting(int _index)
+    {
+        selectCharStatus.AllyTargetIndex = (EAllyTargetingSetUp)_index;
+        InitCharacterAllyTargetButton();
+        SetCharacterAllyTargetButton((int)selectCharStatus.AllyTargetIndex);
+    }
     public void ActiveEquipmentPanel(bool _bool)
     {
         // UI 활성화 
@@ -267,10 +295,5 @@ public class EquipmentPanelController : MonoBehaviour
 
         if (!_bool)
             ItemInfoPanel.SetActive(false);
-            
-    }
-    public void SelectCharacter(int _index)
-    {
-        selectCharacterEqipment = characterEquipmentController[_index];
     }
 }
