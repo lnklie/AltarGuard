@@ -58,9 +58,9 @@ public class MercenaryController : AllyController
 
     public override void AIChangeState()
     {
-        if (mercenary.EnemyTarget)
+        if (mercenary.Target)
         {
-            mercenary.Distance = mercenary.EnemyTarget.transform.position - mercenary.TargetPos.position;
+            mercenary.Distance = mercenary.Target.transform.position - mercenary.TargetPos.position;
             mercenary.TargetDir = mercenary.Distance.normalized;
         }
         if (mercenary.CurHp < 0f && !mercenary.IsDied)
@@ -70,7 +70,7 @@ public class MercenaryController : AllyController
 
         if(!mercenary.IsDied)
         {
-            if (mercenary.EnemyTarget == null)
+            if (mercenary.Target == null)
             {
 
                 if (pathFindController.FinalNodeList.Count == 0)
@@ -82,11 +82,11 @@ public class MercenaryController : AllyController
             {
 
                 if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
-                    mercenary.GetDistance(mercenary.EnemyTarget.transform.position) <= skillController.SkillQueue[0].skillRange)
+                    mercenary.GetDistance(mercenary.Target.transform.position) <= skillController.SkillQueue[0].skillRange)
                 {
                     mercenary.AIState = EAIState.UseSkill;
                 }
-                else if (mercenary.GetDistance(mercenary.EnemyTarget.transform.position) <= mercenary.TotalStatus[(int)EStatus.AtkRange])
+                else if (mercenary.GetDistance(mercenary.Target.transform.position) <= mercenary.TotalStatus[(int)EStatus.AtkRange])
                 {
                     mercenary.AIState = EAIState.Attack;
                 }
@@ -98,7 +98,7 @@ public class MercenaryController : AllyController
 
         }
     }
-    public void Targeting(List<EnemyController> _targetList)
+    public override void Targeting(List<EnemyController> _targetList)
     {
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if (_hit.Length > 0)
@@ -112,9 +112,24 @@ public class MercenaryController : AllyController
                     _hitStatus.IsAllyTargeted[mercenary.AllyNum] = true;
                 }
             }
+
+            for (int i = 0; i < _targetList.Count; i++)
+            {
+                if (mercenary.GetDistance(_targetList[i].transform.position) >= mercenary.SeeRange
+                    || _targetList[i].IsDied())
+                {
+
+                    if (_targetList[i] == mercenary.Target)
+                    {
+                        mercenary.Target = null;
+                    }
+                    _targetList[i].IsAllyTargeted[mercenary.AllyNum] = false;
+                    _targetList.Remove(_targetList[i]);
+                }
+            }
         }
     }
-    public void Targeting(List<AllyController> _targetList)
+    public override void Targeting(List<AllyController> _targetList)
     {
   
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, mercenary.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
@@ -131,22 +146,24 @@ public class MercenaryController : AllyController
             }
         }
     }
-    public void ResortTarget(List<EnemyController> _targetList)
+    public override void ResortTarget(List<EnemyController> _targetList)
     {
         if (_targetList.Count > 0)
         {
             SortSightRayListByDistance(_targetList);
-            mercenary.EnemyTarget = _targetList[0];
+            mercenary.Target = _targetList[0];
+
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (mercenary.GetDistance(_targetList[i].transform.position) >= mercenary.SeeRange
                     || _targetList[i].IsDied())
                 {
 
-                    if (_targetList[i] == mercenary.EnemyTarget)
+                    if (_targetList[i] == mercenary.Target)
                     {
-                        mercenary.EnemyTarget = null;
+                        mercenary.Target = null;
                     }
+
                     _targetList[i].IsAllyTargeted[mercenary.AllyNum] = false;
                     _targetList.Remove(_targetList[i]);
                 }
@@ -155,53 +172,39 @@ public class MercenaryController : AllyController
         }
         else
         {
-            mercenary.EnemyTarget = null;
+            mercenary.Target = null;
         }
     }
-    public void ResortTarget(List<AllyController> _targetList)
+    public override void ResortTarget(List<AllyController> _targetList)
     {
         if (_targetList.Count > 0)
         {
             switch (mercenary.AllyTargetIndex)
             {
                 case EAllyTargetingSetUp.OneSelf:
-                    mercenary.AllyTarget = this;
+                    mercenary.Target = this;
                     break;
                 case EAllyTargetingSetUp.CloseAlly:
                     SortSightRayListByDistance(_targetList);
-                    mercenary.AllyTarget = _targetList[1];
+                    mercenary.Target = _targetList[1];
                     break;
                 case EAllyTargetingSetUp.Random:
-                    mercenary.AllyTarget = ChooseSightRayListByRandom(_targetList);
+                    mercenary.Target = ChooseSightRayListByRandom(_targetList);
                     break;
                 case EAllyTargetingSetUp.WeakAlly:
                     SortSightRayListByCurHp(_targetList);
-                    mercenary.AllyTarget = _targetList[0];
+                    mercenary.Target = _targetList[0];
                     break;
             }
 
-            mercenary.AllyTarget = _targetList[0];
-            for (int i = 0; i < _targetList.Count; i++)
-            {
-                if (mercenary.GetDistance(_targetList[i].transform.position) >= mercenary.SeeRange
-                    || _targetList[i].IsDied())
-                {
+            mercenary.Target = _targetList[0];
 
-                    if (_targetList[i] == mercenary.AllyTarget)
-                    {
-                        mercenary.AllyTarget = null;
-                    }
-
-                    _targetList[i].IsAllyTargeted[mercenary.AllyNum] = false;
-                    _targetList.Remove(_targetList[i]);
-                }
-            }
 
         }
         else
         {
 
-            mercenary.AllyTarget = null;
+            mercenary.Target = null;
         }
     }
 
@@ -210,10 +213,10 @@ public class MercenaryController : AllyController
         while(true)
         {
             Targeting(mercenary.EnemyRayList);
-            ResortTarget(mercenary.EnemyRayList);
-
             Targeting(mercenary.AllyRayList);
-            ResortTarget(mercenary.AllyRayList);
+
+            if(mercenary.Target == null)
+                ResortTarget(mercenary.EnemyRayList);
 
             yield return new WaitForSeconds(0.5f);
         }

@@ -26,7 +26,7 @@ public class EnemyCustomizer : MonoBehaviour
             rushEnemyAIController.AIPerception();
             rushEnemyAIController.AIChangeState();
             rushEnemyAIController.AIState();
-            rushEnemyStatus.Distance = rushEnemyStatus.EnemyTarget.transform.position - this.transform.position;
+            rushEnemyStatus.Distance = rushEnemyStatus.Target.transform.position - this.transform.position;
             rushEnemyStatus.TargetDir = rushEnemyStatus.Distance.normalized;
         }
     }

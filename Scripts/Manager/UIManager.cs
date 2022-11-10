@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private PlayerStatus player = null;
     [SerializeField] private SkillController playerSkillController = null;
+    [SerializeField] private PlayerController playerController = null;
 
     [Header("Boss")]
     [SerializeField] private BossEnemyStatus bossEnemy = null;
@@ -209,7 +210,19 @@ public class UIManager : MonoBehaviour
 
     public void UseSkill(Skill _skill)
     {
-        skillControllerList[0].UseSkill(_skill);
+        if (player.Target == null)
+            switch (_skill.skillType)
+            {
+                case (int)ESkillType.Attack:
+                case (int)ESkillType.Curse:
+                    playerController.ResortTarget(player.EnemyRayList);
+                    break;
+                case (int)ESkillType.Cure:
+                case (int)ESkillType.Buff:
+                    playerController.ResortTarget(player.AllyRayList);
+                    break;
+            }
+        StartCoroutine(skillControllerList[0].UseSkill(_skill, true));
     }
     #region Profile
     public void UpdateBossInfo()
