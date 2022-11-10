@@ -5,10 +5,7 @@ using UnityEngine;
 public class TargetingBoxController : MonoBehaviour
 {
     [SerializeField] private bool isTargeting;
-    public bool IsTargeting
-    {
-        set { isTargeting = value; }
-    }
+    public bool IsTargeting { set { isTargeting = value; } }
 
     void Update()
     {

@@ -383,7 +383,8 @@ public class DatabaseManager : MonoBehaviour
             Skill[] skill = JsonHelper.FromJson<Skill>(loadJson);
             for (var i = 0; i < skill.Length; i++)
             {
-                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillKorName,skill[i].skillExplain, skill[i].skillLevel, skill[i].skillVariable,skill[i].skillType, skill[i].skillRange, skill[i].maxCoolTime, skill[i].skillHitCount,
+                skillList.Add(new Skill(skill[i].skillKey, skill[i].skillName, skill[i].skillKorName,skill[i].skillExplain, skill[i].skillLevel, skill[i].skillVariable,skill[i].skillType, skill[i].skillRange,
+                    skill[i].skillScopeX, skill[i].skillScopeY,skill[i].maxCoolTime, skill[i].skillHitCount,
                     skill[i].skillValue1, skill[i].skillValue2, skill[i].skillValue3, skill[i].skillValue4,
                     skill[i].skillValue5, skill[i].skillValue6, skill[i].skillValue7, skill[i].skillValue8, skill[i].skillValue9, skill[i].skillValue10,
                     skill[i].skillFigures1, skill[i].skillFigures2, skill[i].skillFigures3, skill[i].skillFigures4, skill[i].skillFigures5,
@@ -785,16 +786,13 @@ public class DatabaseManager : MonoBehaviour
 
     public Skill SelectSkill(int _key)
     {
-        Skill _skill = new Skill(-1,"","","",-1,-1,-1, -1 ,1,-1,-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+        Skill _skill = null;
 
         for (int i = 0; i < skillList.Count; i++)
         {
             if (skillList[i].skillKey == _key)
             {
-                Skill _selectSkill = new Skill(skillList[i].skillKey, skillList[i].skillName, skillList[i].skillKorName, skillList[i].skillExplain, skillList[i].skillLevel, skillList[i].skillVariable, skillList[i].skillType, skillList[i].skillRange, skillList[i].maxCoolTime, skillList[i].skillHitCount,
-                    skillList[i].skillValue1, skillList[i].skillValue2, skillList[i].skillValue3, skillList[i].skillValue4, skillList[i].skillValue5, skillList[i].skillValue6, skillList[i].skillValue7, skillList[i].skillValue8, skillList[i].skillValue9, skillList[i].skillValue10,
-                    skillList[i].skillFigures1, skillList[i].skillFigures2, skillList[i].skillFigures3, skillList[i].skillFigures4, skillList[i].skillFigures5, skillList[i].skillFigures6, skillList[i].skillFigures7, skillList[i].skillFigures8, skillList[i].skillFigures9, skillList[i].skillFigures10);
-                _skill = _selectSkill;
+                _skill = skillList[i];
             }
         }
         return _skill;

@@ -31,7 +31,6 @@ public class SkillObject : MonoBehaviour
     private void Start()
     {
         maxDurationTime = this.GetComponentInChildren<Animator>().speed;
-
     }
     private void Update()
     { 
@@ -109,9 +108,9 @@ public class SkillObject : MonoBehaviour
         
         RaycastHit2D[] ray = default;
         if (this.transform.parent.gameObject.layer == 3)
-            ray = Physics2D.CircleCastAll(this.transform.position, col.radius,Vector2.zero, 0f ,LayerMask.GetMask("Ally", "Altar"));
+            ray = Physics2D.BoxCastAll(this.transform.position, new Vector2(skill.skillScopeX,skill.skillScopeY), 0f ,Vector2.zero, 0f,LayerMask.GetMask("Ally", "Altar"));
         else if (this.transform.parent.gameObject.layer == 8)
-            ray = Physics2D.CircleCastAll(this.transform.position, col.radius, Vector2.zero, 0f, LayerMask.GetMask("Enemy"));
+            ray = Physics2D.BoxCastAll(this.transform.position, new Vector2(skill.skillScopeX, skill.skillScopeY), 0f, Vector2.zero,0f, LayerMask.GetMask("Enemy"));
         return ray;
     }
     public int SetSkillValueByLevel()

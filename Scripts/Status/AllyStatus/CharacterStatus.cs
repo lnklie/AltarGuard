@@ -7,9 +7,9 @@ public class CharacterStatus : Status
     [SerializeField] protected int curMp = 0;
     [SerializeField] protected int curLevel = 30;
     [SerializeField] protected bool isAtk = false;
+    [SerializeField] protected bool isUseSkill = false;
 
-    [SerializeField] protected EnemyController enemyTarget = null;
-    [SerializeField] protected AllyController allyTarget = null;
+    [SerializeField] protected CharacterController target = null;
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected float maxAtkSpeed = 8f;
     [SerializeField] protected float maxCastingSpeed = 8f;
@@ -27,7 +27,7 @@ public class CharacterStatus : Status
 
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
-
+    
     protected int curExp = 0;
     protected int maxExp = 0;
 
@@ -50,7 +50,7 @@ public class CharacterStatus : Status
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
 
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
-
+    public bool IsUseSkill { get { return isUseSkill; } set { isUseSkill = value; } }
 
 
     public EAllyTargetingSetUp AllyTargetIndex { get { return allyTargetIndex; } set { allyTargetIndex = value; } }
@@ -74,9 +74,8 @@ public class CharacterStatus : Status
 
     public int CurMp { get { return curMp; } set { curMp = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
-    public EnemyController EnemyTarget { get { return enemyTarget; } set { enemyTarget = value; } }
+    public CharacterController Target { get { return target; } set { target = value; } }
 
-    public AllyController AllyTarget { get { return allyTarget; } set { allyTarget = value; } }
     public int CurExp { get { return curExp; } set { curExp = value; } }
     public int MaxExp { get { return maxExp; } set { maxExp = value; } }
 

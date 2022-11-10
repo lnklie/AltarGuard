@@ -9,20 +9,16 @@ public class SkillController : MonoBehaviour
     [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
 
     [SerializeField] private List<Skill> skillQueue = new List<Skill>();
-
+    [SerializeField] private RectTransform skillScope = null;
     [SerializeField] private bool isSkillDelay = false;
-    private bool[] isCoolTime = { false, false, false };
 
     public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
     public List<Skill> SkillQueue { get { return skillQueue; } }
     public List<Skill> Skills { get { return skills; } }
 
-    public bool[] IsCoolTime { get { return isCoolTime; } set { isCoolTime = value; } }
     #endregion
-    private void Start()
-    {
-    }
+
     private void Update()
     {
         CalculateSkillCoolTime();
@@ -56,67 +52,40 @@ public class SkillController : MonoBehaviour
             Debug.Log("¾ø´Â ½ºÅ³");
     }
 
-    public void UseSkill(Skill _skill)
+    public IEnumerator UseSkill(Skill _skill, bool _isRangeExpressed = false)
     {
         if(!status.IsDied)
         {
             int index = skillQueue.IndexOf(_skill);
             if (index != -1)
             {
-
                 if (!_skill.isCoolTime)
                 {
-
-                    SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                    _skill.isCoolTime = true;
-                    _skill.coolTime = 0f;
-
-                    if (_skill.skillType == 0)
+                    if (status.Target != null)
                     {
-                        if (status.EnemyTarget != null)
+                        if(IsMatchSkillType(_skill, status.Target))
                         {
-                            _skillObject.SetSkill(status.EnemyTarget.transform, _skill, status);
+                            SkillObject _skillObject = skillPrefabs[_skill.skillKey];
+                            _skill.isCoolTime = true;
+                            _skill.coolTime = 0f;
+                            if (_isRangeExpressed)
+                            {
+                                skillScope.gameObject.SetActive(true);
+                                skillScope.localPosition = status.Target.transform.position;
+                                skillScope.localScale = new Vector2(_skill.skillScopeX, _skill.skillScopeY);
+                                yield return new WaitForSeconds(1f);
+                                skillScope.gameObject.SetActive(false);
+                            }
+                            _skillObject.SetSkill(status.Target.transform, _skill, status);
+                            skillQueue.RemoveAt(index);
                         }
                         else
-                        {
-                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
-                        }
+                            UIManager.Instance.Notice("¿Ã¹Ù¸¥ Å¸°ÙÀÌ ¾Æ´Õ´Ï´Ù.");
                     }
-                    else if (_skill.skillType == 1)
+                    else
                     {
-                        if (status.AllyTarget != null)
-                        {
-                            _skillObject.SetSkill(status.AllyTarget.transform, _skill, status);
-                        }
-                        else
-                        {
-                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
-                        }
-                    
+                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
                     }
-                    else if (_skill.skillType == 2)
-                    {
-                        if (status.AllyTarget != null)
-                        {
-                            _skillObject.SetSkill(status.AllyTarget.transform, _skill, status);
-                        }
-                        else
-                        {
-                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
-                        } 
-                    }
-                    else if (_skill.skillType == 3)
-                    {
-                        if (status.EnemyTarget != null)
-                        {
-                            _skillObject.SetSkill(status.EnemyTarget.transform, _skill, status);
-                        }
-                        else
-                        {
-                            UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
-                        }
-                    }
-                    skillQueue.RemoveAt(index);
                 }
                 else
                     Debug.Log("ÄðÅ¸ÀÓ Áß");
@@ -127,43 +96,53 @@ public class SkillController : MonoBehaviour
         }
 
     }
-    public void UseSkill()
+    public IEnumerator UseSkill(bool _isRangeExpressed = false)
     {
         if (!status.IsDied)
         {
 
             if (skillQueue.Count > 0)
             {
+                if (status.Target != null)
+                {
+                    
+                    skillQueue[0].isCoolTime = true;
+                    skillQueue[0].coolTime = 0;
+                    //status.IsAtk = true;
+                    SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                    if (_isRangeExpressed)
+                    {
+                        skillScope.gameObject.SetActive(true);
+                        skillScope.localPosition = status.Target.transform.position;
+                        skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
+                        yield return new WaitForSeconds(1f);
+                        skillScope.gameObject.SetActive(false);
+                    }
+                    _skillObject.SetSkill(status.Target.transform, skillQueue[0], status);
+                    skillQueue.RemoveAt(0);
+                }
 
-                skillQueue[0].isCoolTime = true;
-                skillQueue[0].coolTime = 0;
-                //status.IsAtk = true;
-                SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                if (skillQueue[0].skillType == 0)
-                {
-                    if(status.EnemyTarget != null)
-                        _skillObject.SetSkill(status.EnemyTarget.transform, skillQueue[0], status);
-                }
-                else if (skillQueue[0].skillType == 1)
-                {
-                    if (status.AllyTarget != null)
-                        _skillObject.SetSkill(status.AllyTarget.transform, skillQueue[0], status);
-                }
-                else if (skillQueue[0].skillType == 2)
-                {
-                    if (status.AllyTarget != null)
-                        _skillObject.SetSkill(status.AllyTarget.transform, skillQueue[0], status);
-                }
-                else if (skillQueue[0].skillType == 3)
-                {
-                    if (status.EnemyTarget != null)
-                        _skillObject.SetSkill(status.EnemyTarget.transform, skillQueue[0], status);
-                }
-                skillQueue.RemoveAt(0);
+                
             }
-
-
         }
+    }
+    public bool IsMatchSkillType(Skill _skill, CharacterController _character)
+    {
+        bool _bool = false;
+        switch (_skill.skillType)
+        {
+            case (int)ESkillType.Attack:
+            case (int)ESkillType.Curse:
+                if (_character.gameObject.layer != status.gameObject.layer)
+                    _bool = true;
+                break;
+            case (int)ESkillType.Cure:
+            case (int)ESkillType.Buff:
+                if (_character.gameObject.layer == status.gameObject.layer)
+                    _bool = true;
+                break;
+        }
+        return _bool;
     }
     public void CalculateSkillCoolTime()
     {

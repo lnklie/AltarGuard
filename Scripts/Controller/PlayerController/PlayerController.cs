@@ -8,7 +8,7 @@ public class PlayerController : AllyController
     private SpriteRenderer bodySprites = null;
     private Vector2 lookDir = Vector2.down;
     private FlagController hitFlag = null;
-    private EnemyController preEnemyTarget = null;
+    private CharacterController preEnemyTarget = null;
     [SerializeField] private bool isControlOnAutoPlay = false;
     [SerializeField] private bool checkControlOnAutoPlay = true;
     [SerializeField] private GameObject rivivePoint = null;
@@ -25,10 +25,10 @@ public class PlayerController : AllyController
     public override void Update()
     {
         DragFlag();
-        if (characterStatus.EnemyTarget)
-            destination = characterStatus.EnemyTarget.transform.position;
+        if (character.Target)
+            destination = character.Target.transform.position;
         else
-            destination = characterStatus.Flag.transform.position;
+            destination = character.Flag.transform.position;
 
         if (player.CurHp <= 0f && !player.IsDied )
         {
@@ -41,9 +41,9 @@ public class PlayerController : AllyController
             PlayerStateCondition();
         }
 
-        if (player.EnemyTarget)
+        if (player.Target)
         {
-            player.Distance = player.EnemyTarget.transform.position - this.transform.position;
+            player.Distance = player.Target.transform.position - this.transform.position;
             player.TargetDir = player.Distance.normalized;
         }
 
@@ -101,6 +101,8 @@ public class PlayerController : AllyController
                 if (Input.GetKeyDown(KeyCode.LeftControl))
                 {
                     StartCoroutine(PlayerAttack());
+                    if (player.Target == null)
+                        ResortTarget(player.EnemyRayList);
                 }
                 if (!player.IsAtk)
                 {
@@ -291,7 +293,7 @@ public class PlayerController : AllyController
         player.CurHp = (int)player.TotalStatus[(int)EStatus.MaxHp];
         player.AIState = EAIState.Idle;
     }
-    public void Targeting(List<EnemyController> _targetList)
+    public override void Targeting(List<EnemyController> _targetList)
     {
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, player.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
         if (_hit.Length > 0)
@@ -305,9 +307,25 @@ public class PlayerController : AllyController
                     _hitStatus.IsAllyTargeted[player.AllyNum] = true;
                 }
             }
+            for (int i = 0; i < _targetList.Count; i++)
+            {
+                if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
+                    || _targetList[i].IsDied())
+                {
+
+                    if (_targetList[i] == player.Target)
+                    {
+                        player.Target.SetTargetingBox(false);
+                        player.Target = null;
+                    }
+
+                    _targetList[i].IsAllyTargeted[player.AllyNum] = false;
+                    _targetList.Remove(_targetList[i]);
+                }
+            }
         }
     }
-    public void Targeting(List<AllyController> _targetList)
+    public override void Targeting(List<AllyController> _targetList)
     {
         RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, player.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
         if (_hit.Length > 0)
@@ -321,94 +339,80 @@ public class PlayerController : AllyController
                     _hitStatus.IsAllyTargeted[player.AllyNum] = true;
                 }
             }
-        }
-    }
-    public void ResortTarget(List<EnemyController> _targetList)
-    {
-        if (_targetList.Count > 0)
-        {
-            SortSightRayListByDistance(_targetList);
-            player.EnemyTarget = _targetList[0];
 
-            if (preEnemyTarget != null && preEnemyTarget != player.EnemyTarget)
-                preEnemyTarget.SetTargetingBox(false);
-
-            preEnemyTarget = player.EnemyTarget;
-            player.EnemyTarget.SetTargetingBox(true);
             for (int i = 0; i < _targetList.Count; i++)
             {
                 if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
                     || _targetList[i].IsDied())
                 {
 
-                    if (_targetList[i] == player.EnemyTarget)
+                    if (_targetList[i] == player.Target)
                     {
-                        player.EnemyTarget.SetTargetingBox(false);
-                        player.EnemyTarget = null;
+                        player.Target = null;
                     }
 
                     _targetList[i].IsAllyTargeted[player.AllyNum] = false;
                     _targetList.Remove(_targetList[i]);
                 }
             }
-            
+        }
+    }
+    public override void ResortTarget(List<EnemyController> _targetList)
+    {
+        if (_targetList.Count > 0)
+        {
+            SortSightRayListByDistance(_targetList);
+            player.Target = _targetList[0];
+
+            if (preEnemyTarget != null && preEnemyTarget != player.Target)
+                preEnemyTarget.SetTargetingBox(false);
+
+            preEnemyTarget = player.Target;
+            player.Target.SetTargetingBox(true);
         }
         else
         {
-            player.EnemyTarget = null;
+            player.Target = null;
         }
     }
-    public void ResortTarget(List<AllyController> _targetList)
+    public override void ResortTarget(List<AllyController> _targetList)
     {
         if (_targetList.Count > 0)
         {
             switch(player.AllyTargetIndex)
             {
                 case EAllyTargetingSetUp.OneSelf:
-                    player.AllyTarget = this;
+                    player.Target = this;
                     break;
                 case EAllyTargetingSetUp.CloseAlly:
                     SortSightRayListByDistance(_targetList);
-                    player.AllyTarget = _targetList[1];
+                    player.Target = _targetList[1];
                     break;
                 case EAllyTargetingSetUp.Random:
-                    player.AllyTarget = ChooseSightRayListByRandom(_targetList);
+                    player.Target = ChooseSightRayListByRandom(_targetList);
                     break;
                 case EAllyTargetingSetUp.WeakAlly:
                     SortSightRayListByCurHp(_targetList);
-                    player.AllyTarget = _targetList[0];
+                    player.Target = _targetList[0];
                     break;
             }
            
             
-            for (int i = 0; i < _targetList.Count; i++)
-            {
-                if (player.GetDistance(_targetList[i].transform.position) >= player.SeeRange
-                    || _targetList[i].IsDied())
-                {
 
-                    if (_targetList[i] == player.AllyTarget)
-                    {
-                        player.AllyTarget = null;
-                    }
-
-                    _targetList[i].IsAllyTargeted[player.AllyNum] = false;
-                    _targetList.Remove(_targetList[i]);
-                }
-            }
         }
         else
         {
-            player.AllyTarget = null;
+            player.Target = null;
         }
     }
     public void Perception()
     {
         Targeting(player.EnemyRayList);
-        ResortTarget(player.EnemyRayList);
-
         Targeting(player.AllyRayList);
-        ResortTarget(player.AllyRayList);
+
+        if(player.Target == null)
+            ResortTarget(player.EnemyRayList);
+
     }
     public void SetTarget(Transform _target,Transform _object, bool _isTargetingBox = false)
     {
@@ -430,11 +434,12 @@ public class PlayerController : AllyController
         if (player.CurHp < 0f)
         {
             player.IsDied = true;
+            if(player.AIState != EAIState.Died)
             player.AIState = EAIState.Died;
         }
         else
         {
-            if (player.EnemyTarget == null)
+            if (player.Target == null)
             {
                 if (pathFindController.FinalNodeList.Count == 0)
                     player.AIState = EAIState.Idle;
@@ -443,19 +448,21 @@ public class PlayerController : AllyController
             }
             else
             {
-                player.Distance = player.EnemyTarget.transform.position - player.TargetPos.position;
+                player.Distance = player.Target.transform.position - player.TargetPos.position;
                 player.TargetDir = player.Distance.normalized;
 
-                player.AIState = EAIState.Chase;
+                
                 if (skillController.SkillQueue.Count > 0 && !skillController.IsSkillDelay &&
-                    player.GetDistance(player.EnemyTarget.transform.position) <= skillController.SkillQueue[0].skillRange)
+                    player.GetDistance(player.Target.transform.position) <= skillController.SkillQueue[0].skillRange)
                 {
                     player.AIState = EAIState.UseSkill;
                 }
-                else if (player.GetDistance(player.EnemyTarget.transform.position) <= player.TotalStatus[(int)EStatus.AtkRange])
+                else if (player.GetDistance(player.Target.transform.position) <= player.TotalStatus[(int)EStatus.AtkRange])
                 {
                     player.AIState = EAIState.Attack;
                 }
+                else
+                    player.AIState = EAIState.Chase;
             }
 
         }
@@ -483,10 +490,11 @@ public class PlayerController : AllyController
         while(true)
         {
             Targeting(player.EnemyRayList);
-            ResortTarget(player.EnemyRayList);
-
             Targeting(player.AllyRayList);
-            ResortTarget(player.AllyRayList);
+
+            if(player.Target == null)
+                ResortTarget(player.EnemyRayList);
+
             yield return new WaitForSeconds(0.5f);
         }
     }

@@ -140,6 +140,14 @@ public enum SlimeKingPattern
     DashAttack,
     JumpJump
 }
+public enum ESkillType
+{
+    Attack,
+    Cure,
+    Curse,
+    Buff
+}
+
 public enum EgraceType
 {
     Warrior = 0,

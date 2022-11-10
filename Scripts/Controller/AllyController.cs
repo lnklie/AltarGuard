@@ -9,11 +9,11 @@ public class AllyController : CharacterController
     {
         base.Update();
 
-        if (characterStatus.EnemyTarget)
+        if (character.Target)
         {
-            destination = characterStatus.EnemyTarget.transform.position;
+            destination = character.Target.transform.position;
         }
         else
-            destination = characterStatus.Flag.transform.position;
+            destination = character.Flag.transform.position;
     }
 }
