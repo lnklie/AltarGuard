@@ -8,11 +8,14 @@ public class CharacterController : MonoBehaviour, IAIController
     [SerializeField] protected CharacterStatus character = null;
     [SerializeField] protected PathFindController pathFindController = null;
     [SerializeField] protected Vector2 destination = Vector2.zero;
-    [SerializeField] private bool[] isAllyTargeted = new bool[5];
-    [SerializeField] private bool[] isEnemyTargeted = new bool[101];
-    [SerializeField] private TargetingBoxController targetingBoxController = null;
-    public bool[] IsAllyTargeted { get { return isAllyTargeted; } set { isAllyTargeted = value; } }
-    public bool[] IsEnemyTargeted { get { return isEnemyTargeted; } set { isEnemyTargeted = value; } }
+
+
+
+    public PathFindController PathFindController { get { return pathFindController; } }
+
+    protected StateMachine stateMachine;
+
+    protected Dictionary<EAIState, IState> stateDic = new Dictionary<EAIState, IState>();
     public virtual void Awake()
     {
         character = this.GetComponent<CharacterStatus>();
@@ -21,11 +24,27 @@ public class CharacterController : MonoBehaviour, IAIController
     {
         StartCoroutine(FindPath());
         StartCoroutine(AIPerception());
+
+        IState idle = new IdleState(character);
+        IState chase = new ChaseState(character, this);
+        IState attack = new AttackState(character, this);
+        IState skill = new SkillState(character, this);
+        IState die = new DieState(character, this);
+
+        stateDic.Add(EAIState.Idle, idle);
+        stateDic.Add(EAIState.Chase, chase);
+        stateDic.Add(EAIState.Attack, attack);
+        stateDic.Add(EAIState.UseSkill, skill);
+        stateDic.Add(EAIState.Died, die);
+
+        stateMachine = new StateMachine(idle);
     }
     public virtual void Update()
     {
+
         AIChangeState();
-        AIState();
+        AnimationDirection();
+        stateMachine.DoUpdateState();
         if (!IsDelay())
         {
             character.DelayTime = character.TotalStatus[(int)EStatus.AttackSpeed];
@@ -34,7 +53,7 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             character.DelayTime += Time.deltaTime;
         }
-
+        CheckTarget();
         
     }
     public IEnumerator FindPath()
@@ -43,6 +62,7 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             pathFindController.SetTargetPos(destination);
             pathFindController.PathFinding();
+
             yield return new WaitForSeconds(Random.Range(0.5f, 1f));
         }
     }
@@ -51,14 +71,14 @@ public class CharacterController : MonoBehaviour, IAIController
         return new WaitUntil(() => _animator.GetCurrentAnimatorStateInfo(_index).IsName(_aniName) &&
             _animator.GetCurrentAnimatorStateInfo(_index).normalizedTime >= _point);
     }
-    public bool IsAtkRange(CharacterController _target)
+    public bool IsAtkRange(Status _target)
     {
         if (character.GetDistance(_target.transform.position) <= character.TotalStatus[(int)EStatus.AtkRange])
             return true;
         else
             return false;
     }
-    public bool IsSkillRange(CharacterController _target)
+    public bool IsSkillRange(Status _target)
     {
         if (character.GetDistance(_target.transform.position) <= skillController.SkillQueue[0].skillRange)
             return true;
@@ -72,36 +92,43 @@ public class CharacterController : MonoBehaviour, IAIController
         else
             return false;
     }
+    public bool IsSkillDelay()
+    {
+        if (character.IsUseSkill)
+            return true;
+        else
+            return false;
+    }
 
-    public void SortSightRayListByDistance(List<EnemyController> _sightRay)
+    public void SortSightRayListByDistance(List<AllyStatus> _sightRay)
     {
         // 리스트 정렬
-        _sightRay.Sort(delegate (EnemyController a, EnemyController b)
+        _sightRay.Sort(delegate (AllyStatus a, AllyStatus b)
         {
             if (character.GetDistance( a.transform.position) < character.GetDistance( b.transform.position)) return -1;
             else if (character.GetDistance(a.transform.position) > character.GetDistance(b.transform.position)) return 1;
             else return 0;
         });
     }
-    public void SortSightRayListByDistance(List<AllyController> _sightRay)
+    public void SortSightRayListByDistance(List<EnemyStatus> _sightRay)
     {
-        _sightRay.Sort(delegate (AllyController a, AllyController b)
+        _sightRay.Sort(delegate (EnemyStatus a, EnemyStatus b)
         {
             if (character.GetDistance(a.transform.position) < character.GetDistance(b.transform.position)) return -1;
             else if (character.GetDistance(a.transform.position) > character.GetDistance(b.transform.position)) return 1;
             else return 0;
         });
     }
-    public void SortSightRayListByCurHp(List<AllyController> _sightRay)
+    public void SortSightRayListByCurHp(List<AllyStatus> _sightRay)
     {
-        _sightRay.Sort(delegate (AllyController a, AllyController b)
+        _sightRay.Sort(delegate (AllyStatus a, AllyStatus b)
         {
-            if (a.character.CurHp < b.character.CurHp) return -1;
-            else if (a.character.CurHp > b.character.CurHp) return 1;
+            if (a.CurHp < b.CurHp) return -1;
+            else if (a.CurHp > b.CurHp) return 1;
             else return 0;
         });
     }
-    public AllyController ChooseSightRayListByRandom(List<AllyController> _sightRay)
+    public Status ChooseSightRayListByRandom(List<AllyStatus> _sightRay)
     {
         int _randomIndex = Random.Range(0, _sightRay.Count);
         return _sightRay[_randomIndex];
@@ -177,104 +204,71 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public virtual IEnumerator AttackByAttackType()
     {
-        if (!IsDelay())
+        character.ActiveLayer(ELayerName.AttackLayer);
+        character.Ani.SetBool("IsAtk", true);
+        character.IsAtk = true;
+        character.DelayTime = 0f;
+        character.Ani.SetFloat("AtkType", character.AttackType);
+
+        if (character.AttackType == 0f)
         {
-            character.ActiveLayer(ELayerName.AttackLayer);
-            character.Ani.SetBool("IsAtk", true);
-            character.IsAtk = true;
-            character.DelayTime = 0f;
-            character.Ani.SetFloat("AtkType", character.AttackType);
-
-            if (character.AttackType == 0f)
-            {
-                AttackDamage();
-            }
-            else if (character.AttackType == 0.5f)
-            {
-                yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.65f);
-                ShotArrow();
-            }
-
-            yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.99f);
-            character.Ani.SetBool("IsAtk", false);
-            character.IsAtk = false;
+            AttackDamage();
+        }
+        else if (character.AttackType == 0.5f)
+        {
+            yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.65f);
+            ShotArrow();
         }
 
+        yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.99f);
+        character.Ani.SetBool("IsAtk", false);
+        character.IsAtk = false;
     }
-    public virtual void Targeting(List<EnemyController> _targetList)
+    public virtual void Targeting(int _layer)
     {
-        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if (_hit.Length > 0)
-        {
+        RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, _layer);
+
             // 적 발견
-        }
+        
     }
-    public virtual void Targeting(List<AllyController> _targetList)
+    public virtual void CheckTarget()
     {
-        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (_hit.Length > 0)
+        if (character.Target)
         {
-            // 아군 발견
-        }
-    }
-    public virtual void ResortTarget(List<EnemyController> _targetList)
-    {
-        if (_targetList.Count > 0)
-        {
-            // 적이 있을때
-            SortSightRayListByDistance(_targetList);
-            character.Target = _targetList[0];
-        }
-        else
-        {
-            // 적이 없을 떄
-        }
-    }
-    public virtual void ResortTarget(List<AllyController> _targetList)
-    {
-        if (_targetList.Count > 0)
-        {
-            // 아군이 있을 떄
+            if (character.GetDistance(character.Target.transform.position) >= character.SeeRange || character.Target.IsDied)
+            {
 
-        }
-        else
-        {
-            // 아군이 없을때
+                character.Target = null;
+
+            }
         }
     }
 
     public IEnumerator UseSkill()
     {
-        if(!skillController.IsSkillDelay)
-        {
-            if (character.Target == null)
-                switch (skillController.Skills[0].skillType)
-                {
-                    case (int)ESkillType.Attack:
-                    case (int)ESkillType.Curse:
-                        ResortTarget(character.EnemyRayList);
-                        break;
-                    case (int)ESkillType.Cure:
-                    case (int)ESkillType.Buff:
-                        ResortTarget(character.AllyRayList);
-                        break;
-                }
-
-            skillController.IsSkillDelay = true;
-            yield return new WaitForSeconds(character.TotalStatus[(int)EStatus.CastingSpeed]);
-            if(skillController.Skills[0] != null)
+        character.IsUseSkill = true;
+        if (character.Target == null)
+            switch (skillController.Skills[0].skillType)
             {
-                StartCoroutine(skillController.UseSkill(true));
+                case (int)ESkillType.Attack:
+                case (int)ESkillType.Curse:
+                    Targeting(LayerMask.GetMask("Enemy"));
+                    break;
+                case (int)ESkillType.Cure:
+                case (int)ESkillType.Buff:
+                    Targeting(LayerMask.GetMask("Ally"));
+                    break;
             }
 
-            skillController.IsSkillDelay = false;
-            character.IsUseSkill = false;
+        yield return new WaitForSeconds(character.TotalStatus[(int)EStatus.CastingSpeed]);
+        if (skillController.Skills[0] != null)
+        {
+            StartCoroutine(skillController.UseSkill(true));
         }
 
     }
     public virtual void AttackDamage()
     {
-
         //
     }
     #region AI
@@ -284,25 +278,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual void AIState()
     {
-        AnimationDirection();
-        switch (character.AIState)
-        {
-            case EAIState.Idle:
-                AIIdle();
-                break;
-            case EAIState.Chase:
-                AIChase();
-                break;
-            case EAIState.Attack:
-                AIAttack();
-                break;
-            case EAIState.UseSkill:
-                if(!character.IsUseSkill)
-                {
-                    AIUseSkill();
-                }
-                break;
-        }
+        
     }
     public virtual IEnumerator AIPerception()
     {
@@ -319,7 +295,6 @@ public class CharacterController : MonoBehaviour, IAIController
         if (pathFindController.FinalNodeList.Count > 1)
         {
             Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
-            character.ActiveLayer(ELayerName.WalkLayer);
             character.transform.position = Vector2.MoveTowards(character.transform.position, _moveDir, character.TotalStatus[(int)EStatus.Speed] * Time.deltaTime);
         }
         else if (pathFindController.FinalNodeList.Count == 1)
@@ -335,6 +310,12 @@ public class CharacterController : MonoBehaviour, IAIController
         character.Rig.velocity = Vector2.zero;
         StartCoroutine(AttackByAttackType());
     }
+    public void StartAttack()
+    {
+        while(!character.IsAtk)
+
+            StartCoroutine(AttackByAttackType());
+    }
     public virtual void AIUseSkill()
     {
         character.IsUseSkill = true;
@@ -343,15 +324,20 @@ public class CharacterController : MonoBehaviour, IAIController
         character.Rig.velocity = Vector2.zero;
         StartCoroutine(UseSkill());
     }
+    public void StartAIUseSkill()
+    {
+        StartCoroutine(UseSkill());
+    }
+    public void StartAIDied()
+    {
+        StartCoroutine(AIDied());
+    }
     public virtual IEnumerator AIDied()
     {
         character.IsDied = false;
         yield return null;
     }
-    public void SetTargetingBox(bool _bool)
-    {
-        targetingBoxController.IsTargeting = _bool;
-    }
+
 
     #endregion
 }

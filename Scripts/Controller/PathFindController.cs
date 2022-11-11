@@ -27,6 +27,7 @@ public class PathFindController : MonoBehaviour
     public void PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입
+        //Debug.Log("길찾기 " + status.ObjectName + " 시작 지점은 " + startPos + " 끝지점은 "+  targetPos);
         startPos = Vector2Int.RoundToInt(status.transform.position);
         bottomLeft = Vector2Int.RoundToInt(new Vector3(-25f, -25f));
         topRight = Vector2Int.RoundToInt(new Vector3(25f, 25f));
@@ -41,7 +42,7 @@ public class PathFindController : MonoBehaviour
             {
                 bool isWall = false;
                 foreach (Collider2D col in Physics2D.OverlapCircleAll(new Vector2(i + bottomLeft.x, j + bottomLeft.y), 0.4f))
-                    if (col.gameObject.layer == 7 || col.gameObject.layer == 10)  isWall = true;
+                    if (col.gameObject.layer == 7)  isWall = true;
 
                 NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
             }

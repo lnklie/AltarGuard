@@ -108,7 +108,6 @@ public class SkillController : MonoBehaviour
                     
                     skillQueue[0].isCoolTime = true;
                     skillQueue[0].coolTime = 0;
-                    //status.IsAtk = true;
                     SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
                     if (_isRangeExpressed)
                     {
@@ -126,7 +125,7 @@ public class SkillController : MonoBehaviour
             }
         }
     }
-    public bool IsMatchSkillType(Skill _skill, CharacterController _character)
+    public bool IsMatchSkillType(Skill _skill, Status _character)
     {
         bool _bool = false;
         switch (_skill.skillType)
