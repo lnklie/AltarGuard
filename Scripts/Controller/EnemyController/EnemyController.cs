@@ -21,11 +21,12 @@ public class EnemyController : CharacterController
     public override void Update()
     {
         base.Update();
-        if (enemyStatus.Target != null)
+        if(enemyStatus.Target)
+        {
+            enemyStatus.Distance = enemyStatus.Target.transform.position - enemyStatus.TargetPos.position;
             destination = enemyStatus.Target.transform.position;
-        else
-            destination = altar.TargetPos.position;
-
+            enemyStatus.TargetDir = enemyStatus.Distance.normalized;
+        }
     }
 
     public void FindAltar()
@@ -36,134 +37,49 @@ public class EnemyController : CharacterController
 
     public override void AIChangeState()
     {
-        if (enemyStatus.Target)
-        {
-            enemyStatus.Distance = enemyStatus.Target.transform.position - enemyStatus.TargetPos.position;
-        } 
-        else
-        {
-            enemyStatus.Distance = altar.transform.position - enemyStatus.TargetPos.position;
-        }
-        enemyStatus.TargetDir = enemyStatus.Distance.normalized;
         if (enemyStatus.IsDied)
         {
-            StartCoroutine(AIDied());
+            stateMachine.SetState(stateDic[EAIState.Died]);
         }
         if (!enemyStatus.IsDied)
         {
-            if (enemyStatus.Target == null)
+            if(enemyStatus.Target != null)
             {
-                enemyStatus.AIState = EAIState.Chase;
-            }
-            else
-            {
+
                 if (IsSkillQueue() && IsSkillRange(enemyStatus.Target))
-                    enemyStatus.AIState = EAIState.UseSkill;
+                    stateMachine.SetState(stateDic[EAIState.UseSkill]);
                 else if (IsAtkRange(enemyStatus.Target))
-                    enemyStatus.AIState = EAIState.Attack;
+                    stateMachine.SetState(stateDic[EAIState.Attack]);
                 else
-                    enemyStatus.AIState = EAIState.Chase;
+                    stateMachine.SetState(stateDic[EAIState.Chase]);
+
             }
 
         }
     }
 
-    public override void Targeting(List<AllyController> _targetList)
+    public override void Targeting(int _layer)
     {
-        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
-        if (_hit.Length > 0)
-        {
-            for (int i = 0; i < _hit.Length; i++)
-            {
-                AllyController _hitStatus = _hit[i].collider.GetComponent<AllyController>();
-                if (!_hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex])
-                {
-                    _targetList.Add(_hitStatus);
-                    _hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex] = true;
-                }
-            }
-            for (int i = 0; i < _targetList.Count; i++)
-            {
-                if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
-                    || _targetList[i].IsDied())
-                {
 
-                    if (_targetList[i] == enemyStatus.Target)
-                    {
-                        enemyStatus.Target = null;
-                    }
+        RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, _layer);
+        if (_hit)
+        {
 
-                    _targetList[i].IsEnemyTargeted[enemyStatus.EnemyIndex] = false;
-                    _targetList.Remove(_targetList[i]);
-                }
-            }
-        }
-    }
-    public override void Targeting(List<EnemyController> _targetList)
-    {
-        RaycastHit2D[] _hit = Physics2D.CircleCastAll(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
-        if (_hit.Length > 0)
-        {
-            for (int i = 0; i < _hit.Length; i++)
-            {
-                EnemyController _hitStatus = _hit[i].collider.GetComponent<EnemyController>();
-                if (!_hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex])
-                {
-                    _targetList.Add(_hitStatus);
-                    _hitStatus.IsEnemyTargeted[enemyStatus.EnemyIndex] = true;
-                }
-            }
-            for (int i = 0; i < _targetList.Count; i++)
-            {
-                if (enemyStatus.GetDistance(_targetList[i].transform.position) >= enemyStatus.SeeRange
-                    || _targetList[i].IsDied())
-                {
-                    if (_targetList[i] == enemyStatus.Target)
-                    {
-                        enemyStatus.Target = null;
-                    }
-                    _targetList[i].IsEnemyTargeted[enemyStatus.EnemyIndex] = false;
-                    _targetList.Remove(_targetList[i]);
-                }
-            }
-        }
-    }
-    public override void ResortTarget(List<AllyController> _targetList )
-    {
-        if (_targetList.Count > 0) 
-        {
-            enemyStatus.Target = _targetList[0];
-            SortSightRayListByDistance(_targetList);
+            CharacterStatus _hitStatus = _hit.collider.GetComponent<CharacterStatus>();
+            enemyStatus.Target = _hitStatus;
 
         }
         else
-        {
-            enemyStatus.Target = null;
-        }
+            enemyStatus.Target = altar;
     }
-    public override void ResortTarget(List<EnemyController> _targetList)
-    {
-        if (_targetList.Count > 0)
-        {
-            enemyStatus.Target = _targetList[0];
 
-            SortSightRayListByDistance(_targetList);
 
-        }
-        else
-        {
-                enemyStatus.Target = null;
-        }
-    }
     public override IEnumerator AIPerception()
     {
         while(true)
         {
-            Targeting(enemyStatus.AllyRayList);
-            Targeting( enemyStatus.EnemyRayList);
-
-            if(enemyStatus.Target == null)
-                ResortTarget(enemyStatus.AllyRayList);
+            if(enemyStatus.Target == altar || enemyStatus.Target == null)
+                Targeting(LayerMask.GetMask("Ally"));
             yield return new WaitForSeconds(0.5f);
         }
     }

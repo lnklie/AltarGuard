@@ -15,6 +15,7 @@ public class Status : MonoBehaviour
     protected Animator ani = null;
     [SerializeField] protected Transform targetPos = null;
     [SerializeField] private ValueTextController damageTextController;
+    [SerializeField] private TargetingBoxController targetingBoxController = null;
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
     [SerializeField] protected float[] totalStatus = new float[16];
@@ -47,7 +48,8 @@ public class Status : MonoBehaviour
 
     public void SetValueText(int _damage, Color _color)
     {
-        damageTextController.SetText(_damage, _color);
+        if(damageTextController)
+            damageTextController.SetText(_damage, _color);
     }
 
     public int ReviseDamage(int _damage, int _depensivePower)
@@ -107,5 +109,9 @@ public class Status : MonoBehaviour
         distance = Mathf.Sqrt(distance);
 
         return distance;
+    }
+    public void SetTargetingBox(bool _bool)
+    {
+        targetingBoxController.IsTargeting = _bool;
     }
 }

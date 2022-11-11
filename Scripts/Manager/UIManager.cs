@@ -215,11 +215,11 @@ public class UIManager : MonoBehaviour
             {
                 case (int)ESkillType.Attack:
                 case (int)ESkillType.Curse:
-                    playerController.ResortTarget(player.EnemyRayList);
+                    playerController.Targeting(LayerMask.GetMask("Enemy"));
                     break;
                 case (int)ESkillType.Cure:
                 case (int)ESkillType.Buff:
-                    playerController.ResortTarget(player.AllyRayList);
+                    //playerController.ResortTarget(player.AllyRayList);
                     break;
             }
         StartCoroutine(skillControllerList[0].UseSkill(_skill, true));

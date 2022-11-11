@@ -71,7 +71,6 @@ public class SkillObject : MonoBehaviour
                         }
                         yield return new WaitForSeconds(maxDurationTime / skillHitCount);
                     }
-                    castingStatus.IsAtk = false;
                 }
             }
         }
@@ -83,8 +82,8 @@ public class SkillObject : MonoBehaviour
                 _status.recovered(value);
                 yield return new WaitForSeconds(maxDurationTime / skillHitCount);
             }
-            castingStatus.IsAtk = false;
         }
+        castingStatus.IsUseSkill = false;
     }
 
     public void RemoveSkill()
