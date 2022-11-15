@@ -9,7 +9,7 @@ public class CharacterStatus : Status
     [SerializeField] protected bool isAtk = false;
     [SerializeField] protected bool isUseSkill = false;
 
-    [SerializeField] protected CharacterController target = null;
+    [SerializeField] protected Status target = null;
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected float maxAtkSpeed = 8f;
     [SerializeField] protected float maxCastingSpeed = 8f;
@@ -37,14 +37,14 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<EnemyController> enemyRayList = new List<EnemyController>();
-    [SerializeField] protected List<AllyController> allyRayList = new List<AllyController>();
+
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
 
     [SerializeField] private bool isSkillChange = false;
     private Debuff debuff = Debuff.Not;
     #region Properties
+
     public float[] EquipStatus { get { return equipStatus; } set { equipStatus = value; } }
     public float[] BuffStatus { get { return buffStatus; } set { buffStatus = value; } }
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
@@ -57,12 +57,10 @@ public class CharacterStatus : Status
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
     public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }
-    public List<AllyController> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
     public bool IsAtk { get { return isAtk; } set { isAtk = value; } }
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
-    public List<EnemyController> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
 
@@ -74,7 +72,7 @@ public class CharacterStatus : Status
 
     public int CurMp { get { return curMp; } set { curMp = value; } }
     public float SeeRange { get { return seeRange; } set { seeRange = value; } }
-    public CharacterController Target { get { return target; } set { target = value; } }
+    public Status Target { get { return target; } set { target = value; } }
 
     public int CurExp { get { return curExp; } set { curExp = value; } }
     public int MaxExp { get { return maxExp; } set { maxExp = value; } }

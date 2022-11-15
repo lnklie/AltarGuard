@@ -12,8 +12,8 @@ public class SkillController : MonoBehaviour
     [SerializeField] private RectTransform skillScope = null;
     [SerializeField] private bool isSkillDelay = false;
 
-    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
+    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     public List<Skill> SkillQueue { get { return skillQueue; } }
     public List<Skill> Skills { get { return skills; } }
 
@@ -22,16 +22,14 @@ public class SkillController : MonoBehaviour
     private void Update()
     {
         CalculateSkillCoolTime();
-
-        if(status.IsSkillChange)
-        {
-            status.IsSkillChange = false;
-        }
+        CheckSkillCoolTime();
     }
     public void AquireSkill(Skill _skill)
     {
         skills.Add(_skill);
         skillQueue.Add(_skill);
+        skillPrefabs[_skill.skillKey].IsSkillActive = true;
+        skillPrefabs[_skill.skillKey].SetSkill(_skill);
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -52,32 +50,32 @@ public class SkillController : MonoBehaviour
             Debug.Log("없는 스킬");
     }
 
-    public IEnumerator UseSkill(Skill _skill, bool _isRangeExpressed = false)
+    public IEnumerator UseSkill(int _index = 0, bool _isRangeExpressed = false)
     {
         if(!status.IsDied)
         {
-            int index = skillQueue.IndexOf(_skill);
-            if (index != -1)
+            if (_index != -1)
             {
-                if (!_skill.isCoolTime)
+                if (!skills[_index].isCoolTime)
                 {
                     if (status.Target != null)
                     {
-                        if(IsMatchSkillType(_skill, status.Target))
+                        if(IsMatchSkillType(skills[_index], status.Target))
                         {
-                            SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                            _skill.isCoolTime = true;
-                            _skill.coolTime = 0f;
+                            SkillObject _skillObject = skillPrefabs[skills[_index].skillKey];
+                            skills[_index].isCoolTime = true;
+                            skills[_index].coolTime = 0f;
+                            Transform skillPos = status.Target.transform;
                             if (_isRangeExpressed)
                             {
                                 skillScope.gameObject.SetActive(true);
-                                skillScope.localPosition = status.Target.transform.position;
-                                skillScope.localScale = new Vector2(_skill.skillScopeX, _skill.skillScopeY);
+                                skillScope.localPosition = skillPos.position;
+                                skillScope.localScale = new Vector2(skills[_index].skillScopeX, skills[_index].skillScopeY);
                                 yield return new WaitForSeconds(1f);
                                 skillScope.gameObject.SetActive(false);
                             }
-                            _skillObject.SetSkill(status.Target.transform, _skill, status);
-                            skillQueue.RemoveAt(index);
+                            _skillObject.SetSkillTarget(skillPos, status);
+                            skillQueue.RemoveAt(skillQueue.IndexOf(skills[_index]));
                         }
                         else
                             UIManager.Instance.Notice("올바른 타겟이 아닙니다.");
@@ -92,41 +90,55 @@ public class SkillController : MonoBehaviour
 
             }
             else
-                Debug.Log("없는 스킬");
+                Debug.Log("대기열에 스킬이 존재하지 않습니다");
         }
 
     }
-    public IEnumerator UseSkill(bool _isRangeExpressed = false)
+    public IEnumerator UseAutoSkill(bool _isRangeExpressed = false)
     {
         if (!status.IsDied)
         {
-
             if (skillQueue.Count > 0)
             {
-                if (status.Target != null)
+                if (!skillQueue[0].isCoolTime)
                 {
-                    
-                    skillQueue[0].isCoolTime = true;
-                    skillQueue[0].coolTime = 0;
-                    //status.IsAtk = true;
-                    SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                    if (_isRangeExpressed)
+                    if (status.Target != null)
                     {
-                        skillScope.gameObject.SetActive(true);
-                        skillScope.localPosition = status.Target.transform.position;
-                        skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
-                        yield return new WaitForSeconds(1f);
-                        skillScope.gameObject.SetActive(false);
+                        if (IsMatchSkillType(skillQueue[0], status.Target))
+                        {
+                            SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                            skillQueue[0].isCoolTime = true;
+                            skillQueue[0].coolTime = 0f;
+                            Transform skillPos = status.Target.transform;
+                            if (_isRangeExpressed)
+                            {
+                                skillScope.gameObject.SetActive(true);
+                                skillScope.localPosition = skillPos.position;
+                                skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
+                                yield return new WaitForSeconds(1f);
+                                skillScope.gameObject.SetActive(false);
+                            }
+                            _skillObject.SetSkillTarget(skillPos, status);
+                            StartCoroutine(_skillObject.CastingSkill());
+                            skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
+                        }
+                        else
+                            Debug.Log("올바른 타겟이 아닙니다. " + status.Target.ObjectName);
                     }
-                    _skillObject.SetSkill(status.Target.transform, skillQueue[0], status);
-                    skillQueue.RemoveAt(0);
+                    else
+                    {
+                        UIManager.Instance.Notice("타겟이 없음");
+                    }
                 }
+                else
+                    Debug.Log("쿨타임 중");
 
-                
             }
+            else
+                Debug.Log("대기열에 스킬이 존재하지 않습니다");
         }
     }
-    public bool IsMatchSkillType(Skill _skill, CharacterController _character)
+    public bool IsMatchSkillType(Skill _skill, Status _character)
     {
         bool _bool = false;
         switch (_skill.skillType)
@@ -146,11 +158,22 @@ public class SkillController : MonoBehaviour
     }
     public void CalculateSkillCoolTime()
     {
-        for (int i = 0; i < skills.Count; i++)
+        for(int i = 0; i < skills.Count; i++)
         {
             if (skills[i].isCoolTime)
             {
                 skills[i].coolTime += Time.deltaTime;
+
+            }
+        }
+
+    }
+    public void CheckSkillCoolTime()
+    {
+        for (int i = 0; i < skills.Count; i++)
+        {
+            if(skills[i].isCoolTime)
+            {
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
                     Debug.Log("쿨타임 회복 완료");
@@ -159,6 +182,7 @@ public class SkillController : MonoBehaviour
                     skillQueue.Add(skills[i]);
                 }
             }
+
         }
     }
     //public void SetPassiveStatus()

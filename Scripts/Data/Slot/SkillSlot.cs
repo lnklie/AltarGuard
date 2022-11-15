@@ -32,8 +32,8 @@ public class SkillSlot : MonoBehaviour
         skillImage.sprite = curSkill.singleSprite;
     }
 
-    public void UseSkill()
+    public void UseSkill(int _index)
     {
-        UIManager.Instance.UseSkill(curSkill);
+        UIManager.Instance.UseSkill(_index);
     }
 }

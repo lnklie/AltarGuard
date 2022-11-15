@@ -8,6 +8,7 @@ public class SkillObject : MonoBehaviour
     [SerializeField] private int value = 0;
     [SerializeField] private float maxCoolTime = 0f;
     [SerializeField] private bool isSkillUse = false;
+    [SerializeField] private bool isSkillActive = false;
     [SerializeField] private CharacterStatus castingStatus = null;
     [SerializeField] private Skill skill = null;
     private int skillHitCount = 0;
@@ -17,6 +18,7 @@ public class SkillObject : MonoBehaviour
     private Transform target = null;
 
     #region Property
+    public bool IsSkillActive { get { return isSkillActive; } set { isSkillActive = value; } }
     public int Damage { get { return value; } set { this.value = value; } }
     public int SkillHitCount { get { return skillHitCount; } set { skillHitCount = value; } }
     public float MaxDuration { get { return maxDurationTime; } set { maxDurationTime = value; } }
@@ -34,24 +36,23 @@ public class SkillObject : MonoBehaviour
     }
     private void Update()
     { 
-        if(isSkillUse)
-            StartCoroutine(CastingSkill());
         RemoveSkill();
     }
-    public void SetSkill(Transform _target, Skill _skill, CharacterStatus _characterStatus)
+    public void SetSkill(Skill _skill)
     {
         skill = _skill;
+    }
+    public void SetSkillTarget(Transform _target, CharacterStatus _characterStatus)
+    {
         castingStatus = _characterStatus;
         target = _target; 
         value = SetSkillValueByLevel();
         skillHitCount = skill.skillHitCount;
         this.gameObject.SetActive(true);
         this.transform.position = target.transform.position;
-        isSkillUse = true;
     }
     public IEnumerator CastingSkill()
     {
-        isSkillUse = false;
         if(skill.skillType == 0)
         {
             RaycastHit2D[] _hitRay = HitRay();
@@ -67,11 +68,11 @@ public class SkillObject : MonoBehaviour
                         _status.Damaged(value);
                         if (this.transform.parent.gameObject.layer == 8)
                         {
-                            castingStatus.AquireExp(_status);
+                            if(_status.IsDied)
+                                castingStatus.AquireExp(_status);
                         }
                         yield return new WaitForSeconds(maxDurationTime / skillHitCount);
                     }
-                    castingStatus.IsAtk = false;
                 }
             }
         }
@@ -83,8 +84,9 @@ public class SkillObject : MonoBehaviour
                 _status.recovered(value);
                 yield return new WaitForSeconds(maxDurationTime / skillHitCount);
             }
-            castingStatus.IsAtk = false;
+            castingStatus.Target = null;
         }
+        castingStatus.IsUseSkill = false;
     }
 
     public void RemoveSkill()
@@ -98,6 +100,7 @@ public class SkillObject : MonoBehaviour
         }
 
     }
+
     public int ReviseDamage(int _damage, int _depensivePower)
     {
         return Mathf.CeilToInt(_damage * (1 / (1 + _depensivePower)));

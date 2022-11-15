@@ -11,6 +11,12 @@ public class RushEnemyController : EnemyController
         base.Awake();
         rushEnemyStatus = this.GetComponent<RushEnemyStatus>();
     }
+    public override void Update()
+    {
+        base.Update();
+        AIChangeState();
+        stateMachine.DoUpdateState();
+    }
 
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
@@ -29,14 +35,17 @@ public class RushEnemyController : EnemyController
 
     public override IEnumerator AIDied()
     {
-        base.IsDied();
+        base.AIDied();
         rushEnemyStatus.UpdateEnemyHp();
         rushEnemyStatus.AIState = EAIState.Died;
         rushEnemyStatus.ActiveLayer(ELayerName.DieLayer);
         rushEnemyStatus.Rig.velocity = Vector2.zero;
         rushEnemyStatus.Col.enabled = false;
         yield return new WaitForSeconds(returnTime);
-        bool[] _isDrops = rushEnemyStatus.RandomChoose(rushEnemyStatus.ItemDropProb, rushEnemyStatus.GetKilledAlly().TotalStatus[(int)EStatus.DropProbability]);
+        bool[] _isDrops = {false, false, false, false, false};
+
+        if (rushEnemyStatus.GetKilledAlly() != null)
+            _isDrops = rushEnemyStatus.RandomChoose(rushEnemyStatus.ItemDropProb, rushEnemyStatus.GetKilledAlly().TotalStatus[(int)EStatus.DropProbability]);
         for (int j = 0; j < rushEnemyStatus.ItemDropProb.Count; j++)
         {
             if (_isDrops[j])

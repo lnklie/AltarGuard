@@ -208,21 +208,22 @@ public class UIManager : MonoBehaviour
         buyPanelController.SelectSlotBuyItem(_item);
     }
 
-    public void UseSkill(Skill _skill)
+    public void UseSkill(int _index)
     {
         if (player.Target == null)
-            switch (_skill.skillType)
+            switch (skillControllerList[0].SkillQueue[_index].skillType)
             {
                 case (int)ESkillType.Attack:
                 case (int)ESkillType.Curse:
-                    playerController.ResortTarget(player.EnemyRayList);
+                    playerController.Targeting();
                     break;
                 case (int)ESkillType.Cure:
                 case (int)ESkillType.Buff:
-                    playerController.ResortTarget(player.AllyRayList);
+                    playerController.Targeting(true);
+                    //playerController.ResortTarget(player.AllyRayList);
                     break;
             }
-        StartCoroutine(skillControllerList[0].UseSkill(_skill, true));
+        StartCoroutine(skillControllerList[0].UseSkill(_index, true));
     }
     #region Profile
     public void UpdateBossInfo()

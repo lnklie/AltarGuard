@@ -38,7 +38,7 @@ public class DataManager : MonoBehaviour
             Debug.Log("처음 로드");
             playerStatus.ObjectName = "플레이어";
             playerStatus.BasicStatus[(int)EStatus.Str] = 500;
-            playerStatus.BasicStatus[(int)EStatus.Dex] = 5;
+            playerStatus.BasicStatus[(int)EStatus.Dex] = 50;
             playerStatus.BasicStatus[(int)EStatus.Wiz] = 5;
             playerStatus.BasicStatus[(int)EStatus.Luck] = 5;
             playerStatus.StatusPoint = 5;

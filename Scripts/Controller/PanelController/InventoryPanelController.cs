@@ -362,12 +362,11 @@ public class InventoryPanelController : MonoBehaviour
                     "공격 범위: " + selectItem.atkRange + "\n" +
                     "공격 거리: " + selectItem.atkDistance + "\n" +
                     "무기 종류: " + selectItem.weaponType + "\n";
-                if (selectItem.grace[0] != null)
-                    iteminfoExplainText.text += "첫 번째 은총: " + selectItem.grace[0].explain;
-                if (selectItem.grace[1] != null)
-                    iteminfoExplainText.text += "두 번째 은총: " + selectItem.grace[1].explain;
-                if (selectItem.grace[2] != null)
-                    iteminfoExplainText.text += "세 번째 은총: " + selectItem.grace[2].explain;
+                for (int i = 0; i < selectItem.grace.Count; i++)
+                {
+                    equipedIteminfoExplainText.text += i + "번째 은총: " + selectItem.grace[i].explain;
+                }
+
                 SetItemSkillIcon();
 
                 break;
@@ -423,12 +422,11 @@ public class InventoryPanelController : MonoBehaviour
                     "공격 범위: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
                     "공격 거리: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
                     "무기 종류: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
-                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[0] != null)
-                    equipedIteminfoExplainText.text += "첫 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[0].explain;
-                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[1] != null)
-                    equipedIteminfoExplainText.text += "두 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[1].explain;
-                if (selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[2] != null)
-                    equipedIteminfoExplainText.text += "세 번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[2].explain;
+
+                for(int i = 0; i < selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace.Count; i++)
+                {
+                    equipedIteminfoExplainText.text += i + "번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[i].explain;
+                }
                 SetEquipedItemSkillIcon();
                 break;
             case 13:

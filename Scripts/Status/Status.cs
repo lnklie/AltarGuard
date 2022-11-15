@@ -15,11 +15,16 @@ public class Status : MonoBehaviour
     protected Animator ani = null;
     [SerializeField] protected Transform targetPos = null;
     [SerializeField] private ValueTextController damageTextController;
+    [SerializeField] private TargetingBoxController targetingBoxController = null;
     [SerializeField] protected int defeatExp = 0;
     private SpriteRenderer bodySprites = null;
+    [SerializeField] private bool[] isAllyTargeted = new bool[5];
+    [SerializeField] private bool[] isEnemyTargeted = new bool[101];
     [SerializeField] protected float[] totalStatus = new float[16];
     [SerializeField] protected float[] basicStatus = new float[16];
     #region Property
+    public bool[] IsAllyTargeted { get { return isAllyTargeted; } set { isAllyTargeted = value; } }
+    public bool[] IsEnemyTargeted { get { return isEnemyTargeted; } set { isEnemyTargeted = value; } }
     public float[] TotalStatus { get { return totalStatus; } set { totalStatus = value; } }
     public float[] BasicStatus { get { return basicStatus; } set { basicStatus = value; } }
     public bool TriggerStatusUpdate { get { return triggerStatusUpdate; } set { triggerStatusUpdate = value; } }
@@ -47,7 +52,8 @@ public class Status : MonoBehaviour
 
     public void SetValueText(int _damage, Color _color)
     {
-        damageTextController.SetText(_damage, _color);
+        if(damageTextController)
+            damageTextController.SetText(_damage, _color);
     }
 
     public int ReviseDamage(int _damage, int _depensivePower)
@@ -107,5 +113,9 @@ public class Status : MonoBehaviour
         distance = Mathf.Sqrt(distance);
 
         return distance;
+    }
+    public void SetTargetingBox(bool _bool)
+    {
+        targetingBoxController.IsTargeting = _bool;
     }
 }
