@@ -40,14 +40,14 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
-        //    Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
+        //    Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
     public IEnumerator UseSkill(int _index = 0, bool _isRangeExpressed = false)
@@ -78,19 +78,19 @@ public class SkillController : MonoBehaviour
                             skillQueue.RemoveAt(skillQueue.IndexOf(skills[_index]));
                         }
                         else
-                            UIManager.Instance.Notice("¿Ã¹Ù¸¥ Å¸°ÙÀÌ ¾Æ´Õ´Ï´Ù.");
+                            UIManager.Instance.Notice("ì˜¬ë°”ë¥¸ íƒ€ê²Ÿì´ ì•„ë‹™ë‹ˆë‹¤.");
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("ÄðÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ìž„ ì¤‘");
 
             }
             else
-                Debug.Log("´ë±â¿­¿¡ ½ºÅ³ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
+                Debug.Log("ëŒ€ê¸°ì—´ì— ìŠ¤í‚¬ì´ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
         }
 
     }
@@ -123,19 +123,19 @@ public class SkillController : MonoBehaviour
                             skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
                         }
                         else
-                            Debug.Log("¿Ã¹Ù¸¥ Å¸°ÙÀÌ ¾Æ´Õ´Ï´Ù. " + status.Target.ObjectName);
+                            Debug.Log("ì˜¬ë°”ë¥¸ íƒ€ê²Ÿì´ ì•„ë‹™ë‹ˆë‹¤. " + status.Target.ObjectName);
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("ÄðÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ìž„ ì¤‘");
 
             }
             else
-                Debug.Log("´ë±â¿­¿¡ ½ºÅ³ÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù");
+                Debug.Log("ëŒ€ê¸°ì—´ì— ìŠ¤í‚¬ì´ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
         }
     }
     public bool IsMatchSkillType(Skill _skill, Status _character)
@@ -176,7 +176,7 @@ public class SkillController : MonoBehaviour
             {
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
-                    Debug.Log("ÄðÅ¸ÀÓ È¸º¹ ¿Ï·á");
+                    Debug.Log("ì¿¨íƒ€ìž„ íšŒë³µ ì™„ë£Œ");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);

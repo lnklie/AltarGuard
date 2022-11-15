@@ -9,6 +9,7 @@ public class CharacterController : MonoBehaviour, IAIController
     [SerializeField] protected PathFindController pathFindController = null;
     [SerializeField] protected Vector2 destination = Vector2.zero;
 
+
     public PathFindController PathFindController { get { return pathFindController; } }
 
     protected StateMachine stateMachine;
@@ -39,6 +40,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual void Update()
     {
+
         AnimationDirection();
 
         if (!IsDelay())
@@ -49,7 +51,6 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             character.DelayTime += Time.deltaTime;
         }
-        
         
     }
     public IEnumerator FindPath()
@@ -99,7 +100,7 @@ public class CharacterController : MonoBehaviour, IAIController
 
     public void SortSightRayListByDistance(List<RaycastHit2D> _sightRay)
     {
-        // ∏ÆΩ∫∆Æ ¡§∑ƒ
+        // Î¶¨Ïä§Ìä∏ Ï†ïÎ†¨
         _sightRay.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
         {
             if (character.GetDistance( a.transform.position) < character.GetDistance( b.transform.position)) return -1;
@@ -116,6 +117,7 @@ public class CharacterController : MonoBehaviour, IAIController
             else return 0;
         });
     }
+
     public void SortSightRayListByCurHp(List<RaycastHit2D> _sightRay)
     {
         _sightRay.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
@@ -132,7 +134,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ∏ÆΩ∫∆Æ ¡§∑ƒ
+        // Î¶¨Ïä§Ìä∏ Ï†ïÎ†¨
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -185,13 +187,13 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
-        // »∞ΩÓ±‚
+        // ÌôúÏèòÍ∏∞
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
         }
         else
-            Debug.Log("»≠ªÏ æ¯¿Ω");
+            Debug.Log("ÌôîÏÇ¥ ÏóÜÏùå");
     }
     public bool IsDied()
     {
@@ -227,7 +229,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual void Targeting(bool _isAlly = false)
     {
-        // ¿˚ πﬂ∞ﬂ
+        // Ï†Å Î∞úÍ≤¨
     }
     public virtual void CheckTarget()
     {
@@ -245,7 +247,7 @@ public class CharacterController : MonoBehaviour, IAIController
     {
         if (character.Target == null || !skillController.IsMatchSkillType(skillController.SkillQueue[0], character.Target))
         {
-            Debug.Log("∏Æ≈∏∞Ÿ∆√");
+            Debug.Log("Î¶¨ÌÉÄÍ≤üÌåÖ");
             switch (skillController.SkillQueue[0].skillType)
             {
                 case (int)ESkillType.Attack:
@@ -328,6 +330,12 @@ public class CharacterController : MonoBehaviour, IAIController
     {
 
         StartCoroutine(AutoAttackByAttackType());
+    }
+    public void StartAttack()
+    {
+        while(!character.IsAtk)
+
+            StartCoroutine(AttackByAttackType());
     }
     public virtual void AIUseSkill()
     {

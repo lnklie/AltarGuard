@@ -14,6 +14,7 @@ public class PlayerController : AllyController
     private Status preEnemyTarget = null;
 
 
+
     public bool CheckControlOnAutoPlay { set { checkControlOnAutoPlay = value; } }
     public override void Awake()
     {
@@ -127,7 +128,7 @@ public class PlayerController : AllyController
     //{
     //    if(Input.GetMouseButtonDown(0))
     //    {
-    //        Debug.Log("æ∆±∫ ≈¨∏Ø");
+    //        Debug.Log("ÏïÑÍµ∞ ÌÅ¥Î¶≠");
 
     //        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -139,11 +140,11 @@ public class PlayerController : AllyController
     //                {
     //                    player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
     //                }
-    //                Debug.Log("æ∆±∫ ≈∏∞Ÿ∆√ " + hit.rigidbody.gameObject.name);
+    //                Debug.Log("ÏïÑÍµ∞ ÌÉÄÍ≤üÌåÖ " + hit.rigidbody.gameObject.name);
     //                TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
     //            }
     //            else
-    //                Debug.Log("¥ÎªÛ¿Ã ≥ π´ ∏÷∏Æ¿÷Ω¿¥œ¥Ÿ.");
+    //                Debug.Log("ÎåÄÏÉÅÏù¥ ÎÑàÎ¨¥ Î©ÄÎ¶¨ÏûàÏäµÎãàÎã§.");
     //        }
     //        else
     //        {
@@ -171,14 +172,14 @@ public class PlayerController : AllyController
     }
     public void PlayerMove()
     {
-        // øÚ¡˜¿” Ω««‡
+        // ÏõÄÏßÅÏûÑ Ïã§Ìñâ
         player.ActiveLayer(ELayerName.WalkLayer);
         player.Rig.velocity = player.TotalStatus[(int)EStatus.Speed] * player.Dir;
         
     }
     public bool InputArrowKey()
     {
-        // ≈∞¿‘∑¬
+        // ÌÇ§ÏûÖÎ†•
         player.Dir = new Vector2(0, 0);
         bool _bool = true;
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -236,7 +237,7 @@ public class PlayerController : AllyController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // π¸¿ßæ»ø° ¿÷¥¬ ¿˚µÈø°∞‘ µ•πÃ¡ˆ
+        // Î≤îÏúÑÏïàÏóê ÏûàÎäî Ï†ÅÎì§ÏóêÍ≤å Îç∞ÎØ∏ÏßÄ
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -273,7 +274,6 @@ public class PlayerController : AllyController
         if(player.Target == null)
             Targeting();
     }
-
 
     public override void AnimationDirection()
     {

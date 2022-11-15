@@ -15,6 +15,8 @@ public class AllyController : CharacterController
     }
 
 
+
+
     public override void Update()
     {
         base.Update();
