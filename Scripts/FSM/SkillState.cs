@@ -18,19 +18,15 @@ public class SkillState : IState
 
     public void StateStart()
     {
-        character.IsUseSkill = true;
         character.AIState = EAIState.UseSkill;
         character.ActiveLayer(ELayerName.AttackLayer);
         character.Ani.SetFloat("AtkType", character.AttackType);
-        
+        characterController.StartAIUseSkill();
+
     }
 
     public void StateUpdate()
-    {
-        if(characterController.IsSkillDelay())
-            characterController.StartAIUseSkill();
+    {       
         character.Rig.velocity = Vector2.zero;
     }
-
-
 }

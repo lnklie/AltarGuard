@@ -6,7 +6,6 @@ public class EnemyController : CharacterController
 { 
     [SerializeField] private Status altar = null;
     [SerializeField] protected EnemyStatus enemyStatus = null;
-
     [SerializeField] private bool isPlayerTargeting = false;
     public override void Awake()
     {
@@ -24,8 +23,10 @@ public class EnemyController : CharacterController
         if(enemyStatus.Target)
         {
             enemyStatus.Distance = enemyStatus.Target.transform.position - enemyStatus.TargetPos.position;
-            destination = enemyStatus.Target.transform.position;
             enemyStatus.TargetDir = enemyStatus.Distance.normalized;
+            destination = enemyStatus.Target.transform.position;
+            if (enemyStatus.Target != altar)
+                CheckTarget();
         }
     }
 
@@ -37,40 +38,52 @@ public class EnemyController : CharacterController
 
     public override void AIChangeState()
     {
-        if (enemyStatus.IsDied)
+        if (enemyStatus.CurHp <= 0f)
         {
             stateMachine.SetState(stateDic[EAIState.Died]);
         }
-        if (!enemyStatus.IsDied)
+        else
         {
-            if(enemyStatus.Target != null)
+            if (!enemyStatus.IsDied)
             {
-
-                if (IsSkillQueue() && IsSkillRange(enemyStatus.Target))
-                    stateMachine.SetState(stateDic[EAIState.UseSkill]);
-                else if (IsAtkRange(enemyStatus.Target))
-                    stateMachine.SetState(stateDic[EAIState.Attack]);
-                else
-                    stateMachine.SetState(stateDic[EAIState.Chase]);
-
+                if(enemyStatus.Target != null)
+                {
+                    if (IsSkillQueue() && IsSkillRange(enemyStatus.Target))
+                        stateMachine.SetState(stateDic[EAIState.UseSkill]);
+                    else if (IsAtkRange(enemyStatus.Target) && IsTargetEnemy(character.Target))
+                        stateMachine.SetState(stateDic[EAIState.Attack]);
+                    else
+                        stateMachine.SetState(stateDic[EAIState.Chase]);
+                }
             }
-
         }
     }
 
-    public override void Targeting(int _layer)
+    public override void Targeting(bool _isAlly = false)
     {
 
-        RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, enemyStatus.SeeRange, Vector2.up, 0, _layer);
-        if (_hit)
+        if (!_isAlly)
         {
-
-            CharacterStatus _hitStatus = _hit.collider.GetComponent<CharacterStatus>();
-            enemyStatus.Target = _hitStatus;
-
+            RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally"));
+            if (_hit)
+            {
+                CharacterStatus _hitStatus = _hit.collider.GetComponent<CharacterStatus>();
+                character.Target = _hitStatus;
+            }
+            else
+                enemyStatus.Target = altar;
         }
         else
-            enemyStatus.Target = altar;
+        {
+            List<RaycastHit2D> _hit = new List<RaycastHit2D>();
+            _hit.AddRange(Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy")));
+            if (_hit.Count > 0)
+            {
+                SortSightRayListByCurHp(_hit);
+                character.Target = _hit[0].collider.GetComponent<CharacterStatus>();
+
+            }
+        }
     }
 
 
@@ -79,24 +92,11 @@ public class EnemyController : CharacterController
         while(true)
         {
             if(enemyStatus.Target == altar || enemyStatus.Target == null)
-                Targeting(LayerMask.GetMask("Ally"));
+                Targeting();
             yield return new WaitForSeconds(0.5f);
         }
     }
 
-    //public override void AIChase()
-    //{
-    //    if (pathFindController.FinalNodeList.Count > 1)
-    //    {
-    //        Vector2 _moveDir = new Vector2(pathFindController.FinalNodeList[1].x, pathFindController.FinalNodeList[1].y);
-    //        characterStatus.ActiveLayer(LayerName.WalkLayer);
-    //        characterStatus.transform.position = Vector2.MoveTowards(characterStatus.transform.position, _moveDir, characterStatus.TotalSpeed * Time.deltaTime);
-    //    }
-    //    else if (pathFindController.FinalNodeList.Count == 1)
-    //    {
-    //        pathFindController.FinalNodeList.RemoveAt(0);
-    //    }
-    //}
     public override void AttackDamage()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, enemyStatus.TotalStatus[(int)EStatus.AtkRange], enemyStatus.TargetDir, 1f, LayerMask.GetMask("Ally","Altar"));

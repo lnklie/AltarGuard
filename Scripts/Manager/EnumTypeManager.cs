@@ -30,9 +30,9 @@ public enum ELayerName
     DieLayer = 3
 }
 
-public enum EPlayerState
+public enum EPlayerMode
 {
-    Play,
+    ManualPlay,
     AutoPlay,
     FlagDeployment
 }

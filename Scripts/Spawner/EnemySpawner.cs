@@ -20,13 +20,15 @@ public class EnemySpawner : MonoBehaviour
     [Header("Current Boss")]
     [SerializeField] private BossEnemyStatus curBoss = null;
 
+    [SerializeField] private GameObject bossOrcs = null;
+
+
     private Queue<Vector2> enemyPos = new Queue<Vector2>();
     private Queue<GameObject> rushOrcs = new Queue<GameObject>();
 
     public BossEnemyStatus CurBoss { get { return curBoss; } }
     public Queue<Vector2> EnemyPos { get { return enemyPos; } }
     public static EnemySpawner Instance = null;
-    [SerializeField] private GameObject bossOrcs = null;
 
     private void Awake()
     {
@@ -87,6 +89,7 @@ public class EnemySpawner : MonoBehaviour
             _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.armorKey));
             _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.pantKey));
             _rushEnemyStatus.transform.position = enemyPos.Dequeue();
+            _rushEnemyStatus.CustomEnemy();
             _rushEnemyStatus.IsEnemyChange = true;
             enemyPos.Enqueue(_obj.transform.position);
         }

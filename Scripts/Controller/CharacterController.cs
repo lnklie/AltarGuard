@@ -10,7 +10,6 @@ public class CharacterController : MonoBehaviour, IAIController
     [SerializeField] protected Vector2 destination = Vector2.zero;
 
 
-
     public PathFindController PathFindController { get { return pathFindController; } }
 
     protected StateMachine stateMachine;
@@ -42,9 +41,8 @@ public class CharacterController : MonoBehaviour, IAIController
     public virtual void Update()
     {
 
-        AIChangeState();
         AnimationDirection();
-        stateMachine.DoUpdateState();
+
         if (!IsDelay())
         {
             character.DelayTime = character.TotalStatus[(int)EStatus.AttackSpeed];
@@ -53,13 +51,13 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             character.DelayTime += Time.deltaTime;
         }
-        CheckTarget();
         
     }
     public IEnumerator FindPath()
     {
         while(true)
         {
+            pathFindController.SetStartPos(this.transform.position);
             pathFindController.SetTargetPos(destination);
             pathFindController.PathFinding();
 
@@ -100,10 +98,10 @@ public class CharacterController : MonoBehaviour, IAIController
             return false;
     }
 
-    public void SortSightRayListByDistance(List<AllyStatus> _sightRay)
+    public void SortSightRayListByDistance(List<RaycastHit2D> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
-        _sightRay.Sort(delegate (AllyStatus a, AllyStatus b)
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
+        _sightRay.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
         {
             if (character.GetDistance( a.transform.position) < character.GetDistance( b.transform.position)) return -1;
             else if (character.GetDistance(a.transform.position) > character.GetDistance(b.transform.position)) return 1;
@@ -119,23 +117,24 @@ public class CharacterController : MonoBehaviour, IAIController
             else return 0;
         });
     }
-    public void SortSightRayListByCurHp(List<AllyStatus> _sightRay)
+
+    public void SortSightRayListByCurHp(List<RaycastHit2D> _sightRay)
     {
-        _sightRay.Sort(delegate (AllyStatus a, AllyStatus b)
+        _sightRay.Sort(delegate (RaycastHit2D a, RaycastHit2D b)
         {
-            if (a.CurHp < b.CurHp) return -1;
-            else if (a.CurHp > b.CurHp) return 1;
+            if (a.collider.GetComponent<Status>().CurHp < b.collider.GetComponent<Status>().CurHp) return -1;
+            else if (a.collider.GetComponent<Status>().CurHp > b.collider.GetComponent<Status>().CurHp) return 1;
             else return 0;
         });
     }
-    public Status ChooseSightRayListByRandom(List<AllyStatus> _sightRay)
+    public RaycastHit2D ChooseSightRayListByRandom(List<RaycastHit2D> _sightRay)
     {
         int _randomIndex = Random.Range(0, _sightRay.Count);
         return _sightRay[_randomIndex];
     }
     public void SortSightRayListByHp(List<Status> _sightRay)
     {
-        // ¸®½ºÆ® Á¤·Ä
+        // ë¦¬ìŠ¤íŠ¸ ì •ë ¬
         _sightRay.Sort(delegate (Status a, Status b)
         {
             if (a.CurHp < b.CurHp) return -1;
@@ -148,8 +147,10 @@ public class CharacterController : MonoBehaviour, IAIController
     {
         if (character.AIState != EAIState.Died)
         {
-            if (pathFindController.targetPos.x > this.transform.position.x) this.transform.localScale = new Vector3(-1, 1, 1);
-            else this.transform.localScale = new Vector3(1, 1, 1);
+            if (pathFindController.targetPos.x > this.transform.position.x) 
+                this.transform.localScale = new Vector3(-1, 1, 1);
+            else 
+                this.transform.localScale = new Vector3(1, 1, 1);
         }
     }
     public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
@@ -163,12 +164,12 @@ public class CharacterController : MonoBehaviour, IAIController
             character.Rig.AddForce(-direction * knockbackPower);
         }
 
-        yield return 0;
+        yield return null;
     }
     public bool IsDelay()
     {
         float atkSpeed = character.TotalStatus[(int)EStatus.AttackSpeed];
-        if (character.DelayTime <= atkSpeed)
+        if (character.DelayTime < atkSpeed)
         {
             return true;
         }
@@ -186,13 +187,13 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public void ShotArrow()
     {
-        // È°½î±â
+        // í™œì˜ê¸°
         if (ProjectionSpawner.Instance.ArrowCount() > 0)
         {
             ProjectionSpawner.Instance.ShotArrow(character, AttackTypeDamage());
         }
         else
-            Debug.Log("È­»ì ¾øÀ½");
+            Debug.Log("í™”ì‚´ ì—†ìŒ");
     }
     public bool IsDied()
     {
@@ -202,34 +203,33 @@ public class CharacterController : MonoBehaviour, IAIController
             return false;
     }
 
-    public virtual IEnumerator AttackByAttackType()
+    public virtual IEnumerator AutoAttackByAttackType()
     {
-        character.ActiveLayer(ELayerName.AttackLayer);
-        character.Ani.SetBool("IsAtk", true);
-        character.IsAtk = true;
-        character.DelayTime = 0f;
-        character.Ani.SetFloat("AtkType", character.AttackType);
-
-        if (character.AttackType == 0f)
+        while(true)
         {
-            AttackDamage();
-        }
-        else if (character.AttackType == 0.5f)
-        {
-            yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.65f);
-            ShotArrow();
-        }
+            character.Ani.SetBool("IsAtk", true);
+            character.IsAtk = true;
 
-        yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.99f);
-        character.Ani.SetBool("IsAtk", false);
-        character.IsAtk = false;
+            if (character.AttackType == 0f)
+            {
+                AttackDamage();
+            }
+            else if (character.AttackType == 0.5f)
+            {
+                yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.65f);
+                ShotArrow();
+            }
+
+            yield return WaitUntilAnimatorPoint(character.Ani, 2, "PlayerAttack", 0.99f);
+            character.Ani.SetBool("IsAtk", false);
+            yield return new WaitForSeconds(character.Ani.speed);
+            character.IsAtk = false;
+            character.DelayTime = 0f;
+        }
     }
-    public virtual void Targeting(int _layer)
+    public virtual void Targeting(bool _isAlly = false)
     {
-        RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, _layer);
-
-            // Àû ¹ß°ß
-        
+        // ì  ë°œê²¬
     }
     public virtual void CheckTarget()
     {
@@ -243,30 +243,40 @@ public class CharacterController : MonoBehaviour, IAIController
             }
         }
     }
-
-    public IEnumerator UseSkill()
+    public void ReTargeting()
     {
-        character.IsUseSkill = true;
-        if (character.Target == null)
-            switch (skillController.Skills[0].skillType)
+        if (character.Target == null || !skillController.IsMatchSkillType(skillController.SkillQueue[0], character.Target))
+        {
+            Debug.Log("ë¦¬íƒ€ê²ŸíŒ…");
+            switch (skillController.SkillQueue[0].skillType)
             {
                 case (int)ESkillType.Attack:
                 case (int)ESkillType.Curse:
-                    Targeting(LayerMask.GetMask("Enemy"));
+                    Targeting();
                     break;
                 case (int)ESkillType.Cure:
                 case (int)ESkillType.Buff:
-                    Targeting(LayerMask.GetMask("Ally"));
+                    Targeting(true);
                     break;
             }
-
-        yield return new WaitForSeconds(character.TotalStatus[(int)EStatus.CastingSpeed]);
-        if (skillController.Skills[0] != null)
+        }
+    }
+    public IEnumerator UseSkill()
+    {
+        while(true)
         {
-            StartCoroutine(skillController.UseSkill(true));
+            yield return new WaitForSeconds(character.TotalStatus[(int)EStatus.CastingSpeed]);
+            if (skillController.SkillQueue.Count > 0)
+            {
+                character.IsUseSkill = true;
+                ReTargeting();
+                StartCoroutine(skillController.UseAutoSkill(true));
+            }
+            yield return new WaitUntil(() => !character.IsUseSkill); 
         }
 
     }
+
     public virtual void AttackDamage()
     {
         //
@@ -289,7 +299,13 @@ public class CharacterController : MonoBehaviour, IAIController
         character.ActiveLayer(ELayerName.IdleLayer);
         character.Rig.velocity = Vector2.zero;
     }
-
+    public bool IsTargetEnemy(Status _target)
+    {
+        bool _bool = false;
+        if (character.gameObject.layer != _target.gameObject.layer)
+            _bool = true;
+        return _bool;
+    }
     public virtual void AIChase()
     {
         if (pathFindController.FinalNodeList.Count > 1)
@@ -308,7 +324,12 @@ public class CharacterController : MonoBehaviour, IAIController
         character.ActiveLayer(ELayerName.AttackLayer);
         character.Ani.SetFloat("AtkType", character.AttackType);
         character.Rig.velocity = Vector2.zero;
-        StartCoroutine(AttackByAttackType());
+        StartCoroutine(AutoAttackByAttackType());
+    } 
+    public void StartAttack()
+    {
+
+        StartCoroutine(AutoAttackByAttackType());
     }
     public void StartAttack()
     {
@@ -318,10 +339,6 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual void AIUseSkill()
     {
-        character.IsUseSkill = true;
-        character.ActiveLayer(ELayerName.AttackLayer);
-        character.Ani.SetFloat("AtkType", character.AttackType);
-        character.Rig.velocity = Vector2.zero;
         StartCoroutine(UseSkill());
     }
     public void StartAIUseSkill()

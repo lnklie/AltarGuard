@@ -15,6 +15,7 @@ public class ChaseState : IState
     public void StateStart()
     {
         character.ActiveLayer(ELayerName.WalkLayer);
+        character.Rig.velocity = Vector2.zero;
         character.AIState = EAIState.Chase;
     }
 
@@ -25,7 +26,6 @@ public class ChaseState : IState
     }
     public void StateEnd()
     {
-        Debug.Log("³¡");
     }
 
 }

@@ -18,10 +18,6 @@ public class RushEnemyStatus : EnemyStatus
     public override void Update()
     {
         base.Update();
-        if (isEnemyChange && rushEnemy != null)
-        {
-            CustomEnemy();
-        }
     }
     public override void Damaged(int _damage)
     {

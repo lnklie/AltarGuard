@@ -12,7 +12,7 @@ public class EnemyStatus : CharacterStatus
     protected List<int> itemDropKey = new List<int>();
     protected List<float> itemDropProb = new List<float>();
     protected bool isEnemyChange;
-    private AllyStatus killedAlly = null;
+    [SerializeField]private AllyStatus killedAlly = null;
     [SerializeField] private int enemyIndex = -1;
 
     #region Property
@@ -40,6 +40,20 @@ public class EnemyStatus : CharacterStatus
     public AllyStatus GetKilledAlly()
     {
         return killedAlly;
+    }
+    public IEnumerator Knockback(float knockbackDuration, float knockbackPower, Transform obj)
+    {
+        float timer = 0;
+        
+        while (knockbackDuration > timer)
+        {
+            timer += Time.deltaTime;
+            Vector2 direction = (obj.transform.position - this.transform.position).normalized;
+            //rig.AddForce(-direction * knockbackPower * Time.deltaTime,ForceMode2D.Impulse);
+            transform.position -= new Vector3(direction.x, direction.y, 0) * knockbackPower * Time.deltaTime; 
+        }
+
+        yield return null;
     }
     public bool[] RandomChoose(List<float> _probs, float _addedAquireProb)
     {

@@ -38,16 +38,12 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
-    [SerializeField] protected List<EnemyStatus> enemyRayList = new List<EnemyStatus>();
-    [SerializeField] protected List<AllyStatus> allyRayList = new List<AllyStatus>();
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
 
     [SerializeField] private bool isSkillChange = false;
     private Debuff debuff = Debuff.Not;
     #region Properties
-    public bool[] IsAllyTargeted { get { return isAllyTargeted; } set { isAllyTargeted = value; } }
-    public bool[] IsEnemyTargeted { get { return isEnemyTargeted; } set { isEnemyTargeted = value; } }
     public float[] EquipStatus { get { return equipStatus; } set { equipStatus = value; } }
     public float[] BuffStatus { get { return buffStatus; } set { buffStatus = value; } }
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
@@ -60,8 +56,6 @@ public class CharacterStatus : Status
     public bool IsFlagComeBack {get { return isFlagComeback; } set { isFlagComeback = value; } }
     public GameObject Flag { get { return flag; } set { flag = value; } }
     public bool IsHPRegen { get { return isHPRegen; } set { isHPRegen = value; } }
-    public List<AllyStatus> AllyRayList { get { return allyRayList; } set { allyRayList = value; } }
-    public List<EnemyStatus> EnemyRayList { get { return enemyRayList; } set { enemyRayList = value; } }
     public bool IsAtk { get { return isAtk; } set { isAtk = value; } }
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
@@ -121,7 +115,7 @@ public class CharacterStatus : Status
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
 
-        // Èû, ¹Î, Áö ¿Ã¸±¶§ ¹Ù²î´Â °Íµé
+        // í˜, ë¯¼, ì§€ ì˜¬ë¦´ë•Œ ë°”ë€ŒëŠ” ê²ƒë“¤
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -164,7 +158,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ´É·Â ¾÷µ¥ÀÌÆ®
+        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
         
     }
     public void RemoveBuff()

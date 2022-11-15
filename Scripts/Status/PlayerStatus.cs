@@ -9,7 +9,7 @@ public class PlayerStatus : AllyStatus
     private Vector2 dir = Vector2.zero;
     [SerializeField] private int money = 100000;
     [SerializeField] private int gracePoint = 0;
-    [SerializeField] private EPlayerState playerState = EPlayerState.Play;
+    [SerializeField] private EPlayerMode playerState = EPlayerMode.ManualPlay;
 
     [SerializeField] private AltarStatus altarStatus = null;
     [SerializeField] private bool isAutoMode = false;
@@ -18,7 +18,7 @@ public class PlayerStatus : AllyStatus
     [SerializeField] private int[] portionAutoUsePercent = new int[2];
     #region Property
     public int GracePoint {  get { return gracePoint; } set { gracePoint = value; } }
-    public EPlayerState PlayerState { get { return playerState; } set { playerState = value; } }
+    public EPlayerMode PlayerMode { get { return playerState; } set { playerState = value; } }
     public Vector2 Dir { get { return dir; } set { dir = value; } }
     public bool IsAutoMode { get { return isAutoMode; } set { isAutoMode = value; } }
     public RaycastHit2D[] ItemSight { get { return itemSight; } set { itemSight = value; } }

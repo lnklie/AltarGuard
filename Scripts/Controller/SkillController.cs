@@ -12,8 +12,8 @@ public class SkillController : MonoBehaviour
     [SerializeField] private RectTransform skillScope = null;
     [SerializeField] private bool isSkillDelay = false;
 
-    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     #region Property
+    public bool IsSkillDelay { get { return isSkillDelay; } set { isSkillDelay = value; } }
     public List<Skill> SkillQueue { get { return skillQueue; } }
     public List<Skill> Skills { get { return skills; } }
 
@@ -22,16 +22,14 @@ public class SkillController : MonoBehaviour
     private void Update()
     {
         CalculateSkillCoolTime();
-
-        if(status.IsSkillChange)
-        {
-            status.IsSkillChange = false;
-        }
+        CheckSkillCoolTime();
     }
     public void AquireSkill(Skill _skill)
     {
         skills.Add(_skill);
         skillQueue.Add(_skill);
+        skillPrefabs[_skill.skillKey].IsSkillActive = true;
+        skillPrefabs[_skill.skillKey].SetSkill(_skill);
     }
     public void LevelUpSkill(int _skillKey)
     {
@@ -42,87 +40,102 @@ public class SkillController : MonoBehaviour
         //    status.UpdateBasicStatus();
         //}
         //else
-        //    Debug.Log("½ºÅ³ ·¹º§ÀÌ MAX");
+        //    Debug.Log("ìŠ¤í‚¬ ë ˆë²¨ì´ MAX");
     }
     public void RemoveSkill(Skill _skill)
     { 
         if (skills.IndexOf(_skill) != -1)
             skills.Remove(_skill);
         else
-            Debug.Log("¾ø´Â ½ºÅ³");
+            Debug.Log("ì—†ëŠ” ìŠ¤í‚¬");
     }
 
-    public IEnumerator UseSkill(Skill _skill, bool _isRangeExpressed = false)
+    public IEnumerator UseSkill(int _index = 0, bool _isRangeExpressed = false)
     {
         if(!status.IsDied)
         {
-            int index = skillQueue.IndexOf(_skill);
-            if (index != -1)
+            if (_index != -1)
             {
-                if (!_skill.isCoolTime)
+                if (!skills[_index].isCoolTime)
                 {
                     if (status.Target != null)
                     {
-                        if(IsMatchSkillType(_skill, status.Target))
+                        if(IsMatchSkillType(skills[_index], status.Target))
                         {
-                            SkillObject _skillObject = skillPrefabs[_skill.skillKey];
-                            _skill.isCoolTime = true;
-                            _skill.coolTime = 0f;
+                            SkillObject _skillObject = skillPrefabs[skills[_index].skillKey];
+                            skills[_index].isCoolTime = true;
+                            skills[_index].coolTime = 0f;
+                            Transform skillPos = status.Target.transform;
                             if (_isRangeExpressed)
                             {
                                 skillScope.gameObject.SetActive(true);
-                                skillScope.localPosition = status.Target.transform.position;
-                                skillScope.localScale = new Vector2(_skill.skillScopeX, _skill.skillScopeY);
+                                skillScope.localPosition = skillPos.position;
+                                skillScope.localScale = new Vector2(skills[_index].skillScopeX, skills[_index].skillScopeY);
                                 yield return new WaitForSeconds(1f);
                                 skillScope.gameObject.SetActive(false);
                             }
-                            _skillObject.SetSkill(status.Target.transform, _skill, status);
-                            skillQueue.RemoveAt(index);
+                            _skillObject.SetSkillTarget(skillPos, status);
+                            skillQueue.RemoveAt(skillQueue.IndexOf(skills[_index]));
                         }
                         else
-                            UIManager.Instance.Notice("¿Ã¹Ù¸¥ Å¸°ÙÀÌ ¾Æ´Õ´Ï´Ù.");
+                            UIManager.Instance.Notice("ì˜¬ë°”ë¥¸ íƒ€ê²Ÿì´ ì•„ë‹™ë‹ˆë‹¤.");
                     }
                     else
                     {
-                        UIManager.Instance.Notice("Å¸°ÙÀÌ ¾øÀ½");
+                        UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
                     }
                 }
                 else
-                    Debug.Log("ÄğÅ¸ÀÓ Áß");
+                    Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
 
             }
             else
-                Debug.Log("¾ø´Â ½ºÅ³");
+                Debug.Log("ëŒ€ê¸°ì—´ì— ìŠ¤í‚¬ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
         }
 
     }
-    public IEnumerator UseSkill(bool _isRangeExpressed = false)
+    public IEnumerator UseAutoSkill(bool _isRangeExpressed = false)
     {
         if (!status.IsDied)
         {
-
             if (skillQueue.Count > 0)
             {
-                if (status.Target != null)
+                if (!skillQueue[0].isCoolTime)
                 {
-                    
-                    skillQueue[0].isCoolTime = true;
-                    skillQueue[0].coolTime = 0;
-                    SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                    if (_isRangeExpressed)
+                    if (status.Target != null)
                     {
-                        skillScope.gameObject.SetActive(true);
-                        skillScope.localPosition = status.Target.transform.position;
-                        skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
-                        yield return new WaitForSeconds(1f);
-                        skillScope.gameObject.SetActive(false);
+                        if (IsMatchSkillType(skillQueue[0], status.Target))
+                        {
+                            SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                            skillQueue[0].isCoolTime = true;
+                            skillQueue[0].coolTime = 0f;
+                            Transform skillPos = status.Target.transform;
+                            if (_isRangeExpressed)
+                            {
+                                skillScope.gameObject.SetActive(true);
+                                skillScope.localPosition = skillPos.position;
+                                skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
+                                yield return new WaitForSeconds(1f);
+                                skillScope.gameObject.SetActive(false);
+                            }
+                            _skillObject.SetSkillTarget(skillPos, status);
+                            StartCoroutine(_skillObject.CastingSkill());
+                            skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
+                        }
+                        else
+                            Debug.Log("ì˜¬ë°”ë¥¸ íƒ€ê²Ÿì´ ì•„ë‹™ë‹ˆë‹¤. " + status.Target.ObjectName);
                     }
-                    _skillObject.SetSkill(status.Target.transform, skillQueue[0], status);
-                    skillQueue.RemoveAt(0);
+                    else
+                    {
+                        UIManager.Instance.Notice("íƒ€ê²Ÿì´ ì—†ìŒ");
+                    }
                 }
+                else
+                    Debug.Log("ì¿¨íƒ€ì„ ì¤‘");
 
-                
             }
+            else
+                Debug.Log("ëŒ€ê¸°ì—´ì— ìŠ¤í‚¬ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤");
         }
     }
     public bool IsMatchSkillType(Skill _skill, Status _character)
@@ -145,19 +158,31 @@ public class SkillController : MonoBehaviour
     }
     public void CalculateSkillCoolTime()
     {
-        for (int i = 0; i < skills.Count; i++)
+        for(int i = 0; i < skills.Count; i++)
         {
             if (skills[i].isCoolTime)
             {
                 skills[i].coolTime += Time.deltaTime;
+
+            }
+        }
+
+    }
+    public void CheckSkillCoolTime()
+    {
+        for (int i = 0; i < skills.Count; i++)
+        {
+            if(skills[i].isCoolTime)
+            {
                 if (skills[i].coolTime >= skills[i].maxCoolTime)
                 {
-                    Debug.Log("ÄğÅ¸ÀÓ È¸º¹ ¿Ï·á");
+                    Debug.Log("ì¿¨íƒ€ì„ íšŒë³µ ì™„ë£Œ");
                     skills[i].coolTime = skills[i].maxCoolTime;
                     skills[i].isCoolTime = false;
                     skillQueue.Add(skills[i]);
                 }
             }
+
         }
     }
     //public void SetPassiveStatus()

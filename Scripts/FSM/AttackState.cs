@@ -21,14 +21,11 @@ public class AttackState : IState
         character.ActiveLayer(ELayerName.AttackLayer);
         character.Ani.SetFloat("AtkType", character.AttackType);
         character.AIState = EAIState.Attack;
+        character.Rig.velocity = Vector2.zero;
+        characterController.StartAttack();
     }
 
     public void StateUpdate()
     {
-        character.Rig.velocity = Vector2.zero;
-        if(!characterController.IsDelay())
-            characterController.StartAttack();
     }
-
-
 }
