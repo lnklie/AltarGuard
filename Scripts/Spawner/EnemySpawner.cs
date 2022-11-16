@@ -23,11 +23,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject bossOrcs = null;
 
 
-    private Queue<Vector2> enemyPos = new Queue<Vector2>();
-    private Queue<GameObject> rushOrcs = new Queue<GameObject>();
-
+    [SerializeField] private List<GameObject> rushOrcs = new List<GameObject>();
+    [SerializeField] private int queueIndex = 99;
+    [SerializeField] private int spawnPosIndex = 3;
     public BossEnemyStatus CurBoss { get { return curBoss; } }
-    public Queue<Vector2> EnemyPos { get { return enemyPos; } }
     public static EnemySpawner Instance = null;
 
     private void Awake()
@@ -37,31 +36,18 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        InitEnemyPos();
-        InitEnemy(rushOrcPrefab, rushOrcs);
+        InitEnemy(rushOrcPrefab);
         InitBossEnemy(bossOrcPrefab);
     }
-    private void InitEnemyPos()
-    {
-        // 적 위치 담기
-        for (int k = 0; k < 5; k++)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                enemyPos.Enqueue(new Vector2(spawnPos[0].x + i, spawnPos[0].y - k));
-                enemyPos.Enqueue(new Vector2(spawnPos[1].x + i, spawnPos[1].y - k));
-                enemyPos.Enqueue(new Vector2(spawnPos[2].x + i, spawnPos[2].y - k));
-                enemyPos.Enqueue(new Vector2(spawnPos[3].x + i, spawnPos[3].y - k));
-            }
-        }
-    }
-    private void InitEnemy(GameObject _enemy, Queue<GameObject> _enemyQueue)
+
+
+    private void InitEnemy(GameObject _enemy)
     {
         // 적 오브젝트풀 생성 
         for (int i = 0; i < 100; i++)
         {
             GameObject obj = Instantiate(_enemy);
-            _enemyQueue.Enqueue(obj);
+            rushOrcs.Add(obj);
             obj.GetComponentInChildren<RushEnemyStatus>().EnemyIndex = i;
             obj.SetActive(false);
             obj.transform.SetParent(this.transform);
@@ -79,7 +65,12 @@ public class EnemySpawner : MonoBehaviour
         EquipmentController _rushEnemyEquipment = null;
         for (int i = 0; i < _enemyNum; i++)
         {
-            _obj = rushOrcs.Dequeue();
+            _obj = rushOrcs[queueIndex];
+            queueIndex--;
+            if (queueIndex == -1)
+            {
+                queueIndex = 99;
+            }
             _obj.SetActive(true);
             _rushEnemyStatus = _obj.GetComponentInChildren<RushEnemyStatus>();
             _rushEnemyEquipment = _obj.GetComponentInChildren<EquipmentController>();
@@ -88,10 +79,14 @@ public class EnemySpawner : MonoBehaviour
             _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.helmetKey));
             _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.armorKey));
             _rushEnemyEquipment.ChangeEquipment(DatabaseManager.Instance.SelectItem(_rushEnemyStatus.RushEnemy.pantKey));
-            _rushEnemyStatus.transform.position = enemyPos.Dequeue();
+            _rushEnemyStatus.transform.position = spawnPos[spawnPosIndex] + new Vector2(Random.Range(-1f,1f),Random.Range(-1f,1f));
+            spawnPosIndex--;
+            if (spawnPosIndex == -1)
+            {
+                spawnPosIndex = 3;
+            }
             _rushEnemyStatus.CustomEnemy();
             _rushEnemyStatus.IsEnemyChange = true;
-            enemyPos.Enqueue(_obj.transform.position);
         }
     }
     public void BossEnemySpawn(int _enemyKey)
@@ -107,19 +102,7 @@ public class EnemySpawner : MonoBehaviour
         UIManager.Instance.SetBossInfo(true);
         UIManager.Instance.UpdateBossInfo();
     }
-    public void ReturnEnemy(GameObject _enemy)
-    {
-        // 적 다시 돌아오기
-        if (!_enemy.CompareTag("Boss"))
-        {
-            rushOrcs.Enqueue(_enemy);
 
-        }
-        else
-        {
-            ReturnBossEnemy(_enemy);
-        }
-    }
     public void ReturnBossEnemy(GameObject _enemy)
     {
         Debug.Log("보스 돌아오기");

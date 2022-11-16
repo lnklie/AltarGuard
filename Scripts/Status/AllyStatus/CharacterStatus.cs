@@ -16,8 +16,7 @@ public class CharacterStatus : Status
     protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
-    [SerializeField] private bool[] isAllyTargeted = new bool[5];
-    [SerializeField] private bool[] isEnemyTargeted = new bool[101];
+
 
 
     [Header("EquipStatus")]
@@ -38,12 +37,14 @@ public class CharacterStatus : Status
     [SerializeField] private bool isFlagComeback = false;
 
     [SerializeField] protected RaycastHit2D hitRay = default;
+
     protected bool isHPRegen = false;
     [SerializeField] protected float attackType = 0f;
 
     [SerializeField] private bool isSkillChange = false;
     private Debuff debuff = Debuff.Not;
     #region Properties
+
     public float[] EquipStatus { get { return equipStatus; } set { equipStatus = value; } }
     public float[] BuffStatus { get { return buffStatus; } set { buffStatus = value; } }
     public Debuff Debuff { get { return debuff; } set { debuff = value; } }
@@ -95,8 +96,6 @@ public class CharacterStatus : Status
     {
         if (!isHPRegen)
             StartCoroutine(HpRegenarate());
-
-        delayTime += Time.deltaTime;
     }
     public void UpdateAllStatus()
     {
@@ -115,7 +114,7 @@ public class CharacterStatus : Status
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
 
-        // í˜, ë¯¼, ì§€ ì˜¬ë¦´ë•Œ ë°”ë€ŒëŠ” ê²ƒë“¤
+        // Èû, ¹Î, Áö ¿Ã¸±¶§ ¹Ù²î´Â °Íµé
         switch(_eStatus)
         {
             case EStatus.Str:
@@ -158,7 +157,7 @@ public class CharacterStatus : Status
     }
     public virtual void UpdateTotalAbility(EStatus _eStatus)
     {
-        // ëŠ¥ë ¥ ì—…ë°ì´íŠ¸
+        // ´É·Â ¾÷µ¥ÀÌÆ®
         
     }
     public void RemoveBuff()

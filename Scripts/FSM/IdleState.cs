@@ -17,6 +17,7 @@ public class IdleState : IState
     public void StateStart()
     {
         character.ActiveLayer(ELayerName.IdleLayer);
+        character.AIState = EAIState.Idle;
         character.Rig.velocity = Vector2.zero;
     }
 

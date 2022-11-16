@@ -14,7 +14,6 @@ public class PlayerController : AllyController
     private Status preEnemyTarget = null;
 
 
-
     public bool CheckControlOnAutoPlay { set { checkControlOnAutoPlay = value; } }
     public override void Awake()
     {
@@ -47,7 +46,7 @@ public class PlayerController : AllyController
         {
             DropItem _dropItem = raycast.collider.GetComponent<DropItem>();
             InventoryManager.Instance.AcquireItem(_dropItem.CurItem);
-            DropManager.Instance.ReturnItem(_dropItem);
+            _dropItem.gameObject.SetActive(false);
         } 
     }
 
@@ -85,6 +84,10 @@ public class PlayerController : AllyController
         {
             case EPlayerMode.ManualPlay:
                 ChangeState();
+                if (checkControlOnAutoPlay)
+                {
+                    isControlOnAutoPlay = InputArrowKey();
+                }
                 break;
             case EPlayerMode.AutoPlay:
                 if(checkControlOnAutoPlay)
@@ -128,7 +131,7 @@ public class PlayerController : AllyController
     //{
     //    if(Input.GetMouseButtonDown(0))
     //    {
-    //        Debug.Log("ÏïÑÍµ∞ ÌÅ¥Î¶≠");
+    //        Debug.Log("æ∆±∫ ≈¨∏Ø");
 
     //        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
 
@@ -140,11 +143,11 @@ public class PlayerController : AllyController
     //                {
     //                    player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
     //                }
-    //                Debug.Log("ÏïÑÍµ∞ ÌÉÄÍ≤üÌåÖ " + hit.rigidbody.gameObject.name);
+    //                Debug.Log("æ∆±∫ ≈∏∞Ÿ∆√ " + hit.rigidbody.gameObject.name);
     //                TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
     //            }
     //            else
-    //                Debug.Log("ÎåÄÏÉÅÏù¥ ÎÑàÎ¨¥ Î©ÄÎ¶¨ÏûàÏäµÎãàÎã§.");
+    //                Debug.Log("¥ÎªÛ¿Ã ≥ π´ ∏÷∏Æ¿÷Ω¿¥œ¥Ÿ.");
     //        }
     //        else
     //        {
@@ -172,14 +175,14 @@ public class PlayerController : AllyController
     }
     public void PlayerMove()
     {
-        // ÏõÄÏßÅÏûÑ Ïã§Ìñâ
+        // øÚ¡˜¿” Ω««‡
         player.ActiveLayer(ELayerName.WalkLayer);
         player.Rig.velocity = player.TotalStatus[(int)EStatus.Speed] * player.Dir;
         
     }
     public bool InputArrowKey()
     {
-        // ÌÇ§ÏûÖÎ†•
+        // ≈∞¿‘∑¬
         player.Dir = new Vector2(0, 0);
         bool _bool = true;
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -237,7 +240,7 @@ public class PlayerController : AllyController
     public void DamageEnemy()
     {
         var hits = Physics2D.CircleCastAll(this.transform.position, player.TotalStatus[(int)EStatus.AtkRange], lookDir, 1f, LayerMask.GetMask("Enemy"));
-        // Î≤îÏúÑÏïàÏóê ÏûàÎäî Ï†ÅÎì§ÏóêÍ≤å Îç∞ÎØ∏ÏßÄ
+        // π¸¿ßæ»ø° ¿÷¥¬ ¿˚µÈø°∞‘ µ•πÃ¡ˆ
         if (hits.Length > 0)
         {
             for (int i =0; i < hits.Length; i++)
@@ -274,6 +277,7 @@ public class PlayerController : AllyController
         if(player.Target == null)
             Targeting();
     }
+
 
     public override void AnimationDirection()
     {
