@@ -17,7 +17,17 @@ public class RushEnemyController : EnemyController
         AIChangeState();
         stateMachine.DoUpdateState();
     }
+    public override IEnumerator FindPath()
+    {
+        while (true)
+        {
+            pathFindController.SetStartPos(this.transform.position);
+            pathFindController.SetTargetPos(destination);
+            pathFindController.PathFinding();
 
+            yield return new WaitForSeconds(Random.Range(0.5f, 0.8f));
+        }
+    }
     public IEnumerator Knockback(float _knockbackDuration, float _knockbackPower, Transform _obj, Rigidbody2D _rig)
     {
         // ³Ë¹é È¿°ú
@@ -44,7 +54,7 @@ public class RushEnemyController : EnemyController
         yield return new WaitForSeconds(returnTime);
         bool[] _isDrops = {false, false, false, false, false};
 
-        if (rushEnemyStatus.GetKilledAlly() != null)
+        if (rushEnemyStatus.ItemDropProb.Count > 0 && rushEnemyStatus.GetKilledAlly() != null)
             _isDrops = rushEnemyStatus.RandomChoose(rushEnemyStatus.ItemDropProb, rushEnemyStatus.GetKilledAlly().TotalStatus[(int)EStatus.DropProbability]);
         for (int j = 0; j < rushEnemyStatus.ItemDropProb.Count; j++)
         {
@@ -56,9 +66,8 @@ public class RushEnemyController : EnemyController
             }
         }
         rushEnemyStatus.transform.parent.localScale = new Vector3(1, 1, 1);
+        StageManager.Instance.SpawnedEneies--;
         rushEnemyStatus.transform.parent.gameObject.SetActive(false);
         rushEnemyStatus.AIState = EAIState.Idle;
-        StageManager.Instance.SpawnedEneies--;
-        EnemySpawner.Instance.ReturnEnemy(this.gameObject);
     }
 }
