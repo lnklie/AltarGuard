@@ -136,7 +136,6 @@ public class AltarController : MonoBehaviour
             if (!_raycastHit2Ds[i].collider.CompareTag("Altar") && !_raycastHit2Ds[i].collider.GetComponent<AllyStatus>().IsAlterBuff)
             {
                 AllyStatus _targetAlly = _raycastHit2Ds[i].collider.GetComponent<AllyStatus>();
-                Debug.Log(_targetAlly.ObjectName + " µé¾î¿È");
                 characters.Add(_targetAlly);
                 UpdateBuff();
             }
@@ -151,7 +150,6 @@ public class AltarController : MonoBehaviour
                 characters[i].RemoveBuff();
                 characters[i].IsAlterBuff = false;
                 characters.Remove(characters[i]);
-                Debug.Log(characters[i].ObjectName + "¹öÇÁ ºüÁü");
             }
         }
     }

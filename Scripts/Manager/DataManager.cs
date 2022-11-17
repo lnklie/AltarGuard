@@ -37,7 +37,7 @@ public class DataManager : MonoBehaviour
         {
             Debug.Log("처음 로드");
             playerStatus.ObjectName = "플레이어";
-            playerStatus.BasicStatus[(int)EStatus.Str] = 500;
+            playerStatus.BasicStatus[(int)EStatus.Str] = 5;
             playerStatus.BasicStatus[(int)EStatus.Dex] = 50;
             playerStatus.BasicStatus[(int)EStatus.Wiz] = 5;
             playerStatus.BasicStatus[(int)EStatus.Luck] = 5;
@@ -50,7 +50,7 @@ public class DataManager : MonoBehaviour
             {
                 AllyStatus _mercenaryStatus = mercenaryStatuses[j];
                 _mercenaryStatus.ObjectName = "용병" + j;
-                _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 500;
+                _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Dex] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Wiz] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Luck] = 5;

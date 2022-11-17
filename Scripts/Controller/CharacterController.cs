@@ -48,6 +48,10 @@ public class CharacterController : MonoBehaviour, IAIController
         
         
     }
+    public void SetState()
+    {
+        stateMachine.SetState(stateDic[EAIState.Idle]);
+    }
     public virtual IEnumerator FindPath()
     {
         while(true)
@@ -217,7 +221,7 @@ public class CharacterController : MonoBehaviour, IAIController
                 character.IsAtk = false;
                 character.DelayTime = 0f;
             }
-            yield break;
+            yield return null;
         }
     }
     public virtual void Targeting(bool _isAlly = false)
@@ -230,9 +234,8 @@ public class CharacterController : MonoBehaviour, IAIController
         {
             if (character.GetDistance(character.Target.transform.position) >= character.SeeRange || character.Target.IsDied)
             {
-
+               
                 character.Target = null;
-
             }
         }
     }
@@ -339,7 +342,6 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public virtual IEnumerator AIDied()
     {
-        character.IsDied = false;
         yield return null;
     }
 

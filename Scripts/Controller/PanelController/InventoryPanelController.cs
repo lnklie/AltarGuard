@@ -530,15 +530,21 @@ public class InventoryPanelController : MonoBehaviour
                 _itemtype = "Back";
                 break;
             case 7:
-                _itemtype = "Sword";
-                break;
-            case 8:
                 _itemtype = "Shield";
                 break;
+            case 8:
+                _itemtype = "Sword";
+                break;
             case 9:
-                _itemtype = "Bow";
+                _itemtype = "Exe";
                 break;
             case 10:
+                _itemtype = "Spear";
+                break;
+            case 11:
+                _itemtype = "Bow";
+                break;
+            case 12:
                 _itemtype = "Wand";
                 break;
         }

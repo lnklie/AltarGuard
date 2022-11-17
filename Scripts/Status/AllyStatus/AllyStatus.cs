@@ -17,7 +17,8 @@ public class AllyStatus : CharacterStatus
     [SerializeField] private int allyNum = 0;
 
     private int statusPoint = 10;
-    private float revivalTime = 5f;
+    private float maxRevivalTime = 10f;
+    private float curRevivalTime = 0f;
     private float knuckBackPower = 1;
 
 
@@ -26,7 +27,8 @@ public class AllyStatus : CharacterStatus
     public int[] GraceMagniStatuses { get { return graceMagniStatuses; } set { graceMagniStatuses = value; } }
     public int AllyNum { get{ return allyNum; } set{ allyNum = value; } }
     public float KnuckBackPower { get { return knuckBackPower; } set { knuckBackPower = value; } }
-    public float RevivalTime { get { return revivalTime; } set { revivalTime = value; } }
+    public float MaxRevivalTime { get { return maxRevivalTime; } set { maxRevivalTime = value; } }
+    public float CurRevivalTime { get { return curRevivalTime; } set { curRevivalTime = value; } }
     public int StatusPoint { get { return statusPoint; } set { statusPoint = value; } }
     public bool IsAlterBuff {get { return isAlterBuff; } set { isAlterBuff = value; } }
 
@@ -46,6 +48,11 @@ public class AllyStatus : CharacterStatus
         }
         if (CheckMaxExp())
             UpLevel();
+
+        if (isDied)
+        {
+            CurRevivalTime -= Time.deltaTime;
+        }
     }
 
     public void UpStatus(int _index)

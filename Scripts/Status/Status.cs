@@ -116,6 +116,6 @@ public class Status : MonoBehaviour
     }
     public void SetTargetingBox(bool _bool)
     {
-        targetingBoxController.IsTargeting = _bool;
+        targetingBoxController.gameObject.SetActive(_bool);
     }
 }

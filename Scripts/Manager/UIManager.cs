@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Altar")]
     [SerializeField] private AltarStatus altar = null;
-    [SerializeField] private List<CharacterStatus> mercenaries = new List<CharacterStatus>();
+    [SerializeField] private List<MercenaryStatus> mercenaries = new List<MercenaryStatus>();
     [SerializeField] private List<EquipmentController> characterList = new List<EquipmentController>();
     [SerializeField] private List<SkillController> skillControllerList = new List<SkillController>();
 
@@ -49,6 +49,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private BattleSupportPanelController battleSupportPanel = null;
     [SerializeField] private UserControlPanelController userControlPanelController = null;
     [SerializeField] private GameOverPanel gameOverPanel = null;
+    [SerializeField] private SleepModePanel sleepModePanel = null;
+
     [Header("NoticeText")]
     [SerializeField] private TextMeshProUGUI noticeText = null;
 
@@ -112,6 +114,16 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(AltarDestroyed());
         }
+
+        profilePanelController.SetActiveTargetInfo(player);
+        profilePanelController.UpdateTargetInfo(player);
+        profilePanelController.SetActivePlayerRiviveTime(player);
+        profilePanelController.UpdatePlayerRiviveTime(player);
+        for (int i = 0; i < mercenaries.Count; i++)
+        {
+            profilePanelController.SetActiveMercenaryRiviveTime(mercenaries[i],i);
+            profilePanelController.UpdateMercenaryRiviveTime(mercenaries[i],i);
+        }
     }
 
     public IEnumerator AltarDestroyed()
@@ -172,11 +184,7 @@ public class UIManager : MonoBehaviour
     {
         gracePanelController.UpdateGracePoint(player.GracePoint);
     }
-    public void AddMercenary(CharacterStatus _mercenary)
-    {
-        mercenaries.Add(_mercenary);
-        AddMercenaryEquipmentController(_mercenary);
-    }
+
     public void AddMercenaryEquipmentController(CharacterStatus _mercenary)
     {
         characterList.Add(_mercenary.GetComponent<EquipmentController>());
@@ -233,14 +241,6 @@ public class UIManager : MonoBehaviour
             profilePanelController.BossUpdate(bossEnemy);
         }
     }
-    //public void ChangePlayerUIItemImage()
-    //{
-    //    profilePanelController.ChangePlayerUIItemImage(characterList);
-    //}
-    //public void ChangeMercenaryUIItemImage(int _index)
-    //{
-    //    profilePanelController.ChangeMercenaryUIItemImage(characterList, _index);
-    //}
     public void UpdatePlayerProfile()
     {
         profilePanelController.UpdatePlayerProfile(player);
@@ -251,6 +251,15 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+    #region SleepMode
+    public void SetActiveSleepMode()
+    {
+        sleepModePanel.gameObject.SetActive(true);
+
+    }
+    #endregion
+
+
 
     #region Button
     #region Set-Up Panel
