@@ -19,6 +19,9 @@ public class AllyController : CharacterController
     {
         base.Update();
 
+
+
+
         if (character.Target)
         {
             character.Distance = character.Target.transform.position - character.TargetPos.position;
@@ -29,6 +32,7 @@ public class AllyController : CharacterController
         else
             destination = character.Flag.transform.position;
     }
+
     public override void AIChangeState()
     {
         if (character.CurHp <= 0f)
@@ -139,11 +143,11 @@ public class AllyController : CharacterController
     }
     public override IEnumerator AIDied()
     {
-
+        ally.CurRevivalTime = ally.MaxRevivalTime;
         character.IsDied = true;
         character.Rig.velocity = Vector2.zero;
         character.Col.enabled = false;
-        yield return new WaitForSeconds(ally.RevivalTime);
+        yield return new WaitForSeconds(ally.MaxRevivalTime);
         Rivive();
         character.IsDied = false;
     }

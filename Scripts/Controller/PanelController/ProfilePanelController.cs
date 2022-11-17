@@ -8,15 +8,26 @@ public class ProfilePanelController : MonoBehaviour
 {
     [Header("StateImages & StateTexts")]
     [SerializeField] private Image[] playerStateImages = null;
-    [SerializeField] private Image bossStateImages = null;
     [SerializeField] private TextMeshProUGUI[] playerTexts = null;
+    [SerializeField] private GameObject playerPicture = null;
+    [SerializeField] private TextMeshProUGUI playerRiviveTime = null;
 
     [SerializeField] private Image[] mercenaryStateImages = null;
     [SerializeField] private TextMeshProUGUI[] mercenaryTexts = null;
+    [SerializeField] private GameObject[] mercenaryPictures = null;
+    [SerializeField] private TextMeshProUGUI[] mercenaryRiviveTimes = null;
+
+    [SerializeField] private Image bossStateImages = null;
     [SerializeField] private TextMeshProUGUI[] bossTexts = null;
 
     [Header("ProfileImages")]
     [SerializeField] private GameObject bossProfile = null;
+
+    [Header("PlayerTarget")]
+    [SerializeField] private GameObject targetInfo = null;
+    [SerializeField] private Image targetHpBar = null;
+    [SerializeField] private TextMeshProUGUI targetHp = null;
+    [SerializeField] private TextMeshProUGUI targetName = null;
 
 
 
@@ -50,6 +61,7 @@ public class ProfilePanelController : MonoBehaviour
             StartCoroutine(SetActiveConversation(true));
             StartCoroutine(Conversation(DatabaseManager.Instance.SelectGameScript(0)));
         }
+
     }
 
     public void ChooseTriggerConversationActive(bool _bool)
@@ -80,6 +92,69 @@ public class ProfilePanelController : MonoBehaviour
                 }
                     
             }
+    }
+    public void SetActiveTargetInfo(PlayerStatus _player)
+    {
+        if(_player.Target && !targetInfo.activeInHierarchy)
+        {
+            targetInfo.SetActive(true);
+        }
+        else if(!_player.Target)
+        {
+            targetInfo.SetActive(false);
+        }
+    }
+    public void UpdateTargetInfo(PlayerStatus _player)
+    {
+        if (_player.Target)
+        {
+            targetHpBar.fillAmount = _player.Target.CurHp / _player.Target.TotalStatus[(int)EStatus.MaxHp];
+            targetHp.text = _player.Target.CurHp.ToString();
+            targetName.text = _player.Target.ObjectName;
+            
+        }
+    }
+    public void SetActivePlayerRiviveTime(PlayerStatus _player)
+    {
+        if(_player.IsDied)
+        {
+            playerPicture.SetActive(false);
+            playerRiviveTime.gameObject.SetActive(true);
+
+        }
+        else
+        {
+            playerPicture.SetActive(true);
+            playerRiviveTime.gameObject.SetActive(false);
+        }
+    }
+    public void UpdatePlayerRiviveTime(PlayerStatus _player)
+    {
+        if (_player.IsDied)
+        {
+            playerRiviveTime.text = _player.CurRevivalTime.ToString("F0");
+        }
+    }
+    public void SetActiveMercenaryRiviveTime(MercenaryStatus _mercenary,int _index)
+    {
+        if (_mercenary.IsDied)
+        {
+            mercenaryPictures[_index].SetActive(false);
+            mercenaryRiviveTimes[_index].gameObject.SetActive(true);
+
+        }
+        else
+        {
+            mercenaryPictures[_index].SetActive(true);
+            mercenaryRiviveTimes[_index].gameObject.SetActive(false);
+        } 
+    }
+    public void UpdateMercenaryRiviveTime(MercenaryStatus _mercenary,int _index)
+    {
+        if (_mercenary.IsDied)
+        {
+            mercenaryRiviveTimes[_index].text = _mercenary.CurRevivalTime.ToString("F0");
+        }
     }
 
     #region "보스 업데이트"
@@ -145,15 +220,4 @@ public class ProfilePanelController : MonoBehaviour
 
     }
     #endregion
-    public void ActiveInventory()
-    {
-        // UI 활성화 
-        this.gameObject.SetActive(true);
-
-    }
-    public void DeactiveInventory()
-    {
-        // UI 비활성화
-        this.gameObject.SetActive(false);
-    }
 }

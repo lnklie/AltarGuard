@@ -6,6 +6,7 @@ public class AttackState : IState
 {
     CharacterStatus character;
     CharacterController characterController;
+    IEnumerator attackRoutine = null;
     public AttackState(CharacterStatus character, CharacterController characterController)
     {
         this.character = character;
@@ -13,8 +14,8 @@ public class AttackState : IState
     }
     public void StateEnd()
     {
-        Debug.Log("공격 끝 " + character.ObjectName);
-        characterController.StopCoroutine(characterController.AutoAttackByAttackType());
+        characterController.StopCoroutine(attackRoutine);
+        character.IsAtk = false;
     }
 
     public void StateStart()
@@ -23,12 +24,13 @@ public class AttackState : IState
         character.Ani.SetFloat("AtkType", character.AttackType);
         character.AIState = EAIState.Attack;
         character.Rig.velocity = Vector2.zero;
-        characterController.AIAttack();
+        attackRoutine = characterController.AutoAttackByAttackType();
+        characterController.StartCoroutine(attackRoutine);
     }
 
     public void StateUpdate()
     {
-        Debug.Log("현재 상태는 공격 상태입니다.");
+        //Debug.Log("현재 상태는 공격 상태입니다.");
 
     }
 }

@@ -31,8 +31,8 @@ public class PlayerController : AllyController
         base.Update();
         DragFlag();
         RaycastItem();
-        
-        if(player.AIState != EAIState.Died)
+        MouseTargeting();
+        if (player.AIState != EAIState.Died)
         {
             PlayerState();
             PlayerStateCondition();
@@ -127,47 +127,41 @@ public class PlayerController : AllyController
             }
         }
     }
-    //public void MouseTargeting()
-    //{
-    //    if(Input.GetMouseButtonDown(0))
-    //    {
-    //        Debug.Log("아군 클릭");
 
-    //        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition),Vector2.zero,0f,LayerMask.GetMask("Ally"));
+    public void MouseTargeting()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
 
-    //        if (hit.rigidbody)
-    //        {
-    //            if (player.GetDistance(hit.rigidbody.transform.position) <= player.SeeRange)
-    //            {
-    //                if (player.AllyTarget)
-    //                {
-    //                    player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-    //                }
-    //                Debug.Log("아군 타겟팅 " + hit.rigidbody.gameObject.name);
-    //                TargetAlly(hit.rigidbody.GetComponent<CharacterStatus>());
-    //            }
-    //            else
-    //                Debug.Log("대상이 너무 멀리있습니다.");
-    //        }
-    //        else
-    //        {
-    //            if (player.AllyTarget)
-    //            {
-    //                player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-    //                player.AllyTarget = null;
-    //            }
-    //        }
-    //    }
-    //    if (player.AllyTarget)
-    //    {
-    //        if (player.GetDistance(player.AllyTarget.transform.position) >= player.SeeRange)
-    //        {
-    //            player.AllyTarget.GetComponentInChildren<TargetingBoxController>().IsTargeting = false;
-    //            player.AllyTarget = null;
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, 0f, LayerMask.GetMask("Ally","Enemy"));
 
-    //        }
-    //    }
-    //}
+            if (hit.rigidbody)
+            {
+                if (player.GetDistance(hit.rigidbody.transform.position) <= player.SeeRange)
+                {
+                    player.Target = hit.rigidbody.GetComponent<CharacterStatus>();
+                    if (preEnemyTarget != null)
+                        preEnemyTarget.SetTargetingBox(false);
+                    preEnemyTarget = character.Target;
+                    character.Target.SetTargetingBox(true);
+                }
+                else
+                    Debug.Log("대상이 너무 멀리있습니다.");
+            }
+        }
+    }
+    public override void CheckTarget()
+    {
+        if (character.Target)
+        {
+            if (character.GetDistance(character.Target.transform.position) >= character.SeeRange || character.Target.IsDied)
+            {
+                character.Target.SetTargetingBox(false);
+                character.Target.IsAllyTargeted[player.AllyNum] = false;
+                character.Target = null;
+            }
+        }
+    }
     public void PlayerIdle() 
     {
         player.ActiveLayer(ELayerName.IdleLayer);
@@ -262,12 +256,13 @@ public class PlayerController : AllyController
     private IEnumerator Died()
     {
         player.AIState = EAIState.Died;
+        player.CurRevivalTime = player.MaxRevivalTime;
         player.IsDied = true;
         player.Rig.velocity = Vector2.zero;
         player.Col.enabled = false;
         player.Dir = Vector2.zero;
         player.ActiveLayer(ELayerName.DieLayer); 
-        yield return new WaitForSeconds(player.RevivalTime);
+        yield return new WaitForSeconds(player.MaxRevivalTime);
         Rivive();
         player.IsDied = false;
     }
@@ -299,6 +294,55 @@ public class PlayerController : AllyController
             }
         }
     }
+    public override void Targeting(bool _isAlly = false)
+    {
+        if (!_isAlly)
+        {
+            RaycastHit2D _hit = Physics2D.CircleCast(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Enemy"));
+            if (_hit)
+            {
+                CharacterStatus _hitStatus = _hit.collider.GetComponent<CharacterStatus>();
+                character.Target = _hitStatus;
+                if (preEnemyTarget != null)
+                    preEnemyTarget.SetTargetingBox(false);
+                preEnemyTarget = character.Target;
+                character.Target.SetTargetingBox(true);
+            }
+            else
+                character.Target = null;
+        }
+        else
+        {
+            List<RaycastHit2D> _hit = new List<RaycastHit2D>();
+            _hit.AddRange(Physics2D.CircleCastAll(this.transform.position, character.SeeRange, Vector2.up, 0, LayerMask.GetMask("Ally")));
+            if (_hit.Count > 0)
+            {
+                switch (character.AllyTargetIndex)
+                {
+                    case EAllyTargetingSetUp.OneSelf:
+                        character.Target = character;
+                        break;
+                    case EAllyTargetingSetUp.CloseAlly:
+                        SortSightRayListByDistance(_hit);
+                        character.Target = _hit[1].collider.GetComponent<CharacterStatus>();
+                        break;
+                    case EAllyTargetingSetUp.Random:
+                        character.Target = ChooseSightRayListByRandom(_hit).collider.GetComponent<CharacterStatus>();
+                        break;
+                    case EAllyTargetingSetUp.WeakAlly:
+                        SortSightRayListByCurHp(_hit);
+                        character.Target = _hit[0].collider.GetComponent<CharacterStatus>();
+                        break;
+                    default:
+                        if (preEnemyTarget != null)
+                            preEnemyTarget.SetTargetingBox(false);
+                        preEnemyTarget = character.Target;
+                        character.Target.SetTargetingBox(true);
+                        break;
+                }
 
+            }
+        }
+    }
 }
     

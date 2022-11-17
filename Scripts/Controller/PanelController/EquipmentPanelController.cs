@@ -113,12 +113,10 @@ public class EquipmentPanelController : MonoBehaviour
                     "공격 범위: " + item.atkRange + "\n" +
                     "공격 거리: " + item.atkDistance + "\n" +
                     "무기 종류: " + item.weaponType + "\n";
-                if (item.grace[0] != null)
-                    _explain += "첫 번째 은총: " + item.grace[0].explain;
-                if (item.grace[1] != null)
-                    _explain += "두 번째 은총: " + item.grace[1].explain;
-                if (item.grace[2] != null)
-                    _explain += "세 번째 은총: " + item.grace[2].explain;
+                for (int i = 0; i < item.grace.Count; i++)
+                {
+                    _explain += i + "번째 은총: " + item.grace[i].explain;
+                }
                 SetEquipedItemSkillIcon(item);
                 break;
             case 13:
@@ -179,15 +177,21 @@ public class EquipmentPanelController : MonoBehaviour
                 _itemtype = "Back";
                 break;
             case 7:
-                _itemtype = "Sword";
-                break;
-            case 8:
                 _itemtype = "Shield";
                 break;
+            case 8:
+                _itemtype = "Sword";
+                break;
             case 9:
-                _itemtype = "Bow";
+                _itemtype = "Exe";
                 break;
             case 10:
+                _itemtype = "Spear";
+                break;
+            case 11:
+                _itemtype = "Bow";
+                break;
+            case 12:
                 _itemtype = "Wand";
                 break;
         }

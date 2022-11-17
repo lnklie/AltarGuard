@@ -7,6 +7,11 @@ public class SoundManager : SingletonManager<SoundManager>
     AudioSource[] audioSources = new AudioSource[4];
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
+    private void Awake()
+    {
+        GenerateSound();
+        SoundPlay();
+    }
     public void GenerateSound()
     {
         // 사운드 생성
@@ -25,10 +30,8 @@ public class SoundManager : SingletonManager<SoundManager>
                 go.transform.parent = root.transform;
             }
 
-            audioSources[0].clip = Resources.Load<AudioClip>("Sounds\\BACKGROUND\\WorldMapBGM");
-            //audioSources[(int)Sound.WORLDMAP].loop = true;
+            audioSources[0].clip = Resources.Load<AudioClip>("Sounds\\BackGround\\WorldMap");
             audioSources[(int)ESound.BackGround].loop = true;
-            //audioSources[(int)Sound.EFFECTGROUND].loop = true;
         }
     }
 
