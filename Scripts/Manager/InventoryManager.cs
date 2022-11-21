@@ -176,25 +176,25 @@ public class InventoryManager : MonoBehaviour
         int index = 0;
         switch (_item.itemType)
         {
-            case 0:
-            case 1:
+            case EItemType.Hair:
+            case EItemType.FaceHair:
                 index = inventroyDecorationItems.IndexOf(_item);
                 break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
+            case EItemType.Cloth:
+            case EItemType.Pant:
+            case EItemType.Helmet:
+            case EItemType.Armor:
+            case EItemType.Back:
+            case EItemType.SubWeapon:
                 index = inventroyEquipmentItems.IndexOf(_item);
                 break;
-            case 8:
+            case EItemType.Weapon:
                 index = inventroyWeaponItems.IndexOf(_item);
                 break;
-            case 9:
+            case EItemType.Consumables:
                 index = CheckStackedItemIndex(_item, inventroyConsumableItems);
                 break;
-            case 10:
+            case EItemType.Miscellaneous:
                 index = CheckStackedItemIndex(_item, inventroyMiscellaneousItems);
                 break;
         }
@@ -222,26 +222,25 @@ public class InventoryManager : MonoBehaviour
 
             switch (_selectItem.itemType)
             {
-                case 0:
-                case 1:
+                case EItemType.Hair:
+                case EItemType.FaceHair:
                     _item = inventroyDecorationItems[IndexOfItem(_selectItem)];
                     break;
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
+                case EItemType.Cloth:
+                case EItemType.Pant:
+                case EItemType.Helmet:
+                case EItemType.Armor:
+                case EItemType.Back:
+                case EItemType.SubWeapon:
                     _item = inventroyEquipmentItems[IndexOfItem(_selectItem)];
                     break;
-                case 8:
+                case EItemType.Weapon:
                     _item = inventroyWeaponItems[IndexOfItem(_selectItem)];
                     break;
-                case 9:
+                case EItemType.Consumables:
                     _item = inventroyConsumableItems[IndexOfItem(_selectItem)];
-
                     break;
-                case 10:
+                case EItemType.Miscellaneous:
                     _item = inventroyMiscellaneousItems[IndexOfItem(_selectItem)];
                     break;
             }
@@ -366,7 +365,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void DiscardItem(Item _item,int _amount = 1)
     {
-        if (_item.itemType == (int)ItemType.Weapon || _item.itemType == (int)ItemType.SubWeapon)
+        if (_item.itemType == EItemType.Weapon || _item.itemType == EItemType.SubWeapon)
         {
 
             // 아이템 버리기
@@ -391,9 +390,9 @@ public class InventoryManager : MonoBehaviour
                 //Debug.Log("그런 아이템 없음");
             }
         }
-        else if (_item.itemType == (int)ItemType.Armor ||
-            _item.itemType == (int)ItemType.Helmet || _item.itemType == (int)ItemType.Pant || _item.itemType == (int)ItemType.Back ||
-            _item.itemType == (int)ItemType.Cloth)
+        else if (_item.itemType == EItemType.Armor ||
+            _item.itemType == EItemType.Helmet || _item.itemType == EItemType.Pant || _item.itemType == EItemType.Back ||
+            _item.itemType == EItemType.Cloth)
         {
             // 아이템 버리기
             if (IndexOfItem(_item) != -1)
@@ -417,7 +416,7 @@ public class InventoryManager : MonoBehaviour
                 //Debug.Log("그런 아이템 없음");
             }
         }
-        else if (_item.itemType == (int)ItemType.Hair || _item.itemType == (int)ItemType.FaceHair)
+        else if (_item.itemType == EItemType.Hair || _item.itemType == EItemType.FaceHair)
         {
             // 아이템 버리기
             if (IndexOfItem(_item) != -1)
@@ -441,7 +440,7 @@ public class InventoryManager : MonoBehaviour
                 //Debug.Log("그런 아이템 없음");
             }
         }
-        else if(_item.itemType == (int)ItemType.Consumables)
+        else if(_item.itemType == EItemType.Consumables)
         {
             if (IndexOfItem(_item) != -1)
             {

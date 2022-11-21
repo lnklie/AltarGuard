@@ -18,8 +18,9 @@ public class DieState : IState
 
     public void StateStart()
     {
-        characterController.StartAIDied();
         character.AIState = EAIState.Died;
+        character.ActiveLayer(ELayerName.DieLayer);
+        characterController.StartCoroutine(characterController.AIDied());
     }
 
     public void StateUpdate()

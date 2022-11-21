@@ -55,8 +55,9 @@ public class BattleSupportPanelController : MonoBehaviour
     }
     public void UseQuickSlotItem(Item _item, int _slotIndex)
     {
+        int _index = CastTo<int>.From(_item.itemType);
         // 아이템 사용
-        if (_item.itemType == (int)ItemType.Consumables)
+        if (_item.itemType == EItemType.Consumables)
         {
             InventoryManager.Instance.UseItem(player, _item);
 
@@ -66,13 +67,13 @@ public class BattleSupportPanelController : MonoBehaviour
             }
 
         }
-        else if (_item.itemType < 9)
+        else if (_index < 9)
         {
             if (!_item.isEquip)
             {
-                if (playerEquipmentController.CheckEquipItems[_item.itemType])
+                if (playerEquipmentController.CheckEquipItems[_index])
                 {
-                    playerEquipmentController.TakeOffEquipment(playerEquipmentController.EquipItems[_item.itemType]);
+                    playerEquipmentController.TakeOffEquipment(playerEquipmentController.EquipItems[_index]);
                 }
                 playerEquipmentController.ChangeEquipment(_item);
                 _item.equipCharNum = 0;

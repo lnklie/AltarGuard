@@ -7,7 +7,7 @@ public class EquipmentSlot : MonoBehaviour
 {
     [SerializeField] private Item curItem = null;
 
-    private ItemType itemType = ItemType.Hair;
+    private EItemType itemType = EItemType.Hair;
     private Image[] itemImages = null;
     private bool isEquipmentChange = false;
     public Image[] ItemImages { get { return itemImages; } set { itemImages = value; } }
@@ -26,32 +26,32 @@ public class EquipmentSlot : MonoBehaviour
     public void SlotSetting(Item _item)
     {
         // 이미지 별로 크기가 다르기 때문에 해당 이미지의 크기를 변경해줌
-        itemType = (ItemType)(_item.itemKey / 1000);
+        itemType = (EItemType)(_item.itemKey / 1000);
         InitImageSize();
         switch (itemType)
         {
-            case ItemType.Hair:
+            case EItemType.Hair:
                 break;
-            case ItemType.FaceHair:
+            case EItemType.FaceHair:
                 break;
-            case ItemType.Cloth:
+            case EItemType.Cloth:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
                 break;
-            case ItemType.Pant:
+            case EItemType.Pant:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(60f, 60f);
                 break;
-            case ItemType.Helmet:
+            case EItemType.Helmet:
                 break;
-            case ItemType.Armor:
+            case EItemType.Armor:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
                 break;
-            case ItemType.Back:
+            case EItemType.Back:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(40f, 80f);
                 break;
-            case ItemType.Weapon:
+            case EItemType.Weapon:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(60f, 60f);
                 break;
-            case ItemType.SubWeapon:
+            case EItemType.SubWeapon:
                 itemImages[1].rectTransform.sizeDelta = new Vector2(100f, 100f);
                 break;
         }

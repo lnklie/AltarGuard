@@ -13,6 +13,7 @@ public class Skill
     public int skillLevel;
     public int skillType;
     public int skillVariable;
+    public List<int> skillValues = new List<int>();
     public int skillValue1;
     public int skillValue2;
     public int skillValue3;
@@ -23,6 +24,7 @@ public class Skill
     public int skillValue8;
     public int skillValue9;
     public int skillValue10;
+    public List<float> skillFigures = new List<float>();
     public float skillFigures1;
     public float skillFigures2;
     public float skillFigures3;
@@ -65,6 +67,7 @@ public class Skill
         skillHitCount = _skillHitCount;
         skillScopeX = _skillScopeX;
         skillScopeY = _skillScopeY;
+
         skillValue1 = _skillValue1;
         skillValue2 = _skillValue2;
         skillValue3 = _skillValue3;
@@ -85,8 +88,21 @@ public class Skill
         skillFigures8 = _skillFigures8;
         skillFigures9 = _skillFigures9;
         skillFigures10 = _skillFigures10;
-
-
+        AddSkillComponent(skillValue1, skillFigures1);
+        AddSkillComponent(skillValue2, skillFigures2);
+        AddSkillComponent(skillValue3, skillFigures3);
+        AddSkillComponent(skillValue4, skillFigures4);
+        AddSkillComponent(skillValue5, skillFigures5);
+        AddSkillComponent(skillValue6, skillFigures6);
+        AddSkillComponent(skillValue7, skillFigures7);
+        AddSkillComponent(skillValue8, skillFigures8);
+        AddSkillComponent(skillValue9, skillFigures9);
+        AddSkillComponent(skillValue10, skillFigures10);
         singleSprite = Resources.Load("Sprites/17_SkillIcon/" + skillName, typeof(Sprite)) as Sprite;
+    }
+    public void AddSkillComponent(int _skillValue, float _skillFigure)
+    {
+        skillValues.Add(_skillValue);
+        skillFigures.Add(_skillFigure);
     }
 }

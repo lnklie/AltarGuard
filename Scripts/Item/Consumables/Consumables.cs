@@ -13,6 +13,6 @@ public class Consumables : Item
         durationTime = _durationTime;
         value = _value;
         maxCoolTime = _coolTime;
-        itemType = (int)ItemType.Consumables;
+        itemType = EItemType.Consumables;
     }
 }

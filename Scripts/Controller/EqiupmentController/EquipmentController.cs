@@ -5,21 +5,21 @@ using UnityEngine;
 
 public class EquipmentController : MonoBehaviour
 {
-    private CharacterStatus status = null;
+    protected CharacterStatus status = null;
 
-    private HairSpace hairSpace = null;
-    private FaceHairSpace faceHairSpace = null;
-    private ClothSpace[] clothSpaces = null;
-    private PantSpace[] pantSpaces = null;
-    private ArmorSpace[] armorSpaces = null;
-    private BackSpace backSpace = null;
-    private HelmetSpace helmetSpace = null;
-    private WeaponSpace weaponSpace = null;
-    private SubWeaponSpace subWeaponSpace = null;
+    protected HairSpace hairSpace = null;
+    protected FaceHairSpace faceHairSpace = null;
+    protected ClothSpace[] clothSpaces = null;
+    protected PantSpace[] pantSpaces = null;
+    protected ArmorSpace[] armorSpaces = null;
+    protected BackSpace backSpace = null;
+    protected HelmetSpace helmetSpace = null;
+    protected WeaponSpace weaponSpace = null;
+    protected SubWeaponSpace subWeaponSpace = null;
 
     [SerializeField] private SkillController skillController = null;
-    [SerializeField] private Item[] equipItems = new Item[9];
-    [SerializeField] private bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
+    [SerializeField] protected Item[] equipItems = new Item[9];
+    [SerializeField] protected bool[] checkEquipItems = new bool[9] { false, false, false, false, false, false, false, false, false};
     [SerializeField] protected bool[] triggerEquipmentChange = new bool[9];
     #region Property
     public Item[] EquipItems { get { return equipItems; } set { equipItems = value; } }
@@ -27,7 +27,7 @@ public class EquipmentController : MonoBehaviour
     public bool[] CheckEquipItems { get { return checkEquipItems; } set { checkEquipItems = value; } }
     public bool[] TriggerEquipmentChange { get { return triggerEquipmentChange; } set { triggerEquipmentChange = value; } }
     #endregion
-    private void Awake()
+    public virtual void Awake()
     {
         status = GetComponent<CharacterStatus>();
         hairSpace = this.GetComponentInChildren<HairSpace>();
@@ -75,7 +75,7 @@ public class EquipmentController : MonoBehaviour
         }
         return magicDamage;
     }
-    private void ChangeAttackType()
+    public void ChangeAttackType()
     {
         // 무기 아이템에 따른 공격 타입 변경
         if (checkEquipItems[8])
@@ -94,56 +94,56 @@ public class EquipmentController : MonoBehaviour
             status.AttackType = 0f;
     }
 
-    public void ChangeEquipment(Item _item)
+    public virtual void ChangeEquipment(Item _item)
     {
         if(!_item.isEquip)
         {
+            int _index = CastTo<int>.From(_item.itemType);
             status.IsSkillChange = true;
-            TriggerEquipmentChange[_item.itemType] = true;
-
+            TriggerEquipmentChange[_index] = true;
 
             status.TriggerStatusUpdate = true;
 
-            equipItems[_item.itemType] = _item;
-            equipItems[_item.itemType].isEquip = true;
-            checkEquipItems[_item.itemType] = true;
+            equipItems[_index] = _item;
+            equipItems[_index].isEquip = true;
+            checkEquipItems[_index] = true;
             switch (_item.itemType)
             {
-                case (int)ItemType.Hair:
+                case EItemType.Hair:
                     hairSpace.ChangeItemSprite(equipItems[0].spList[0]);
                     break;
-                case (int)ItemType.FaceHair:
+                case EItemType.FaceHair:
                     faceHairSpace.ChangeItemSprite(equipItems[1].spList[0]);
                     break;
-                case (int)ItemType.Cloth:
+                case EItemType.Cloth:
                     //for (int i = 0; i < clothSpaces.Length; i++)
                     //{
                     //    if(equipItems[2].spList[i] != null)
                     //        clothSpaces[i].ChangeItemSprite(equipItems[2].spList[i]);
                     //}
                     break;
-                case (int)ItemType.Pant:
+                case EItemType.Pant:
                     for (int i = 0; i < pantSpaces.Length; i++)
                     {
                         pantSpaces[i].ChangeItemSprite(equipItems[3].spList[i]);
                     }
                     break;
-                case (int)ItemType.Helmet:
+                case EItemType.Helmet:
                     helmetSpace.ChangeItemSprite(equipItems[4].spList[0]);
                     break;
-                case (int)ItemType.Armor:
+                case EItemType.Armor:
                     for (int i = 0; i < armorSpaces.Length; i++)
                     {
                         armorSpaces[i].ChangeItemSprite(equipItems[5].spList[i]);
                     }
                     break;
-                case (int)ItemType.Back:
+                case EItemType.Back:
                     backSpace.ChangeItemSprite(equipItems[6].spList[0]);
                     break;
-                case (int)ItemType.SubWeapon:
+                case EItemType.SubWeapon:
                     subWeaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
                     break;
-                case (int)ItemType.Weapon:
+                case EItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     ChangeAttackType();
                     SkillChange();
@@ -151,12 +151,15 @@ public class EquipmentController : MonoBehaviour
             }
             status.UpdateEquipAbility(equipItems);
             status.UpdateAllStatus();
+            //GraceManager.Instance.UpdateGrace();
+            TriggerEquipmentChange[_index] = false;
         }
         else
         {
             Debug.Log("장착 중입니다.");
         }
     }
+
     public void SkillChange()
     {
         for(int i = 0; i < equipItems[8].skills.Count; i++)
@@ -168,11 +171,11 @@ public class EquipmentController : MonoBehaviour
         }
     }
 
-    public void TakeOffEquipment(Item _item)
+    public virtual void TakeOffEquipment(Item _item)
     {
         switch (_item.itemType)
         {
-            case 0:
+            case EItemType.Hair:
                 if (checkEquipItems[0])
                 {
                     equipItems[0].isEquip = false;
@@ -182,7 +185,7 @@ public class EquipmentController : MonoBehaviour
                     hairSpace.ChangeItemSprite(null);
                 }
                 break;
-            case 1:
+            case EItemType.FaceHair:
                 if (checkEquipItems[1])
                 {
                     equipItems[1].isEquip = false;
@@ -192,7 +195,7 @@ public class EquipmentController : MonoBehaviour
                     faceHairSpace.ChangeItemSprite(null);
                 }
                 break;
-            case 2:
+            case EItemType.Cloth:
                 if (checkEquipItems[2])
                 {
                     equipItems[2].isEquip = false;
@@ -205,7 +208,7 @@ public class EquipmentController : MonoBehaviour
                     }
                 }
                 break;
-            case 3:
+            case EItemType.Pant:
                 if (checkEquipItems[3])
                 {
                     equipItems[3].isEquip = false;
@@ -218,7 +221,7 @@ public class EquipmentController : MonoBehaviour
                     }
                 }
                 break;
-            case 4:
+            case EItemType.Helmet:
                 if (checkEquipItems[4])
                 {
                     equipItems[4].isEquip = false;
@@ -228,7 +231,7 @@ public class EquipmentController : MonoBehaviour
                     helmetSpace.ChangeItemSprite(null);
                 }
                 break;
-            case 5:
+            case EItemType.Armor:
                 if (checkEquipItems[5])
                 {
                     equipItems[5].isEquip = false;
@@ -241,7 +244,7 @@ public class EquipmentController : MonoBehaviour
                     }
                 }
                 break;
-            case 6:
+            case EItemType.Back:
                 if (checkEquipItems[6])
                 {
                     equipItems[6].isEquip = false;
@@ -251,7 +254,7 @@ public class EquipmentController : MonoBehaviour
                     backSpace.ChangeItemSprite(null);
                 }
                 break;
-            case 7:
+            case EItemType.SubWeapon:
                 if (checkEquipItems[7])
                 {
                     equipItems[7].isEquip = false;
@@ -261,7 +264,7 @@ public class EquipmentController : MonoBehaviour
                     subWeaponSpace.ChangeItemSprite(null);
                 }
                 break;
-            case 8:
+            case EItemType.Weapon:
                 if (checkEquipItems[8])
                 {
                     equipItems[8].isEquip = false;
@@ -273,6 +276,7 @@ public class EquipmentController : MonoBehaviour
                 }
                 break;
         }
+        TriggerEquipmentChange[CastTo<int>.From(_item.itemType)] = true;
         status.UpdateEquipAbility(equipItems);
         status.UpdateAllStatus();
     }

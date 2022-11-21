@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
         {
             item.skills.Add(DatabaseManager.Instance.SelectSkill(i));
         }
-        characterList[0].ChangeEquipment(item);
+        //characterList[0].ChangeEquipment(item);
         UpdatePlayerProfile();
         for (int i = 0; i < mercenaries.Count; i++)
         {
@@ -136,6 +136,15 @@ public class UIManager : MonoBehaviour
             gameOverPanel.StartGameOver();
     }
 
+    public void UpdateSkillSlot()
+    {
+        userControlPanelController.InitSkillSlot();
+        userControlPanelController.SetSkillSlot(playerSkillController.Skills);
+    }
+    public void InitSkillSlot()
+    {
+        userControlPanelController.InitSkillSlot();
+    }
     public void SetBossInfo(bool _bool)
     {
         profilePanelController.SetBossProfile(_bool);

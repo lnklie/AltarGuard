@@ -70,7 +70,7 @@ public class EquipmentPanelController : MonoBehaviour
         ItemInfoPanel.SetActive(true);
         equipmentItemNameText.text = selectItem.itemKorName;
         equipmentItemRankText.text = IntRankToStringRank(selectItem.itemRank);
-        equipmentItemTypeText.text = KeyToItemType(selectItem.itemType);
+        equipmentItemTypeText.text = KeyToItemTypeText(selectItem.itemKey);
         equipmentItemExplainText.text = SetItemExplain(selectItem);
     }
     public string SetItemExplain(Item item)
@@ -149,7 +149,7 @@ public class EquipmentPanelController : MonoBehaviour
         }
         return _rank;
     }
-    public string KeyToItemType(int _key)
+    public string KeyToItemTypeText(int _key)
     {
         // 키를 아이템 타입으로 변경
         string _itemtype = null;

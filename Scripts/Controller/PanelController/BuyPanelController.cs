@@ -144,13 +144,13 @@ public class BuyPanelController : MonoBehaviour
     {
         // 아이템 정보창 업데이트
         isBuyingItemSelect = false;
-        if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
+        if (selectBuyingItem.itemType == EItemType.Consumables || selectBuyingItem.itemType == EItemType.Miscellaneous)
         {
             buyAmount.gameObject.SetActive(true);
         }
         else
         {
-            if (playerEquipmentController.CheckEquipItems[selectBuyingItem.itemType])
+            if (playerEquipmentController.CheckEquipItems[CastTo<int>.From(selectBuyingItem.itemType)])
             {
                 SetActiveEquipedItemInfo(true);
                 UpdateEquipedItemInfo();
@@ -232,7 +232,7 @@ public class BuyPanelController : MonoBehaviour
     public void UpdateEquipedItemInfo()
     {
         // 아이템 정보창 업데이트
-        int _index = selectBuyingItem.itemType;
+        int _index = CastTo<int>.From(selectBuyingItem.itemType);
         equipedItemName.text = playerEquipmentController.EquipItems[_index].itemKorName;
         equipedItemType.text = KeyToItemTypeText(playerEquipmentController.EquipItems[_index].itemKey);
         switch (playerEquipmentController.EquipItems[_index].itemKey / 1000)
@@ -307,7 +307,7 @@ public class BuyPanelController : MonoBehaviour
     public void BuyItem()
     {
         int _amount = 1;
-        if (selectBuyingItem.itemType == 9 || selectBuyingItem.itemType == 10)
+        if (selectBuyingItem.itemType == EItemType.Consumables || selectBuyingItem.itemType == EItemType.Miscellaneous)
         {
             _amount = int.Parse(buyAmount.text);
             buyAmount.text = "00";
