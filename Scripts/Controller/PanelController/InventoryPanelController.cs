@@ -246,7 +246,7 @@ public class InventoryPanelController : MonoBehaviour
         bool _bool = false;
         for (int i = 0; i < characterEquipmentController.Length; i++)
         {
-            if (characterEquipmentController[i].CheckEquipItems[selectItem.itemType])
+            if (characterEquipmentController[i].CheckEquipItems[CastTo<int>.From(selectItem.itemType)])
                 _bool = true;
         }
         return _bool;
@@ -255,7 +255,7 @@ public class InventoryPanelController : MonoBehaviour
     {
         for (int i = 0; i < characterEquipmentController.Length; i++)
         {
-            if (characterEquipmentController[i].CheckEquipItems[selectItem.itemType])
+            if (characterEquipmentController[i].CheckEquipItems[CastTo<int>.From(selectItem.itemType)])
             {
                 selectEquipmentController.Add(characterEquipmentController[i]);
             }
@@ -291,7 +291,7 @@ public class InventoryPanelController : MonoBehaviour
         SetActiveEquipCharacterBox(false);
         SetActiveItemInfo(true);
         SetActiveEquipedItemInfo(false);
-        if(selectItem.itemType != 9 && selectItem.itemType != 10)
+        if(selectItem.itemType != EItemType.Consumables && selectItem.itemType != EItemType.Miscellaneous)
         {
             if (CheckCharacterEquiped())
             {
@@ -303,7 +303,7 @@ public class InventoryPanelController : MonoBehaviour
         }
 
         inventoryButtons[3].gameObject.SetActive(true);
-        if (selectItem.itemType == (int)ItemType.Consumables)
+        if (selectItem.itemType == EItemType.Consumables)
         {
             inventoryButtons[2].gameObject.SetActive(true);
         }
@@ -381,9 +381,9 @@ public class InventoryPanelController : MonoBehaviour
     }
     public void SetEquipedItemInfoPanel()
     {
-        equipedIteminfoNameText.text = selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].itemKorName;
-        equipedIteminfoTypeText.text = KeyToItemType(selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].itemKey);
-        equipedIteminfoRankText.text = IntRankToStringRank(selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].itemRank);
+        equipedIteminfoNameText.text = selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].itemKorName;
+        equipedIteminfoTypeText.text = KeyToItemType(selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].itemKey);
+        equipedIteminfoRankText.text = IntRankToStringRank(selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].itemRank);
         equipedItemCharacterName.text = selectEquipmentController[selectCharNum].Status.ObjectName;
         switch (selectItem.itemKey / 1000)
         {
@@ -394,22 +394,22 @@ public class InventoryPanelController : MonoBehaviour
                 equipedIteminfoExplainText.text = "This is FaceHair";
                 break;
             case 2:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 3:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 4:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 5:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 6:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 7:
-                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].defensivePower;
+                equipedIteminfoExplainText.text = "방어력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].defensivePower;
                 break;
             case 8:
             case 9:
@@ -417,21 +417,21 @@ public class InventoryPanelController : MonoBehaviour
             case 11:
             case 12:
                 equipedIteminfoExplainText.text =
-                    "물리 공격력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].physicalDamage + "\n" +
-                    "마법 공격력: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].magicalDamage + "\n" +
-                    "공격 범위: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkRange + "\n" +
-                    "공격 거리: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].atkDistance + "\n" +
-                    "무기 종류: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].weaponType + "\n";
+                    "물리 공격력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].physicalDamage + "\n" +
+                    "마법 공격력: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].magicalDamage + "\n" +
+                    "공격 범위: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].atkRange + "\n" +
+                    "공격 거리: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].atkDistance + "\n" +
+                    "무기 종류: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].weaponType + "\n";
 
-                for(int i = 0; i < selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace.Count; i++)
+                for(int i = 0; i < selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].grace.Count; i++)
                 {
-                    equipedIteminfoExplainText.text += i + "번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].grace[i].explain;
+                    equipedIteminfoExplainText.text += i + "번째 은총: " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].grace[i].explain;
                 }
                 SetEquipedItemSkillIcon();
                 break;
             case 13:
                 equipedIteminfoExplainText.text =
-                    "회복량 : " + selectEquipmentController[selectCharNum].EquipItems[selectItem.itemType].value + "\n";
+                    "회복량 : " + selectEquipmentController[selectCharNum].EquipItems[CastTo<int>.From(selectItem.itemType)].value + "\n";
                 break;
             case 14:
                 equipedIteminfoExplainText.text = "이것은 퀘스트 아이템";
@@ -555,7 +555,7 @@ public class InventoryPanelController : MonoBehaviour
         if(!selectItem.isCoolTime)
         {
             selectItem.isCoolTime = true;
-            if (selectItem.itemType < 7)
+            if (CastTo<int>.From(selectItem.itemType) < 7)
                 InventoryManager.Instance.IsEquipmentCoolTime = true;
             else
                 InventoryManager.Instance.IsWeaponCoolTime = true;
@@ -563,9 +563,9 @@ public class InventoryPanelController : MonoBehaviour
             if (_characterList[_character].GetComponent<CharacterStatus>().CurLevel >= selectItem.equipLevel)
             {
                 // 장착하기 버튼
-                if (_characterList[_character].CheckEquipItems[selectItem.itemType])
+                if (_characterList[_character].CheckEquipItems[CastTo<int>.From(selectItem.itemType)])
                 {
-                    _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[selectItem.itemType]);
+                    _characterList[_character].TakeOffEquipment(_characterList[_character].EquipItems[CastTo<int>.From(selectItem.itemType)]);
                 }
                 selectItem.equipCharNum = _character;
                 SetActiveEquipCharacterBox(false);
@@ -620,7 +620,7 @@ public class InventoryPanelController : MonoBehaviour
     public void DiscardSelectItem()
     {
         // 아이템 버리기
-        if (selectItem.itemType > 8)
+        if ((int)selectItem.itemType > 8)
         {
             SetActiveCheckDiscardAmount(true);
             SetActiveCheckDiscard(false);

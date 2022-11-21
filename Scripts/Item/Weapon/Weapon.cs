@@ -10,7 +10,7 @@ public class Weapon :Item
         float _atkRange, float _atkDistance,float _atkSpeed, int _equipLevel,int _disassembleItemKey, int _disassembleItemAmount, int _itemRank) 
         : base(_itemKey, _itemName, _itemKorName, _buyPrice, _sellPrice,_itemRank)
     {
-        itemType = (int)ItemType.Weapon;
+        itemType = EItemType.Weapon;
         physicalDamage = _physicalDamage;
         magicalDamage = _magicalDamage;
         attackType = _attackType;

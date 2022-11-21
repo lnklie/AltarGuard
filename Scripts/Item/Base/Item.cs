@@ -17,7 +17,7 @@ public class Item
     public string itemName = null;
     public string itemKorName = null;
     public bool isEquip = false;
-    public int itemType = -1;
+    public EItemType itemType = EItemType.Hair;
     public int physicalDamage = 0;
     public int magicalDamage = 0;
     public int defensivePower = 0;

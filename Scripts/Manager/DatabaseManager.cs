@@ -414,7 +414,7 @@ public class DatabaseManager : MonoBehaviour
             GraceConditionWhat[] grace = JsonHelper.FromJson<GraceConditionWhat>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                graceConditionWhatList.Add(new GraceConditionWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+                graceConditionWhatList.Add(new GraceConditionWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue, grace[i].nextComponent1, grace[i].nextComponent2, grace[i].nextComponent3));
             }
         }
         if (!File.Exists(CombinePath("GraceComponent/2_ConditionHow")))
@@ -453,7 +453,7 @@ public class DatabaseManager : MonoBehaviour
             GraceResultWhat[] grace = JsonHelper.FromJson<GraceResultWhat>(loadJson);
             for (var i = 0; i < grace.Length; i++)
             {
-                graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue));
+                graceResultWhatList.Add(new GraceResultWhat(grace[i].graceKey, grace[i].graceKorName, grace[i].weightedValue, grace[i].nextComponent1, grace[i].nextComponent2, grace[i].nextComponent3));
             }
         }
         if (!File.Exists(CombinePath("GraceComponent/5_ResultValueIsPercent")))

@@ -44,7 +44,7 @@ public enum EAIState
     UseSkill,
     Died
 }
-public enum ItemType
+public enum EItemType
 {
     Hair = 0,
     FaceHair,

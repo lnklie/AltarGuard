@@ -10,7 +10,7 @@ public class Miscellaneous: Item
         : base(_itemKey,_itemName, _itemKorName, _buyPrice, _sellPrice, _itemRank)
     {
         purpose = _purpose;
-        itemType = (int)ItemType.Miscellaneous;
+        itemType = EItemType.Miscellaneous;
 
     }
 }

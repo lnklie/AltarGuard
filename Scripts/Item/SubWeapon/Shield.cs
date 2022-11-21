@@ -11,6 +11,6 @@ public class Shield : SubWeapon
     {
 
         defensivePower = _defensivePower;
-        itemType = (int)ItemType.SubWeapon;
+        itemType = EItemType.SubWeapon;
     }
 }

@@ -17,8 +17,8 @@ public class AllyStatus : CharacterStatus
     [SerializeField] private int allyNum = 0;
 
     private int statusPoint = 10;
-    private float maxRevivalTime = 10f;
-    private float curRevivalTime = 0f;
+    [SerializeField] private float maxRevivalTime = 10f;
+    [SerializeField] private float curRevivalTime = 0f;
     private float knuckBackPower = 1;
 
 

@@ -101,7 +101,7 @@ public class PlayerController : AllyController
     }
     public void ChangeState()
     {
-        if (player.CurHp <= 0f && !player.IsDied)
+        if (player.CurHp <= 0f)
         {
             StartCoroutine(Died());
         }

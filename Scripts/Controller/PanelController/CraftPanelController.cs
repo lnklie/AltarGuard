@@ -146,34 +146,34 @@ public class CraftPanelController : MonoBehaviour
         bool _bool = false;
         switch (_Item.itemType)
         {
-            case 0:
-            case 1:
+            case EItemType.Hair:
+            case EItemType.FaceHair:
                 for (int i = 0; i < InventoryManager.Instance.InventroyDecorationItems.Count; i++)
                 {
                     if (_Item.itemKey == InventoryManager.Instance.InventroyDecorationItems[i].itemKey)
                         _bool = true;
                 }
                 break;
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
+            case EItemType.Cloth:
+            case EItemType.Pant:
+            case EItemType.Helmet:
+            case EItemType.Armor:
+            case EItemType.Back:
                 for (int i = 0; i < InventoryManager.Instance.InventroyEquipmentItems.Count; i++)
                 {
                     if (_Item.itemKey == InventoryManager.Instance.InventroyEquipmentItems[i].itemKey)
                         _bool = true;
                 }
                 break;
-            case 7:
-            case 8:
+            case EItemType.SubWeapon:
+            case EItemType.Weapon:
                 for (int i = 0; i < InventoryManager.Instance.InventroyWeaponItems.Count; i++)
                 {
                     if (_Item.itemKey == InventoryManager.Instance.InventroyWeaponItems[i].itemKey)
                         _bool = true;
                 }
                 break;
-            case 9:
+            case EItemType.Consumables:
                 for (int i = 0; i < InventoryManager.Instance.InventroyConsumableItems.Count; i++)
                 {
                     if (_Item.itemKey == InventoryManager.Instance.InventroyConsumableItems[i].itemKey 
@@ -181,7 +181,7 @@ public class CraftPanelController : MonoBehaviour
                         _bool = true;
                 }
                 break;
-            case 10:
+            case EItemType.Miscellaneous:
                 for (int i = 0; i < InventoryManager.Instance.InventroyMiscellaneousItems.Count; i++)
                 {
                     if (_Item.itemKey == InventoryManager.Instance.InventroyMiscellaneousItems[i].itemKey 

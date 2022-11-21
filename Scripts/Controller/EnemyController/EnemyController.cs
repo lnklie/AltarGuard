@@ -32,8 +32,9 @@ public class EnemyController : CharacterController
 
     public void FindAltar()
     {
-        enemyStatus.AltarRay = Physics2D.CircleCast(enemyStatus.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Altar"));
-        altar = enemyStatus.AltarRay.rigidbody.GetComponent<Status>();
+        RaycastHit2D altarRay = Physics2D.CircleCast(enemyStatus.transform.position, 100f, Vector2.up, 0, LayerMask.GetMask("Altar"));
+        if(altarRay)
+            altar = altarRay.rigidbody.GetComponent<Status>();
     }
 
     public override void AIChangeState()
@@ -92,7 +93,10 @@ public class EnemyController : CharacterController
         while(true)
         {
             if(enemyStatus.Target == altar || enemyStatus.Target == null)
+            {
                 Targeting();
+                //Debug.Log("ø°≥ πÃ" + enemyStatus.ObjectName + " ≈∏∞Ÿ πﬂ∞ﬂ ≈∏∞Ÿ¿∫ " + enemyStatus.Target);
+            }
             yield return new WaitForSeconds(0.5f);
         }
     }

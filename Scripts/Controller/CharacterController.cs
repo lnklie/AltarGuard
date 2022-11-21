@@ -204,7 +204,6 @@ public class CharacterController : MonoBehaviour, IAIController
             {
                 character.Ani.SetBool("IsAtk", true);
                 character.IsAtk = true;
-                Debug.Log("АјАн " + character.ObjectName);
                 if (character.AttackType == 0f)
                 {
                     AttackDamage();
@@ -314,20 +313,12 @@ public class CharacterController : MonoBehaviour, IAIController
             pathFindController.FinalNodeList.RemoveAt(0);
         }
     }
-    public void StopAllcoroutine()
-    {
-        StopAllCoroutines();
-    }
+
     public virtual void AIAttack()
     {
         StartCoroutine(AutoAttackByAttackType());
     }
-    public void StopAttack()
-    {
-        StopCoroutine(AutoAttackByAttackType());
 
-        character.IsAtk = false;
-    }
     public virtual void AIUseSkill()
     {
         StartCoroutine(UseSkill());
@@ -335,10 +326,6 @@ public class CharacterController : MonoBehaviour, IAIController
     public void StartAIUseSkill()
     {
         StartCoroutine(UseSkill());
-    }
-    public void StartAIDied()
-    {
-        StartCoroutine(AIDied());
     }
     public virtual IEnumerator AIDied()
     {
