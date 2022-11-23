@@ -19,9 +19,6 @@ public class AllyController : CharacterController
     {
         base.Update();
 
-
-
-
         if (character.Target)
         {
             character.Distance = character.Target.transform.position - character.TargetPos.position;
@@ -131,7 +128,7 @@ public class AllyController : CharacterController
             {
                 EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
 
-                _enemy.Damaged(AttackTypeDamage());
+                _enemy.Damaged(AttackTypeDamage(),Color.red);
                 if (_enemy.IsLastHit())
                 {
                     _enemy.IsDied = true;

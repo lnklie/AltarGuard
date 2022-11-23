@@ -11,29 +11,18 @@ public class SkillObject : MonoBehaviour
     [SerializeField] private bool isSkillActive = false;
     [SerializeField] private CharacterStatus castingStatus = null;
     [SerializeField] private Skill skill = null;
-    private int skillHitCount = 0;
-    private float maxDurationTime = 0f;
+    [SerializeField] private Vector2 targetPos = Vector2.zero;
     private float durationTime = 0f;
 
-    private Transform target = null;
 
     #region Property
     public bool IsSkillActive { get { return isSkillActive; } set { isSkillActive = value; } }
-    public int Damage { get { return value; } set { this.value = value; } }
-    public int SkillHitCount { get { return skillHitCount; } set { skillHitCount = value; } }
-    public float MaxDuration { get { return maxDurationTime; } set { maxDurationTime = value; } }
-    public Transform Target { get { return target; } set { target = value; } }
-    public float MaxCoolTime { get { return maxCoolTime; } set { maxCoolTime = value; } }
-    public bool IsSkillUse { get { return isSkillUse; } set { isSkillUse = value; } }
     #endregion
     public void Awake()
     {
         col = this.GetComponent<CircleCollider2D>();
     }
-    private void Start()
-    {
-        maxDurationTime = this.GetComponentInChildren<Animator>().speed;
-    }
+
     private void Update()
     { 
         RemoveSkill();
@@ -42,48 +31,51 @@ public class SkillObject : MonoBehaviour
     {
         skill = _skill;
     }
-    public void SetSkillTarget(Transform _target, CharacterStatus _characterStatus)
+    public void SetSkillTarget(CharacterStatus _characterStatus, Vector2 _target,int _value)
     {
         castingStatus = _characterStatus;
-        target = _target; 
-        value = SetSkillValueByLevel();
-        skillHitCount = skill.skillHitCount;
+        targetPos = _target; 
+        value = _value;
         this.gameObject.SetActive(true);
-        this.transform.position = target.transform.position;
+        this.transform.position = targetPos;
     }
-    public IEnumerator CastingSkill()
+    public void SetSkillTarget(CharacterStatus _characterStatus, Vector2 _target)
     {
-        if(skill.skillType == 0)
+        castingStatus = _characterStatus;
+        targetPos = _target;
+        this.gameObject.SetActive(true);
+        this.transform.position = targetPos;
+    }
+    public IEnumerator CastingSkill(int _skillType)
+    {
+        if(_skillType == 0)
         {
-            RaycastHit2D[] _hitRay = HitRay();
- 
-            for(int i = 0; i < _hitRay.Length; i++)
+            for (int j = 0; j < skill.skillHitCount; j++)
             {
-                if (_hitRay[i])
+                RaycastHit2D[] _hitRay = HitRay();
+
+                for (int i = 0; i < _hitRay.Length; i++)
                 {
-                    Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
-                
-                    for (int j = 0; j < skillHitCount; j++)
+                    if (_hitRay[i])
                     {
-                        _status.Damaged(value);
-                        if (this.transform.parent.gameObject.layer == 8)
+                        Status _status = _hitRay[i].collider.gameObject.GetComponent<Status>();
+
+
+                        _status.Damaged(value, Color.blue);
+                        if (castingStatus.gameObject.layer == 8)
                         {
-                            if(_status.IsDied)
+                            if (_status.IsLastHit())
                                 castingStatus.AquireExp(_status);
                         }
-                        yield return new WaitForSeconds(maxDurationTime / skillHitCount);
+                        
+
                     }
                 }
+                yield return new WaitForSeconds(1f / skill.skillHitCount);
             }
         }
-        else if(skill.skillType == 1)
+        else if(_skillType == 1)
         {
-            Status _status = target.gameObject.GetComponent<Status>();
-            for (int j = 0; j < skillHitCount; j++) 
-            {
-                _status.recovered(value);
-                yield return new WaitForSeconds(maxDurationTime / skillHitCount);
-            }
             castingStatus.Target = null;
         }
         castingStatus.IsUseSkill = false;
@@ -93,7 +85,7 @@ public class SkillObject : MonoBehaviour
     {
         durationTime += Time.deltaTime;
         
-        if (durationTime > maxDurationTime)
+        if (durationTime > 1f)
         {
             this.gameObject.SetActive(false);
             durationTime = 0f;
@@ -110,24 +102,12 @@ public class SkillObject : MonoBehaviour
         // 레이를 쏘는 역할
         
         RaycastHit2D[] ray = default;
-        if (this.transform.parent.gameObject.layer == 3)
+        if (castingStatus.gameObject.layer == 3)
             ray = Physics2D.BoxCastAll(this.transform.position, new Vector2(skill.skillScopeX,skill.skillScopeY), 0f ,Vector2.zero, 0f,LayerMask.GetMask("Ally", "Altar"));
-        else if (this.transform.parent.gameObject.layer == 8)
+        else if (castingStatus.gameObject.layer == 8)
             ray = Physics2D.BoxCastAll(this.transform.position, new Vector2(skill.skillScopeX, skill.skillScopeY), 0f, Vector2.zero,0f, LayerMask.GetMask("Enemy"));
         return ray;
     }
-    public int SetSkillValueByLevel()
-    {
-        int _skillDamage = 0;
 
-        if (skill.skillVariable == 0)
-            _skillDamage = skill.skillValues[skill.skillLevel] + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Str] * skill.skillFigures[skill.skillLevel]);
-        else if (skill.skillVariable == 1)
-            _skillDamage = skill.skillValues[skill.skillLevel] + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Dex] * skill.skillFigures[skill.skillLevel]);
-        else if (skill.skillVariable == 2)
-            _skillDamage = skill.skillValues[skill.skillLevel] + Mathf.CeilToInt(castingStatus.TotalStatus[(int)EStatus.Wiz] * skill.skillFigures[skill.skillLevel]);
-
-        return _skillDamage;
-    }
     
 }

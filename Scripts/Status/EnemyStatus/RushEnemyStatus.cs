@@ -19,9 +19,9 @@ public class RushEnemyStatus : EnemyStatus
     {
         base.Update();
     }
-    public override void Damaged(int _damage)
+    public override void Damaged(int _damage, Color _color)
     {
-        base.Damaged(_damage);
+        base.Damaged(_damage, _color);
         UpdateEnemyHp();
     }
     public void UpdateEnemyHp()

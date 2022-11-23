@@ -52,9 +52,11 @@ public class InventoryManager : MonoBehaviour
         AcquireItem(DatabaseManager.Instance.SelectItem(4003));
         //AcquireItem(DatabaseManager.Instance.SelectItem(5002));
         //AcquireItem(DatabaseManager.Instance.SelectItem(6003));
-        //AcquireItem(DatabaseManager.Instance.SelectItem(7002));
-        //AcquireItem(DatabaseManager.Instance.SelectItem(8003));
-        //AcquireItem(DatabaseManager.Instance.SelectItem(11001,5));
+        AcquireItem(DatabaseManager.Instance.SelectItem(7002));
+        AcquireItem(DatabaseManager.Instance.SelectItem(8003));
+        AcquireItem(DatabaseManager.Instance.SelectItem(9003));
+        AcquireItem(DatabaseManager.Instance.SelectItem(10003));
+        AcquireItem(DatabaseManager.Instance.SelectItem(11001));
     }
     private void Update()
     {

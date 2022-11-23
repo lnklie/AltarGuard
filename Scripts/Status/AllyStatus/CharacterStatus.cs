@@ -13,10 +13,9 @@ public class CharacterStatus : Status
     [SerializeField] protected float seeRange = 8f;
     [SerializeField] protected float maxAtkSpeed = 8f;
     [SerializeField] protected float maxCastingSpeed = 8f;
-    protected float arrowSpd = 2f;
     [SerializeField] protected Vector2 distance = new Vector2(0, 0);
     [SerializeField] EAllyTargetingSetUp allyTargetIndex = 0;
-
+    [SerializeField] byte debuff = 0;
 
 
     [Header("EquipStatus")]
@@ -25,13 +24,18 @@ public class CharacterStatus : Status
     [Header("BuffStatus")]
     [SerializeField] protected float[] buffStatus = new float[16];
 
+    [Header("DeBuffStatus")]
+    [SerializeField] protected float[] debuffStatus = new float[16];
+
     [SerializeField] protected EAIState aiState = EAIState.Idle;
     [SerializeField] protected Vector2 targetDir = Vector2.zero;
     
     protected int curExp = 0;
     protected int maxExp = 0;
+    protected float arrowSpd = 2f;
 
     [SerializeField] protected float delayTime = 0f;
+    [SerializeField] protected float maxDelayTime = 0f;
     [SerializeField] private float stiffenTime = 0f;
     [SerializeField] private GameObject flag = null;
     [SerializeField] private bool isFlagComeback = false;
@@ -42,13 +46,13 @@ public class CharacterStatus : Status
     [SerializeField] protected float attackType = 0f;
 
     [SerializeField] private bool isSkillChange = false;
-    private Debuff debuff = Debuff.Not;
+
     #region Properties
 
     public float[] EquipStatus { get { return equipStatus; } set { equipStatus = value; } }
     public float[] BuffStatus { get { return buffStatus; } set { buffStatus = value; } }
-    public Debuff Debuff { get { return debuff; } set { debuff = value; } }
 
+    public float[] DebuffStatus { get { return debuffStatus; } set { debuffStatus = value; } }
     public bool IsSkillChange {  get { return isSkillChange; } set { isSkillChange = value; } }
     public bool IsUseSkill { get { return isUseSkill; } set { isUseSkill = value; } }
 
@@ -61,6 +65,7 @@ public class CharacterStatus : Status
     public RaycastHit2D HitRay { get { return hitRay; } set { hitRay = value; } }
     public float StiffenTime { get { return stiffenTime; } set { stiffenTime = value; } }
     public float DelayTime { get { return delayTime; } set { delayTime = value; } }
+    public float MaxDelayTime { get { return maxDelayTime; } set { maxDelayTime = value; } }
     public float AttackType { get { return attackType; } set { attackType = value; } }
     public EAIState AIState { get { return aiState; } set { aiState = value; } }
 
@@ -91,6 +96,10 @@ public class CharacterStatus : Status
         curHp = (int)totalStatus[(int)EStatus.MaxHp];
         curMp = (int)totalStatus[(int)EStatus.MaxMp];
         triggerStatusUpdate = true;
+        StartCoroutine(Debuff(EDebuff.Slowed, 3, 0));
+        
+        //Debuff(EDebuff.Stunned, 0, 0);
+        //Debuff(EDebuff.DecreaseDefence, 0, 0);
     }
     public virtual void Update()
     {
@@ -111,6 +120,61 @@ public class CharacterStatus : Status
     {
         curExp += status.DefeatExp;
     }
+    public IEnumerator Debuff(EDebuff _debuff, float _time, int _value = 0)
+    {
+        
+        if(HasDebuff(_debuff))
+        {
+            Debug.Log("이미 가지고 있는 디버프입니다.");
+            yield return null;
+        }
+        else
+        {            
+            debuff |= (byte)_debuff;
+            switch(_debuff)
+            {
+                case EDebuff.Slowed:
+                    Debug.Log("슬로우 중");
+                    break;
+                case EDebuff.Stunned:
+                    Debug.Log("스턴 중");
+                    break;
+                case EDebuff.DecreasePhysic:
+                    Debug.Log("물리 공격력 감소 중");
+                    break;
+                case EDebuff.DecreaseMagic:
+                    Debug.Log("마법 공격력 감소 중");
+                    break;
+                case EDebuff.DecreaseDefence:
+                    Debug.Log("방어력 감소 중");
+                    break;
+            }
+            yield return new WaitForSeconds(_time);
+            switch (_debuff)
+            {
+                case EDebuff.Slowed:
+                    Debug.Log("슬로우 해제");
+                    break;
+                case EDebuff.Stunned:
+                    Debug.Log("스턴 해제");
+                    break;
+                case EDebuff.DecreasePhysic:
+                    Debug.Log("물리 공격력 감소 해제");
+                    break;
+                case EDebuff.DecreaseMagic:
+                    Debug.Log("마법 공격력 감소 해제");
+                    break;
+                case EDebuff.DecreaseDefence:
+                    Debug.Log("방어력 감소 해제");
+                    break;
+            }
+            debuff ^= (byte)_debuff;
+        }
+    }
+    private bool HasDebuff(EDebuff _debuff)
+    {
+        return (debuff & (byte)_debuff) > 0 ? true : false;
+    }
     public virtual void UpdateBasicStatus(EStatus _eStatus)
     {
 
@@ -119,7 +183,9 @@ public class CharacterStatus : Status
         {
             case EStatus.Str:
                 basicStatus[(int)EStatus.MaxHp] = totalStatus[(int)EStatus.Str] * 10;
+                basicStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] * 5;
                 UpdateTotalAbility(EStatus.MaxHp);
+                UpdateTotalAbility(EStatus.PhysicalDamage);
                 break;
             case EStatus.Dex:
                 basicStatus[(int)EStatus.Speed] = totalStatus[(int)EStatus.Dex] * 0.1f;

@@ -70,13 +70,13 @@ public class Status : MonoBehaviour
         else
             return false;
     }
-    public virtual void Damaged(int _damage)
+    public virtual void Damaged(int _damage, Color _color )
     {
         //Debug.Log("이오브젝트의 이름은 " + ObjectName + " 데미지 받음 " + "데미지는 " + ReviseDamage(_damage, defensivePower) + " 현재 체력은 " + curHp);
         curHp -= ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]);
         triggerStatusUpdate = true;
         StartCoroutine(Blink());
-        SetValueText(ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]),Color.red);
+        SetValueText(ReviseDamage(_damage, (int)basicStatus[(int)EStatus.DefensivePower]), _color);
     }
     public virtual void recovered(int _value)
     {

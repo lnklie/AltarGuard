@@ -240,7 +240,7 @@ public class PlayerController : AllyController
             for (int i =0; i < hits.Length; i++)
             {
                 EnemyStatus _enemy = hits[i].collider.GetComponent<EnemyStatus>();
-                _enemy.Damaged(AttackTypeDamage());
+                _enemy.Damaged(AttackTypeDamage(), Color.red);
                 if (_enemy.IsLastHit())
                 {
                     _enemy.IsDied = true;

@@ -145,43 +145,27 @@ public class GraceManager : MonoBehaviour
             }
             _explain += SelectGrace(_completeGrace.conditionHow).graceKorName + ", ";
         }
-        if (_completeGrace.relationOfVariables == 7000)
-        {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
-            if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " 만큼 ";
-            else
-                _explain += _completeGrace.resultValue1 + "% 만큼 ";
-            if (_completeGrace.resultWho2 == -1)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시킨다";
-            else
-            {
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 ";
-                _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
-                _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
-                if (_completeGrace.resultValueIsPercent2 == 0)
-                    _explain += _completeGrace.resultValue2 + " 만큼 ";
-                else
-                    _explain += _completeGrace.resultValue2 + "% 만큼 ";
-                _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
-            }
-        }
+
+        _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
+        _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
+        if (_completeGrace.resultValueIsPercent1 == 0)
+            _explain += _completeGrace.resultValue1 + " 만큼 ";
+        else
+            _explain += _completeGrace.resultValue1 + "% 만큼 ";
+        if (_completeGrace.resultWho2 == -1)
+            _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시킨다";
         else
         {
-            _explain += SelectGrace(_completeGrace.resultWho1).graceKorName + "의 ";
-            _explain += SelectGrace(_completeGrace.resultWhat1).graceKorName + "을(를) ";
-            if (_completeGrace.resultValueIsPercent1 == 0)
-                _explain += _completeGrace.resultValue1 + " 만큼 ";
-            else
-                _explain += _completeGrace.resultValue1 + "% 만큼 ";
-            if (_completeGrace.resultHow1 == 6001)
-                _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 그 만큼 ";
-
+            _explain += SelectGrace(_completeGrace.resultHow1).graceKorName + "시키고 ";
             _explain += SelectGrace(_completeGrace.resultWho2).graceKorName + "의 ";
             _explain += SelectGrace(_completeGrace.resultWhat2).graceKorName + "을(를) ";
+            if (_completeGrace.resultValueIsPercent2 == 0)
+                _explain += _completeGrace.resultValue2 + " 만큼 ";
+            else
+                _explain += _completeGrace.resultValue2 + "% 만큼 ";
             _explain += SelectGrace(_completeGrace.resultHow2).graceKorName + "시킨다";
         }
+
         return _explain;
     }
     public CompleteGrace CreateRandomGrace()
@@ -189,23 +173,25 @@ public class GraceManager : MonoBehaviour
         int conditionWho = Random.Range(-1, graceConditionWhoList.Count);
         int conditionWhat = Random.Range(0, graceConditionWhatList.Count);
         int conditionValue = -1;
-        int conditionHow = Random.Range(0, SelectGrace(conditionWhat+ 1000).nextComponents.Count);
+        int conditionHow = Random.Range(0, SelectGrace(conditionWhat + 1000).nextComponents.Count);
 
-        if (SelectGrace(conditionWhat).nextComponents[conditionHow] > 2002)
+        if (SelectGrace(conditionWhat + 1000).nextComponents[conditionHow] > 2002)
             conditionValue = Random.Range(0, 10);
          
         int resultWho1 = Random.Range(0, graceResultWhoList.Count);
-        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
         int resultValue1 = Random.Range(0, 10);
-        int resultValue2 = Random.Range(0, 10);
         int resultWhat1 = Random.Range(0, graceResultWhatList.Count);
-        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
-        int resultHow1 = Random.Range(0, SelectGrace(resultWhat1 + 5000).nextComponents.Count);
-        int resultHow2 = Random.Range(0, SelectGrace(resultWhat2 + 5000).nextComponents.Count);
-
+        int resultHow1 = Random.Range(0, SelectGrace(resultWhat1 + 4000).nextComponents.Count);
         int resultValueIsPercent1 = Random.Range(0, 2);
+
+        int resultWho2 = Random.Range(0, graceResultWhoList.Count);
+        int resultValue2 = Random.Range(0, 10);
+        int resultWhat2 = Random.Range(0, graceResultWhatList.Count);
+        int resultHow2 = Random.Range(0, SelectGrace(resultWhat2 + 4000).nextComponents.Count);
         int resultValueIsPercent2 = Random.Range(0, 2);
-        int relationOfGraces = Random.Range(0, 2);
+
+
+
         float weightedValue1 = 0;
         float weightedValue2 = 0;
         if (conditionWho != -1)
@@ -229,9 +215,9 @@ public class GraceManager : MonoBehaviour
                 * SelectGrace(resultValueIsPercent2 + 5000).weightedValue * SelectGrace(SelectGrace(resultWhat2 + 1000).nextComponents[resultHow2]).weightedValue;
         }
         CompleteGrace _completeGrace = new CompleteGrace(
-            conditionWho, conditionWhat + 1000, conditionValue, conditionHow + 2000, resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
-            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000, 
-            SelectGrace(resultWhat1 + 1000).nextComponents[resultHow1], SelectGrace(resultWhat2 + 1000).nextComponents[resultHow2], relationOfGraces + 7000);
+            conditionWho, conditionWhat + 1000, conditionValue, SelectGrace(conditionWhat + 1000).nextComponents[conditionHow], resultWho1 + 3000, resultWho2 + 3000, resultWhat1 + 4000, resultWhat2 + 4000,
+            Mathf.CeilToInt(resultValue1 * weightedValue1), Mathf.CeilToInt(resultValue2 * weightedValue2), resultValueIsPercent1 + 5000, resultValueIsPercent2 + 5000,
+            SelectGrace(resultWhat1 + 4000).nextComponents[resultHow1], SelectGrace(resultWhat2 + 4000).nextComponents[resultHow2]);
 
         _completeGrace.explain = AddGraceExplain(_completeGrace);
 
@@ -343,6 +329,118 @@ public class GraceManager : MonoBehaviour
             {
                 _bool = false;
                 break;
+            }
+        }
+        return _bool;
+    }
+    public bool CheckStatus(int _characterIndex, int _statusIndex, int _value,int option)
+    {
+        if(option == 0)
+        {
+            if (characterStatuses[_characterIndex].TotalStatus[_statusIndex] > _value)
+                return true;
+            else
+                return false;
+        }
+        else if(option == 1)
+        {
+            if (characterStatuses[_characterIndex].TotalStatus[_statusIndex] == _value)
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            if (characterStatuses[_characterIndex].TotalStatus[_statusIndex] < _value)
+                return true;
+            else
+                return false;
+        }
+    }
+    public bool CheckAllMercenaryStatus(int _statusIndex, int _value, int option)
+    {
+        bool _bool = false;
+        if (option == 0)
+        {
+            for (int i = 1; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] > _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
+            }
+        }
+        else if (option == 1)
+        {
+            for (int i = 1; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] == _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 1; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] < _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
+            }
+        }
+        return _bool;
+    }
+    public bool CheckAllStatus(int _statusIndex, int _value, int option)
+    {
+        bool _bool = false;
+        if (option == 0)
+        {
+            for (int i = 0; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] > _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
+            }
+        }
+        else if (option == 1)
+        {
+            for (int i = 0; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] == _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < characterEquipmentController.Count; i++)
+            {
+                if (characterStatuses[i].TotalStatus[_statusIndex] < _value)
+                    _bool = true;
+                else
+                {
+                    _bool = false;
+                    break;
+                }
             }
         }
         return _bool;
@@ -501,19 +599,19 @@ public class GraceManager : MonoBehaviour
                                 switch((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Str, _grace.conditionValue,0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Str, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Str, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -524,19 +622,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Dex, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Dex, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Dex, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -547,19 +645,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Wiz, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Wiz, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Wiz, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -570,19 +668,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Luck, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Luck, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[_grace.conditionWho].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        if (CheckStatus(_grace.conditionWho, (int)EStatus.Luck, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -733,28 +831,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Str, _grace.conditionValue,0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] ==  _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Str, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Str, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -765,28 +854,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Dex, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Dex, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Dex, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -797,28 +877,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Wiz, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Wiz, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Wiz, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -829,28 +900,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Luck, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Luck, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        if (CheckAllMercenaryStatus((int)EStatus.Luck, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -1002,31 +1064,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] > _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Str, _grace.conditionValue,0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] == _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Str, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Str] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Str] < _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Str, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -1037,31 +1087,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] > _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Dex, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] == _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Dex, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Dex] < _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Dex, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -1072,31 +1110,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] > _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Wiz, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] == _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Wiz, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Wiz] < _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Wiz, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -1107,31 +1133,19 @@ public class GraceManager : MonoBehaviour
                                 switch ((EGraceConditionHow)_grace.conditionHow)
                                 {
                                     case EGraceConditionHow.More:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] > _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Luck, _grace.conditionValue, 0))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Same:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] == _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Luck, _grace.conditionValue, 1))
                                         {
                                             _bool = true;
                                         }
                                         break;
                                     case EGraceConditionHow.Less:
-                                        if (characterStatuses[0].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[1].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[2].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[3].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue &&
-                                            characterStatuses[4].TotalStatus[(int)EStatus.Luck] < _grace.conditionValue)
+                                        if (CheckAllStatus((int)EStatus.Luck, _grace.conditionValue, 2))
                                         {
                                             _bool = true;
                                         }
@@ -1152,79 +1166,222 @@ public class GraceManager : MonoBehaviour
 
     public void OperateGrace(CompleteGrace _grace)
     {
-        if (_grace.relationOfVariables == 7000)
+        if (_grace.resultWho1 != -1)
         {
-
-            if (_grace.resultWho1 != -1)
+            switch ((EGraceResultWho)_grace.resultWho1)
             {
-                switch ((EGraceResultWho)_grace.resultWho1)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
+                case EGraceResultWho.Player:
+                case EGraceResultWho.Mercenary1:
+                case EGraceResultWho.Mercenary2:
+                case EGraceResultWho.Mercenary3:
+                case EGraceResultWho.Mercenary4:
 
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
                             else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
+                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
                             else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
+                                characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
+                case EGraceResultWho.AllMercenary:
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
 
-                    case EGraceResultWho.All:
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
                             else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
-                }
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
+            }
+        }
+
+        if (_grace.resultWho2 != -1)
+        {
+            switch ((EGraceResultWho)_grace.resultWho2)
+            {
+                case EGraceResultWho.Player:
+                case EGraceResultWho.Mercenary1:
+                case EGraceResultWho.Mercenary2:
+                case EGraceResultWho.Mercenary3:
+                case EGraceResultWho.Mercenary4:
+
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+                case EGraceResultWho.AllMercenary:
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat2 != -1)
+                        if (_grace.resultValueIsPercent2 == 5000)
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
+                        }
+                    break;
+            }
+        }
+    }
+    public void OperateGrace(BigGrace _grace)
+    {
+
+        if (_grace.resultWho1 != -1)
+        {
+            switch ((EGraceResultWho)_grace.resultWho1)
+            {
+                case EGraceResultWho.Player:
+                case EGraceResultWho.Mercenary1:
+                case EGraceResultWho.Mercenary2:
+                case EGraceResultWho.Mercenary3:
+                case EGraceResultWho.Mercenary4:
+
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
+                case EGraceResultWho.AllMercenary:
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 1; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
+
+                case EGraceResultWho.All:
+                    if (_grace.resultWhat1 != -1)
+                        if (_grace.resultValueIsPercent1 == 5000)
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                        else
+                        {
+                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
+                            else
+                                for (int i = 0; i < characterStatuses.Count; i++)
+                                    characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
+                        }
+                    break;
             }
         }
         if (_grace.resultWho2 != -1)
@@ -1298,408 +1455,7 @@ public class GraceManager : MonoBehaviour
                     break;
             }
         }
-        else
-        {
-            if (_grace.resultWho2 != -1)
-            {
-                switch ((EGraceResultWho)_grace.resultWho1)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
-                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                        {
-                            _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                        }
-                        else
-                        {
-                            characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                            _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                        }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                        {
-                            for (int i = 1; i < characterStatuses.Count; i++)
-                                _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                        }
-                        else
-                        {
-                            for (int i = 1; i < characterStatuses.Count; i++)
-                            {
-                                characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                            }
-                        }
-                        break;
-                    case EGraceResultWho.All:
-                        if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                        {
-                            for (int i = 0; i < characterStatuses.Count; i++)
-                                _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                        }
-                        else
-                        {
-                            for (int i = 0; i < characterStatuses.Count; i++)
-                            {
-                                characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                            }
-                        }
-                        break;
 
-                }
-
-                switch ((EGraceResultWho)_grace.resultWho2)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
-
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-
-                    case EGraceResultWho.All:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                }
-            }
-        }
-    }
-    public void OperateGrace(BigGrace _grace)
-    {
-        if (_grace.relationOfVariables == 7000)
-        {
-            if (_grace.resultWho1 != -1)
-            {
-                switch ((EGraceResultWho)_grace.resultWho1)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
-                    
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    characterStatuses[_grace.resultWho1 - 3000].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
-
-                    case EGraceResultWho.All:
-                        if (_grace.resultWhat1 != -1)
-                            if (_grace.resultValueIsPercent1 == 5000)
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] += _grace.resultValue1;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat1 - 4000] -= _grace.resultValue1;
-                            }
-                        break;
-                }
-            }
-            if (_grace.resultWho2 != -1)
-            {
-                switch ((EGraceResultWho)_grace.resultWho2)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
-
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-
-                    case EGraceResultWho.All:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                }
-            }
-        }
-        else
-        {
-            if (_grace.resultWho2 != -1)
-            {
-                switch ((EGraceResultWho)_grace.resultWho1)
-                                    {
-                                        case EGraceResultWho.Player:
-                                        case EGraceResultWho.Mercenary1:
-                                        case EGraceResultWho.Mercenary2:
-                                        case EGraceResultWho.Mercenary3:
-                                        case EGraceResultWho.Mercenary4:
-                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                            {
-                                                _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                            }
-                                            else
-                                            {
-                                                characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                                    (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                                _grace.resultValue2 = (int)(characterStatuses[_grace.resultWho1 - 3000].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                            }
-                                            break;
-                                        case EGraceResultWho.AllMercenary:
-                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                            {
-                                                for (int i = 1; i < characterStatuses.Count; i++)
-                                                    _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                            }
-                                            else
-                                            {
-                                                for (int i = 1; i < characterStatuses.Count; i++)
-                                                {
-                                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                                    (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                                   _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                                }
-                                            }
-                                            break;
-                                        case EGraceResultWho.All:
-                                            if (_grace.resultHow1 == (int)EGraceResultHow.Increase)
-                                            {
-                                                for (int i = 0; i < characterStatuses.Count; i++)
-                                                    _grace.resultValue2 = (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                            }
-                                            else
-                                            {
-                                                for (int i = 0; i < characterStatuses.Count; i++)
-                                                {
-                                                    characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] -=
-                                                    (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                                    _grace.resultValue2 += (int)(characterStatuses[i].GraceStatuses[_grace.resultWhat1 - 4000] * (_grace.resultValue1 / 100f));
-                                                }
-                                            }
-                                            break;
-
-                                    }
-
-                switch ((EGraceResultWho)_grace.resultWho2)
-                {
-                    case EGraceResultWho.Player:
-                    case EGraceResultWho.Mercenary1:
-                    case EGraceResultWho.Mercenary2:
-                    case EGraceResultWho.Mercenary3:
-                    case EGraceResultWho.Mercenary4:
-
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    characterStatuses[_grace.resultWho2 - 3000].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                    case EGraceResultWho.AllMercenary:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 1; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-
-                    case EGraceResultWho.All:
-                        if (_grace.resultWhat2 != -1)
-                            if (_grace.resultValueIsPercent2 == 5000)
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                            else
-                            {
-                                if (_grace.resultHow2 == (int)EGraceResultHow.Increase)
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] += _grace.resultValue2;
-                                else
-                                    for (int i = 0; i < characterStatuses.Count; i++)
-                                        characterStatuses[i].GraceMagniStatuses[_grace.resultWhat2 - 4000] -= _grace.resultValue2;
-                            }
-                        break;
-                }
-            }
-        }
     }
 
     public void AquireBigGrace(int _key)

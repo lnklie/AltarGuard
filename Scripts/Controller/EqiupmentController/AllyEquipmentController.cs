@@ -57,9 +57,11 @@ public class AllyEquipmentController : EquipmentController
                     break;
                 case EItemType.SubWeapon:
                     subWeaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
+                    TakeOffWeaponBySubWeapon(equipItems[8]);
                     break;
                 case EItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                    TakeOffSubWeaponByTwoHandedWeapon(_item);
                     ChangeAttackType();
                     SkillChange();
                     break;

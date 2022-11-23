@@ -9,7 +9,7 @@ public class SkillController : MonoBehaviour
     [SerializeField] private List<SkillObject> skillPrefabs = new List<SkillObject>();
 
     [SerializeField] private List<Skill> skillQueue = new List<Skill>();
-    [SerializeField] private RectTransform skillScope = null;
+    [SerializeField] private SpriteRenderer skillScope = null;
     [SerializeField] private bool isSkillDelay = false;
 
     #region Property
@@ -65,16 +65,16 @@ public class SkillController : MonoBehaviour
                             SkillObject _skillObject = skillPrefabs[skills[_index].skillKey];
                             skills[_index].isCoolTime = true;
                             skills[_index].coolTime = 0f;
-                            Transform skillPos = status.Target.transform;
+                            Vector2 skillPos = status.Target.transform.position;
                             if (_isRangeExpressed)
                             {
                                 skillScope.gameObject.SetActive(true);
-                                skillScope.localPosition = skillPos.position;
-                                skillScope.localScale = new Vector2(skills[_index].skillScopeX, skills[_index].skillScopeY);
+                                skillScope.transform.localPosition = skillPos;
+                                skillScope.transform.localScale = new Vector2(skills[_index].skillScopeX, skills[_index].skillScopeY);
                                 yield return new WaitForSeconds(1f);
                                 skillScope.gameObject.SetActive(false);
                             }
-                            _skillObject.SetSkillTarget(skillPos, status);
+                            _skillObject.SetSkillTarget(status, skillPos, SetSkillValueByLevel(skillQueue[0]));
                             skillQueue.RemoveAt(skillQueue.IndexOf(skills[_index]));
                         }
                         else
@@ -104,26 +104,53 @@ public class SkillController : MonoBehaviour
                 {
                     if (status.Target != null)
                     {
-                        if (IsMatchSkillType(skillQueue[0], status.Target))
+                        SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
+                        skillQueue[0].isCoolTime = true;
+                        skillQueue[0].coolTime = 0f;
+                        Vector2 skillPos = status.Target.transform.position;
+                        switch (skillQueue[0].skillType)
                         {
-                            SkillObject _skillObject = skillPrefabs[skillQueue[0].skillKey];
-                            skillQueue[0].isCoolTime = true;
-                            skillQueue[0].coolTime = 0f;
-                            Transform skillPos = status.Target.transform;
-                            if (_isRangeExpressed)
-                            {
-                                skillScope.gameObject.SetActive(true);
-                                skillScope.localPosition = skillPos.position;
-                                skillScope.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
-                                yield return new WaitForSeconds(1f);
-                                skillScope.gameObject.SetActive(false);
-                            }
-                            _skillObject.SetSkillTarget(skillPos, status);
-                            StartCoroutine(_skillObject.CastingSkill());
-                            skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
+                            case 0:
+                                if (IsMatchSkillType(skillQueue[0], status.Target))
+                                {
+                                    if (_isRangeExpressed)
+                                    {
+                                        skillScope.gameObject.SetActive(true);
+                                        skillScope.color = new Color(1f,0,0,100f/255);
+                                        skillScope.transform.localPosition = skillPos;
+                                        skillScope.transform.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
+                                        yield return new WaitForSeconds(1f);
+                                        skillScope.gameObject.SetActive(false);
+                                    }
+                                    _skillObject.SetSkillTarget(status, skillPos, SetSkillValueByLevel(skillQueue[0]));
+                                    StartCoroutine(_skillObject.CastingSkill(0));
+                                    skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
+                                }
+                                else
+                                    Debug.Log("ø√πŸ∏• ≈∏∞Ÿ¿Ã æ∆¥’¥œ¥Ÿ. " + status.Target.ObjectName);
+                                break;
+                            case 1:
+                                if (IsMatchSkillType(skillQueue[0], status.Target))
+                                {
+                                    if (_isRangeExpressed)
+                                    {
+                                        skillScope.gameObject.SetActive(true);
+                                        skillScope.color = new Color(0, 1f, 0, 100f / 255);
+                                        skillScope.transform.localPosition = skillPos;
+                                        skillScope.transform.localScale = new Vector2(skillQueue[0].skillScopeX, skillQueue[0].skillScopeY);
+                                        yield return new WaitForSeconds(1f);
+                                        skillScope.gameObject.SetActive(false);
+                                    }
+                                    _skillObject.SetSkillTarget(status, skillPos);
+                                    status.Target.recovered(SetSkillValueByLevel(skillQueue[0]));
+                                    StartCoroutine(_skillObject.CastingSkill(1));
+                                    skillQueue.RemoveAt(skillQueue.IndexOf(skillQueue[0]));
+                                }
+                                else
+                                    Debug.Log("ø√πŸ∏• ≈∏∞Ÿ¿Ã æ∆¥’¥œ¥Ÿ. " + status.Target.ObjectName);
+                                break;
                         }
-                        else
-                            Debug.Log("ø√πŸ∏• ≈∏∞Ÿ¿Ã æ∆¥’¥œ¥Ÿ. " + status.Target.ObjectName);
+
                     }
                     else
                     {
@@ -197,4 +224,17 @@ public class SkillController : MonoBehaviour
     //            status.GraceWiz = SetPassiveSkillByLevel(passiveSkills[i]);
     //    }
     //}
+    public int SetSkillValueByLevel(Skill _skill)
+    {
+        int _skillDamage = 0;
+
+        if (_skill.skillVariable == 0)
+            _skillDamage = _skill.skillValues[_skill.skillLevel] + Mathf.CeilToInt(status.TotalStatus[(int)EStatus.Str] * _skill.skillFigures[_skill.skillLevel]);
+        else if (_skill.skillVariable == 1)
+            _skillDamage = _skill.skillValues[_skill.skillLevel] + Mathf.CeilToInt(status.TotalStatus[(int)EStatus.Dex] * _skill.skillFigures[_skill.skillLevel]);
+        else if (_skill.skillVariable == 2)
+            _skillDamage = _skill.skillValues[_skill.skillLevel] + Mathf.CeilToInt(status.TotalStatus[(int)EStatus.Wiz] * _skill.skillFigures[_skill.skillLevel]);
+
+        return _skillDamage;
+    }
 }

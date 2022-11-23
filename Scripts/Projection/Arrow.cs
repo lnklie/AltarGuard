@@ -71,7 +71,7 @@ public class Arrow : MonoBehaviour
         if(ray)
         {
             Status hitObject = ray.collider.transform.GetComponent<Status>();
-            hitObject.Damaged(dmg);
+            hitObject.Damaged(dmg, Color.red);
             archer.AquireExp(hitObject);
             durationTime = 0f;
             ProjectionSpawner.Instance.ReturnArrow(this);
