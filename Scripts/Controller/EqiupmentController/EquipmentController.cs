@@ -142,10 +142,12 @@ public class EquipmentController : MonoBehaviour
                     break;
                 case EItemType.SubWeapon:
                     subWeaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
+                    TakeOffWeaponBySubWeapon(equipItems[8]);
                     break;
                 case EItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
                     ChangeAttackType();
+                    TakeOffSubWeaponByTwoHandedWeapon(_item);
                     SkillChange();
                     break;
             }
@@ -159,7 +161,35 @@ public class EquipmentController : MonoBehaviour
             Debug.Log("장착 중입니다.");
         }
     }
+    public void TakeOffWeaponBySubWeapon(Item _item)
+    {
+        if (checkEquipItems[8])
+        {
+            switch (_item.weaponType)
+            {
+                case "Spear":
+                case "Axe":
+                case "Bow":
+                    TakeOffEquipment(equipItems[8]);
+                    break;
+            }
+        }
+    }
+    public void TakeOffSubWeaponByTwoHandedWeapon(Item _item)
+    {
+        if (checkEquipItems[7])
+        {
+            switch (_item.weaponType)
+            {
+                case "Spear":
+                case "Exe":
+                case "Bow":
+                    TakeOffEquipment(equipItems[7]);
+                    break;
+            }
+        }
 
+    }
     public void SkillChange()
     {
         for(int i = 0; i < equipItems[8].skills.Count; i++)

@@ -12,10 +12,9 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] private PlayerStatus playerStatus = null ;
     [SerializeField] private EquipmentController playerEquipmentController = null;
-
     [SerializeField] private AltarStatus altarStatus = null ;
-
     [SerializeField] private MercenaryStatus[] mercenaryStatuses = null ;
+
     private void Awake()
     {
         path = Path.Combine(Application.persistentDataPath, "PlayerData.json");
@@ -37,20 +36,20 @@ public class DataManager : MonoBehaviour
         {
             Debug.Log("처음 로드");
             playerStatus.ObjectName = "플레이어";
-            playerStatus.BasicStatus[(int)EStatus.Str] = 500;
+            playerStatus.BasicStatus[(int)EStatus.Str] = 50;
             playerStatus.BasicStatus[(int)EStatus.Dex] = 50;
             playerStatus.BasicStatus[(int)EStatus.Wiz] = 5;
             playerStatus.BasicStatus[(int)EStatus.Luck] = 5;
             playerStatus.StatusPoint = 5;
             playerStatus.CurExp = 0;
-            playerStatus.CurLevel = 1;
+            playerStatus.CurLevel = 100;
             playerStatus.Money = 0;
             playerStatus.Stage = 1;
             for (int j = 0; j < 4; j++)
             {
                 AllyStatus _mercenaryStatus = mercenaryStatuses[j];
                 _mercenaryStatus.ObjectName = "용병" + j;
-                _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 500;
+                _mercenaryStatus.BasicStatus[(int)EStatus.Str] = 50;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Dex] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Wiz] = 5;
                 _mercenaryStatus.BasicStatus[(int)EStatus.Luck] = 5;

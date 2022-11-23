@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 public enum ESound
 {
     BackGround,
@@ -44,6 +44,17 @@ public enum EAIState
     UseSkill,
     Died
 }
+
+[Flags]
+public enum EDebuff
+{
+    None = 0,
+    Slowed = 1,
+    Stunned = 2,
+    DecreasePhysic = 4,
+    DecreaseMagic = 8,
+    DecreaseDefence = 16,
+}
 public enum EItemType
 {
     Hair = 0,
@@ -58,12 +69,7 @@ public enum EItemType
     Consumables,
     Miscellaneous
 }
-public enum Debuff
-{
-    Not = 0,
-    Sturn = 1,
-    Slowed = 2
-}
+
 public enum EnemyState
 {
     Idle,
@@ -125,14 +131,7 @@ public enum AltarAbility
     Buff_Speed,
     Buff_Healing
 }
-public enum ECharacter
-{
-    Player,
-    Mercenary_A,
-    Mercenary_B,
-    Mercenary_C,
-    Mercenary_D
-}
+
 public enum SlimeKingPattern
 {
     NotPattern,
@@ -232,9 +231,4 @@ public enum EGraceResultHow
 {
     Increase = 6000,
     Decrease,
-}
-public enum ERelationOfGraces
-{
-    Independence = 7000,
-    Subordination
 }

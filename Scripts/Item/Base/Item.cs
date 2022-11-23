@@ -61,53 +61,66 @@ public class Item
         {
             case 0:
                 spPath = "Sprites/0_Hair/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 1:
                 spPath = "Sprites/1_FaceHair/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 2:
                 spPath = "Sprites/2_Cloth/";
+                singleSprite = Resources.Load(spPath + itemName + "_Single", typeof(Sprite)) as Sprite;
                 break;
             case 3:
                 spPath = "Sprites/3_Pant/";
+                singleSprite = Resources.Load(spPath + itemName + "_Single", typeof(Sprite)) as Sprite;
                 break;
             case 4:
                 spPath = "Sprites/4_Helmet/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 5:
                 spPath = "Sprites/5_Armor/";
+                singleSprite = Resources.Load(spPath + itemName + "_Single", typeof(Sprite)) as Sprite;
                 break;
             case 6:
                 spPath = "Sprites/6_Back/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 7:
                 spPath = "Sprites/7_Shield/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 8:
                 spPath = "Sprites/8_Sword/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 9:
                 spPath = "Sprites/9_Exe/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 10:
                 spPath = "Sprites/10_Spear/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
-
             case 11:
                 spPath = "Sprites/11_Bow/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 12:
                 spPath = "Sprites/12_Wand/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 13:
                 spPath = "Sprites/13_Consumable/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
             case 14:
                 spPath = "Sprites/14_Miscellaneous/";
+                singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
                 break;
         }
 
-        singleSprite = Resources.Load(spPath + itemName, typeof(Sprite)) as Sprite;
         UnityEngine.Object[] sprites = Resources.LoadAll<Sprite>(spPath + itemName);
         if (sprites.Length > 0)
         {

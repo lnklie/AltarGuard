@@ -166,8 +166,7 @@ public class CharacterController : MonoBehaviour, IAIController
     }
     public bool IsDelay()
     {
-        float atkSpeed = character.TotalStatus[(int)EStatus.AttackSpeed];
-        if (character.DelayTime < atkSpeed)
+        if (character.DelayTime < character.MaxDelayTime)
         {
             return true;
         }

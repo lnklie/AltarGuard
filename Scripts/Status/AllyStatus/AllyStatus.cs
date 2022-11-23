@@ -118,15 +118,21 @@ public class AllyStatus : CharacterStatus
         {
             case EStatus.Str:
                 basicStatus[(int)EStatus.MaxHp] = totalStatus[(int)EStatus.Str] * 10;
+                basicStatus[(int)EStatus.PhysicalDamage] = totalStatus[(int)EStatus.Str] * 5;
                 UpdateTotalAbility(EStatus.MaxHp);
+                UpdateTotalAbility(EStatus.PhysicalDamage);
                 break;
             case EStatus.Dex:
-                basicStatus[(int)EStatus.Speed] = totalStatus[(int)EStatus.Dex] * 0.1f;
+                basicStatus[(int)EStatus.Speed] = totalStatus[(int)EStatus.Dex] * 0.01f;
+                basicStatus[(int)EStatus.AttackSpeed] = totalStatus[(int)EStatus.Dex] * 0.01f;
                 UpdateTotalAbility(EStatus.Speed);
+                UpdateTotalAbility(EStatus.AttackSpeed);
                 break;
             case EStatus.Wiz:
                 basicStatus[(int)EStatus.MaxMp] = totalStatus[(int)EStatus.Wiz] * 10f;
+                basicStatus[(int)EStatus.MagicalDamage] = totalStatus[(int)EStatus.Wiz] * 5;
                 UpdateTotalAbility(EStatus.MaxMp);
+                UpdateTotalAbility(EStatus.MagicalDamage);
                 break;
             case EStatus.Luck:
                 basicStatus[(int)EStatus.DropProbability] = totalStatus[(int)EStatus.Luck] * 0.001f;
@@ -150,12 +156,14 @@ public class AllyStatus : CharacterStatus
     public override void UpdateTotalAbility(EStatus _eStatus)
     {
         // 능력 업데이트
-        //Debug.Log("오브젝트 이름: " + ObjectName + " 해당 베이직 스테이터스 "+ _eStatus + " "+ basicStatus[(int)_eStatus] + " 해당 장착스테이터스 " + equipStatus[(int)_eStatus]);
-        totalStatus[(int)_eStatus] = basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]
-            + ((basicStatus[(int)_eStatus] + equipStatus[(int)_eStatus] + graceStatuses[(int)_eStatus]) * (graceMagniStatuses[(int)_eStatus] / 100f))
-            + buffStatus[(int)_eStatus];
 
-        delayTime = totalStatus[(int)EStatus.AttackSpeed];
+        int _index = CastTo<int>.From(_eStatus);
+        totalStatus[_index] = basicStatus[_index] + equipStatus[_index] + graceStatuses[_index];
+        totalStatus[_index] += totalStatus[_index] * (graceMagniStatuses[_index] / 100f);
+        totalStatus[_index] += totalStatus[_index] * (buffStatus[_index] - debuffStatus[_index]);
+
+        if(_eStatus == EStatus.AttackSpeed)
+            maxDelayTime = 1f / totalStatus[(int)EStatus.AttackSpeed];
     }
 
     public void InitGraceStatus()

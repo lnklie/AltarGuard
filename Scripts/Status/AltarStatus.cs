@@ -9,19 +9,14 @@ public class AltarStatus : Status
     [SerializeField] protected int hpLevel = 1;
     [SerializeField] private int defensivePowerLevel = 1;
     [SerializeField] private int buffRangeLevel = 1;
-
-
     [SerializeField] private int buffDamageLevel = 1;
-
     [SerializeField] private int buffDefensivePowerLevel = 1;
-
     [SerializeField] private int buffSpeedLevel = 1;
-
     [SerializeField] private int buffHpRegenLevel = 1;
+    [SerializeField] private Image[] images = null;
+    [SerializeField] private SpriteRenderer buffRangeSprite = null;
 
     private bool isAltarStatusChange = false;
-    private Image[] images = null;
-    [SerializeField] private SpriteRenderer buffRangeSprite = null;
     private bool triggerDestroyed = false;
 
 
@@ -57,7 +52,6 @@ public class AltarStatus : Status
             UpdateAltarStatus();
             UpdateAltarHp();
             triggerStatusUpdate = false;
-
         }
     }
     public void UpdateAltarStatus()
@@ -66,15 +60,16 @@ public class AltarStatus : Status
         totalStatus[(int)EStatus.DefensivePower] = basicStatus[(int)EStatus.DefensivePower] + (defensivePowerLevel * 5);
         
     }
-    public override void Damaged(int _damage)
+    public override void Damaged(int _damage,Color _color)
     {
         //Debug.Log("석상 맞는 중");
-        base.Damaged(_damage);
+        base.Damaged(_damage, _color);
         UpdateAltarHp();
     }
     public void UpdateAltarHp()
     {
         images[1].fillAmount = curHp / totalStatus[(int)EStatus.MaxHp];
+
     }
     public void SetActiveBuffRange(bool _bool)
     {

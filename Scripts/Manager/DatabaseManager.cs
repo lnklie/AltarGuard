@@ -493,7 +493,7 @@ public class DatabaseManager : MonoBehaviour
             for (var i = 0; i < grace.Length; i++)
             {
                 warriorGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("BigGrace/1_RangedGrace")))
@@ -508,7 +508,7 @@ public class DatabaseManager : MonoBehaviour
             {
 
                 rangedGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("BigGrace/2_MagicGrace")))
@@ -522,7 +522,7 @@ public class DatabaseManager : MonoBehaviour
             for (var i = 0; i < grace.Length; i++)
             {
                 magicGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2 ,grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
+                    grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2 ,grace[i].resultHow1, grace[i].resultHow2));
             }
         }
 
@@ -537,7 +537,7 @@ public class DatabaseManager : MonoBehaviour
             for (var i = 0; i < grace.Length; i++)
             {
                 commanderGraceList.Add(new BigGrace(grace[i].bigGraceKey, grace[i].bigGraceName, grace[i].explain, grace[i].necessaryBigGraceKey, grace[i].conditionWho, grace[i].conditionWhat, grace[i].conditionValue, grace[i].conditionHow,
-                   grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2, grace[i].relationOfVariables));
+                   grace[i].resultWho1, grace[i].resultWho2, grace[i].resultWhat1, grace[i].resultWhat2, grace[i].resultValue1, grace[i].resultValue2, grace[i].resultValueIsPercent1, grace[i].resultValueIsPercent2, grace[i].resultHow1, grace[i].resultHow2));
             }
         }
         if (!File.Exists(CombinePath("CraftRecipe/CraftRecipe")))

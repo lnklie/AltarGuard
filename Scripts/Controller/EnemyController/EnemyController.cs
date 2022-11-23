@@ -110,7 +110,7 @@ public class EnemyController : CharacterController
             for (int i = 0; i < hits.Length; i++)
             {
                 Status ally = hits[i].collider.GetComponent<Status>();
-                ally.Damaged(AttackTypeDamage());
+                ally.Damaged(AttackTypeDamage(), Color.red);
                 if (ally.IsLastHit())
                 {
                     ally.IsDied = true;

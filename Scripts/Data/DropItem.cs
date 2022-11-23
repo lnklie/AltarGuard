@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer = null;
     [SerializeField] private Item curItem;
+    [SerializeField] private SpriteRenderer itemImage = null;
+    [SerializeField] private SpriteRenderer itemRankRing = null;
+    [SerializeField] private Sprite[] itemRankRings = new Sprite[5];
     private bool isItem = false;
 
 
@@ -14,7 +16,6 @@ public class DropItem : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void SetItem(Item _item)
@@ -22,8 +23,11 @@ public class DropItem : MonoBehaviour
         // 아이템 세팅
         curItem = _item;
 
-        if (spriteRenderer != null)
-            spriteRenderer.sprite = _item.singleSprite;
+        if (itemImage != null)
+        {
+            itemImage.sprite = _item.singleSprite;
+            itemRankRing.sprite = itemRankRings[_item.itemRank];
+        }
         else
             Debug.Log("이미지 비어있음");
     }

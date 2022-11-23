@@ -52,9 +52,11 @@ public class PlayerEquipmentController : AllyEquipmentController
                     break;
                 case EItemType.SubWeapon:
                     subWeaponSpace.ChangeItemSprite(equipItems[7].spList[0]);
+                    TakeOffWeaponBySubWeapon(equipItems[8]);
                     break;
                 case EItemType.Weapon:
                     weaponSpace.ChangeItemSprite(equipItems[8].spList[0]);
+                    TakeOffSubWeaponByTwoHandedWeapon(_item);
                     ChangeAttackType();
                     SkillChange();
                     UIManager.Instance.UpdateSkillSlot();
@@ -175,7 +177,6 @@ public class PlayerEquipmentController : AllyEquipmentController
                     checkEquipItems[8] = false;
                     weaponSpace.ChangeItemSprite(null);
                     ChangeAttackType();
-                    Debug.Log("응냐냐냐");
                     UIManager.Instance.InitSkillSlot();
                 }
                 break;
